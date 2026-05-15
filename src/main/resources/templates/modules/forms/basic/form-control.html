@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../../assets/img/icons/spot-illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-body position-relative">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h3>Form controls</h3>
+                  <p class="mb-0">Examples and usage guidelines for form control styles, layout options, and custom components for creating a wide variety of forms.</p><a class="btn btn-link btn-sm ps-0 mt-2" href="https://getbootstrap.com/docs/5.2/forms/form-control" target="_blank">Form controls on Bootstrap<span class="fas fa-chevron-right ms-1 fs--2"></span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Example</h5>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-bf5caff1-3be7-45f1-83c2-495452865d97" type="button" role="tab" aria-controls="dom-bf5caff1-3be7-45f1-83c2-495452865d97" aria-selected="true" id="tab-dom-bf5caff1-3be7-45f1-83c2-495452865d97">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-61bc27ce-da25-4523-ad1d-b4762cd4205a" type="button" role="tab" aria-controls="dom-61bc27ce-da25-4523-ad1d-b4762cd4205a" aria-selected="false" id="tab-dom-61bc27ce-da25-4523-ad1d-b4762cd4205a">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-bf5caff1-3be7-45f1-83c2-495452865d97" id="dom-bf5caff1-3be7-45f1-83c2-495452865d97">
+                  <div class="mb-3">
+                    <label class="form-label" for="exampleFormControlInput1">Email address</label>
+                    <input class="form-control" id="exampleFormControlInput1" type="email" placeholder="name@example.com" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="exampleFormControlTextarea1">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-61bc27ce-da25-4523-ad1d-b4762cd4205a" id="dom-61bc27ce-da25-4523-ad1d-b4762cd4205a">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;exampleFormControlInput1&quot;&gt;Email address&lt;/label&gt;
+  &lt;input class=&quot;form-control&quot; id=&quot;exampleFormControlInput1&quot; type=&quot;email&quot; placeholder=&quot;name@example.com&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;exampleFormControlTextarea1&quot;&gt;Example textarea&lt;/label&gt;
+  &lt;textarea class=&quot;form-control&quot; id=&quot;exampleFormControlTextarea1&quot; rows=&quot;3&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Sizing</h5>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-5581f36e-890b-4e7f-af1c-de709ec434ef" type="button" role="tab" aria-controls="dom-5581f36e-890b-4e7f-af1c-de709ec434ef" aria-selected="true" id="tab-dom-5581f36e-890b-4e7f-af1c-de709ec434ef">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-43307570-71db-45d5-a825-177c005f99b8" type="button" role="tab" aria-controls="dom-43307570-71db-45d5-a825-177c005f99b8" aria-selected="false" id="tab-dom-43307570-71db-45d5-a825-177c005f99b8">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-5581f36e-890b-4e7f-af1c-de709ec434ef" id="dom-5581f36e-890b-4e7f-af1c-de709ec434ef">
+                  <div class="mb-3">
+                    <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg" aria-label=".form-control-lg example" />
+                  </div>
+                  <div class="mb-3">
+                    <input class="form-control" type="text" placeholder="Default input" aria-label="default input example" />
+                  </div>
+                  <div class="mb-3">
+                    <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm" aria-label=".form-control-sm example" />
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-43307570-71db-45d5-a825-177c005f99b8" id="dom-43307570-71db-45d5-a825-177c005f99b8">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;input class=&quot;form-control form-control-lg&quot; type=&quot;text&quot; placeholder=&quot;.form-control-lg&quot; aria-label=&quot;.form-control-lg example&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;input class=&quot;form-control&quot; type=&quot;text&quot; placeholder=&quot;Default input&quot; aria-label=&quot;default input example&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;input class=&quot;form-control form-control-sm&quot; type=&quot;text&quot; placeholder=&quot;.form-control-sm&quot; aria-label=&quot;.form-control-sm example&quot; /&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Readonly plain text</h5>
+                  <p class="mb-0 pt-1 mt-2 mb-0">If you want to have <code>input readonly</code> elements in your form styled as plain text, use the <code>.form-control-plaintext</code> class to remove the default form field styling and preserve the correct margin and padding.</p>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1 mt-2" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-01fe0eb5-411d-485a-ae4f-a59714b8e131" type="button" role="tab" aria-controls="dom-01fe0eb5-411d-485a-ae4f-a59714b8e131" aria-selected="true" id="tab-dom-01fe0eb5-411d-485a-ae4f-a59714b8e131">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-8ac1b446-e200-48b5-a310-a69099db72aa" type="button" role="tab" aria-controls="dom-8ac1b446-e200-48b5-a310-a69099db72aa" aria-selected="false" id="tab-dom-8ac1b446-e200-48b5-a310-a69099db72aa">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-01fe0eb5-411d-485a-ae4f-a59714b8e131" id="dom-01fe0eb5-411d-485a-ae4f-a59714b8e131">
+                  <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="staticEmail">Email</label>
+                    <div class="col-sm-10">
+                      <input class="form-control-plaintext outline-none" id="staticEmail" type="text" readonly="" value="email@example.com" />
+                      <div class="mb-3 row"></div>
+                    </div>
+                    <label class="col-sm-2 col-form-label" for="inputPassword">Password</label>
+                    <div class="col-sm-10">
+                      <input class="form-control" id="inputPassword" type="password" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-8ac1b446-e200-48b5-a310-a69099db72aa" id="dom-8ac1b446-e200-48b5-a310-a69099db72aa">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3 row&quot;&gt;
+  &lt;label class=&quot;col-sm-2 col-form-label&quot; for=&quot;staticEmail&quot;&gt;Email&lt;/label&gt;
+  &lt;div class=&quot;col-sm-10&quot;&gt;
+    &lt;input class=&quot;form-control-plaintext outline-none&quot; id=&quot;staticEmail&quot; type=&quot;text&quot; readonly=&quot;&quot; value=&quot;email@example.com&quot; /&gt;
+    &lt;div class=&quot;mb-3 row&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;label class=&quot;col-sm-2 col-form-label&quot; for=&quot;inputPassword&quot;&gt;Password&lt;/label&gt;
+  &lt;div class=&quot;col-sm-10&quot;&gt;
+    &lt;input class=&quot;form-control&quot; id=&quot;inputPassword&quot; type=&quot;password&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">File Input</h5>
+                  <p class="mb-0 pt-1 mt-2 mb-0">The file input is the most gnarly of the bunch and requires additional JavaScript if you’d like to hook them up with functional <code>Choose File</code> and selected file name text.</p>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1 mt-2" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-1ec5cacb-cf7b-441c-974e-266719553eaf" type="button" role="tab" aria-controls="dom-1ec5cacb-cf7b-441c-974e-266719553eaf" aria-selected="true" id="tab-dom-1ec5cacb-cf7b-441c-974e-266719553eaf">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-1d9d2b98-a02d-47da-956a-2bcf32c71c08" type="button" role="tab" aria-controls="dom-1d9d2b98-a02d-47da-956a-2bcf32c71c08" aria-selected="false" id="tab-dom-1d9d2b98-a02d-47da-956a-2bcf32c71c08">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-1ec5cacb-cf7b-441c-974e-266719553eaf" id="dom-1ec5cacb-cf7b-441c-974e-266719553eaf">
+                  <div class="mb-3">
+                    <label class="form-label" for="customFile">File input example</label>
+                    <input class="form-control" id="customFile" type="file" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="formFileDisabled">Disabled file input example</label>
+                    <input class="form-control" id="formFileDisabled" type="file" disabled="disabled" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="formFileMultiple">Multiple files input example</label>
+                    <input class="form-control" id="formFileMultiple" type="file" multiple="multiple" />
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-1d9d2b98-a02d-47da-956a-2bcf32c71c08" id="dom-1d9d2b98-a02d-47da-956a-2bcf32c71c08">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;customFile&quot;&gt;File input example&lt;/label&gt;
+  &lt;input class=&quot;form-control&quot; id=&quot;customFile&quot; type=&quot;file&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;formFileDisabled&quot;&gt;Disabled file input example&lt;/label&gt;
+  &lt;input class=&quot;form-control&quot; id=&quot;formFileDisabled&quot; type=&quot;file&quot; disabled=&quot;disabled&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;formFileMultiple&quot;&gt;Multiple files input example&lt;/label&gt;
+  &lt;input class=&quot;form-control&quot; id=&quot;formFileMultiple&quot; type=&quot;file&quot; multiple=&quot;multiple&quot; /&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">File Input Sizing</h5>
+                  <p class="mb-0 pt-1 mt-2 mb-0"> You may also choose from small and large file inputs to match our similarly sized text inputs.</p>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1 mt-2" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-d01693be-2a77-489a-b0b6-4e7094270012" type="button" role="tab" aria-controls="dom-d01693be-2a77-489a-b0b6-4e7094270012" aria-selected="true" id="tab-dom-d01693be-2a77-489a-b0b6-4e7094270012">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-a9de87f6-d710-437f-91ef-00df903ae64c" type="button" role="tab" aria-controls="dom-a9de87f6-d710-437f-91ef-00df903ae64c" aria-selected="false" id="tab-dom-a9de87f6-d710-437f-91ef-00df903ae64c">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-d01693be-2a77-489a-b0b6-4e7094270012" id="dom-d01693be-2a77-489a-b0b6-4e7094270012">
+                  <div class="mb-3">
+                    <label class="form-label" for="customFileSm">Small file input example</label>
+                    <input class="form-control form-control-sm" id="customFileSm" type="file" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="customFileLg">Large file input example</label>
+                    <input class="form-control form-control-lg" id="customFileLg" type="file" />
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-a9de87f6-d710-437f-91ef-00df903ae64c" id="dom-a9de87f6-d710-437f-91ef-00df903ae64c">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;customFileSm&quot;&gt;Small file input example&lt;/label&gt;
+  &lt;input class=&quot;form-control form-control-sm&quot; id=&quot;customFileSm&quot; type=&quot;file&quot; /&gt;
+&lt;/div&gt;
+&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;customFileLg&quot;&gt;Large file input example&lt;/label&gt;
+  &lt;input class=&quot;form-control form-control-lg&quot; id=&quot;customFileLg&quot; type=&quot;file&quot; /&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Datalist</h5>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-92ea0f5f-bb28-4af2-b0d4-efdee7a4d587" type="button" role="tab" aria-controls="dom-92ea0f5f-bb28-4af2-b0d4-efdee7a4d587" aria-selected="true" id="tab-dom-92ea0f5f-bb28-4af2-b0d4-efdee7a4d587">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-5738e8cf-d025-4357-86f8-257dc79cb96b" type="button" role="tab" aria-controls="dom-5738e8cf-d025-4357-86f8-257dc79cb96b" aria-selected="false" id="tab-dom-5738e8cf-d025-4357-86f8-257dc79cb96b">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-92ea0f5f-bb28-4af2-b0d4-efdee7a4d587" id="dom-92ea0f5f-bb28-4af2-b0d4-efdee7a4d587">
+                  <div class="mb-3">
+                    <label class="form-label" for="customDatalist">Choose your browser from the list:</label>
+                    <input class="form-control form-control-sm" id="customDatalist" list="browsers" name="browser" />
+                    <datalist id="browsers">
+                      <option value="Edge"> </option>
+                      <option value="Firefox"> </option>
+                      <option value="Chrome"> </option>
+                      <option value="Opera"> </option>
+                      <option value="Safari"></option>
+                    </datalist>
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-5738e8cf-d025-4357-86f8-257dc79cb96b" id="dom-5738e8cf-d025-4357-86f8-257dc79cb96b">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;label class=&quot;form-label&quot; for=&quot;customDatalist&quot;&gt;Choose your browser from the list:&lt;/label&gt;
+  &lt;input class=&quot;form-control form-control-sm&quot; id=&quot;customDatalist&quot; list=&quot;browsers&quot; name=&quot;browser&quot; /&gt;
+  &lt;datalist id=&quot;browsers&quot;&gt;
+    &lt;option value=&quot;Edge&quot;&gt; &lt;/option&gt;
+    &lt;option value=&quot;Firefox&quot;&gt; &lt;/option&gt;
+    &lt;option value=&quot;Chrome&quot;&gt; &lt;/option&gt;
+    &lt;option value=&quot;Opera&quot;&gt; &lt;/option&gt;
+    &lt;option value=&quot;Safari&quot;&gt;&lt;/option&gt;
+  &lt;/datalist&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer">
+            <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2022 &copy; <a href="https://themewagon.com">Themewagon</a></p>
+              </div>
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">v3.12.0</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+          <div class="modal-dialog mt-6" role="document">
+            <div class="modal-content border-0">
+              <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                <div class="position-relative z-index-1 light">
+                  <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                  <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+                </div>
+                <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body py-4 px-5">
+                <form>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-name">Name</label>
+                    <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-email">Email address</label>
+                    <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                  </div>
+                  <div class="row gx-2">
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-password">Password</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                    <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                  </div>
+                </form>
+                <div class="position-relative mt-5">
+                  <hr />
+                  <div class="divider-content-center">or register with</div>
+                </div>
+                <div class="row g-2 mt-2">
+                  <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                  <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+    <div class="offcanvas offcanvas-end settings-panel border-0" id="settings-offcanvas" tabindex="-1" aria-labelledby="settings-offcanvas">
+      <div class="offcanvas-header settings-panel-header bg-shape">
+        <div class="z-index-1 py-1 light">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="text-white mb-0 me-2"><span class="fas fa-palette me-2 fs-0"></span>Settings</h5>
+            <button class="btn btn-primary btn-sm rounded-pill mt-0 mb-0" data-theme-control="reset" style="font-size:12px"> <span class="fas fa-redo-alt me-1" data-fa-transform="shrink-3"></span>Reset</button>
+          </div>
+          <p class="mb-0 fs--1 text-white opacity-75"> Set your own customized style</p>
+        </div>
+        <button class="btn-close btn-close-white z-index-1 mt-0" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body scrollbar-overlay px-card h-100" id="themeController">
+        <h5 class="fs-0">Color Scheme</h5>
+        <p class="fs--1">Choose the perfect color mode for your app.</p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherLight" name="theme-color" type="radio" value="light" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherLight"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" src="../../../assets/img/generic/falcon-mode-default.jpg" alt=""/></span><span class="label-text">Light</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherDark" name="theme-color" type="radio" value="dark" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherDark"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" src="../../../assets/img/generic/falcon-mode-dark.jpg" alt=""/></span><span class="label-text"> Dark</span></label>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" src="../../../assets/img/icons/left-arrow-from-left.svg" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">RTL Mode</h5>
+              <p class="fs--1 mb-0">Switch your language direction </p><a class="fs--1" href="../../../documentation/customization/configuration.html">RTL Documentation</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-rtl" type="checkbox" data-theme-control="isRTL" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" src="../../../assets/img/icons/arrows-h.svg" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">Fluid Layout</h5>
+              <p class="fs--1 mb-0">Toggle container layout system </p><a class="fs--1" href="../../../documentation/customization/configuration.html">Fluid Documentation</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-fluid" type="checkbox" data-theme-control="isFluid" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex align-items-start"><img class="me-2" src="../../../assets/img/icons/paragraph.svg" width="20" alt="" />
+          <div class="flex-1">
+            <h5 class="fs-0 d-flex align-items-center">Navigation Position </h5>
+            <p class="fs--1 mb-2">Select a suitable navigation system for your web application </p>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-vertical" type="radio" name="navbar" value="vertical" data-page-url="../../../modules/components/navs-and-tabs/vertical-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-vertical">Vertical</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-top" type="radio" name="navbar" value="top" data-page-url="../../../modules/components/navs-and-tabs/top-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-top">Top</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input" id="option-navbar-combo" type="radio" name="navbar" value="combo" data-page-url="../../../modules/components/navs-and-tabs/combo-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-combo">Combo</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h5 class="fs-0 d-flex align-items-center">Vertical Navbar Style</h5>
+        <p class="fs--1 mb-0">Switch between styles for your vertical navbar </p>
+        <p> <a class="fs--1" href="../../../modules/components/navs-and-tabs/vertical-navbar.html#navbar-styles">See Documentation</a></p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-transparent" type="radio" name="navbarStyle" value="transparent" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-transparent"> <img class="img-fluid img-prototype" src="../../../assets/img/generic/default.png" alt="" /><span class="label-text"> Transparent</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-inverted" type="radio" name="navbarStyle" value="inverted" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-inverted"> <img class="img-fluid img-prototype" src="../../../assets/img/generic/inverted.png" alt="" /><span class="label-text"> Inverted</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-card" type="radio" name="navbarStyle" value="card" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-card"> <img class="img-fluid img-prototype" src="../../../assets/img/generic/card.png" alt="" /><span class="label-text"> Card</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-vibrant" type="radio" name="navbarStyle" value="vibrant" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-vibrant"> <img class="img-fluid img-prototype" src="../../../assets/img/generic/vibrant.png" alt="" /><span class="label-text"> Vibrant</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5"><img class="mb-4" src="../../../assets/img/icons/spot-illustrations/47.png" alt="" width="120" />
+          <h5>Like What You See?</h5>
+          <p class="fs--1">Get Falcon now and create beautiful dashboards with hundreds of widgets.</p><a class="mb-3 btn btn-primary" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">Purchase</a>
+        </div>
+      </div>
+    </div><a class="card setting-toggle" href="#settings-offcanvas" data-bs-toggle="offcanvas">
+      <div class="card-body d-flex align-items-center py-md-2 px-2 py-1">
+        <div class="bg-soft-primary position-relative rounded-start" style="height:34px;width:28px">
+          <div class="settings-popover"><span class="ripple"><span class="fa-spin position-absolute all-0 d-flex flex-center"><span class="icon-spin position-absolute all-0 d-flex flex-center">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.7369 12.3941L19.1989 12.1065C18.4459 11.7041 18.0843 10.8487 18.0843 9.99495C18.0843 9.14118 18.4459 8.28582 19.1989 7.88336L19.7369 7.59581C19.9474 7.47484 20.0316 7.23291 19.9474 7.03131C19.4842 5.57973 18.6843 4.28943 17.6738 3.20075C17.5053 3.03946 17.2527 2.99914 17.0422 3.12011L16.393 3.46714C15.6883 3.84379 14.8377 3.74529 14.1476 3.3427C14.0988 3.31422 14.0496 3.28621 14.0002 3.25868C13.2568 2.84453 12.7055 2.10629 12.7055 1.25525V0.70081C12.7055 0.499202 12.5371 0.297594 12.2845 0.257272C10.7266 -0.105622 9.16879 -0.0653007 7.69516 0.257272C7.44254 0.297594 7.31623 0.499202 7.31623 0.70081V1.23474C7.31623 2.09575 6.74999 2.8362 5.99824 3.25599C5.95774 3.27861 5.91747 3.30159 5.87744 3.32493C5.15643 3.74527 4.26453 3.85902 3.53534 3.45302L2.93743 3.12011C2.72691 2.99914 2.47429 3.03946 2.30587 3.20075C1.29538 4.28943 0.495411 5.57973 0.0322686 7.03131C-0.051939 7.23291 0.0322686 7.47484 0.242788 7.59581L0.784376 7.8853C1.54166 8.29007 1.92694 9.13627 1.92694 9.99495C1.92694 10.8536 1.54166 11.6998 0.784375 12.1046L0.242788 12.3941C0.0322686 12.515 -0.051939 12.757 0.0322686 12.9586C0.495411 14.4102 1.29538 15.7005 2.30587 16.7891C2.47429 16.9504 2.72691 16.9907 2.93743 16.8698L3.58669 16.5227C4.29133 16.1461 5.14131 16.2457 5.8331 16.6455C5.88713 16.6767 5.94159 16.7074 5.99648 16.7375C6.75162 17.1511 7.31623 17.8941 7.31623 18.7552V19.2891C7.31623 19.4425 7.41373 19.5959 7.55309 19.696C7.64066 19.7589 7.74815 19.7843 7.85406 19.8046C9.35884 20.0925 10.8609 20.0456 12.2845 19.7729C12.5371 19.6923 12.7055 19.4907 12.7055 19.2891V18.7346C12.7055 17.8836 13.2568 17.1454 14.0002 16.7312C14.0496 16.7037 14.0988 16.6757 14.1476 16.6472C14.8377 16.2446 15.6883 16.1461 16.393 16.5227L17.0422 16.8698C17.2527 16.9907 17.5053 16.9504 17.6738 16.7891C18.7264 15.7005 19.4842 14.4102 19.9895 12.9586C20.0316 12.757 19.9474 12.515 19.7369 12.3941ZM10.0109 13.2005C8.1162 13.2005 6.64257 11.7893 6.64257 9.97478C6.64257 8.20063 8.1162 6.74905 10.0109 6.74905C11.8634 6.74905 13.3792 8.20063 13.3792 9.97478C13.3792 11.7893 11.8634 13.2005 10.0109 13.2005Z" fill="#2A7BE4"></path>
+                  </svg></span></span></span></div>
+        </div><small class="text-uppercase text-primary fw-bold bg-soft-primary py-2 pe-2 ps-1 rounded-end">customize</small>
+      </div>
+    </a>
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="../../../vendors/popper/popper.min.js"></script>
+    <script src="../../../vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="../../../vendors/anchorjs/anchor.min.js"></script>
+    <script src="../../../vendors/is/is.min.js"></script>
+    <script src="../../../vendors/prism/prism.js"></script>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

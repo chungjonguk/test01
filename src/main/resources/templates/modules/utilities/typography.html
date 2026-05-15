@@ -1,0 +1,638 @@
+﻿<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../../assets/img/icons/spot-illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-body position-relative">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h3>Typography</h3>
+                  <p class="mb-0">Documentation and examples for Bootstrap typography, including global settings, headings, body text, lists, and more.</p><a class="btn btn-link btn-sm ps-0 mt-2" href="https://getbootstrap.com/docs/5.2/content/typography/" target="_blank">Typography on Bootstrap<span class="fas fa-chevron-right ms-1 fs--2"></span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Font Family</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>You have three font-family helper classes available to use.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-f9143abe-6896-4617-a7db-f68293b864c2" type="button" role="tab" aria-controls="dom-f9143abe-6896-4617-a7db-f68293b864c2" aria-selected="true" id="tab-dom-f9143abe-6896-4617-a7db-f68293b864c2">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-2c726b6d-6b11-4faa-bad2-3de2dfd1380f" type="button" role="tab" aria-controls="dom-2c726b6d-6b11-4faa-bad2-3de2dfd1380f" aria-selected="false" id="tab-dom-2c726b6d-6b11-4faa-bad2-3de2dfd1380f">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-f9143abe-6896-4617-a7db-f68293b864c2" id="dom-f9143abe-6896-4617-a7db-f68293b864c2">
+                  <div class="font-sans-serif">Poppins</div>
+
+                  <div class="font-base">Open Sans</div>
+                  <code class="text-monospace">Monospace</code>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-2c726b6d-6b11-4faa-bad2-3de2dfd1380f" id="dom-2c726b6d-6b11-4faa-bad2-3de2dfd1380f">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;font-sans-serif&quot;&gt;Poppins&lt;/div&gt;
+&lt;div class=&quot;font-base&quot;&gt;Open Sans&lt;/div&gt;
+&lt;code class=&quot;text-monospace&quot;&gt;Monospace&lt;/code&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Headings</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>All HTML headings, <code>h1 </code>through<code> h6</code>, are available.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-7680b911-f223-4853-b01c-cca5e5e5468c" type="button" role="tab" aria-controls="dom-7680b911-f223-4853-b01c-cca5e5e5468c" aria-selected="true" id="tab-dom-7680b911-f223-4853-b01c-cca5e5e5468c">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-b87fda4e-45f2-4b7c-a065-79d51f60f2a7" type="button" role="tab" aria-controls="dom-b87fda4e-45f2-4b7c-a065-79d51f60f2a7" aria-selected="false" id="tab-dom-b87fda4e-45f2-4b7c-a065-79d51f60f2a7">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-7680b911-f223-4853-b01c-cca5e5e5468c" id="dom-7680b911-f223-4853-b01c-cca5e5e5468c">
+                  <h1>h1. Heading</h1>
+                  <h2>h2. Heading</h2>
+                  <h3>h3. Heading</h3>
+                  <h4>h4. Heading</h4>
+                  <h5>h5. Heading</h5>
+                  <h6>h6. Heading</h6>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-b87fda4e-45f2-4b7c-a065-79d51f60f2a7" id="dom-b87fda4e-45f2-4b7c-a065-79d51f60f2a7">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;h1&gt;h1. Heading&lt;/h1&gt;
+&lt;h2&gt;h2. Heading&lt;/h2&gt;
+&lt;h3&gt;h3. Heading&lt;/h3&gt;
+&lt;h4&gt;h4. Heading&lt;/h4&gt;
+&lt;h5&gt;h5. Heading&lt;/h5&gt;
+&lt;h6&gt;h6. Heading&lt;/h6&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Headings with classes</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'><code>.h1</code> through <code>.h6</code> classes are also available, for when you want to match the font styling of a heading but cannot use the associated HTML element.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-7e86969b-5d85-4ac4-b275-34fb80af8ffb" type="button" role="tab" aria-controls="dom-7e86969b-5d85-4ac4-b275-34fb80af8ffb" aria-selected="true" id="tab-dom-7e86969b-5d85-4ac4-b275-34fb80af8ffb">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-fbfc5690-80b8-421f-9a4c-18734d275d78" type="button" role="tab" aria-controls="dom-fbfc5690-80b8-421f-9a4c-18734d275d78" aria-selected="false" id="tab-dom-fbfc5690-80b8-421f-9a4c-18734d275d78">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-7e86969b-5d85-4ac4-b275-34fb80af8ffb" id="dom-7e86969b-5d85-4ac4-b275-34fb80af8ffb">
+                  <p class="h1">h1. Heading</p>
+                  <p class="h2">h2. Heading</p>
+                  <p class="h3">h3. Heading</p>
+                  <p class="h4">h4. Heading</p>
+                  <p class="h5">h5. Heading</p>
+                  <p class="h6">h6. Heading</p>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-fbfc5690-80b8-421f-9a4c-18734d275d78" id="dom-fbfc5690-80b8-421f-9a4c-18734d275d78">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;p class=&quot;h1&quot;&gt;h1. Heading&lt;/p&gt;
+&lt;p class=&quot;h2&quot;&gt;h2. Heading&lt;/p&gt;
+&lt;p class=&quot;h3&quot;&gt;h3. Heading&lt;/p&gt;
+&lt;p class=&quot;h4&quot;&gt;h4. Heading&lt;/p&gt;
+&lt;p class=&quot;h5&quot;&gt;h5. Heading&lt;/p&gt;
+&lt;p class=&quot;h6&quot;&gt;h6. Heading&lt;/p&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Customizing headings</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>Use the included utility classes to recreate the small secondary heading text from Bootstrap 3.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-c59115a7-fa86-48d5-833f-35d396740561" type="button" role="tab" aria-controls="dom-c59115a7-fa86-48d5-833f-35d396740561" aria-selected="true" id="tab-dom-c59115a7-fa86-48d5-833f-35d396740561">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-ed057f81-88da-424b-a16c-9ed7aee43a15" type="button" role="tab" aria-controls="dom-ed057f81-88da-424b-a16c-9ed7aee43a15" aria-selected="false" id="tab-dom-ed057f81-88da-424b-a16c-9ed7aee43a15">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-c59115a7-fa86-48d5-833f-35d396740561" id="dom-c59115a7-fa86-48d5-833f-35d396740561">
+                  <h3>Fancy display heading<small class="text-muted"> With faded secondary text</small></h3>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-ed057f81-88da-424b-a16c-9ed7aee43a15" id="dom-ed057f81-88da-424b-a16c-9ed7aee43a15">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;h3&gt;Fancy display heading&lt;small class=&quot;text-muted&quot;&gt; With faded secondary text&lt;/small&gt;&lt;/h3&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Font Weights</h5>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-80aaf20f-d8d5-409a-922a-bc6001043fe3" type="button" role="tab" aria-controls="dom-80aaf20f-d8d5-409a-922a-bc6001043fe3" aria-selected="true" id="tab-dom-80aaf20f-d8d5-409a-922a-bc6001043fe3">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-c40f879a-5486-4a4a-83dc-a901d58d1196" type="button" role="tab" aria-controls="dom-c40f879a-5486-4a4a-83dc-a901d58d1196" aria-selected="false" id="tab-dom-c40f879a-5486-4a4a-83dc-a901d58d1196">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-80aaf20f-d8d5-409a-922a-bc6001043fe3" id="dom-80aaf20f-d8d5-409a-922a-bc6001043fe3">
+                  <div class="fw-light">Font weight 300</div>
+                  <div class="fw-normal">Font weight 400</div>
+                  <div class="fw-medium">Font weight 500</div>
+                  <div class="fw-semi-bold">Font weight 600</div>
+                  <div class="fw-bold">Font weight 700</div>
+                  <div class="fw-bolder">Font weight 800</div>
+                  <div class="fw-black">Font weight 900</div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-c40f879a-5486-4a4a-83dc-a901d58d1196" id="dom-c40f879a-5486-4a4a-83dc-a901d58d1196">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;div class=&quot;fw-light&quot;&gt;Font weight 300&lt;/div&gt;
+&lt;div class=&quot;fw-normal&quot;&gt;Font weight 400&lt;/div&gt;
+&lt;div class=&quot;fw-medium&quot;&gt;Font weight 500&lt;/div&gt;
+&lt;div class=&quot;fw-semi-bold&quot;&gt;Font weight 600&lt;/div&gt;
+&lt;div class=&quot;fw-bold&quot;&gt;Font weight 700&lt;/div&gt;
+&lt;div class=&quot;fw-bolder&quot;&gt;Font weight 800&lt;/div&gt;
+&lt;div class=&quot;fw-black&quot;&gt;Font weight 900&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Display headings</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>Traditional heading elements are designed to work best in the meat of your page content. When you need a heading to stand out, consider using a
+                      <strong> display heading </strong> —a larger, slightly more opinionated heading style.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-1a9b45aa-99ee-4f97-b647-5e6d0cc4072d" type="button" role="tab" aria-controls="dom-1a9b45aa-99ee-4f97-b647-5e6d0cc4072d" aria-selected="true" id="tab-dom-1a9b45aa-99ee-4f97-b647-5e6d0cc4072d">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-096b764f-23ab-49bf-ad45-507a9d409fd8" type="button" role="tab" aria-controls="dom-096b764f-23ab-49bf-ad45-507a9d409fd8" aria-selected="false" id="tab-dom-096b764f-23ab-49bf-ad45-507a9d409fd8">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-1a9b45aa-99ee-4f97-b647-5e6d0cc4072d" id="dom-1a9b45aa-99ee-4f97-b647-5e6d0cc4072d">
+                  <h1 class="display-1 mb-3">Display 1</h1>
+                  <h1 class="display-2 mb-3">Display 2</h1>
+                  <h1 class="display-3 mb-3">Display 3</h1>
+                  <h1 class="display-4 mb-3">Display 4</h1>
+                  <h1 class="display-5 mb-3">Display 5</h1>
+                  <h1 class="display-6 mb-3">Display 6</h1>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-096b764f-23ab-49bf-ad45-507a9d409fd8" id="dom-096b764f-23ab-49bf-ad45-507a9d409fd8">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;h1 class=&quot;display-1 mb-3&quot;&gt;Display 1&lt;/h1&gt;
+&lt;h1 class=&quot;display-2 mb-3&quot;&gt;Display 2&lt;/h1&gt;
+&lt;h1 class=&quot;display-3 mb-3&quot;&gt;Display 3&lt;/h1&gt;
+&lt;h1 class=&quot;display-4 mb-3&quot;&gt;Display 4&lt;/h1&gt;
+&lt;h1 class=&quot;display-5 mb-3&quot;&gt;Display 5&lt;/h1&gt;
+&lt;h1 class=&quot;display-6 mb-3&quot;&gt;Display 6&lt;/h1&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Colors</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>Use the following colors to change the text color</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-dc6487d5-1187-4026-b054-a8fec2bd33dd" type="button" role="tab" aria-controls="dom-dc6487d5-1187-4026-b054-a8fec2bd33dd" aria-selected="true" id="tab-dom-dc6487d5-1187-4026-b054-a8fec2bd33dd">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-8f5d88d4-cdc4-49e2-bd28-cc888f283780" type="button" role="tab" aria-controls="dom-8f5d88d4-cdc4-49e2-bd28-cc888f283780" aria-selected="false" id="tab-dom-8f5d88d4-cdc4-49e2-bd28-cc888f283780">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-dc6487d5-1187-4026-b054-a8fec2bd33dd" id="dom-dc6487d5-1187-4026-b054-a8fec2bd33dd">
+                  <h5 class="text-primary">.text-primary</h5>
+                  <h5 class="text-info">.text-info</h5>
+                  <h5 class="text-success">.text-success</h5>
+                  <h5 class="text-warning">.text-warning</h5>
+                  <h5 class="text-danger">.text-danger</h5>
+                  <h5 class="text-black">.text-black</h5>
+                  <h5 class="text-dark">.text-dark</h5>
+                  <h5 class="text-1000">.text-1000</h5>
+                  <h5 class="text-900">.text-900</h5>
+                  <h5 class="text-800">.text-800</h5>
+                  <h5 class="text-700">.text-700</h5>
+                  <h5 class="text-600">.text-600</h5>
+                  <h5 class="text-500">.text-500</h5>
+                  <h5 class="text-400">.text-400</h5>
+                  <h5 class="text-300"><span class="bg-black">.text-300</span></h5>
+                  <h5 class="text-200"><span class="bg-dark">.text-200</span></h5>
+                  <h5 class="text-light"><span class="bg-1000">.text-light</span></h5>
+                  <h5 class="text-white"><span class="bg-900">.text-white</span></h5>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-8f5d88d4-cdc4-49e2-bd28-cc888f283780" id="dom-8f5d88d4-cdc4-49e2-bd28-cc888f283780">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;h5 class=&quot;text-primary&quot;&gt;.text-primary&lt;/h5&gt;
+&lt;h5 class=&quot;text-info&quot;&gt;.text-info&lt;/h5&gt;
+&lt;h5 class=&quot;text-success&quot;&gt;.text-success&lt;/h5&gt;
+&lt;h5 class=&quot;text-warning&quot;&gt;.text-warning&lt;/h5&gt;
+&lt;h5 class=&quot;text-danger&quot;&gt;.text-danger&lt;/h5&gt;
+&lt;h5 class=&quot;text-black&quot;&gt;.text-black&lt;/h5&gt;
+&lt;h5 class=&quot;text-dark&quot;&gt;.text-dark&lt;/h5&gt;
+&lt;h5 class=&quot;text-1000&quot;&gt;.text-1000&lt;/h5&gt;
+&lt;h5 class=&quot;text-900&quot;&gt;.text-900&lt;/h5&gt;
+&lt;h5 class=&quot;text-800&quot;&gt;.text-800&lt;/h5&gt;
+&lt;h5 class=&quot;text-700&quot;&gt;.text-700&lt;/h5&gt;
+&lt;h5 class=&quot;text-600&quot;&gt;.text-600&lt;/h5&gt;
+&lt;h5 class=&quot;text-500&quot;&gt;.text-500&lt;/h5&gt;
+&lt;h5 class=&quot;text-400&quot;&gt;.text-400&lt;/h5&gt;
+&lt;h5 class=&quot;text-300&quot;&gt;&lt;span class=&quot;bg-black&quot;&gt;.text-300&lt;/span&gt;&lt;/h5&gt;
+&lt;h5 class=&quot;text-200&quot;&gt;&lt;span class=&quot;bg-dark&quot;&gt;.text-200&lt;/span&gt;&lt;/h5&gt;
+&lt;h5 class=&quot;text-light&quot;&gt;&lt;span class=&quot;bg-1000&quot;&gt;.text-light&lt;/span&gt;&lt;/h5&gt;
+&lt;h5 class=&quot;text-white&quot;&gt;&lt;span class=&quot;bg-900&quot;&gt;.text-white&lt;/span&gt;&lt;/h5&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Responsive classes</h5>
+                  <div class="mt-2">
+                    <p class='my-2'>If you want different sizes of fonts, you may use the following classes. If you want responsive fonts size, use <code>fs-{sm|md|lg|xl|xxl}-{value} </code> classes.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-7791f767-cd51-44eb-996c-b78cfaefbfbd" type="button" role="tab" aria-controls="dom-7791f767-cd51-44eb-996c-b78cfaefbfbd" aria-selected="true" id="tab-dom-7791f767-cd51-44eb-996c-b78cfaefbfbd">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-e6548e42-9974-421f-b9de-760aef1bfb66" type="button" role="tab" aria-controls="dom-e6548e42-9974-421f-b9de-760aef1bfb66" aria-selected="false" id="tab-dom-e6548e42-9974-421f-b9de-760aef1bfb66">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-7791f767-cd51-44eb-996c-b78cfaefbfbd" id="dom-7791f767-cd51-44eb-996c-b78cfaefbfbd">
+                  <h6 class="fs--2">.fs--2</h6>
+                  <h6 class="fs--1">.fs--1</h6>
+                  <h6 class="fs-0">.fs-0</h6>
+                  <h6 class="fs-1">.fs-1</h6>
+                  <h6 class="fs-2">.fs-2</h6>
+                  <h6 class="fs-3">.fs-3</h6>
+                  <h6 class="fs-4">.fs-4</h6>
+                  <h6 class="fs-5">.fs-5</h6>
+                  <h6 class="fs-6">.fs-6</h6>
+                  <h6 class="fs-7">.fs-7</h6>
+                  <h6 class="fs-8">.fs-8</h6>
+                  <div class="mt-3">
+                    <h6 class="fs-sm-0">.fs-sm-0</h6>
+                    <h6 class="fs-md-1">.fs-md-1</h6>
+                    <h6 class="fs-lg-2">.fs-lg-2</h6>
+                    <h6 class="fs-xl-3">.fs-xl-3</h6>
+                  </div>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-e6548e42-9974-421f-b9de-760aef1bfb66" id="dom-e6548e42-9974-421f-b9de-760aef1bfb66">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;h6 class=&quot;fs--2&quot;&gt;.fs--2&lt;/h6&gt;
+&lt;h6 class=&quot;fs--1&quot;&gt;.fs--1&lt;/h6&gt;
+&lt;h6 class=&quot;fs-0&quot;&gt;.fs-0&lt;/h6&gt;
+&lt;h6 class=&quot;fs-1&quot;&gt;.fs-1&lt;/h6&gt;
+&lt;h6 class=&quot;fs-2&quot;&gt;.fs-2&lt;/h6&gt;
+&lt;h6 class=&quot;fs-3&quot;&gt;.fs-3&lt;/h6&gt;
+&lt;h6 class=&quot;fs-4&quot;&gt;.fs-4&lt;/h6&gt;
+&lt;h6 class=&quot;fs-5&quot;&gt;.fs-5&lt;/h6&gt;
+&lt;h6 class=&quot;fs-6&quot;&gt;.fs-6&lt;/h6&gt;
+&lt;h6 class=&quot;fs-7&quot;&gt;.fs-7&lt;/h6&gt;
+&lt;h6 class=&quot;fs-8&quot;&gt;.fs-8&lt;/h6&gt;
+&lt;div class=&quot;mt-3&quot;&gt;
+  &lt;h6 class=&quot;fs-sm-0&quot;&gt;.fs-sm-0&lt;/h6&gt;
+  &lt;h6 class=&quot;fs-md-1&quot;&gt;.fs-md-1&lt;/h6&gt;
+  &lt;h6 class=&quot;fs-lg-2&quot;&gt;.fs-lg-2&lt;/h6&gt;
+  &lt;h6 class=&quot;fs-xl-3&quot;&gt;.fs-xl-3&lt;/h6&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Text Transformation</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>Transform text in components with text capitalization classes.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-5bf76da9-a6e2-4774-98d9-72872fae1e3f" type="button" role="tab" aria-controls="dom-5bf76da9-a6e2-4774-98d9-72872fae1e3f" aria-selected="true" id="tab-dom-5bf76da9-a6e2-4774-98d9-72872fae1e3f">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-8e81507a-2409-4eb1-9d0f-95e20640a4a9" type="button" role="tab" aria-controls="dom-8e81507a-2409-4eb1-9d0f-95e20640a4a9" aria-selected="false" id="tab-dom-8e81507a-2409-4eb1-9d0f-95e20640a4a9">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-5bf76da9-a6e2-4774-98d9-72872fae1e3f" id="dom-5bf76da9-a6e2-4774-98d9-72872fae1e3f">
+                  <p class="text-lowercase">Lowercased text.</p>
+                  <p class="text-uppercase">Uppercased text.</p>
+                  <p class="text-capitalize">CapiTaliZed text.</p>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-8e81507a-2409-4eb1-9d0f-95e20640a4a9" id="dom-8e81507a-2409-4eb1-9d0f-95e20640a4a9">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;p class=&quot;text-lowercase&quot;&gt;Lowercased text.&lt;/p&gt;
+&lt;p class=&quot;text-uppercase&quot;&gt;Uppercased text.&lt;/p&gt;
+&lt;p class=&quot;text-capitalize&quot;&gt;CapiTaliZed text.&lt;/p&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Lead</h5>
+                  <div class="mt-2">
+                    <p class='mt-2 mb-0'>Make a paragraph stand out by adding <code> .lead </code></p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-9fc99296-e3a4-4186-b266-c65c6e2415ba" type="button" role="tab" aria-controls="dom-9fc99296-e3a4-4186-b266-c65c6e2415ba" aria-selected="true" id="tab-dom-9fc99296-e3a4-4186-b266-c65c6e2415ba">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-edd88220-0b4b-4216-8874-65d47114c559" type="button" role="tab" aria-controls="dom-edd88220-0b4b-4216-8874-65d47114c559" aria-selected="false" id="tab-dom-edd88220-0b4b-4216-8874-65d47114c559">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-9fc99296-e3a4-4186-b266-c65c6e2415ba" id="dom-9fc99296-e3a4-4186-b266-c65c6e2415ba">
+                  <p class="lead">Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.</p>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-edd88220-0b4b-4216-8874-65d47114c559" id="dom-edd88220-0b4b-4216-8874-65d47114c559">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;p class=&quot;lead&quot;&gt;Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.&lt;/p&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <div class="row flex-between-end">
+                <div class="col-auto align-self-center">
+                  <h5 class="mb-0" data-anchor="data-anchor">Dropcap</h5>
+                  <div class="mt-2 mt-2">
+                    <p class='mt-2 mb-0'>Make a paragraph stand out by adding <code> .dropcap </code> class.</p>
+                  </div>
+                </div>
+                <div class="col-auto ms-auto">
+                  <div class="nav nav-pills nav-pills-falcon flex-grow-1" role="tablist">
+                    <button class="btn btn-sm active" data-bs-toggle="pill" data-bs-target="#dom-5482c3e5-0586-48e1-a6ed-268b5dbbea7e" type="button" role="tab" aria-controls="dom-5482c3e5-0586-48e1-a6ed-268b5dbbea7e" aria-selected="true" id="tab-dom-5482c3e5-0586-48e1-a6ed-268b5dbbea7e">Preview</button>
+                    <button class="btn btn-sm" data-bs-toggle="pill" data-bs-target="#dom-5b5e50dd-b5df-4716-aed1-baba9ab3f371" type="button" role="tab" aria-controls="dom-5b5e50dd-b5df-4716-aed1-baba9ab3f371" aria-selected="false" id="tab-dom-5b5e50dd-b5df-4716-aed1-baba9ab3f371">Code</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body bg-light">
+              <div class="tab-content">
+                <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-5482c3e5-0586-48e1-a6ed-268b5dbbea7e" id="dom-5482c3e5-0586-48e1-a6ed-268b5dbbea7e">
+                  <p class="dropcap">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius porro hic ex. Earum similique laudantium esse nostrum sed corporis. Libero omnis quos deleniti amet aliquam nam. Natus voluptas reiciendis eligendi reprehenderit, facere tenetur distinctio sunt officia, temporibus aperiam voluptatum quo ducimus illum incidunt adipisci doloremque rem est magnam in, molestiae excepturi odit. Reprehenderit ullam.</p>
+                </div>
+                <div class="tab-pane code-tab-pane" role="tabpanel" aria-labelledby="tab-dom-5b5e50dd-b5df-4716-aed1-baba9ab3f371" id="dom-5b5e50dd-b5df-4716-aed1-baba9ab3f371">
+                  <pre class="scrollbar rounded-1" style="max-height:420px"><code class="language-html">&lt;p class=&quot;dropcap&quot;&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius porro hic ex. Earum similique laudantium esse nostrum sed corporis. Libero omnis quos deleniti amet aliquam nam. Natus voluptas reiciendis eligendi reprehenderit, facere tenetur distinctio sunt officia, temporibus aperiam voluptatum quo ducimus illum incidunt adipisci doloremque rem est magnam in, molestiae excepturi odit. Reprehenderit ullam.&lt;/p&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer">
+            <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2022 &copy; <a href="https://themewagon.com">Themewagon</a></p>
+              </div>
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">v3.12.0</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+          <div class="modal-dialog mt-6" role="document">
+            <div class="modal-content border-0">
+              <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                <div class="position-relative z-index-1 light">
+                  <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
+                  <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
+                </div>
+                <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body py-4 px-5">
+                <form>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-name">Name</label>
+                    <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-email">Email address</label>
+                    <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                  </div>
+                  <div class="row gx-2">
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-password">Password</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                    <label class="form-label" for="modal-auth-register-checkbox">I accept the <a href="#!">terms </a>and <a href="#!">privacy policy</a></label>
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                  </div>
+                </form>
+                <div class="position-relative mt-5">
+                  <hr />
+                  <div class="divider-content-center">or register with</div>
+                </div>
+                <div class="row g-2 mt-2">
+                  <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                  <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+    <div class="offcanvas offcanvas-end settings-panel border-0" id="settings-offcanvas" tabindex="-1" aria-labelledby="settings-offcanvas">
+      <div class="offcanvas-header settings-panel-header bg-shape">
+        <div class="z-index-1 py-1 light">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="text-white mb-0 me-2"><span class="fas fa-palette me-2 fs-0"></span>Settings</h5>
+            <button class="btn btn-primary btn-sm rounded-pill mt-0 mb-0" data-theme-control="reset" style="font-size:12px"> <span class="fas fa-redo-alt me-1" data-fa-transform="shrink-3"></span>Reset</button>
+          </div>
+          <p class="mb-0 fs--1 text-white opacity-75"> Set your own customized style</p>
+        </div>
+        <button class="btn-close btn-close-white z-index-1 mt-0" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body scrollbar-overlay px-card h-100" id="themeController">
+        <h5 class="fs-0">Color Scheme</h5>
+        <p class="fs--1">Choose the perfect color mode for your app.</p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherLight" name="theme-color" type="radio" value="light" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherLight"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" th:src="@{/assets/img/generic/falcon-mode-default.jpg}" alt=""/></span><span class="label-text">Light</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherDark" name="theme-color" type="radio" value="dark" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherDark"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" th:src="@{/assets/img/generic/falcon-mode-dark.jpg}" alt=""/></span><span class="label-text"> Dark</span></label>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/left-arrow-from-left.svg}" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">RTL Mode</h5>
+              <p class="fs--1 mb-0">Switch your language direction </p><a class="fs--1" th:href="@{/documentation/customization/configuration.html}">RTL Documentation</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-rtl" type="checkbox" data-theme-control="isRTL" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/arrows-h.svg}" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">Fluid Layout</h5>
+              <p class="fs--1 mb-0">Toggle container layout system </p><a class="fs--1" th:href="@{/documentation/customization/configuration.html}">Fluid Documentation</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-fluid" type="checkbox" data-theme-control="isFluid" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/paragraph.svg}" width="20" alt="" />
+          <div class="flex-1">
+            <h5 class="fs-0 d-flex align-items-center">Navigation Position </h5>
+            <p class="fs--1 mb-2">Select a suitable navigation system for your web application </p>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-vertical" type="radio" name="navbar" value="vertical" data-page-url="../../modules/components/navs-and-tabs/vertical-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-vertical">Vertical</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-top" type="radio" name="navbar" value="top" data-page-url="../../modules/components/navs-and-tabs/top-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-top">Top</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input" id="option-navbar-combo" type="radio" name="navbar" value="combo" data-page-url="../../modules/components/navs-and-tabs/combo-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-combo">Combo</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h5 class="fs-0 d-flex align-items-center">Vertical Navbar Style</h5>
+        <p class="fs--1 mb-0">Switch between styles for your vertical navbar </p>
+        <p> <a class="fs--1" th:href="@{/modules/components/navs-and-tabs/vertical-navbar.html#navbar-styles}">See Documentation</a></p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-transparent" type="radio" name="navbarStyle" value="transparent" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-transparent"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/default.png}" alt="" /><span class="label-text"> Transparent</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-inverted" type="radio" name="navbarStyle" value="inverted" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-inverted"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/inverted.png}" alt="" /><span class="label-text"> Inverted</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-card" type="radio" name="navbarStyle" value="card" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-card"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/card.png}" alt="" /><span class="label-text"> Card</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-vibrant" type="radio" name="navbarStyle" value="vibrant" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-vibrant"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/vibrant.png}" alt="" /><span class="label-text"> Vibrant</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5"><img class="mb-4" th:src="@{/assets/img/icons/spot-illustrations/47.png}" alt="" width="120" />
+          <h5>Like What You See?</h5>
+          <p class="fs--1">Get Falcon now and create beautiful dashboards with hundreds of widgets.</p><a class="mb-3 btn btn-primary" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">Purchase</a>
+        </div>
+      </div>
+    </div><a class="card setting-toggle" href="#settings-offcanvas" data-bs-toggle="offcanvas">
+      <div class="card-body d-flex align-items-center py-md-2 px-2 py-1">
+        <div class="bg-soft-primary position-relative rounded-start" style="height:34px;width:28px">
+          <div class="settings-popover"><span class="ripple"><span class="fa-spin position-absolute all-0 d-flex flex-center"><span class="icon-spin position-absolute all-0 d-flex flex-center">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.7369 12.3941L19.1989 12.1065C18.4459 11.7041 18.0843 10.8487 18.0843 9.99495C18.0843 9.14118 18.4459 8.28582 19.1989 7.88336L19.7369 7.59581C19.9474 7.47484 20.0316 7.23291 19.9474 7.03131C19.4842 5.57973 18.6843 4.28943 17.6738 3.20075C17.5053 3.03946 17.2527 2.99914 17.0422 3.12011L16.393 3.46714C15.6883 3.84379 14.8377 3.74529 14.1476 3.3427C14.0988 3.31422 14.0496 3.28621 14.0002 3.25868C13.2568 2.84453 12.7055 2.10629 12.7055 1.25525V0.70081C12.7055 0.499202 12.5371 0.297594 12.2845 0.257272C10.7266 -0.105622 9.16879 -0.0653007 7.69516 0.257272C7.44254 0.297594 7.31623 0.499202 7.31623 0.70081V1.23474C7.31623 2.09575 6.74999 2.8362 5.99824 3.25599C5.95774 3.27861 5.91747 3.30159 5.87744 3.32493C5.15643 3.74527 4.26453 3.85902 3.53534 3.45302L2.93743 3.12011C2.72691 2.99914 2.47429 3.03946 2.30587 3.20075C1.29538 4.28943 0.495411 5.57973 0.0322686 7.03131C-0.051939 7.23291 0.0322686 7.47484 0.242788 7.59581L0.784376 7.8853C1.54166 8.29007 1.92694 9.13627 1.92694 9.99495C1.92694 10.8536 1.54166 11.6998 0.784375 12.1046L0.242788 12.3941C0.0322686 12.515 -0.051939 12.757 0.0322686 12.9586C0.495411 14.4102 1.29538 15.7005 2.30587 16.7891C2.47429 16.9504 2.72691 16.9907 2.93743 16.8698L3.58669 16.5227C4.29133 16.1461 5.14131 16.2457 5.8331 16.6455C5.88713 16.6767 5.94159 16.7074 5.99648 16.7375C6.75162 17.1511 7.31623 17.8941 7.31623 18.7552V19.2891C7.31623 19.4425 7.41373 19.5959 7.55309 19.696C7.64066 19.7589 7.74815 19.7843 7.85406 19.8046C9.35884 20.0925 10.8609 20.0456 12.2845 19.7729C12.5371 19.6923 12.7055 19.4907 12.7055 19.2891V18.7346C12.7055 17.8836 13.2568 17.1454 14.0002 16.7312C14.0496 16.7037 14.0988 16.6757 14.1476 16.6472C14.8377 16.2446 15.6883 16.1461 16.393 16.5227L17.0422 16.8698C17.2527 16.9907 17.5053 16.9504 17.6738 16.7891C18.7264 15.7005 19.4842 14.4102 19.9895 12.9586C20.0316 12.757 19.9474 12.515 19.7369 12.3941ZM10.0109 13.2005C8.1162 13.2005 6.64257 11.7893 6.64257 9.97478C6.64257 8.20063 8.1162 6.74905 10.0109 6.74905C11.8634 6.74905 13.3792 8.20063 13.3792 9.97478C13.3792 11.7893 11.8634 13.2005 10.0109 13.2005Z" fill="#2A7BE4"></path>
+                  </svg></span></span></span></div>
+        </div><small class="text-uppercase text-primary fw-bold bg-soft-primary py-2 pe-2 ps-1 rounded-end">customize</small>
+      </div>
+    </a>
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script th:src="@{/vendors/popper/popper.min.js}"></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/anchorjs/anchor.min.js}"></script>
+    <script th:src="@{/vendors/is/is.min.js}"></script>
+    <script th:src="@{/vendors/prism/prism.js}"></script>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">상품 관리</h5>
+            </div>
+            <div class="card-body">
+                <p>상품 관리 페이지입니다.</p>
+            </div>
+        </div>
+    </div>
+    </th:block>
+</body>
+</html>

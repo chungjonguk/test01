@@ -1,0 +1,1155 @@
+﻿<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+                    <div class="card-header position-relative">
+                      <div class="bg-holder d-none d-md-block bg-card z-index-1" style="background-image:url(../assets/img/illustrations/ecommerce-bg.png);background-size:230px;background-position:right bottom;z-index:-1;">
+                      </div>
+                      <!--/.bg-holder-->
+
+                      <div class="position-relative z-index-2">
+                        <div>
+                          <h3 class="text-primary mb-1">좋은 오후입니다, Jonathan!</h3>
+                          <p>오늘 스토어 현황입니다 </p>
+                        </div>
+                        <div class="d-flex py-3">
+                          <div class="pe-3">
+                            <p class="text-600 fs--1 fw-medium">오늘 방문</p>
+                            <h4 class="text-800 mb-0">14,209</h4>
+                          </div>
+                          <div class="ps-3">
+                            <p class="text-600 fs--1">오늘 총 매출 </p>
+                            <h4 class="text-800 mb-0">$21,349.29 </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body p-0">
+                      <ul class="mb-0 list-unstyled">
+                        <li class="alert mb-0 rounded-0 py-3 px-card alert-warning border-x-0 border-top-0">
+                          <div class="row flex-between-center">
+                            <div class="col">
+                              <div class="d-flex">
+                                <div class="fas fa-circle mt-1 fs--2"></div>
+                                <p class="fs--1 ps-2 mb-0"><strong>5개 상품</strong>이 Facebook 페이지에 게시되지 않았습니다</p>
+                              </div>
+                            </div>
+                            <div class="col-auto d-flex align-items-center"><a class="alert-link fs--1 fw-medium" href="#!">상품 보기<i class="fas fa-chevron-right ms-1 fs--2"></i></a></div>
+                          </div>
+                        </li>
+                        <li class="alert mb-0 rounded-0 py-3 px-card greetings-item border-top border-x-0 border-top-0">
+                          <div class="row flex-between-center">
+                            <div class="col">
+                              <div class="d-flex">
+                                <div class="fas fa-circle mt-1 fs--2 text-primary"></div>
+                                <p class="fs--1 ps-2 mb-0"><strong>7건 주문</strong>에 캡처가 필요한 결제가 있습니다</p>
+                              </div>
+                            </div>
+                            <div class="col-auto d-flex align-items-center"><a class="alert-link fs--1 fw-medium" href="#!">결제 보기<i class="fas fa-chevron-right ms-1 fs--2"></i></a></div>
+                          </div>
+                        </li>
+                        <li class="alert mb-0 rounded-0 py-3 px-card greetings-item border-top  border-0">
+                          <div class="row flex-between-center">
+                            <div class="col">
+                              <div class="d-flex">
+                                <div class="fas fa-circle mt-1 fs--2 text-primary"></div>
+                                <p class="fs--1 ps-2 mb-0"><strong>50건 이상 주문</strong> 처리가 필요합니다</p>
+                              </div>
+                            </div>
+                            <div class="col-auto d-flex align-items-center"><a class="alert-link fs--1 fw-medium" href="#!">주문 보기<i class="fas fa-chevron-right ms-1 fs--2"></i></a></div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="card h-md-100 ecommerce-card-min-width">
+                        <div class="card-header pb-0">
+                          <h6 class="mb-0 mt-2 d-flex align-items-center">주간 매출<span class="ms-1 text-400" data-bs-toggle="tooltip" data-bs-placement="top" title="지난 주 매출 기준으로 계산됨"><span class="far fa-question-circle" data-fa-transform="shrink-1"></span></span></h6>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-end">
+                          <div class="row">
+                            <div class="col">
+                              <p class="font-sans-serif lh-1 mb-1 fs-2">$47K</p><span class="badge badge-soft-success rounded-pill fs--2">+3.5%</span>
+                            </div>
+                            <div class="col-auto ps-0">
+                              <div class="echart-bar-weekly-sales h-100 echart-bar-weekly-sales-smaller-width"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card product-share-doughnut-width">
+                        <div class="card-header pb-0">
+                          <h6 class="mb-0 mt-2 d-flex align-items-center">상품 점유율</h6>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-end">
+                          <div class="row align-items-end">
+                            <div class="col">
+                              <p class="font-sans-serif lh-1 mb-1 fs-2">34.6%</p><span class="badge badge-soft-success rounded-pill"><span class="fas fa-caret-up me-1"></span>3.5%</span>
+                            </div>
+                            <div class="col-auto ps-0">
+                              <canvas class="my-n5" id="marketShareDoughnut" width="112" height="112"></canvas>
+                              <p class="mb-0 text-center fs--2 mt-4 text-500">목표: <span class="text-800">55%</span></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card h-md-100 h-100">
+                        <div class="card-body">
+                          <div class="row h-100 justify-content-between g-0">
+                            <div class="col-5 col-sm-6 col-xxl pe-2">
+                              <h6 class="mt-1">시장 점유율</h6>
+                              <div class="fs--2 mt-3">
+                                <div class="d-flex flex-between-center mb-1">
+                                  <div class="d-flex align-items-center"><span class="dot bg-primary"></span><span class="fw-semi-bold">Falcon</span></div>
+                                  <div class="d-xxl-none">57%</div>
+                                </div>
+                                <div class="d-flex flex-between-center mb-1">
+                                  <div class="d-flex align-items-center"><span class="dot bg-info"></span><span class="fw-semi-bold">Sparrow</span></div>
+                                  <div class="d-xxl-none">20%</div>
+                                </div>
+                                <div class="d-flex flex-between-center mb-1">
+                                  <div class="d-flex align-items-center"><span class="dot bg-warning"></span><span class="fw-semi-bold">Phoenix</span></div>
+                                  <div class="d-xxl-none">22%</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-auto position-relative">
+                              <div class="echart-product-share"></div>
+                              <div class="position-absolute top-50 start-50 translate-middle text-dark fs-2">26M</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card">
+                        <div class="card-header pb-0">
+                          <h6 class="mb-0 mt-2 d-flex align-items-center">총 주문</h6>
+                        </div>
+                        <div class="card-body">
+                          <div class="row align-items-end">
+                            <div class="col">
+                              <p class="font-sans-serif lh-1 mb-1 fs-2">58.4K</p>
+                              <div class="badge badge-soft-primary rounded-pill fs--2"><span class="fas fa-caret-up me-1"></span>13.6%</div>
+                            </div>
+                            <div class="col-auto ps-0">
+                              <div class="total-order-ecommerce" data-echarts='{"series":[{"type":"line","data":[110,100,250,210,530,480,320,325]}],"grid":{"bottom":"-10px"}}'></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-6 col-xl-12">
+              <div class="card py-3 mb-3">
+                <div class="card-body py-3">
+                  <div class="row g-0">
+                    <div class="col-6 col-md-4 border-200 border-bottom border-end pb-4">
+                      <h6 class="pb-1 text-700">주문</h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">15,450 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-primary"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-end pb-4 ps-3">
+                      <h6 class="pb-1 text-700">판매 상품 </h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">1,054 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-warning"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4 border-200 border-bottom border-end border-md-end-0 pb-4 pt-4 pt-md-0 ps-md-3">
+                      <h6 class="pb-1 text-700">환불</h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">$145.65 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-success"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4 border-200 border-md-200 border-bottom border-md-bottom-0 border-md-end pt-4 pb-md-0 ps-3 ps-md-0">
+                      <h6 class="pb-1 text-700">총 매출 </h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">$100.26 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">$109.65 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-danger"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4 border-200 border-md-bottom-0 border-end pt-4 pb-md-0 ps-md-3">
+                      <h6 class="pb-1 text-700">배송</h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">$365.53 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-success"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4 pb-0 pt-4 ps-3">
+                      <h6 class="pb-1 text-700">처리 중</h6>
+                      <p class="font-sans-serif lh-1 mb-1 fs-2">861 </p>
+                      <div class="d-flex align-items-center">
+                        <h6 class="fs--1 text-500 mb-0">13,675 </h6>
+                        <h6 class="fs--2 ps-3 mb-0 text-info"><span class="me-1 fas fa-caret-up"></span>21.8%</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <div class="row flex-between-center g-0">
+                    <div class="col-auto">
+                      <h6 class="mb-0">총 매출</h6>
+                    </div>
+                    <div class="col-auto d-flex">
+                      <div class="form-check mb-0 d-flex">
+                        <input class="form-check-input form-check-input-primary" id="ecommerceLastMonth" type="checkbox" checked="checked" />
+                        <label class="form-check-label ps-2 fs--2 text-600 mb-0" for="ecommerceLastMonth">지난달<span class="text-dark d-none d-md-inline">: $32,502.00</span></label>
+                      </div>
+                      <div class="form-check mb-0 d-flex ps-0 ps-md-3">
+                        <input class="form-check-input ms-2 form-check-input-warning opacity-75" id="ecommercePrevYear" type="checkbox" checked="checked" />
+                        <label class="form-check-label ps-2 fs--2 text-600 mb-0" for="ecommercePrevYear">전년<span class="text-dark d-none d-md-inline">: $46,018.00</span></label>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <div class="dropdown font-sans-serif btn-reveal-trigger">
+                        <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-total-sales-ecomm" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-total-sales-ecomm"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">보내기</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">제거</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body pe-xxl-0">
+                  <!-- Find the JS file for the following chart at: src/js/charts/echarts/total-sales-ecommerce.js-->
+                  <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
+                  <div class="echart-line-total-sales-ecommerce" data-echart-responsive="true" data-options='{"optionOne":"ecommerceLastMonth","optionTwo":"ecommercePrevYear"}'></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-xxl-3 col-md-6 col-lg-5">
+              <div class="card shopping-cart-bar-min-height h-100">
+                <div class="card-header d-flex flex-between-center">
+                  <h6 class="mb-0">장바구니</h6>
+                  <div class="dropdown font-sans-serif btn-reveal-trigger">
+                    <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-shopping-cart-bar" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-shopping-cart-bar"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">보내기</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">제거</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body py-0 d-flex align-items-center h-100">
+                  <div class="flex-1">
+                    <div class="row g-0 align-items-center pb-3">
+                      <div class="col pe-4">
+                        <h6 class="fs--2 text-600">시작됨</h6>
+                        <div class="progress" style="height:5px">
+                          <div class="progress-bar rounded-3 bg-primary" role="progressbar" style="width: 50% " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                      <div class="col-auto text-end">
+                        <p class="mb-0 text-900 font-sans-serif"><span class="me-1 fas fa-caret-up text-success"></span>43.6%</p>
+                        <p class="mb-0 fs--2 text-500 fw-semi-bold"> 세션: <span class ="text-600">6817</span> </p>
+                      </div>
+                    </div>
+                    <div class="row g-0 align-items-center pb-3 border-top pt-3">
+                      <div class="col pe-4">
+                        <h6 class="fs--2 text-600">장바구니 이탈률</h6>
+                        <div class="progress" style="height:5px">
+                          <div class="progress-bar rounded-3 bg-danger" role="progressbar" style="width: 25% " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                      <div class="col-auto text-end">
+                        <p class="mb-0 text-900 font-sans-serif"><span class="me-1 fas fa-caret-up text-danger"></span>13.11%</p>
+                        <p class="mb-0 fs--2 text-500 fw-semi-bold"><span class ="text-600">44</span> / 61</p>
+                      </div>
+                    </div>
+                    <div class="row g-0 align-items-center pb-3 border-top pt-3">
+                      <div class="col pe-4">
+                        <h6 class="fs--2 text-600">이탈률</h6>
+                        <div class="progress" style="height:5px">
+                          <div class="progress-bar rounded-3 bg-primary" role="progressbar" style="width: 35% " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                      <div class="col-auto text-end">
+                        <p class="mb-0 text-900 font-sans-serif"><span class="me-1 fas fa-caret-up text-success"></span>12.11%</p>
+                        <p class="mb-0 fs--2 text-500 fw-semi-bold"><span class ="text-600">8</span> / 61</p>
+                      </div>
+                    </div>
+                    <div class="row g-0 align-items-center pb-3 border-top pt-3">
+                      <div class="col pe-4">
+                        <h6 class="fs--2 text-600">완료율</h6>
+                        <div class="progress" style="height:5px">
+                          <div class="progress-bar rounded-3 bg-primary" role="progressbar" style="width: 43% " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                      <div class="col-auto text-end">
+                        <p class="mb-0 text-900 font-sans-serif"><span class="me-1 fas fa-caret-down text-danger"></span>43.6%</p>
+                        <p class="mb-0 fs--2 text-500 fw-semi-bold"><span class ="text-600">18</span> / 179</p>
+                      </div>
+                    </div>
+                    <div class="row g-0 align-items-center pb-3 border-top pt-3">
+                      <div class="col pe-4">
+                        <h6 class="fs--2 text-600">매출률</h6>
+                        <div class="progress" style="height:5px">
+                          <div class="progress-bar rounded-3 bg-primary" role="progressbar" style="width: 60% " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                      <div class="col-auto text-end">
+                        <p class="mb-0 text-900 font-sans-serif"><span class="me-1 fas fa-caret-up text-success"></span>60.5%</p>
+                        <p class="mb-0 fs--2 text-500 fw-semi-bold"><span class ="text-600">18</span> / 179</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-4 col-md-6 col-lg-7 order-xxl-1">
+              <div class="card h-100">
+                <div class="card-header bg-light py-2 d-flex flex-between-center">
+                  <h6 class="mb-0">인기 상품</h6>
+                  <div class="d-flex"><a class="btn btn-link btn-sm me-2" href="#!">상세 보기</a>
+                    <div class="dropdown font-sans-serif btn-reveal-trigger">
+                      <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-top-products" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
+                      <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-top-products"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">보내기</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">제거</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body d-flex h-100 flex-column justify-content-end">
+                  <!-- Find the JS file for the following chart at: src/js/charts/echarts/top-products.js-->
+                  <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
+                  <div class="echart-bar-top-products echart-bar-top-products-ecommerce" data-echart-responsive="true"> </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-9 col-md-12">
+              <div class="card z-index-1" id="recentPurchaseTable" data-list='{"valueNames":["name","email","product","payment","amount"],"page":7,"pagination":true}'>
+                <div class="card-header">
+                  <div class="row flex-between-center">
+                    <div class="col-6 col-sm-auto d-flex align-items-center pe-0">
+                      <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">최근 구매 </h5>
+                    </div>
+                    <div class="col-6 col-sm-auto ms-auto text-end ps-0">
+                      <div class="d-none" id="table-purchases-actions">
+                        <div class="d-flex">
+                          <select class="form-select form-select-sm" aria-label="일괄 작업">
+                            <option selected="">일괄 작업</option>
+                            <option value="Refund">환불</option>
+                            <option value="Delete">삭제</option>
+                            <option value="Archive">보관</option>
+                          </select>
+                          <button class="btn btn-falcon-default btn-sm ms-2" type="button">적용</button>
+                        </div>
+                      </div>
+                      <div id="table-purchases-replace-element">
+                        <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">추가</span></button>
+                        <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">필터</span></button>
+                        <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">보내기</span></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body px-0 py-0">
+                  <div class="table-responsive scrollbar">
+                    <table class="table table-sm fs--1 mb-0 overflow-hidden">
+                      <thead class="bg-200 text-900">
+                        <tr>
+                          <th class="white-space-nowrap">
+                            <div class="form-check mb-0 d-flex align-items-center">
+                              <input class="form-check-input" id="checkbox-bulk-purchases-select" type="checkbox" data-bulk-select='{"body":"table-purchase-body","actions":"table-purchases-actions","replacedElement":"table-purchases-replace-element"}' />
+                            </div>
+                          </th>
+                          <th class="sort pe-1 align-middle white-space-nowrap" data-sort="name">고객</th>
+                          <th class="sort pe-1 align-middle white-space-nowrap" data-sort="email">이메일</th>
+                          <th class="sort pe-1 align-middle white-space-nowrap" data-sort="product">상품</th>
+                          <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="payment">결제</th>
+                          <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">금액</th>
+                          <th class="no-sort pe-1 align-middle data-table-row-action"></th>
+                        </tr>
+                      </thead>
+                      <tbody class="list" id="table-purchase-body">
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-0" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Sylvia Plath</a></th>
+                          <td class="align-middle white-space-nowrap email">john@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Slick - Drag &amp; Drop Bootstrap Generator</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$99</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown0"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-1" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Homer</a></th>
+                          <td class="align-middle white-space-nowrap email">sylvia@mail.ru</td>
+                          <td class="align-middle white-space-nowrap product">Bose SoundSport Wireless Headphones</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$634</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown1" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown1"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-2" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Edgar Allan Poe</a></th>
+                          <td class="align-middle white-space-nowrap email">edgar@yahoo.com</td>
+                          <td class="align-middle white-space-nowrap product">All-New Fire HD 8 Kids Edition Tablet</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-secondary">차단됨<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$199</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown2" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown2"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-3" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">William Butler Yeats</a></th>
+                          <td class="align-middle white-space-nowrap email">william@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Apple iPhone XR (64GB)</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$798</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown3" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown3"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-4" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Rabindranath Tagore</a></th>
+                          <td class="align-middle white-space-nowrap email">tagore@twitter.com</td>
+                          <td class="align-middle white-space-nowrap product">ASUS Chromebook C202SA-YS02 11.6&quot;</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-secondary">차단됨<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$318</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown4" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown4"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-5" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Emily Dickinson</a></th>
+                          <td class="align-middle white-space-nowrap email">emily@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Mirari OK to Wake! Alarm Clock &amp; Night-Light</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-warning">대기 중<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$11</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown5" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown5"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-6" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Giovanni Boccaccio</a></th>
+                          <td class="align-middle white-space-nowrap email">giovanni@outlook.com</td>
+                          <td class="align-middle white-space-nowrap product">Summer Infant Contoured Changing Pad</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$31</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown6" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown6"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-7" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Oscar Wilde</a></th>
+                          <td class="align-middle white-space-nowrap email">oscar@hotmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Munchkin 6 Piece Fork and Spoon Set</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$43</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown7" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown7"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-8" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">John Doe</a></th>
+                          <td class="align-middle white-space-nowrap email">doe@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Falcon - Responsive Dashboard Template</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-success">성공<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$57</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown8" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown8"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-9" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Emma Watson</a></th>
+                          <td class="align-middle white-space-nowrap email">emma@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Apple iPhone XR (64GB)</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-secondary">차단됨<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$999</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown9" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown9"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-10" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Sylvia Plath</a></th>
+                          <td class="align-middle white-space-nowrap email">plath@yahoo.com</td>
+                          <td class="align-middle white-space-nowrap product">All-New Fire HD 8 Kids Edition Tablet</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-warning">대기 중<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$199</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown10" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown10"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-11" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Rabindranath Tagore</a></th>
+                          <td class="align-middle white-space-nowrap email">Rabindra@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Apple iPhone XR (64GB)</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-secondary">차단됨<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$999</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown11" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown11"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-12" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Anila Wilde</a></th>
+                          <td class="align-middle white-space-nowrap email">anila@yahoo.com</td>
+                          <td class="align-middle white-space-nowrap product">All-New Fire HD 8 Kids Edition Tablet</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-warning">대기 중<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$199</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown12" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown12"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="btn-reveal-trigger">
+                          <td class="align-middle" style="width: 28px;">
+                            <div class="form-check mb-0">
+                              <input class="form-check-input" type="checkbox" id="recent-purchase-13" data-bulk-select-row="data-bulk-select-row" />
+                            </div>
+                          </td>
+                          <th class="align-middle white-space-nowrap name"><a th:href="@{/app/e-commerce/customer-details.html}">Jack Watson </a></th>
+                          <td class="align-middle white-space-nowrap email">Jack@gmail.com</td>
+                          <td class="align-middle white-space-nowrap product">Apple iPhone XR (64GB)</td>
+                          <td class="align-middle text-center fs-0 white-space-nowrap payment"><span class="badge badge rounded-pill badge-soft-secondary">차단됨<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                          </td>
+                          <td class="align-middle text-end amount">$999</td>
+                          <td class="align-middle white-space-nowrap text-end">
+                            <div class="dropstart font-sans-serif position-static d-inline-block">
+                              <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal float-end" type="button" id="dropdown13" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown13"><a class="dropdown-item" href="#!">보기</a><a class="dropdown-item" href="#!">수정</a><a class="dropdown-item" href="#!">환불</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">보관</a><a class="dropdown-item text-danger" href="#!">삭제</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row align-items-center">
+                    <div class="pagination d-none"></div>
+                    <div class="col">
+                      <p class="mb-0 fs--1"><span class="d-none d-sm-inline-block me-2" data-list-info="data-list-info"> </span>
+                      </p>
+                    </div>
+                    <div class="col-auto d-flex">
+                      <button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev"><span>이전</span></button>
+                      <button class="btn btn-sm btn-primary px-4 ms-2" type="button" data-list-pagination="next"><span>다음</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+              <div class="card h-100">
+                <div class="card-header bg-light">
+                  <div class="row justify-content-between">
+                    <div class="col-auto">
+                      <h6>재방문 고객 비율</h6>
+                      <div class="d-flex align-items-center">
+                        <h4 class="text-primary mb-0">$59.09%</h4><span class="badge rounded-pill ms-3 badge-soft-primary"><span class="fas fa-caret-up"></span> 3.5%</span>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <select class="form-select form-select-sm pe-4" id="select-returning-customer-month">
+                        <option value="0">1월</option>
+                        <option value="1">2월</option>
+                        <option value="2">3월</option>
+                        <option value="3">4월</option>
+                        <option value="4">5월</option>
+                        <option value="5">6월</option>
+                        <option value="6">7월</option>
+                        <option value="7">8월</option>
+                        <option value="8">9월</option>
+                        <option value="9">10월</option>
+                        <option value="10">11월</option>
+                        <option value="11">12월</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- Find the JS file for the following chart at: src/js/charts/echarts/returning-customer-rate.js-->
+                  <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
+                  <div class="echart-line-returning-customer-rate h-100" data-echart-responsive="true" data-options='{"target":"returning-customer-rate-footer","monthSelect":"select-returning-customer-month","optionOne":"newMonth","optionTwo":"returningMonth"}'></div>
+                </div>
+                <div class="card-footer border-top py-2">
+                  <div class="row align-items-center gx-0" id="returning-customer-rate-footer">
+                    <div class="col-auto me-2">
+                      <div class="btn btn-sm btn-text d-flex align-items-center p-0 shadow-none" id="newMonth"><span class="fas fa-circle text-primary fs--2 me-1"></span>신규 </div>
+                    </div>
+                    <div class="col-auto">
+                      <div class="btn btn-sm btn-text d-flex align-items-center p-0 shadow-none" id="returningMonth"><span class="fas fa-circle text-warning fs--2 me-1"></span>재방문 </div>
+                    </div>
+                    <div class="col text-end"><a class="btn btn-link btn-sm px-0 fw-medium" href="#!">보고서 보기 <span class="fas fa-chevron-right fs--2"></span></a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-4 col-md-6">
+              <div class="card h-100">
+                <div class="card-header bg-light py-2">
+                  <div class="d-flex flex-between-center">
+                    <h6 class="mb-0">POS 위치별 매출 </h6><a class="btn btn-link btn-sm px-0" href="#!">상세 보기<span class="fas fa-chevron-right ms-1 fs--2"></span></a>
+                  </div>
+                </div>
+                <div class="card-body px-0 pt-4 pb-0">
+                  <table class="table table-borderless font-sans-serif fw-medium fs--1">
+                    <tbody>
+                      <tr>
+                        <td class="pb-2 pt-0"> <span class="fas fa-circle fs--2 me-1 text-primary"></span>할당 예산</td>
+                        <td class="pb-2 pt-0 text-end">$13,325.98</td>
+                        <td class="pb-2 pt-0 text-end"><span class="me-1 fas fa-caret-up text-success"></span>10%</td>
+                      </tr>
+                      <tr>
+                        <td class="pb-2 pt-0"> <span class="fas fa-circle fs--2 me-1 text-warning"></span>실제 지출</td>
+                        <td class="pb-2 pt-0 text-end">$12,348.46</td>
+                        <td class="pb-2 pt-0 text-end"><span class="me-1 fas fa-caret-down text-success"></span>13%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- Find the JS file for the following chart at: src/js/charts/echarts/sales-by-pos-location.js-->
+                  <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
+                  <div class="echart-radar-sales-by-pos-location h-100 px-md-2 mt-md-5" data-echart-responsive="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="card h-lg-100 overflow-hidden">
+                <div class="card-body p-0">
+                  <div class="table-responsive scrollbar">
+                    <table class="table table-dashboard mb-0 table-borderless fs--1 border-200">
+                      <thead class="bg-light">
+                        <tr class="text-900">
+                          <th>베스트셀러 상품</th>
+                          <th class="text-center">주문(269)</th>
+                          <th class="text-center">주문(%)</th>
+                          <th class="text-end">매출</th>
+                          <th class="pe-card text-end" style="width: 8rem">매출(%)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/1.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">iPad Pro 2020 11</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">태블릿</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">26</td>
+                          <td class="align-middle text-center fw-semi-bold">31%</td>
+                          <td class="align-middle text-end fw-semi-bold">$1311</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 41%;" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">41%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/2.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">iPhone XS</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">스마트폰</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">18</td>
+                          <td class="align-middle text-center fw-semi-bold">29%</td>
+                          <td class="align-middle text-end fw-semi-bold">$1311</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 41%;" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">41%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/3.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">Amazfit Pace (Global)</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">스마트워치</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">16</td>
+                          <td class="align-middle text-center fw-semi-bold">27%</td>
+                          <td class="align-middle text-end fw-semi-bold">$539</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 27%;" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">27%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/4.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">Lotto AMF Posh Sports Plus</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">신발</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">11</td>
+                          <td class="align-middle text-center fw-semi-bold">21%</td>
+                          <td class="align-middle text-end fw-semi-bold">$245</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">17%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/5.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">Casual Long Sleeve Hoodie</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">재킷</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">10</td>
+                          <td class="align-middle text-center fw-semi-bold">19%</td>
+                          <td class="align-middle text-end fw-semi-bold">$234</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 7%;" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">7%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="border-bottom border-200">
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/6.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">Playstation 4 1TB Slim</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">콘솔</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">10</td>
+                          <td class="align-middle text-center fw-semi-bold">19%</td>
+                          <td class="align-middle text-end fw-semi-bold">$234</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 7%;" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">7%</div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center position-relative"><img class="rounded-1 border border-200" th:src="@{/assets/img/ecommerce/7.jpg}" width="60" alt="" />
+                              <div class="flex-1 ms-3">
+                                <h6 class="mb-1 fw-semi-bold text-nowrap"><a class="text-900 stretched-link" href="#!">SUNGAIT Lightweight Sunglass</a></h6>
+                                <p class="fw-semi-bold mb-0 text-500">재킷</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="align-middle text-center fw-semi-bold">10</td>
+                          <td class="align-middle text-center fw-semi-bold">19%</td>
+                          <td class="align-middle text-end fw-semi-bold">$234</td>
+                          <td class="align-middle pe-card">
+                            <div class="d-flex align-items-center">
+                              <div class="progress me-3 rounded-3 bg-200" style="height: 5px;width:80px">
+                                <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 7%;" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <div class="fw-semi-bold ms-2">7%</div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer bg-light py-2">
+                  <div class="row flex-between-center">
+                    <div class="col-auto">
+                      <select class="form-select form-select-sm">
+                        <option>최근 7일</option>
+                        <option>지난달</option>
+                        <option>작년</option>
+                      </select>
+                    </div>
+                    <div class="col-auto"><a class="btn btn-sm btn-falcon-default" href="#!">전체 보기</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer">
+            <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">Falcon으로 제작해 주셔서 감사합니다 <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2022 &copy; <a href="https://themewagon.com">Themewagon</a></p>
+              </div>
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">v3.12.0</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+        <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
+          <div class="modal-dialog mt-6" role="document">
+            <div class="modal-content border-0">
+              <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
+                <div class="position-relative z-index-1 light">
+                  <h4 class="mb-0 text-white" id="authentication-modal-label">회원가입</h4>
+                  <p class="fs--1 mb-0 text-white">무료 Falcon 계정을 만들어 주세요</p>
+                </div>
+                <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="닫기"></button>
+              </div>
+              <div class="modal-body py-4 px-5">
+                <form>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-name">이름</label>
+                    <input class="form-control" type="text" autocomplete="on" id="modal-auth-name" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="modal-auth-email">이메일 주소</label>
+                    <input class="form-control" type="email" autocomplete="on" id="modal-auth-email" />
+                  </div>
+                  <div class="row gx-2">
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-password">비밀번호</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-password" />
+                    </div>
+                    <div class="mb-3 col-sm-6">
+                      <label class="form-label" for="modal-auth-confirm-password">비밀번호 확인</label>
+                      <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password" />
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox" />
+                    <label class="form-label" for="modal-auth-register-checkbox"><a href="#!">이용약관</a> 및 <a href="#!">개인정보 처리방침</a>에 동의합니다</label>
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">회원가입</button>
+                  </div>
+                </form>
+                <div class="position-relative mt-5">
+                  <hr />
+                  <div class="divider-content-center">또는 다음으로 가입</div>
+                </div>
+                <div class="row g-2 mt-2">
+                  <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
+                  <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+    <div class="offcanvas offcanvas-end settings-panel border-0" id="settings-offcanvas" tabindex="-1" aria-labelledby="settings-offcanvas">
+      <div class="offcanvas-header settings-panel-header bg-shape">
+        <div class="z-index-1 py-1 light">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="text-white mb-0 me-2"><span class="fas fa-palette me-2 fs-0"></span>설정</h5>
+            <button class="btn btn-primary btn-sm rounded-pill mt-0 mb-0" data-theme-control="reset" style="font-size:12px"> <span class="fas fa-redo-alt me-1" data-fa-transform="shrink-3"></span>초기화</button>
+          </div>
+          <p class="mb-0 fs--1 text-white opacity-75"> 나만의 스타일을 설정하세요</p>
+        </div>
+        <button class="btn-close btn-close-white z-index-1 mt-0" type="button" data-bs-dismiss="offcanvas" aria-label="닫기"></button>
+      </div>
+      <div class="offcanvas-body scrollbar-overlay px-card h-100" id="themeController">
+        <h5 class="fs-0">색상 테마</h5>
+        <p class="fs--1">앱에 맞는 색상 모드를 선택하세요.</p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherLight" name="theme-color" type="radio" value="light" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherLight"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" th:src="@{/assets/img/generic/falcon-mode-default.jpg}" alt=""/></span><span class="label-text">라이트</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="themeSwitcherDark" name="theme-color" type="radio" value="dark" data-theme-control="theme" />
+              <label class="btn d-inline-block btn-navbar-style fs--1" for="themeSwitcherDark"> <span class="hover-overlay mb-2 rounded d-block"><img class="img-fluid img-prototype mb-0" th:src="@{/assets/img/generic/falcon-mode-dark.jpg}" alt=""/></span><span class="label-text"> 다크</span></label>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/left-arrow-from-left.svg}" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">RTL 모드</h5>
+              <p class="fs--1 mb-0">언어 방향을 전환합니다 </p><a class="fs--1" th:href="@{/documentation/customization/configuration.html}">RTL 문서</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-rtl" type="checkbox" data-theme-control="isRTL" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/arrows-h.svg}" width="20" alt="" />
+            <div class="flex-1">
+              <h5 class="fs-0">유동 레이아웃</h5>
+              <p class="fs--1 mb-0">컨테이너 레이아웃 시스템을 전환합니다 </p><a class="fs--1" th:href="@{/documentation/customization/configuration.html}">유동 레이아웃 문서</a>
+            </div>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input ms-0" id="mode-fluid" type="checkbox" data-theme-control="isFluid" />
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex align-items-start"><img class="me-2" th:src="@{/assets/img/icons/paragraph.svg}" width="20" alt="" />
+          <div class="flex-1">
+            <h5 class="fs-0 d-flex align-items-center">내비게이션 위치 </h5>
+            <p class="fs--1 mb-2">웹 애플리케이션에 맞는 내비게이션 시스템을 선택하세요 </p>
+            <div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-vertical" type="radio" name="navbar" value="vertical" data-page-url="../modules/components/navs-and-tabs/vertical-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-vertical">세로</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" id="option-navbar-top" type="radio" name="navbar" value="top" data-page-url="../modules/components/navs-and-tabs/top-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-top">상단</label>
+              </div>
+              <div class="form-check form-check-inline me-0">
+                <input class="form-check-input" id="option-navbar-combo" type="radio" name="navbar" value="combo" data-page-url="../modules/components/navs-and-tabs/combo-navbar.html" data-theme-control="navbarPosition" />
+                <label class="form-check-label" for="option-navbar-combo">콤보</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h5 class="fs-0 d-flex align-items-center">세로 내비게이션 스타일</h5>
+        <p class="fs--1 mb-0">세로 내비게이션 스타일을 전환합니다 </p>
+        <p> <a class="fs--1" th:href="@{/modules/components/navs-and-tabs/vertical-navbar.html#navbar-styles}">문서 보기</a></p>
+        <div class="btn-group d-block w-100 btn-group-navbar-style">
+          <div class="row gx-2">
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-transparent" type="radio" name="navbarStyle" value="transparent" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-transparent"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/default.png}" alt="" /><span class="label-text"> 투명</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-inverted" type="radio" name="navbarStyle" value="inverted" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-inverted"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/inverted.png}" alt="" /><span class="label-text"> 반전</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-card" type="radio" name="navbarStyle" value="card" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-card"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/card.png}" alt="" /><span class="label-text"> 카드</span></label>
+            </div>
+            <div class="col-6">
+              <input class="btn-check" id="navbar-style-vibrant" type="radio" name="navbarStyle" value="vibrant" data-theme-control="navbarStyle" />
+              <label class="btn d-block w-100 btn-navbar-style fs--1" for="navbar-style-vibrant"> <img class="img-fluid img-prototype" th:src="@{/assets/img/generic/vibrant.png}" alt="" /><span class="label-text"> 선명</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5"><img class="mb-4" th:src="@{/assets/img/icons/spot-illustrations/47.png}" alt="" width="120" />
+          <h5>마음에 드시나요?</h5>
+          <p class="fs--1">지금 Falcon을 받아 수백 개의 위젯으로 아름다운 대시보드를 만드세요.</p><a class="mb-3 btn btn-primary" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">구매</a>
+        </div>
+      </div>
+    </div><a class="card setting-toggle" href="#settings-offcanvas" data-bs-toggle="offcanvas">
+      <div class="card-body d-flex align-items-center py-md-2 px-2 py-1">
+        <div class="bg-soft-primary position-relative rounded-start" style="height:34px;width:28px">
+          <div class="settings-popover"><span class="ripple"><span class="fa-spin position-absolute all-0 d-flex flex-center"><span class="icon-spin position-absolute all-0 d-flex flex-center">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.7369 12.3941L19.1989 12.1065C18.4459 11.7041 18.0843 10.8487 18.0843 9.99495C18.0843 9.14118 18.4459 8.28582 19.1989 7.88336L19.7369 7.59581C19.9474 7.47484 20.0316 7.23291 19.9474 7.03131C19.4842 5.57973 18.6843 4.28943 17.6738 3.20075C17.5053 3.03946 17.2527 2.99914 17.0422 3.12011L16.393 3.46714C15.6883 3.84379 14.8377 3.74529 14.1476 3.3427C14.0988 3.31422 14.0496 3.28621 14.0002 3.25868C13.2568 2.84453 12.7055 2.10629 12.7055 1.25525V0.70081C12.7055 0.499202 12.5371 0.297594 12.2845 0.257272C10.7266 -0.105622 9.16879 -0.0653007 7.69516 0.257272C7.44254 0.297594 7.31623 0.499202 7.31623 0.70081V1.23474C7.31623 2.09575 6.74999 2.8362 5.99824 3.25599C5.95774 3.27861 5.91747 3.30159 5.87744 3.32493C5.15643 3.74527 4.26453 3.85902 3.53534 3.45302L2.93743 3.12011C2.72691 2.99914 2.47429 3.03946 2.30587 3.20075C1.29538 4.28943 0.495411 5.57973 0.0322686 7.03131C-0.051939 7.23291 0.0322686 7.47484 0.242788 7.59581L0.784376 7.8853C1.54166 8.29007 1.92694 9.13627 1.92694 9.99495C1.92694 10.8536 1.54166 11.6998 0.784375 12.1046L0.242788 12.3941C0.0322686 12.515 -0.051939 12.757 0.0322686 12.9586C0.495411 14.4102 1.29538 15.7005 2.30587 16.7891C2.47429 16.9504 2.72691 16.9907 2.93743 16.8698L3.58669 16.5227C4.29133 16.1461 5.14131 16.2457 5.8331 16.6455C5.88713 16.6767 5.94159 16.7074 5.99648 16.7375C6.75162 17.1511 7.31623 17.8941 7.31623 18.7552V19.2891C7.31623 19.4425 7.41373 19.5959 7.55309 19.696C7.64066 19.7589 7.74815 19.7843 7.85406 19.8046C9.35884 20.0925 10.8609 20.0456 12.2845 19.7729C12.5371 19.6923 12.7055 19.4907 12.7055 19.2891V18.7346C12.7055 17.8836 13.2568 17.1454 14.0002 16.7312C14.0496 16.7037 14.0988 16.6757 14.1476 16.6472C14.8377 16.2446 15.6883 16.1461 16.393 16.5227L17.0422 16.8698C17.2527 16.9907 17.5053 16.9504 17.6738 16.7891C18.7264 15.7005 19.4842 14.4102 19.9895 12.9586C20.0316 12.757 19.9474 12.515 19.7369 12.3941ZM10.0109 13.2005C8.1162 13.2005 6.64257 11.7893 6.64257 9.97478C6.64257 8.20063 8.1162 6.74905 10.0109 6.74905C11.8634 6.74905 13.3792 8.20063 13.3792 9.97478C13.3792 11.7893 11.8634 13.2005 10.0109 13.2005Z" fill="#2A7BE4"></path>
+                  </svg></span></span></span></div>
+        </div><small class="text-uppercase text-primary fw-bold bg-soft-primary py-2 pe-2 ps-1 rounded-end">사용자 지정</small>
+      </div>
+    </a>
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script th:src="@{/vendors/popper/popper.min.js}"></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/anchorjs/anchor.min.js}"></script>
+    <script th:src="@{/vendors/is/is.min.js}"></script>
+    <script th:src="@{/vendors/chart/chart.min.js}"></script>
+    <script th:src="@{/vendors/countup/countUp.umd.js}"></script>
+    <script th:src="@{/vendors/echarts/echarts.min.js}"></script>
+    <script th:src="@{/vendors/dayjs/dayjs.min.js}"></script>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

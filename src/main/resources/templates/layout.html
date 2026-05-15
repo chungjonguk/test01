@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
   <head th:fragment="head">
     <meta charset="utf-8">
@@ -10,7 +10,7 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title th:text="${title} ?: 'Falcon | Dashboard & Web App Template'">Falcon | Dashboard &amp; Web App Template</title>
+    <title th:text="${title} ?: 'Falcon | 대시보드 및 웹 앱 템플릿'">Falcon | 대시보드 및 웹 앱 템플릿</title>
 
 
     <!-- ===============================================-->
@@ -37,13 +37,14 @@
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl">
     <link th:href="@{/assets/css/user.min.css}" rel="stylesheet" id="user-style-default">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script>
       var isRTL = JSON.parse(localStorage.getItem('isRTL'));
       if (isRTL) {
-        var linkDefault = document.getElementById('style-default');
-        var userLinkDefault = document.getElementById('user-style-default');
-        linkDefault.setAttribute('disabled', true);
-        userLinkDefault.setAttribute('disabled', true);
+        var link기본 = document.getElementById('style-default');
+        var userLink기본 = document.getElementById('user-style-default');
+        link기본.setAttribute('disabled', true);
+        userLink기본.setAttribute('disabled', true);
         document.querySelector('html').setAttribute('dir', 'rtl');
       } else {
         var linkRTL = document.getElementById('style-rtl');
@@ -84,7 +85,7 @@
         </div>
     </main>
 
-    <!-- Settings Panel -->
+    <!-- 설정 Panel -->
     <div th:replace="~{fragments/settings :: settings}"></div>
 
     <!-- ===============================================-->
@@ -97,9 +98,19 @@
     <script th:src="@{/vendors/echarts/echarts.min.js}"></script>
     <script th:src="@{/vendors/fontawesome/all.min.js}"></script>
     <script th:src="@{/vendors/lodash/lodash.min.js}"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
     <script th:src="@{/vendors/list.js/list.min.js}"></script>
-    <script th:src="@{/assets/js/theme.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script th:if="${loadDropzone}" th:src="@{/vendors/dropzone/dropzone.min.js}"></script>
+    <script th:if="${loadDropzone}">
+      if (window.Dropzone) {
+        window.Dropzone.autoDiscover = false;
+      }
+    </script>
+    <script th:if="${loadCalendar}" th:src="@{/vendors/dayjs/dayjs.min.js}"></script>
+    <script th:if="${loadCalendar}" th:src="@{/vendors/fullcalendar/main.min.js}"></script>
+    <script th:if="${loadCalendar}" th:src="@{/assets/js/flatpickr.js}"></script>
+    <script th:src="@{/assets/js/theme.js(v=2)}"></script>
+    <script th:if="${loadCalendar}" th:src="@{/assets/js/app-calendar-modal-fix.js(v=2)}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         var navRoot = document.getElementById('navbarVerticalNav');

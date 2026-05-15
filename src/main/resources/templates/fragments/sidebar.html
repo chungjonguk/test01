@@ -1,0 +1,1486 @@
+<nav th:fragment="sidebar" class="navbar navbar-light navbar-vertical navbar-expand-xl">
+    <script>
+      var navbarStyle = localStorage.getItem("navbarStyle");
+      if (navbarStyle && navbarStyle !== 'transparent') {
+        document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
+      }
+    </script>
+    <div class="d-flex align-items-center">
+        <div class="toggle-icon-wrapper">
+            <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="내비게이션 토글">
+                <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
+            </button>
+        </div>
+            <a class="navbar-brand" th:href="@{/}">
+              <div class="d-flex align-items-center py-3"><img class="me-2" th:src="@{/assets/img/icons/spot-illustrations/falcon.png}" alt="" width="40" /><span class="font-sans-serif">falcon</span>
+              </div>
+            </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+        <div class="navbar-vertical-content scrollbar">
+            <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
+                <!-- 대시보드 -->
+                <li class="nav-item">
+                    <a class="nav-link dropdown-indicator" href="#sidebar-dashboard" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="sidebar-dashboard">
+                        <div class="d-flex align-items-center">
+                            <span class="nav-link-icon"><span class="fas fa-chart-pie"></span></span>
+                            <span class="nav-link-text ps-1">대시보드</span>
+                        </div>
+                    </a>
+                  <ul class="nav collapse show" id="sidebar-dashboard">
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">기본</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/analytics}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">분석</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/crm}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">CRM</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/e-commerce}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">이커머스</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/lms}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">LMS</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/project-management}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">관리</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard/saas}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">SaaS</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                </li>
+                
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">앱
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/app/calendar}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span><span class="nav-link-text ps-1">캘린더</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/app/chat}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comments"></span></span><span class="nav-link-text ps-1">채팅</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-email" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-email">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-envelope-open"></span></span><span class="nav-link-text ps-1">이메일</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-email">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/email/inbox}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">받은편지함</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/email/email-detail}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">이메일 상세</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/email/compose}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">작성</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-events" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-events">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-day"></span></span><span class="nav-link-text ps-1">이벤트</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-events">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/events/create-an-event}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">이벤트 만들기</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/events/event-detail}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">이벤트 상세</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/events/event-list}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">이벤트 목록</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-e-commerce" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-commerce">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shopping-cart"></span></span><span class="nav-link-text ps-1">이커머스</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-e-commerce">
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-product" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-commerce">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-product">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/product/product-list}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품 list</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/product/product-grid}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품 grid</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/product/product-details}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품 details</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-orders" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-commerce">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">주문</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-orders">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order list</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-details}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order details</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/customers}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">고객</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/customer-details}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Customer details</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Shopping cart</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/checkout}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">결제</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/billing}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">청구</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/invoice}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">인보이스</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-e-learning" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-learning">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-graduation-cap"></span></span><span class="nav-link-text ps-1">E learning</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-e-learning">
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-course" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-learning">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-course">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-list}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course list</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-grid}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course grid</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-details}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course details</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/create-a-course}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Create a course</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/student-overview}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Student overview</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/trainer-profile}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Trainer profile</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/app/kanban}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fab fa-trello"></span></span><span class="nav-link-text ps-1">칸반</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-social" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-social">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-share-alt"></span></span><span class="nav-link-text ps-1">Social</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-social">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/feed}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">피드</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/activity-log}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Activity log</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/notifications}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">알림</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/followers}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">팔로워</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">페이지
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/pages/starter}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-flag"></span></span><span class="nav-link-text ps-1">시작 페이지</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/pages/landing}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-globe"></span></span><span class="nav-link-text ps-1">랜딩</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-authentication" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-authentication">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-lock"></span></span><span class="nav-link-text ps-1">Authentication</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-authentication">
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-simple" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-authentication">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Simple</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-simple">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/login}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그인</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/logout}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그아웃</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/register}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">회원가입</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/forgot-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Forgot password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/confirm-mail}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Confirm mail</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/reset-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Reset password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/simple/lock-screen}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Lock screen</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-card" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-authentication">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Card</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-card">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/login}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그인</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/logout}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그아웃</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/register}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">회원가입</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/forgot-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Forgot password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/confirm-mail}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Confirm mail</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/reset-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Reset password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/card/lock-screen}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Lock screen</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-split" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-authentication">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Split</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-split">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/login}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그인</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/logout}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">로그아웃</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/register}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">회원가입</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/forgot-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Forgot password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/confirm-mail}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Confirm mail</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/reset-password}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Reset password</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/split/lock-screen}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Lock screen</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/authentication/wizard}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">마법사</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#authentication-modal" data-bs-toggle="modal" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Modal</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-user" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-user">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user"></span></span><span class="nav-link-text ps-1">User</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-user">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/profile}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">프로필</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/settings}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">설정</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-pricing" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-pricing">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-tags"></span></span><span class="nav-link-text ps-1">Pricing</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-pricing">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/pricing/pricing-default}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pricing default</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/pricing/pricing-alt}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pricing alt</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-faq" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-faq">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-question-circle"></span></span><span class="nav-link-text ps-1">Faq</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-faq">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-basic}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq basic</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-alt}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq alt</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-accordion}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq accordion</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-errors" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-errors">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-exclamation-triangle"></span></span><span class="nav-link-text ps-1">Errors</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-errors">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/errors/404}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">404</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/errors/500}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">500</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-miscellaneous" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-miscellaneous">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-thumbtack"></span></span><span class="nav-link-text ps-1">기타</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-miscellaneous">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/associations}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Associations</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/invite-people}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Invite people</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/privacy-policy}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Privacy policy</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">모듈
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-forms">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-file-alt"></span></span><span class="nav-link-text ps-1">폼</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-forms">
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-basic" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-forms">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Basic</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-basic">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/form-control}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Form control</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/input-group}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Input group</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/select}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Select</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/checks}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Checks</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/range}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Range</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/basic/layout}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Layout</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-advance" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-forms">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Advance</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-advance">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/advance-select}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Advance select</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/date-picker}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Date picker</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/editor}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Editor</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/emoji-button}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Emoji button</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/file-uploader}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">File uploader</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/advance/rating}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Rating</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/floating-labels}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Floating labels</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/wizard}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">마법사</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/forms/validation}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Validation</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-tables" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-tables">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-table"></span></span><span class="nav-link-text ps-1">테이블</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-tables">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/tables/basic-tables}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Basic tables</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/tables/advance-tables}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Advance tables</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/tables/bulk-select}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Bulk select</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-charts" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-charts">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-chart-line"></span></span><span class="nav-link-text ps-1">차트</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-charts">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/chartjs}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Chartjs</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/d3js}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">D3js</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-e차트" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-charts">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">E차트</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-e차트">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/line-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Line charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/bar-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Bar charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/candlestick-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Candlestick charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/geo-map}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Geo map</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/scatter-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Scatter charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/pie-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pie charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/radar-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Radar charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/heatmap-charts}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Heatmap charts</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/charts/echarts/how-to-use}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">How to use</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-icons" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-icons">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shapes"></span></span><span class="nav-link-text ps-1">아이콘</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-icons">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/icons/font-awesome}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Font awesome</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/icons/bootstrap-icons}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Bootstrap icons</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/icons/feather}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Feather</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/icons/material-icons}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Material icons</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-maps" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-maps">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-map"></span></span><span class="nav-link-text ps-1">지도</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-maps">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/maps/google-map}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Google map</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/maps/leaflet-map}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Leaflet map</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-components" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-components">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-puzzle-piece"></span></span><span class="nav-link-text ps-1">컴포넌트</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-components">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/accordion}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Accordion</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/alerts}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Alerts</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/anchor}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Anchor</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/animated-icons}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Animated icons</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/background}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Background</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/badges}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Badges</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/bottom-bar}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Bottom bar</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/breadcrumbs}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Breadcrumbs</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/buttons}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Buttons</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/calendar}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">캘린더</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/cards}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Cards</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-carousel" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-components">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Carousel</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-carousel">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/carousel/bootstrap}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Bootstrap</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/carousel/swiper}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Swiper</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/collapse}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Collapse</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/cookie-notice}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Cookie notice</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/countup}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Countup</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/draggable}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Draggable</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/dropdowns}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Dropdowns</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/list-group}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">List group</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/modals}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Modals</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-navs-_and_-Tabs" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-components">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Navs &amp; Tabs</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-navs-_and_-Tabs">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/navs}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Navs</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/navbar}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Navbar</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/vertical-navbar}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Vertical navbar</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/top-navbar}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Top navbar</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/combo-navbar}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Combo navbar</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/navs-and-tabs/tabs}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Tabs</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/offcanvas}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Offcanvas</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-pictures" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-components">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pictures</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-pictures">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pictures/avatar}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Avatar</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pictures/images}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Images</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pictures/figures}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Figures</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pictures/hoverbox}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Hoverbox</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pictures/lightbox}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Lightbox</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/progress-bar}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Progress bar</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/placeholder}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Placeholder</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/pagination}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Pagination</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/popovers}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Popovers</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/scrollspy}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Scrollspy</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/search}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Search</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/spinners}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Spinners</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/timeline}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Timeline</span><span class="badge rounded-pill ms-2 badge-soft-success">New</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/toasts}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Toasts</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/tooltips}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Tooltips</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/treeview}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Treeview</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/typed-text}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Typed text</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-videos" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-components">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Videos</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-videos">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/videos/embed}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Embed</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/modules/components/videos/plyr}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Plyr</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-utilities" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-utilities">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-fire"></span></span><span class="nav-link-text ps-1">유틸리티</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-utilities">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/borders}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Borders</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/clearfix}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Clearfix</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/colors}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Colors</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/colored-links}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Colored links</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/display}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Display</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/flex}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Flex</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/float}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Float</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/grid}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Grid</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/overlayscrollbar}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Overlay scrollbar</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/position}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Position</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/spacing}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Spacing</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/sizing}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Sizing</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/stretched-link}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Stretched link</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/text-truncation}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Text truncation</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/typography}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Typography</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/vertical-align}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Vertical align</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/modules/utilities/visibility}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Visibility</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/modules/widgets}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-poll"></span></span><span class="nav-link-text ps-1">위젯</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-multi-level" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-multi-level">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-layer-group"></span></span><span class="nav-link-text ps-1">Multi level</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-multi-level">
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-level-two" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-multi-level">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Level two</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-level-two">
+                        <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 1</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 2</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-level-three" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-multi-level">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Level three</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-level-three">
+                        <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 3</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-item-4" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-level-three">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 4</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                          <ul class="nav collapse" id="sidebar-item-4">
+                            <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 5</span>
+                                </div>
+                              </a>
+                              <!-- more inner pages-->
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 6</span>
+                                </div>
+                              </a>
+                              <!-- more inner pages-->
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-level-four" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-multi-level">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Level four</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                      <ul class="nav collapse" id="sidebar-level-four">
+                        <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 6</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-item-7" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-level-four">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 7</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                          <ul class="nav collapse" id="sidebar-item-7">
+                            <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 8</span>
+                                </div>
+                              </a>
+                              <!-- more inner pages-->
+                            </li>
+                            <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-item-9" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-item-7">
+                                <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 9</span>
+                                </div>
+                              </a>
+                              <!-- more inner pages-->
+                              <ul class="nav collapse" id="sidebar-item-9">
+                                <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 10</span>
+                                    </div>
+                                  </a>
+                                  <!-- more inner pages-->
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#!" data-bs-toggle="" aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Item 11</span>
+                                    </div>
+                                  </a>
+                                  <!-- more inner pages-->
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">문서
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/documentation/getting-started}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-rocket"></span></span><span class="nav-link-text ps-1">Getting started</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-customization" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-customization">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-wrench"></span></span><span class="nav-link-text ps-1">Customization</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-customization">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/configuration}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">설정</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/styling}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Styling</span><span class="badge rounded-pill ms-2 badge-soft-success">Updated</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/dark-mode}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Dark mode</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/plugin}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Plugin</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/documentation/faq}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-question-circle"></span></span><span class="nav-link-text ps-1">Faq</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/documentation/gulp}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fab fa-gulp"></span></span><span class="nav-link-text ps-1">Gulp</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/documentation/design-file}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-palette"></span></span><span class="nav-link-text ps-1">Design file</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/changelog}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code-branch"></span></span><span class="nav-link-text ps-1">변경 이력</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+              <div class="settings mb-3">
+                <div class="card shadow-none">
+                  <div class="card-body alert mb-0" role="alert">
+                    <div class="btn-close-falcon-container">
+                      <button class="btn btn-link btn-close-falcon p-0" aria-label="닫기" data-bs-dismiss="alert"></button>
+                    </div>
+                    <div class="text-center"><img th:src="@{/assets/img/icons/spot-illustrations/navbar-vertical.png}" alt="" width="80" />
+                      <p class="fs--2 mt-2">Loving what you see? <br />Get your copy of <a href="#!">Falcon</a></p>
+                      <div class="d-grid"><a class="btn btn-sm btn-purchase" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">Purchase</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>

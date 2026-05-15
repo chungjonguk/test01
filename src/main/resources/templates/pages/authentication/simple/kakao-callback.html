@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kakao Login Callback</title>
+</head>
+<body>
+<main>
+    <h1>Kakao Login Callback</h1>
+    <p>state 검증: <span th:text="${stateValid}">false</span></p>
+    <p th:if="${error != null}">에러: <span th:text="${error}">error</span></p>
+    <p>인가 코드: <span th:text="${code}">code</span></p>
+    <div th:if="${response != null}">
+        <h2>응답 요약</h2>
+        <pre th:text="${response}">response</pre>
+    </div>
+</main>
+</body>
+</html>

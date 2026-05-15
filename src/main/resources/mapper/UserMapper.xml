@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.UserMapper">
+
+    <resultMap id="userResultMap" type="User">
+        <id property="id" column="id"/>
+        <result property="pw" column="pw"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="rrno" column="rrno"/>
+        <result property="email" column="email"/>
+        <result property="zipcode" column="zipcode"/>
+        <result property="address" column="address"/>
+        <result property="addressDetail" column="address_detail"/>
+        <result property="updateId" column="update_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updDt" column="upd_dt"/>
+    </resultMap>
+
+    <sql id="userColumns">
+        id, pw, name, sex, rrno, email, zipcode, address, address_detail, update_id, reg_dt, upd_dt
+    </sql>
+
+    <select id="findAll" resultMap="userResultMap">
+        SELECT <include refid="userColumns"/>
+        FROM `user`
+        ORDER BY reg_dt DESC
+    </select>
+
+    <select id="findById" resultMap="userResultMap">
+        SELECT <include refid="userColumns"/>
+        FROM `user`
+        WHERE id = #{id}
+    </select>
+
+    <select id="existsById" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM `user`
+        WHERE id = #{id}
+    </select>
+
+    <select id="existsByEmail" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM `user`
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO `user` (
+            id, pw, name, sex, rrno, email, zipcode, address, address_detail, update_id
+        ) VALUES (
+            #{id}, #{pw}, #{name}, #{sex}, #{rrno}, #{email}, #{zipcode}, #{address}, #{addressDetail}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE `user`
+        SET pw = #{pw},
+            name = #{name},
+            sex = #{sex},
+            rrno = #{rrno},
+            email = #{email},
+            zipcode = #{zipcode},
+            address = #{address},
+            address_detail = #{addressDetail},
+            update_id = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM `user`
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
