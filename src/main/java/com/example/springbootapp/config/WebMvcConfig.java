@@ -1,6 +1,10 @@
 package com.example.springbootapp.config;
 
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.ErrorPageRegistrar;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -8,4 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+	@Bean
+	ErrorPageRegistrar notFoundErrorPageRegistrar() {
+		return registry -> registry.addErrorPages(
+				new ErrorPage(HttpStatus.NOT_FOUND, "/error/not-found"),
+				new ErrorPage(HttpStatus.FORBIDDEN, "/error/not-found"));
+	}
 }

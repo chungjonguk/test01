@@ -1,11 +1,20 @@
 package com.example.springbootapp.controller.page;
 
+import com.example.springbootapp.auth.SessionAuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PagesController {
+
+    private final SessionAuthService sessionAuthService;
+
+    public PagesController(SessionAuthService sessionAuthService) {
+        this.sessionAuthService = sessionAuthService;
+    }
 
     // Pages - Starter
     @GetMapping("/pages/starter")
@@ -29,9 +38,8 @@ public class PagesController {
     }
 
     @GetMapping("/pages/authentication/simple/logout")
-    public String pagesAuthSimpleLogout(Model model) {
-        model.addAttribute("title", "로그아웃");
-        return "pages/authentication/simple/logout";
+    public String pagesAuthSimpleLogout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return performLogout(request, redirectAttributes);
     }
 
     @GetMapping("/pages/authentication/simple/register")
@@ -72,9 +80,8 @@ public class PagesController {
     }
 
     @GetMapping("/pages/authentication/card/logout")
-    public String pagesAuthCardLogout(Model model) {
-        model.addAttribute("title", "로그아웃");
-        return "pages/authentication/card/logout";
+    public String pagesAuthCardLogout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return performLogout(request, redirectAttributes);
     }
 
     @GetMapping("/pages/authentication/card/register")
@@ -115,9 +122,14 @@ public class PagesController {
     }
 
     @GetMapping("/pages/authentication/split/logout")
-    public String pagesAuthSplitLogout(Model model) {
-        model.addAttribute("title", "로그아웃");
-        return "pages/authentication/split/logout";
+    public String pagesAuthSplitLogout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return performLogout(request, redirectAttributes);
+    }
+
+    private String performLogout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        sessionAuthService.logout(request.getSession(false));
+        redirectAttributes.addFlashAttribute("logoutSuccess", true);
+        return "redirect:/pages/authentication/simple/login";
     }
 
     @GetMapping("/pages/authentication/split/register")

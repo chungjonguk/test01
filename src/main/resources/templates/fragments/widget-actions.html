@@ -1,0 +1,13 @@
+<div th:fragment="widgetMenu(widgetId)" class="dropdown font-sans-serif btn-reveal-trigger" xmlns:th="http://www.thymeleaf.org">
+    <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button"
+            th:id="${'dropdown-' + widgetId}" data-bs-toggle="dropdown" data-boundary="viewport"
+            aria-haspopup="true" aria-expanded="false">
+        <span class="fas fa-ellipsis-h fs--2"></span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end border py-2" th:attr="aria-labelledby=${'dropdown-' + widgetId}">
+        <a class="dropdown-item" href="#!" data-widget-action="view">View</a>
+        <a class="dropdown-item" href="#!" data-widget-action="export">Export</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-danger" href="#!" role="button" data-widget-action="remove">Remove</a>
+    </div>
+</div>

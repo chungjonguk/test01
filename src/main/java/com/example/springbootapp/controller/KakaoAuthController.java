@@ -1,6 +1,8 @@
 package com.example.springbootapp.controller;
 
+import com.example.springbootapp.auth.SessionAuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.http.HttpEntity;
@@ -46,6 +48,12 @@ public class KakaoAuthController {
 
     @Value("${kakao.client-secret:}")
     private String clientSecret;
+
+    private final SessionAuthService sessionAuthService;
+
+    public KakaoAuthController(SessionAuthService sessionAuthService) {
+        this.sessionAuthService = sessionAuthService;
+    }
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
@@ -136,9 +144,14 @@ public class KakaoAuthController {
                 new ParameterizedTypeReference<Map<String, Object>>() {}
         );
 
+        Map<String, Object> kakaoUser = userResponse.getBody();
         Map<String, Object> responseSummary = new LinkedHashMap<>();
         responseSummary.put("token", tokenMap);
-        responseSummary.put("user", userResponse.getBody());
+        responseSummary.put("user", kakaoUser);
+
+        HttpSession session = request.getSession(true);
+        sessionAuthService.loginFromKakao(session, kakaoUser);
+        session.removeAttribute("kakao_oauth_state");
 
         model.addAttribute("code", code);
         model.addAttribute("response", responseSummary);

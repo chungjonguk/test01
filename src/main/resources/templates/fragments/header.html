@@ -1,4 +1,4 @@
-<nav th:fragment="header" class="navbar navbar-light navbar-glass navbar-top navbar-expand">
+<nav th:fragment="header" id="layoutHeaderVertical" class="navbar navbar-light navbar-glass navbar-top navbar-expand layout-header-vertical">
 
             <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="내비게이션 토글"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
             <a class="navbar-brand me-1 me-sm-3" th:href="@{/}">
@@ -328,16 +328,22 @@
                 </a>
                 <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
                   <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                    <a class="dropdown-item fw-bold text-warning" href="#!"><span class="fas fa-crown me-1"></span><span>Go Pro</span></a>
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#!">Set status</a>
-                    <a class="dropdown-item" th:href="@{/pages/user/profile}">프로필 &amp; account</a>
-                    <a class="dropdown-item" href="#!">피드back</a>
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" th:href="@{/pages/user/settings}">설정</a>
-                    <a class="dropdown-item" th:href="@{/pages/authentication/card/logout}">로그아웃</a>
+                    <div class="dropdown-item-text" th:if="${isLoggedIn}">
+                      <div class="fw-bold" th:text="${loginUser.userName}">사용자</div>
+                      <div class="fs--2 text-600" th:text="${loginUser.userId}">userId</div>
+                      <div class="fs--2 text-500" th:if="${loginUser.email}" th:text="${loginUser.email}">email</div>
+                      <div class="fs--2 text-500">세션 <span th:text="${sessionTimeoutMinutes}">10</span>분 · <span th:text="${loginUser.loginType}">FORM</span></div>
+                    </div>
+                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
+                    <a class="dropdown-item" th:if="${!isLoggedIn}" th:href="@{/pages/authentication/simple/login}">로그인</a>
+                    <a class="dropdown-item fw-bold text-warning" th:if="${isLoggedIn}" href="#!"><span class="fas fa-crown me-1"></span><span>Go Pro</span></a>
+                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
+                    <a class="dropdown-item" th:if="${isLoggedIn}" href="#!">Set status</a>
+                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/pages/user/profile}">프로필 &amp; account</a>
+                    <a class="dropdown-item" th:if="${isLoggedIn}" href="#!">피드back</a>
+                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
+                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/pages/user/settings}">설정</a>
+                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/auth/logout}">로그아웃</a>
                   </div>
                 </div>
               </li>

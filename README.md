@@ -15,6 +15,60 @@ mvn clean package
 java -jar target/spring-boot-app-0.0.1-SNAPSHOT.jar
 ```
 
+## STS (Spring Tool Suite) 워크스페이스
+
+| 항목 | 경로 |
+|------|------|
+| **워크스페이스** | `new-workspace` (이 프로젝트의 상위 폴더) |
+| **프로젝트** | `spring-boot-app-fixed` → Eclipse 이름 `spring-boot-app` |
+| **JDK** | Java 17 (`C:\Users\chung\.local\dev\jdk-17` 권장) |
+| **포트** | 8081 (`application.properties`) |
+
+### STS에서 열기
+
+1. **File → Switch Workspace → Other…** → `new-workspace` 선택
+2. **File → Import → Maven → Existing Maven Projects**
+3. **Root Directory** → `spring-boot-app-fixed` 선택 후 Finish
+4. **Window → Preferences → Java → Installed JREs** 에 JDK 17 등록
+5. 프로젝트 우클릭 → **Maven → Update Project** (Force Update 체크)
+
+### 실행 구성 (`.launch/`)
+
+- `spring-boot-app-spring-boot.launch` — Spring Boot Dashboard 실행 (권장)
+- `spring-boot-app-java.launch` — Java Application
+- `spring-boot-app-maven.launch` — `spring-boot:run` (Maven)
+
+`open-sts-workspace.bat` 으로 STS를 `new-workspace` 워크스페이스로 열 수 있습니다. (STS 설치 경로는 배치 파일에서 수정)
+
+> MySQL(`localhost:3306`, DB `spring_boot_app`)이 실행 중이어야 앱이 기동됩니다.
+
+### Cursor ↔ STS 소스 연동
+
+두 IDE는 **같은 폴더** `spring-boot-app-fixed` 를 열어야 합니다. 별도 복사본을 만들지 마세요.
+
+| 도구 | 열 경로 |
+|------|---------|
+| **Cursor** | `...\new-workspace\spring-boot-app-fixed` |
+| **STS** | 워크스페이스 `new-workspace` + Import `spring-boot-app-fixed` |
+
+**STS 워크스페이스 1회 설정** (`new-workspace-sts.prefs` 참고)
+
+- **Preferences → General → Workspace**
+  - Refresh using native hooks or polling ✓
+  - Refresh on access ✓
+  - Build automatically ✓
+
+**동작**
+
+1. 한쪽에서 저장 → 디스크에 같은 파일이 갱신됨
+2. STS는 자동 새로고침·빌드로 `target/classes` 반영
+3. 실행 중 서버는 **DevTools**가 `src/main/java`, `src/main/resources` 변경을 감지해 재시작 (약 2초)
+
+**권장**
+
+- 서버는 STS 또는 `run-server.bat` 중 **한 곳에서만** 실행
+- `pom.xml` 수정 후 STS: **Maven → Update Project**
+
 ## 프로젝트 구조
 
 ```

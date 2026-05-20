@@ -1,0 +1,30 @@
+/* Navigation Position
+ * vertical: 왼쪽 사이드바 + Falcon 기본 상단바(검색/프로필) — 풀가로 메뉴(layoutNavbarTop)만 숨김
+ * top: 상단 풀가로 메뉴만 — 사이드바·기본 상단바 숨김
+ */
+html[data-navbar-position="vertical"] #layoutNavbarTop {
+  display: none !important;
+}
+
+html[data-navbar-position="top"] #layoutSidebar,
+html[data-navbar-position="top"] .navbar-vertical {
+  display: none !important;
+}
+
+html[data-navbar-position="top"] #layoutHeaderVertical,
+html[data-navbar-position="top"] .layout-header-vertical {
+  display: none !important;
+}
+
+html[data-navbar-position="top"] #layoutNavbarTop {
+  display: block !important;
+}
+
+html[data-navbar-position="top"] .content {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+html[data-navbar-position="top"] .settings-navbar-style-section {
+  display: none !important;
+}

@@ -1,5 +1,57 @@
-/* -------------------------------------------------------------------------- */
-/*                                Falcon Button                               */
-/* -------------------------------------------------------------------------- */
-/* prettier-ignore */
-/*# sourceMappingURL=user.css.map */
+/* Settings panel — Navigation Position 라디오 (가로 배치) */
+.settings-panel .settings-navbar-position-options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  padding-left: 1.75rem;
+}
+
+.settings-panel .settings-navbar-position-options .form-check {
+  margin-bottom: 0;
+  padding-left: 0;
+  min-height: auto;
+}
+
+.settings-panel .settings-navbar-position-options .form-check-input {
+  float: none;
+  margin-left: 0;
+  margin-right: 0.35rem;
+  margin-top: 0;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.settings-panel .settings-navbar-position-options .form-check-label {
+  display: inline;
+  padding-left: 0;
+  cursor: pointer;
+  font-size: 0.8333333333rem;
+}
+
+.settings-panel .offcanvas-body {
+  overflow-y: auto;
+  max-height: calc(100vh - 7rem);
+}
+
+#settingsCurrentStatus {
+  display: block;
+  word-break: keep-all;
+}
+
+/* Navigation — layout-navbar.css 와 동일 규칙 */
+html[data-navbar-position="vertical"] #layoutNavbarTop {
+  display: none !important;
+}
+
+html[data-navbar-position="top"] #layoutSidebar,
+html[data-navbar-position="top"] .navbar-vertical,
+html[data-navbar-position="top"] #layoutHeaderVertical {
+  display: none !important;
+}
+
+html[data-navbar-position="top"] .content {
+  margin-left: 0 !important;
+  max-width: 100%;
+}

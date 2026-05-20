@@ -1,0 +1,12 @@
+{
+  "files.encoding": "utf8",
+  "files.autoSave": "onFocusChange",
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/.metadata/**": true,
+    "**/logs/**": true
+  },
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.maven.enabled": true,
+  "spring-boot.ls.java.home": "C:\\Users\\chung\\.local\\dev\\jdk-17"
+}

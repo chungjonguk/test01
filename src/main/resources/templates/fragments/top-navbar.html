@@ -1,0 +1,55 @@
+<nav th:fragment="topNavbar" class="navbar navbar-light navbar-glass navbar-top navbar-expand-lg" id="layoutNavbarTop">
+    <div class="container-fluid px-card">
+        <button class="btn navbar-toggler-humburger-icon navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTopCollapse" aria-controls="navbarTopCollapse" aria-expanded="false" aria-label="내비게이션 토글">
+            <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
+        </button>
+        <a class="navbar-brand me-2" th:href="@{/}">
+            <div class="d-flex align-items-center">
+                <img class="me-2" th:src="@{/assets/img/icons/spot-illustrations/falcon.png}" alt="" width="40" />
+                <span class="font-sans-serif">falcon</span>
+            </div>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarTopCollapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">대시보드</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/}">기본</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/analytics}">분석</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/crm}">CRM</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/e-commerce}">이커머스</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/lms}">LMS</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/project-management}">관리</a></li>
+                        <li><a class="dropdown-item" th:href="@{/dashboard/saas}">SaaS</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">앱</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/app/calendar}">캘린더</a></li>
+                        <li><a class="dropdown-item" th:href="@{/app/chat}">채팅</a></li>
+                        <li><a class="dropdown-item" th:href="@{/app/email/inbox}">이메일</a></li>
+                        <li><a class="dropdown-item" th:href="@{/app/e-commerce/orders/order-list}">주문</a></li>
+                        <li><a class="dropdown-item" th:href="@{/users}">사용자</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users}">사용자</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item" th:if="${!isLoggedIn}">
+                    <a class="nav-link" th:href="@{/pages/authentication/simple/login}">로그인</a>
+                </li>
+                <li class="nav-item dropdown" th:if="${isLoggedIn}">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${loginUser.userName}">사용자</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><span class="dropdown-item-text fs--2 text-600" th:text="${loginUser.userId}">id</span></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" th:href="@{/auth/logout}">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,10 +1,30 @@
 /target/
+
 /logs/
+
 /.idea/
-/.vscode/
-*.iml
+
+# .vscode/settings.json 은 Cursor·팀 공용 (target 등은 extensions가 무시)
+.vscode/launch.json
+.vscode/*.code-workspace
+
+# STS workspace metadata (워크스페이스 루트: new-workspace)
+.metadata/
+.recommenders/
+
+# Eclipse / STS project metadata (프로젝트 루트)
+.classpath
+.project
+.settings/
+.launch/
+
 *.class
+
 *.log
+
 *.zip
+
 .DS_Store
+
 Thumbs.db
+
