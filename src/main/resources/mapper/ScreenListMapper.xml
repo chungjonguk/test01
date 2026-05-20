@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.example.springbootapp.mapper.ScreenListMapper">
+
+
+
+    <resultMap id="screenListResultMap" type="ScreenList">
+
+        <id property="screenId" column="screen_id"/>
+
+        <result property="screenNm" column="screen_nm"/>
+
+        <result property="uriPath" column="uri_path"/>
+
+        <result property="templatePath" column="template_path"/>
+
+        <result property="sortOrd" column="sort_ord"/>
+
+        <result property="useYn" column="use_yn"/>
+
+        <result property="regId" column="reg_id"/>
+
+        <result property="regDt" column="reg_dt"/>
+
+        <result property="updateId" column="update_id"/>
+
+        <result property="updateDt" column="update_dt"/>
+
+    </resultMap>
+
+
+
+    <sql id="screenListColumns">
+
+        screen_id, screen_nm, uri_path, template_path, sort_ord, use_yn,
+
+        reg_id, reg_dt, update_id, update_dt
+
+    </sql>
+
+
+
+    <select id="findAllActive" resultMap="screenListResultMap">
+
+        SELECT <include refid="screenListColumns"/>
+
+        FROM screen_list
+
+        WHERE use_yn = 'Y'
+
+        ORDER BY sort_ord, screen_id
+
+    </select>
+
+
+
+    <select id="findForAdmin" resultMap="screenListResultMap">
+
+        SELECT <include refid="screenListColumns"/>
+
+        FROM screen_list
+
+        <where>
+
+            <if test="screenId != null and screenId != ''">
+
+                AND screen_id LIKE CONCAT('%', #{screenId}, '%')
+
+            </if>
+
+            <if test="screenNm != null and screenNm != ''">
+
+                AND screen_nm LIKE CONCAT('%', #{screenNm}, '%')
+
+            </if>
+
+            <if test="uriPath != null and uriPath != ''">
+
+                AND uri_path LIKE CONCAT('%', #{uriPath}, '%')
+
+            </if>
+
+            <if test="useYn != null and useYn != ''">
+
+                AND use_yn = #{useYn}
+
+            </if>
+
+        </where>
+
+        ORDER BY sort_ord, screen_id
+
+    </select>
+
+
+
+    <select id="findByScreenId" resultMap="screenListResultMap">
+
+        SELECT <include refid="screenListColumns"/>
+
+        FROM screen_list
+
+        WHERE screen_id = #{screenId}
+
+    </select>
+
+
+
+    <select id="findByUriPath" resultMap="screenListResultMap">
+
+        SELECT <include refid="screenListColumns"/>
+
+        FROM screen_list
+
+        WHERE uri_path = #{uriPath}
+
+    </select>
+
+
+
+    <select id="countAll" resultType="int">
+
+        SELECT COUNT(*) FROM screen_list
+
+    </select>
+
+
+
+    <insert id="insert">
+
+        INSERT INTO screen_list (
+
+            screen_id, screen_nm, uri_path, template_path, sort_ord, use_yn,
+
+            reg_id, reg_dt, update_id, update_dt
+
+        ) VALUES (
+
+            #{screenId}, #{screenNm}, #{uriPath}, #{templatePath}, #{sortOrd}, #{useYn},
+
+            #{regId}, #{regDt}, #{updateId}, #{updateDt}
+
+        )
+
+    </insert>
+
+
+
+    <update id="update">
+
+        UPDATE screen_list
+
+        SET screen_nm = #{screenNm},
+
+            uri_path = #{uriPath},
+
+            template_path = #{templatePath},
+
+            sort_ord = #{sortOrd},
+
+            use_yn = #{useYn},
+
+            update_id = #{updateId},
+
+            update_dt = #{updateDt}
+
+        WHERE screen_id = #{screenId}
+
+    </update>
+
+</mapper>
+

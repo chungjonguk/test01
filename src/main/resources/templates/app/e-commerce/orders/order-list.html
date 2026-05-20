@@ -15,12 +15,7 @@
                 <div class="col-8 col-sm-auto ms-auto text-end ps-0">
                   <div class="d-none" id="orders-bulk-actions">
                     <div class="d-flex">
-                      <select class="form-select form-select-sm" aria-label="Bulk actions">
-                        <option selected="">Bulk actions</option>
-                        <option value="Refund">Refund</option>
-                        <option value="Delete">Delete</option>
-                        <option value="Archive">Archive</option>
-                      </select>
+                      <th:block th:replace="~{fragments/form-controls :: bulkAction('', 'form-select-sm', 'Bulk actions')}"></th:block>
                       <button class="btn btn-falcon-default btn-sm ms-2" type="button" id="orders-bulk-apply-btn">Apply</button>
                     </div>
                   </div>
@@ -827,11 +822,7 @@
               <div class="mb-3">
                 <label class="form-label" for="order-filter-status">상태</label>
                 <select class="form-select form-select-sm" id="order-filter-status">
-                  <option value="">전체</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Processing">Processing</option>
-                  <option value="On Hold">On Hold</option>
-                  <option value="Pending">Pending</option>
+                  <th:block th:replace="~{fragments/code-select :: optionsByGroup('ORDER_STATUS_FILTER', '')}"></th:block>
                 </select>
               </div>
               <div class="d-grid gap-2">

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+  <!-- 공통코드 콤보박스 (form-select + optionsByGroup) -->
+  <th:block th:fragment="codeSelect(groupId, selected, cssClasses)">
+    <select class="form-select"
+            th:classappend="${cssClasses}"
+            th:attr="data-code-group=${groupId}">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroup(${groupId}, ${selected})}"></th:block>
+    </select>
+  </th:block>
+
+  <!-- 대시보드 기간 필터 (자주 쓰는 패턴) -->
+  <th:block th:fragment="dashboardDateRange(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_DATE_RANGE', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="dashboardDateRangeWithTarget(selected, cssClasses, dataTarget)">
+    <select class="form-select" th:classappend="${cssClasses}" th:attr="data-target=${dataTarget}">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroup('DASHBOARD_DATE_RANGE', ${selected})}"></th:block>
+    </select>
+  </th:block>
+
+  <th:block th:fragment="dashboardMonth(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_MONTH', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="dashboardMonthKo(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_MONTH_KO', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="dashboardDateRangeKo(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_DATE_RANGE_KO', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="dashboardBandwidthPeriod(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_BANDWIDTH_PERIOD', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="useYnFilter(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('USE_YN_FILTER', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="bulkAction(selected, cssClasses, ariaLabel)">
+    <select class="form-select" th:classappend="${cssClasses}" th:attr="aria-label=${ariaLabel}">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroup('BULK_ACTION', ${selected})}"></th:block>
+    </select>
+  </th:block>
+
+  <th:block th:fragment="dashboardProjectTime(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_PROJECT_TIME', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+</body>
+</html>

@@ -10,18 +10,7 @@
               <h5 class="mb-0">Events</h5>
               <form>
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected="selected">Select Category</option>
-                  <option>Health &amp; Wellness</option>
-                  <option>Business &amp; Professional</option>
-                  <option>Performing &amp; Visual Arts</option>
-                  <option>Science &amp; Technology</option>
-                  <option>Sports &amp; Fitness</option>
-                  <option>Charity &amp; Causes</option>
-                  <option>Film &amp; Media</option>
-                  <option>Fashion &amp; Beauty</option>
-                  <option>Travel &amp; Outdoor</option>
-                  <option>Entertainment</option>
-                  <option>Other</option>
+                  <th:block th:replace="~{fragments/code-select :: optionsByGroup('EVENT_CATEGORY', '')}"></th:block>
                 </select>
               </form>
             </div>

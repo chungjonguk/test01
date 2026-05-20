@@ -30,11 +30,7 @@
                 <div class="card-footer bg-light py-2">
                   <div class="row justify-content-between">
                     <div class="col-auto">
-                      <select class="form-select form-select-sm">
-                        <option value="week" selected="selected">Last 7 days</option>
-                        <option value="month">Last month</option>
-                        <option value="year">Last year</option>
-                      </select>
+                      <th:block th:replace="~{fragments/form-controls :: dashboardDateRange('week', 'form-select-sm')}"></th:block>
                     </div>
                     <div class="col-auto"><a class="btn btn-sm btn-falcon-default" href="#!">View All</a></div>
                   </div>
@@ -528,8 +524,7 @@
               <div class="row flex-between-center g-0">
                 <div class="col-auto">
                   <select class="form-select form-select-sm">
-                    <option value="week" selected="selected">Last 7 days</option>
-                    <option value="month">Last month</option>
+                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('DASHBOARD_DATE_RANGE', 'week')}"></th:block>
                   </select>
                 </div>
                 <div class="col-auto"><a class="btn btn-link btn-sm px-0 fw-medium" th:href="@{/app/e-learning/course/course-list.html}">All Courses<span class="fas fa-chevron-right ms-1 fs--2"></span></a></div>
@@ -682,10 +677,7 @@
                 </div>
                 <div class="card-footer bg-light py-2 d-flex">
                   <div class="ms-auto">
-                    <select class="form-select form-select-sm">
-                      <option value="3months" selected="selected">Last 3 months</option>
-                      <option value="1month">Last month</option>
-                    </select>
+                    <th:block th:replace="~{fragments/form-controls :: dashboardDateRange('3months', 'form-select-sm')}"></th:block>
                   </div>
                 </div>
               </div>
@@ -748,10 +740,7 @@
                 <div class="card-header bg-light d-flex flex-between-center py-2">
                   <h6 class="mb-0">Course Enrollment</h6>
                   <div class="ms-auto">
-                    <select class="form-select form-select-sm">
-                      <option value="week" selected="selected">Last 7 days</option>
-                      <option value="month">Last month</option>
-                    </select>
+                    <th:block th:replace="~{fragments/form-controls :: dashboardDateRange('week', 'form-select-sm')}"></th:block>
                   </div>
                 </div>
                 <div class="card-body">

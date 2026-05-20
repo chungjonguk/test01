@@ -1,12 +1,13 @@
 /**
- * 코드 관리 — 상단 조회그리드 + 좌(그룹) / 중(추가·삭제) / 우(상세코드)
+ * 코드 관리 — 상단 조회그리드 + 코드그룹/상세코드 그리드
+ * @version 26
  */
 (function () {
   'use strict';
 
   var COL_SEARCH = 8;
-  var COL_GROUP = 9;
-  var COL_DETAIL = 10;
+  var COL_GROUP = 10;
+  var COL_DETAIL = 9;
 
   var state = {
     groups: {},
@@ -16,7 +17,10 @@
     checkedGroups: [],
     checkedCodes: [],
     searched: false,
-    loading: false
+    loading: false,
+    saving: false,
+    editGroupKey: null,
+    editDetailCodeVal: null
   };
 
   function formatDt(value) {
@@ -55,9 +59,62 @@
       .replace(/</g, '&lt;');
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function truncateCell(text) {
+    var value = text == null ? '' : String(text);
+    if (!value) {
+      value = '—';
+    }
+    return (
+      '<span class="code-mgmt-truncate" title="' +
+      escapeAttr(value) +
+      '">' +
+      escapeHtml(value) +
+      '</span>'
+    );
+  }
+
+  function codeIdCell(codeId, key, btnClass, colClass) {
+    var id = codeId || key || '';
+    return (
+      '<td class="align-middle py-2 ' +
+      colClass +
+      '">' +
+      '<div class="code-mgmt-code-cell">' +
+      '<strong class="code-mgmt-truncate" title="' +
+      escapeAttr(id) +
+      '">' +
+      escapeHtml(id) +
+      '</strong>' +
+      editBtnHtml(btnClass, 'data-group', key, '코드그룹 수정') +
+      '</div></td>'
+    );
+  }
+
+  function codeValCell(codeVal) {
+    return (
+      '<td class="align-middle py-2 col-code-val">' +
+      '<div class="code-mgmt-code-cell">' +
+      '<code class="code-mgmt-truncate" title="' +
+      escapeAttr(codeVal) +
+      '">' +
+      escapeHtml(codeVal) +
+      '</code>' +
+      editBtnHtml('code-detail-edit-btn', 'data-code-val', codeVal, '상세코드 수정') +
+      '</div></td>'
+    );
+  }
+
   function noCell(index) {
     return (
-      '<td class="ps-3 align-middle text-center py-2">' +
+      '<td class="ps-3 align-middle text-center py-2 col-no">' +
       (index + 1) +
       '</td>'
     );
@@ -106,7 +163,7 @@
       return;
     }
     var codes = state.groups[state.selectedGroup].codes || [];
-    var valid = codes.map(function (c) { return c.code; });
+    var valid = codes.map(function (c) { return c.codeVal; });
     state.checkedCodes = state.checkedCodes.filter(function (code) {
       return valid.indexOf(code) !== -1;
     });
@@ -153,7 +210,7 @@
     }
     master.disabled = false;
     var checkedCount = codes.filter(function (c) {
-      return state.checkedCodes.indexOf(c.code) !== -1;
+      return state.checkedCodes.indexOf(c.codeVal) !== -1;
     }).length;
     master.checked = checkedCount === codes.length;
     master.indeterminate = checkedCount > 0 && checkedCount < codes.length;
@@ -223,7 +280,7 @@
         }
         var codes = state.groups[groupKey].codes || [];
         if (master.checked) {
-          state.checkedCodes = codes.map(function (c) { return c.code; });
+          state.checkedCodes = codes.map(function (c) { return c.codeVal; });
         } else {
           state.checkedCodes = [];
         }
@@ -245,20 +302,32 @@
     updateDetailCheckAll();
   }
 
+  function useYnCell(useYn) {
+    var yn = useYn || 'Y';
+    var ynClass = yn === 'Y' ? 'badge-soft-success' : 'badge-soft-warning';
+    return (
+      '<td class="align-middle text-center py-2 col-use"><span class="badge ' +
+      ynClass +
+      '">' +
+      yn +
+      '</span></td>'
+    );
+  }
+
   function auditCells(item) {
     item = item || {};
     return (
-      '<td class="align-middle white-space-nowrap py-2">' +
-      (item.regId || '—') +
+      '<td class="align-middle py-2 col-reg-id d-none d-xl-table-cell">' +
+      truncateCell(item.regId) +
       '</td>' +
-      '<td class="align-middle white-space-nowrap py-2 text-600">' +
-      formatDt(item.regdateDt) +
+      '<td class="align-middle py-2 text-600 col-reg-dt d-none d-xl-table-cell">' +
+      truncateCell(formatDt(item.regdateDt)) +
       '</td>' +
-      '<td class="align-middle white-space-nowrap py-2">' +
-      (item.updateId || '—') +
+      '<td class="align-middle py-2 col-upd-id d-none d-xl-table-cell">' +
+      truncateCell(item.updateId) +
       '</td>' +
-      '<td class="align-middle white-space-nowrap py-2 text-600">' +
-      formatDt(item.updateDt) +
+      '<td class="align-middle py-2 text-600 col-upd-dt d-none d-xl-table-cell">' +
+      truncateCell(formatDt(item.updateDt)) +
       '</td>'
     );
   }
@@ -280,12 +349,12 @@
   }
 
   function getSearchCriteria() {
-    var keyEl = document.getElementById('search-group-key');
-    var nameEl = document.getElementById('search-group-name');
+    var codeIdEl = document.getElementById('search-code-id');
+    var codeNmEl = document.getElementById('search-code-nm');
     var useEl = document.getElementById('search-group-use');
     return {
-      groupKey: keyEl ? keyEl.value.trim().toUpperCase() : '',
-      groupName: nameEl ? nameEl.value.trim() : '',
+      codeId: codeIdEl ? codeIdEl.value.trim().toUpperCase() : '',
+      codeNm: codeNmEl ? codeNmEl.value.trim() : '',
       useYn: useEl ? useEl.value.trim() : ''
     };
   }
@@ -295,10 +364,10 @@
     if (!g) {
       return false;
     }
-    if (criteria.groupKey && key.indexOf(criteria.groupKey) === -1) {
+    if (criteria.codeId && key.indexOf(criteria.codeId) === -1) {
       return false;
     }
-    if (criteria.groupName && (g.name || '').indexOf(criteria.groupName) === -1) {
+    if (criteria.codeNm && (g.codeNm || '').indexOf(criteria.codeNm) === -1) {
       return false;
     }
     if (criteria.useYn && (g.useYn || 'Y') !== criteria.useYn) {
@@ -322,17 +391,19 @@
         return;
       }
       next[key] = {
-        name: g.codeNm || key,
+        codeId: key,
+        codeNm: g.codeNm || key,
         useYn: g.useYn || 'Y',
-        remark: '',
+        detailCount: g.detailCount != null ? g.detailCount : (g.codes || []).length,
         regId: g.regId || '',
         regdateDt: g.regdateDt || null,
         updateId: g.updateId || '',
         updateDt: g.updateDt || null,
         codes: (g.codes || []).map(function (c) {
+          var codeVal = c.codeVal || c.code || '';
           return {
-            code: c.code,
-            name: c.name || c.code,
+            codeId: c.codeId || key,
+            codeVal: codeVal,
             sort: c.sort || 0,
             useYn: c.useYn || 'Y',
             regId: c.regId || '',
@@ -369,17 +440,61 @@
     }
   }
 
+  function parseApiResponse(res) {
+    if (!res.ok) {
+      return res
+        .json()
+        .catch(function () {
+          return { message: '요청 처리 중 오류가 발생했습니다. (' + res.status + ')' };
+        })
+        .then(function (body) {
+          var msg =
+            (body && (body.message || body.error || body.detail)) ||
+            '요청 처리 중 오류가 발생했습니다. (' + res.status + ')';
+          throw new Error(msg);
+        });
+    }
+    return res.json();
+  }
+
+  function deleteGroupsApi(codeIds) {
+    var params = new URLSearchParams();
+    codeIds.forEach(function (id) {
+      params.append('codeIds', id);
+    });
+    return fetch('/api/admin/codes/groups?' + params.toString(), {
+      method: 'DELETE',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin'
+    }).then(parseApiResponse);
+  }
+
+  function deleteCodeValuesApi(codeId, codeVals) {
+    var params = new URLSearchParams();
+    codeVals.forEach(function (val) {
+      params.append('codeVals', val);
+    });
+    return fetch(
+      '/api/admin/codes/' + encodeURIComponent(codeId) + '/values?' + params.toString(),
+      {
+        method: 'DELETE',
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin'
+      }
+    ).then(parseApiResponse);
+  }
+
   function searchGroups() {
     if (state.loading) {
       return;
     }
     var criteria = getSearchCriteria();
     var params = new URLSearchParams();
-    if (criteria.groupKey) {
-      params.set('codeId', criteria.groupKey);
+    if (criteria.codeId) {
+      params.set('codeId', criteria.codeId);
     }
-    if (criteria.groupName) {
-      params.set('codeNm', criteria.groupName);
+    if (criteria.codeNm) {
+      params.set('codeNm', criteria.codeNm);
     }
     if (criteria.useYn) {
       params.set('useYn', criteria.useYn);
@@ -452,16 +567,82 @@
     renderDetails();
   }
 
-  function selectCode(code) {
-    if (!code || !state.selectedGroup) {
+  function selectCode(codeVal) {
+    if (!codeVal || !state.selectedGroup) {
       return;
     }
     var g = state.groups[state.selectedGroup];
-    if (!g || !g.codes || !g.codes.some(function (c) { return c.code === code; })) {
+    if (!g || !g.codes || !g.codes.some(function (c) { return c.codeVal === codeVal; })) {
       return;
     }
-    state.selectedCode = code;
+    state.selectedCode = codeVal;
     renderDetails();
+  }
+
+  function appendPromptField(container, f) {
+    var fieldId = 'swal-' + f.id;
+    var wrap = document.createElement('div');
+    wrap.className = 'mb-2 text-start code-mgmt-prompt-field';
+
+    var label = document.createElement('label');
+    label.className = 'form-label mb-1';
+    label.setAttribute('for', fieldId);
+    label.textContent = f.label;
+    wrap.appendChild(label);
+
+    var control;
+    if (f.type === 'select' && f.options && f.options.length) {
+      control = document.createElement('select');
+      control.className = 'form-select form-select-sm code-mgmt-prompt-select';
+      control.id = fieldId;
+      var selected = f.value != null ? String(f.value) : '';
+      f.options.forEach(function (opt) {
+        var option = document.createElement('option');
+        var val = opt.value != null ? String(opt.value) : '';
+        option.value = val;
+        option.textContent = opt.label != null ? String(opt.label) : val;
+        if (val === selected) {
+          option.selected = true;
+        }
+        control.appendChild(option);
+      });
+    } else {
+      control = document.createElement('input');
+      control.className = 'form-control form-control-sm';
+      control.id = fieldId;
+      control.type = 'text';
+      if (f.placeholder) {
+        control.placeholder = f.placeholder;
+      }
+      if (f.value) {
+        control.value = f.value;
+      }
+    }
+    wrap.appendChild(control);
+    container.appendChild(wrap);
+  }
+
+  function mountPromptFields(fields) {
+    var popup = window.Swal && window.Swal.getPopup ? window.Swal.getPopup() : null;
+    var container = popup
+      ? popup.querySelector('#code-mgmt-prompt-fields')
+      : document.getElementById('code-mgmt-prompt-fields');
+    if (!container) {
+      return;
+    }
+    container.innerHTML = '';
+    fields.forEach(function (f) {
+      appendPromptField(container, f);
+    });
+  }
+
+  function readPromptFieldValues(fields) {
+    var result = {};
+    fields.forEach(function (f) {
+      var el = document.getElementById('swal-' + f.id);
+      result[f.id] = el ? String(el.value).trim() : '';
+    });
+    return result;
   }
 
   function promptInput(title, fields) {
@@ -470,7 +651,18 @@
         var result = {};
         for (var i = 0; i < fields.length; i++) {
           var f = fields[i];
-          var val = window.prompt(title + ' — ' + f.label, f.value || '');
+          var val;
+          if (f.type === 'select' && f.options && f.options.length) {
+            var labels = f.options.map(function (o) {
+              return o.label + '(' + o.value + ')';
+            });
+            val = window.prompt(
+              title + ' — ' + f.label + ' [' + labels.join(', ') + ']',
+              f.value || f.options[0].value || ''
+            );
+          } else {
+            val = window.prompt(title + ' — ' + f.label, f.value || '');
+          }
           if (val === null) {
             resolve(null);
             return;
@@ -480,35 +672,21 @@
         resolve(result);
       });
     }
-    var html = fields
-      .map(function (f) {
-        return (
-          '<div class="mb-2 text-start"><label class="form-label mb-1">' +
-          f.label +
-          '</label><input class="form-control form-control-sm" id="swal-' +
-          f.id +
-          '" type="text" placeholder="' +
-          (f.placeholder || '') +
-          '" value="' +
-          (f.value || '') +
-          '"></div>'
-        );
-      })
-      .join('');
     return window.Swal.fire({
       title: title,
-      html: html,
+      html: '<div id="code-mgmt-prompt-fields" class="code-mgmt-prompt-fields"></div>',
+      customClass: {
+        htmlContainer: 'code-mgmt-swal-html'
+      },
       showCancelButton: true,
       confirmButtonText: '확인',
       cancelButtonText: '취소',
       focusConfirm: false,
+      didOpen: function () {
+        mountPromptFields(fields);
+      },
       preConfirm: function () {
-        var result = {};
-        fields.forEach(function (f) {
-          var el = document.getElementById('swal-' + f.id);
-          result[f.id] = el ? el.value.trim() : '';
-        });
-        return result;
+        return readPromptFieldValues(fields);
       }
     }).then(function (res) {
       return res.isConfirmed ? res.value : null;
@@ -546,8 +724,6 @@
       .map(function (key, index) {
         var g = state.groups[key];
         var active = key === state.selectedGroup ? ' table-active' : '';
-        var yn = g.useYn || 'Y';
-        var ynClass = yn === 'Y' ? 'badge-soft-success' : 'badge-soft-warning';
         return (
           '<tr class="code-group-search-row' +
           active +
@@ -555,25 +731,20 @@
           key +
           '" role="button" tabindex="0">' +
           noCell(index) +
-          '<td class="align-middle white-space-nowrap py-2"><strong>' +
-          key +
-          '</strong></td>' +
-          '<td class="align-middle py-2">' +
-          (g.name || '') +
+          codeIdCell(g.codeId, key, 'code-group-edit-btn', 'col-code') +
+          '<td class="align-middle py-2 col-code-nm">' +
+          truncateCell(g.codeNm) +
           '</td>' +
-          '<td class="align-middle text-center py-2"><span class="badge ' +
-          ynClass +
-          '">' +
-          yn +
-          '</span></td>' +
+          useYnCell(g.useYn) +
           auditCells(g) +
           '</tr>'
         );
       })
       .join('');
     tbody.querySelectorAll('.code-group-search-row').forEach(function (row) {
+      var key = row.getAttribute('data-group');
       function onSelect() {
-        selectGroup(row.getAttribute('data-group'));
+        selectGroup(key);
       }
       row.addEventListener('click', onSelect);
       row.addEventListener('keydown', function (e) {
@@ -614,7 +785,7 @@
       .map(function (key, index) {
         var g = state.groups[key];
         var active = key === state.selectedGroup ? ' table-active' : '';
-        var count = g.codes ? g.codes.length : 0;
+        var count = g.detailCount != null ? g.detailCount : g.codes ? g.codes.length : 0;
         return (
           '<tr class="code-group-row' +
           active +
@@ -623,13 +794,12 @@
           '" role="button" tabindex="0">' +
           groupCheckCell(key) +
           noCell(index) +
-          '<td class="align-middle white-space-nowrap py-2"><strong>' +
-          key +
-          '</strong></td>' +
-          '<td class="align-middle py-2">' +
-          (g.name || '') +
+          codeIdCell(g.codeId, key, 'code-group-edit-btn', 'col-code-id') +
+          '<td class="align-middle py-2 col-code-nm">' +
+          truncateCell(g.codeNm) +
           '</td>' +
-          '<td class="align-middle text-center py-2"><span class="badge badge-soft-secondary">' +
+          useYnCell(g.useYn) +
+          '<td class="align-middle text-center py-2 col-count"><span class="badge badge-soft-secondary">' +
           count +
           '</span></td>' +
           auditCells(g) +
@@ -669,7 +839,10 @@
     }
     var groupKey = state.selectedGroup;
     if (badge) {
-      badge.textContent = groupKey || '그룹 선택';
+      var g0 = groupKey && state.groups[groupKey] ? state.groups[groupKey] : null;
+      badge.textContent = g0
+        ? (g0.codeId || groupKey) + (g0.codeNm ? ' · ' + g0.codeNm : '')
+        : '그룹 선택';
     }
     if (!groupKey || !state.groups[groupKey]) {
       tbody.innerHTML = '';
@@ -695,40 +868,29 @@
     }
     tbody.innerHTML = codes
       .map(function (item, idx) {
-        var active = state.selectedCode === item.code ? ' table-active' : '';
-        var ynClass =
-          item.useYn === 'Y' ? 'badge-soft-success' : 'badge-soft-warning';
+        var active = state.selectedCode === item.codeVal ? ' table-active' : '';
         return (
           '<tr class="code-detail-row' +
           active +
-          '" data-code="' +
-          item.code +
+          '" data-code-val="' +
+          item.codeVal +
           '" data-index="' +
           idx +
           '" role="button" tabindex="0">' +
-          detailCheckCell(item.code) +
+          detailCheckCell(item.codeVal) +
           noCell(idx) +
-          '<td class="align-middle white-space-nowrap py-2"><code>' +
-          item.code +
-          '</code></td>' +
-          '<td class="align-middle py-2">' +
-          item.name +
-          '</td>' +
-          '<td class="align-middle text-center py-2">' +
+          codeValCell(item.codeVal) +
+          '<td class="align-middle text-center py-2 col-sort">' +
           item.sort +
           '</td>' +
-          '<td class="align-middle text-center py-2"><span class="badge ' +
-          ynClass +
-          '">' +
-          item.useYn +
-          '</span></td>' +
+          useYnCell(item.useYn) +
           auditCells(item) +
           '</tr>'
         );
       })
       .join('');
     tbody.querySelectorAll('.code-detail-row').forEach(function (row) {
-      var code = row.getAttribute('data-code');
+      var code = row.getAttribute('data-code-val');
       function onSelect() {
         setCodeChecked(code, true);
         selectCode(code);
@@ -747,6 +909,90 @@
       });
     });
     bindDetailCheckboxes();
+  }
+
+  function triggerGroupEdit(groupKey) {
+    if (!groupKey || !state.groups[groupKey]) {
+      notify('먼저 조회하거나 코드그룹을 추가하세요.', 'warning');
+      return;
+    }
+    selectGroup(groupKey);
+    editGroup(groupKey);
+  }
+
+  function triggerDetailEdit(codeVal) {
+    if (!state.selectedGroup) {
+      notify('코드그룹을 먼저 선택하세요.', 'warning');
+      return;
+    }
+    if (!codeVal) {
+      return;
+    }
+    selectCode(codeVal);
+    editCode(codeVal);
+  }
+
+  function isEditInteractionIgnored(target) {
+    return !!target.closest(
+      '.code-mgmt-check-cell, .btn-add-group, .btn-del-group, .btn-add-code, .btn-del-code, #code-save-btn, #code-export-btn, #btn-search-groups, #btn-reset-search'
+    );
+  }
+
+  function bindGridEditInteractions() {
+    var panel = document.getElementById('code-management-panel');
+    if (!panel || panel._codeMgmtEditBound) {
+      return;
+    }
+    panel._codeMgmtEditBound = true;
+    var lastEditAt = 0;
+
+    function handleGridEdit(e) {
+      var now = Date.now();
+      if (now - lastEditAt < 400) {
+        return;
+      }
+      lastEditAt = now;
+      if (isEditInteractionIgnored(e.target)) {
+        return;
+      }
+      if (e.target.closest('.code-group-edit-btn')) {
+        return;
+      }
+      if (e.target.closest('.code-detail-edit-btn')) {
+        return;
+      }
+
+      var groupRow = e.target.closest('.code-group-row, .code-group-search-row');
+      if (groupRow) {
+        var groupKey = groupRow.getAttribute('data-group');
+        if (!groupKey) {
+          return;
+        }
+        e.preventDefault();
+        triggerGroupEdit(groupKey);
+        return;
+      }
+
+      var detailRow = e.target.closest('.code-detail-row');
+      if (detailRow) {
+        var codeVal = detailRow.getAttribute('data-code-val');
+        if (!codeVal) {
+          return;
+        }
+        e.preventDefault();
+        triggerDetailEdit(codeVal);
+      }
+    }
+
+    panel.addEventListener('dblclick', function (e) {
+      if (isEditInteractionIgnored(e.target)) {
+        return;
+      }
+      if (e.target.closest('.code-group-edit-btn, .code-detail-edit-btn')) {
+        return;
+      }
+      handleGridEdit(e);
+    });
   }
 
   function refreshAll() {
@@ -775,23 +1021,208 @@
     });
   }
 
+  var USE_YN_OPTIONS = [
+    { value: 'Y', label: '사용' },
+    { value: 'N', label: '사용안함' }
+  ];
+
+  function normalizeUseYn(value) {
+    return String(value || 'Y').toUpperCase() === 'N' ? 'N' : 'Y';
+  }
+
+  /** 값|표시명 형식은 그대로, 단순 코드만 대문자·언더스코어 정규화 */
+  function normalizeCodeValInput(raw) {
+    var trimmed = (raw || '').trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (trimmed.indexOf('|') !== -1) {
+      return trimmed;
+    }
+    return trimmed.toUpperCase().replace(/\s+/g, '_');
+  }
+
+  function showBootstrapModal(modalId) {
+    var el = document.getElementById(modalId);
+    if (!el) {
+      notify('수정 창을 불러오지 못했습니다. Ctrl+F5로 새로고침 해주세요.', 'error');
+      return null;
+    }
+    if (el.parentElement && el.parentElement !== document.body) {
+      document.body.appendChild(el);
+    }
+    if (!window.bootstrap || !window.bootstrap.Modal) {
+      notify('화면 모듈(Bootstrap)을 불러오지 못했습니다.', 'error');
+      return null;
+    }
+    return window.bootstrap.Modal.getOrCreateInstance(el);
+  }
+
+  function editBtnHtml(className, dataAttr, dataValue, title) {
+    return (
+      '<button type="button" class="btn btn-link btn-sm p-0 ms-1 ' +
+      className +
+      '" ' +
+      dataAttr +
+      '="' +
+      escapeAttr(dataValue) +
+      '" title="' +
+      title +
+      '" aria-label="' +
+      title +
+      '">' +
+      '<span class="fas fa-edit text-primary"></span></button>'
+    );
+  }
+
+  function resetGroupAddForm() {
+    var form = document.getElementById('code-group-add-form');
+    if (form) {
+      form.reset();
+    }
+    var useYn = document.getElementById('code-group-add-use-yn');
+    if (useYn) {
+      useYn.value = 'Y';
+    }
+  }
+
+  function submitGroupAdd() {
+    var codeIdEl = document.getElementById('code-group-add-code-id');
+    var codeNmEl = document.getElementById('code-group-add-code-nm');
+    var useYnEl = document.getElementById('code-group-add-use-yn');
+    var codeIdRaw = codeIdEl ? codeIdEl.value.trim() : '';
+    if (!codeIdRaw) {
+      notify('코드ID를 입력하세요.', 'warning');
+      return;
+    }
+    var key = codeIdRaw.toUpperCase().replace(/\s+/g, '_');
+    if (state.groups[key]) {
+      notify('이미 존재하는 코드ID입니다.', 'warning');
+      return;
+    }
+    state.groups[key] = {
+      codeId: key,
+      codeNm: (codeNmEl && codeNmEl.value.trim()) || key,
+      useYn: normalizeUseYn(useYnEl ? useYnEl.value : 'Y'),
+      detailCount: 0,
+      regId: '',
+      regdateDt: null,
+      updateId: '',
+      updateDt: null,
+      codes: []
+    };
+    state.selectedGroup = key;
+    state.selectedCode = null;
+    syncFilteredKeysAfterAdd(key);
+    refreshAll();
+    var modal = showBootstrapModal('code-group-add-modal');
+    if (modal) {
+      modal.hide();
+    }
+    persistToDb(buildSavePayloadForGroup(key), '코드그룹이 저장되었습니다.');
+  }
+
+  function openGroupEditModal(key) {
+    var g = state.groups[key];
+    if (!g) {
+      return;
+    }
+    state.editGroupKey = key;
+    var codeIdEl = document.getElementById('code-group-edit-code-id');
+    var codeNmEl = document.getElementById('code-group-edit-code-nm');
+    var useYnEl = document.getElementById('code-group-edit-use-yn');
+    if (codeIdEl) {
+      codeIdEl.value = g.codeId || key;
+    }
+    if (codeNmEl) {
+      codeNmEl.value = g.codeNm || '';
+    }
+    if (useYnEl) {
+      useYnEl.value = normalizeUseYn(g.useYn);
+    }
+    var modal = showBootstrapModal('code-group-edit-modal');
+    if (modal) {
+      modal.show();
+      if (codeNmEl) {
+        window.setTimeout(function () {
+          codeNmEl.focus();
+          codeNmEl.select();
+        }, 200);
+      }
+    }
+  }
+
+  function submitGroupEdit() {
+    var key = state.editGroupKey;
+    if (!key || !state.groups[key]) {
+      notify('수정할 코드그룹을 찾을 수 없습니다.', 'warning');
+      return;
+    }
+    var codeNmEl = document.getElementById('code-group-edit-code-nm');
+    var useYnEl = document.getElementById('code-group-edit-use-yn');
+    var codeNm = codeNmEl ? codeNmEl.value.trim() : '';
+    if (!codeNm) {
+      notify('코드명을 입력하세요.', 'warning');
+      return;
+    }
+    var g = state.groups[key];
+    g.codeNm = codeNm;
+    g.useYn = normalizeUseYn(useYnEl ? useYnEl.value : 'Y');
+    state.selectedGroup = key;
+    refreshAll();
+    state.editGroupKey = null;
+    var modal = showBootstrapModal('code-group-edit-modal');
+    if (modal) {
+      modal.hide();
+    }
+    persistToDb(buildSavePayloadForGroup(key), '코드그룹이 저장되었습니다.');
+  }
+
+  function editGroup(key) {
+    if (!key || !state.groups[key]) {
+      notify('수정할 코드그룹이 없습니다.', 'warning');
+      return;
+    }
+    openGroupEditModal(key);
+  }
+
   function addGroup() {
+    resetGroupAddForm();
+    var modal = showBootstrapModal('code-group-add-modal');
+    if (modal) {
+      modal.show();
+      var codeIdEl = document.getElementById('code-group-add-code-id');
+      if (codeIdEl) {
+        window.setTimeout(function () {
+          codeIdEl.focus();
+        }, 200);
+      }
+      return;
+    }
     promptInput('코드그룹 추가', [
-      { id: 'key', label: '코드', placeholder: '예: ORDER_TYPE' },
-      { id: 'name', label: '코드명', placeholder: '예: 주문유형' }
+      { id: 'codeId', label: '코드ID (code_id)', placeholder: '예: ORDER_TYPE' },
+      { id: 'codeNm', label: '코드명 (code_nm)', placeholder: '예: 주문유형' },
+      {
+        id: 'useYn',
+        label: '사용여부',
+        type: 'select',
+        value: 'Y',
+        options: USE_YN_OPTIONS
+      }
     ]).then(function (vals) {
-      if (!vals || !vals.key) {
+      if (!vals || !vals.codeId) {
         return;
       }
-      var key = vals.key.toUpperCase().replace(/\s+/g, '_');
+      var key = vals.codeId.toUpperCase().replace(/\s+/g, '_');
       if (state.groups[key]) {
-        notify('이미 존재하는 코드입니다.', 'warning');
+        notify('이미 존재하는 코드ID입니다.', 'warning');
         return;
       }
       state.groups[key] = {
-        name: vals.name || key,
-        useYn: 'Y',
-        remark: '',
+        codeId: key,
+        codeNm: vals.codeNm || key,
+        useYn: normalizeUseYn(vals.useYn),
+        detailCount: 0,
         regId: '',
         regdateDt: null,
         updateId: '',
@@ -802,26 +1233,64 @@
       state.selectedCode = null;
       syncFilteredKeysAfterAdd(key);
       refreshAll();
-      notify('코드그룹이 추가되었습니다. (저장 버튼으로 DB 반영)', 'success');
+      persistToDb(buildSavePayloadForGroup(key), '코드그룹이 저장되었습니다.');
     });
   }
 
   function deleteGroup() {
-    if (!state.selectedGroup) {
-      notify('삭제할 코드그룹을 선택하세요.', 'warning');
+    pruneCheckedGroups();
+    var keysToDelete = state.checkedGroups.length
+      ? state.checkedGroups.slice()
+      : state.selectedGroup
+        ? [state.selectedGroup]
+        : [];
+    if (!keysToDelete.length) {
+      notify('삭제할 코드그룹을 체크하거나 선택하세요.', 'warning');
       return;
     }
-    var key = state.selectedGroup;
-    var doDelete = function () {
-      delete state.groups[key];
-      state.selectedGroup = null;
-      state.selectedCode = null;
-      if (state.searched) {
-        searchGroups();
-      } else {
-        refreshAll();
+    var detailCount = 0;
+    keysToDelete.forEach(function (key) {
+      var g = state.groups[key];
+      if (g && g.codes) {
+        detailCount += g.codes.length;
+      } else if (g && g.detailCount) {
+        detailCount += g.detailCount;
       }
-      notify('코드그룹이 삭제되었습니다.', 'success');
+    });
+    var confirmText =
+      keysToDelete.length === 1
+        ? '"' +
+          keysToDelete[0] +
+          '" 코드그룹과 연결된 상세코드(' +
+          detailCount +
+          '건)를 DB에서 삭제할까요?'
+        : keysToDelete.length +
+          '개 코드그룹과 연결된 상세코드(' +
+          detailCount +
+          '건)를 DB에서 삭제할까요?';
+    var doDelete = function () {
+      deleteGroupsApi(keysToDelete)
+        .then(function (data) {
+          state.checkedGroups = [];
+          state.selectedGroup = null;
+          state.selectedCode = null;
+          if (state.searched) {
+            searchGroups();
+          } else {
+            keysToDelete.forEach(function (key) {
+              delete state.groups[key];
+              syncFilteredKeysAfterDelete(key);
+            });
+            refreshAll();
+          }
+          notify(data.message || '코드그룹이 삭제되었습니다.', 'success');
+        })
+        .catch(function (err) {
+          notify(
+            err && err.message ? err.message : '코드그룹 삭제 중 오류가 발생했습니다.',
+            'error'
+          );
+        });
     };
     if (!window.Swal) {
       doDelete();
@@ -829,7 +1298,7 @@
     }
     window.Swal.fire({
       title: '코드그룹 삭제',
-      text: '"' + key + '" 그룹과 상세코드를 모두 삭제할까요?',
+      text: confirmText,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: '삭제',
@@ -841,38 +1310,199 @@
     });
   }
 
+  function resetDetailAddForm() {
+    var form = document.getElementById('code-detail-add-form');
+    if (form) {
+      form.reset();
+    }
+    var useYn = document.getElementById('code-detail-add-use-yn');
+    if (useYn) {
+      useYn.value = 'Y';
+    }
+    var sortEl = document.getElementById('code-detail-add-sort');
+    var g = state.selectedGroup ? state.groups[state.selectedGroup] : null;
+    if (sortEl && g) {
+      sortEl.value = String((g.codes || []).length + 1);
+    }
+  }
+
+  function submitDetailAdd() {
+    if (!state.selectedGroup) {
+      notify('코드그룹을 먼저 선택하세요.', 'warning');
+      return;
+    }
+    var codeValEl = document.getElementById('code-detail-add-code-val');
+    var sortEl = document.getElementById('code-detail-add-sort');
+    var useYnEl = document.getElementById('code-detail-add-use-yn');
+    var codeValRaw = codeValEl ? codeValEl.value.trim() : '';
+    if (!codeValRaw) {
+      notify('코드값을 입력하세요.', 'warning');
+      return;
+    }
+    var g = state.groups[state.selectedGroup];
+    var codeVal = normalizeCodeValInput(codeValRaw);
+    if (g.codes.some(function (c) { return c.codeVal === codeVal; })) {
+      notify('이미 존재하는 코드값입니다.', 'warning');
+      return;
+    }
+    g.codes.push({
+      codeId: state.selectedGroup,
+      codeVal: codeVal,
+      sort: parseInt(sortEl && sortEl.value, 10) || g.codes.length + 1,
+      useYn: normalizeUseYn(useYnEl ? useYnEl.value : 'Y'),
+      regId: '',
+      regdateDt: null,
+      updateId: '',
+      updateDt: null
+    });
+    g.detailCount = g.codes.length;
+    g.codes.sort(function (a, b) { return a.sort - b.sort; });
+    state.selectedCode = codeVal;
+    refreshAll();
+    var modal = showBootstrapModal('code-detail-add-modal');
+    if (modal) {
+      modal.hide();
+    }
+    persistToDb(
+      buildSavePayloadForGroup(state.selectedGroup),
+      '상세코드가 DB에 저장되었습니다.'
+    );
+  }
+
+  function openDetailEditModal(codeVal) {
+    if (!state.selectedGroup || !state.groups[state.selectedGroup]) {
+      return;
+    }
+    var g = state.groups[state.selectedGroup];
+    var item = (g.codes || []).find(function (c) {
+      return c.codeVal === codeVal;
+    });
+    if (!item) {
+      notify('수정할 상세코드를 찾을 수 없습니다.', 'warning');
+      return;
+    }
+    state.editDetailCodeVal = codeVal;
+    var codeValEl = document.getElementById('code-detail-edit-code-val');
+    var sortEl = document.getElementById('code-detail-edit-sort');
+    var useYnEl = document.getElementById('code-detail-edit-use-yn');
+    if (codeValEl) {
+      codeValEl.value = item.codeVal;
+    }
+    if (sortEl) {
+      sortEl.value = String(item.sort != null ? item.sort : 1);
+    }
+    if (useYnEl) {
+      useYnEl.value = normalizeUseYn(item.useYn);
+    }
+    var modal = showBootstrapModal('code-detail-edit-modal');
+    if (modal) {
+      modal.show();
+      if (sortEl) {
+        window.setTimeout(function () {
+          sortEl.focus();
+          sortEl.select();
+        }, 200);
+      }
+    }
+  }
+
+  function submitDetailEdit() {
+    var codeVal = state.editDetailCodeVal;
+    if (!state.selectedGroup || !codeVal) {
+      notify('수정할 상세코드를 찾을 수 없습니다.', 'warning');
+      return;
+    }
+    var g = state.groups[state.selectedGroup];
+    var item = (g.codes || []).find(function (c) {
+      return c.codeVal === codeVal;
+    });
+    if (!item) {
+      notify('수정할 상세코드를 찾을 수 없습니다.', 'warning');
+      return;
+    }
+    var sortEl = document.getElementById('code-detail-edit-sort');
+    var useYnEl = document.getElementById('code-detail-edit-use-yn');
+    item.sort = parseInt(sortEl && sortEl.value, 10) || item.sort || 1;
+    item.useYn = normalizeUseYn(useYnEl ? useYnEl.value : 'Y');
+    g.codes.sort(function (a, b) {
+      return a.sort - b.sort;
+    });
+    g.detailCount = g.codes.length;
+    state.selectedCode = codeVal;
+    refreshAll();
+    state.editDetailCodeVal = null;
+    var modal = showBootstrapModal('code-detail-edit-modal');
+    if (modal) {
+      modal.hide();
+    }
+    persistToDb(
+      buildSavePayloadForGroup(state.selectedGroup),
+      '상세코드가 DB에 저장되었습니다.'
+    );
+  }
+
+  function editCode(codeVal) {
+    if (!state.selectedGroup) {
+      notify('코드그룹을 먼저 선택하세요.', 'warning');
+      return;
+    }
+    if (!codeVal) {
+      notify('수정할 상세코드가 없습니다.', 'warning');
+      return;
+    }
+    openDetailEditModal(codeVal);
+  }
+
   function addCode() {
     if (!state.selectedGroup) {
       notify('조회 그리드 또는 코드그룹 그리드에서 그룹을 선택하세요.', 'warning');
       return;
     }
+    resetDetailAddForm();
+    var modal = showBootstrapModal('code-detail-add-modal');
+    if (modal) {
+      modal.show();
+      var codeValEl = document.getElementById('code-detail-add-code-val');
+      if (codeValEl) {
+        window.setTimeout(function () {
+          codeValEl.focus();
+        }, 200);
+      }
+      return;
+    }
     promptInput('상세코드 추가', [
-      { id: 'code', label: '코드', placeholder: '예: SHIPPED' },
-      { id: 'name', label: '코드명', placeholder: '예: 배송중' },
+      { id: 'codeVal', label: '코드값 (code_val)', placeholder: '예: SHIPPED' },
       { id: 'sort', label: '정렬', placeholder: '1' },
-      { id: 'useYn', label: '사용(Y/N)', placeholder: 'Y', value: 'Y' }
+      {
+        id: 'useYn',
+        label: '사용여부',
+        type: 'select',
+        value: 'Y',
+        options: USE_YN_OPTIONS
+      }
     ]).then(function (vals) {
-      if (!vals || !vals.code) {
+      if (!vals || !vals.codeVal) {
         return;
       }
       var g = state.groups[state.selectedGroup];
-      var code = vals.code.toUpperCase().replace(/\s+/g, '_');
-      if (g.codes.some(function (c) { return c.code === code; })) {
-        notify('이미 존재하는 코드입니다.', 'warning');
+      var codeVal = normalizeCodeValInput(vals.codeVal);
+      if (g.codes.some(function (c) { return c.codeVal === codeVal; })) {
+        notify('이미 존재하는 코드값입니다.', 'warning');
         return;
       }
       g.codes.push({
-        code: code,
-        name: vals.name || code,
+        codeId: state.selectedGroup,
+        codeVal: codeVal,
         sort: parseInt(vals.sort, 10) || g.codes.length + 1,
-        useYn: (vals.useYn || 'Y').toUpperCase() === 'N' ? 'N' : 'Y',
+        useYn: normalizeUseYn(vals.useYn),
         regId: '',
         regdateDt: null,
         updateId: '',
         updateDt: null
       });
+      g.detailCount = g.codes.length;
       g.codes.sort(function (a, b) { return a.sort - b.sort; });
-      state.selectedCode = code;
+      state.selectedCode = codeVal;
       refreshAll();
       notify('상세코드가 추가되었습니다.', 'success');
     });
@@ -898,14 +1528,29 @@
       codesToDelete.length === 1
         ? '"' + codesToDelete[0] + '" 코드를 삭제할까요?'
         : codesToDelete.length + '개 상세코드를 삭제할까요?';
+    var groupKey = state.selectedGroup;
     var doDelete = function () {
-      g.codes = g.codes.filter(function (c) {
-        return codesToDelete.indexOf(c.code) === -1;
-      });
-      state.checkedCodes = [];
-      state.selectedCode = null;
-      refreshAll();
-      notify(codesToDelete.length + '개 상세코드가 삭제되었습니다.', 'success');
+      deleteCodeValuesApi(groupKey, codesToDelete)
+        .then(function (data) {
+          state.checkedCodes = [];
+          state.selectedCode = null;
+          if (state.searched) {
+            searchGroups();
+          } else {
+            g.codes = g.codes.filter(function (c) {
+              return codesToDelete.indexOf(c.codeVal) === -1;
+            });
+            g.detailCount = g.codes.length;
+            refreshAll();
+          }
+          notify(data.message || codesToDelete.length + '개 상세코드가 삭제되었습니다.', 'success');
+        })
+        .catch(function (err) {
+          notify(
+            err && err.message ? err.message : '상세코드 삭제 중 오류가 발생했습니다.',
+            'error'
+          );
+        });
     };
     if (window.Swal) {
       window.Swal.fire({
@@ -928,29 +1573,28 @@
   function exportCsv() {
     var keys = state.searched ? state.filteredKeys || [] : Object.keys(state.groups).sort();
     var lines = [
-      'CodeGroup,GroupName,UseYn,Remark,RegId,RegDt,UpdateId,UpdateDt,Code,CodeName,Sort,CodeUseYn,CodeRegId,CodeRegDt,CodeUpdateId,CodeUpdateDt'
+      'code_id,code_nm,use_yn,reg_id,regdate_dt,update_id,update_dt,detail_count,code_val,detail_use_yn,detail_reg_id,detail_regdate_dt,detail_update_id,detail_update_dt,detail_sort'
     ];
     keys.forEach(function (key) {
       var g = state.groups[key];
       (g.codes || []).forEach(function (c) {
         lines.push(
           [
-            key,
-            g.name,
+            g.codeId || key,
+            g.codeNm || '',
             g.useYn || 'Y',
-            g.remark || '',
             g.regId || '',
             formatDt(g.regdateDt),
             g.updateId || '',
             formatDt(g.updateDt),
-            c.code,
-            c.name,
-            c.sort,
+            g.detailCount != null ? g.detailCount : '',
+            c.codeVal,
             c.useYn,
             c.regId || '',
             formatDt(c.regdateDt),
             c.updateId || '',
-            formatDt(c.updateDt)
+            formatDt(c.updateDt),
+            c.sort
           ]
             .map(function (v) {
               var t = String(v);
@@ -974,13 +1618,137 @@
     notify('CSV 파일을 다운로드했습니다.', 'success');
   }
 
+  function groupToSaveDto(key) {
+    var g = state.groups[key];
+    if (!g) {
+      return null;
+    }
+    return {
+      codeId: g.codeId || key,
+      codeNm: g.codeNm || key,
+      useYn: normalizeUseYn(g.useYn),
+      codes: (g.codes || []).map(function (c) {
+        return {
+          codeVal: c.codeVal,
+          useYn: normalizeUseYn(c.useYn)
+        };
+      })
+    };
+  }
+
+  function buildSavePayload() {
+    var groups = [];
+    Object.keys(state.groups)
+      .sort()
+      .forEach(function (key) {
+        var dto = groupToSaveDto(key);
+        if (dto) {
+          groups.push(dto);
+        }
+      });
+    return { groups: groups };
+  }
+
+  function buildSavePayloadForGroup(groupKey) {
+    var dto = groupToSaveDto(groupKey);
+    return { groups: dto ? [dto] : [] };
+  }
+
+  function reloadGroups() {
+    var criteria = getSearchCriteria();
+    var params = new URLSearchParams();
+    if (criteria.codeId) {
+      params.set('codeId', criteria.codeId);
+    }
+    if (criteria.codeNm) {
+      params.set('codeNm', criteria.codeNm);
+    }
+    if (criteria.useYn) {
+      params.set('useYn', criteria.useYn);
+    }
+    return fetch('/api/admin/codes?' + params.toString(), {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin'
+    })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('조회 API 오류 (' + res.status + ')');
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        applyGroupsFromApi(data.groups);
+        finishSearch(false);
+      });
+  }
+
+  function persistToDb(payload, successMessage) {
+    if (!payload.groups || !payload.groups.length) {
+      return Promise.reject(new Error('저장할 코드그룹이 없습니다.'));
+    }
+    if (state.saving) {
+      return Promise.reject(new Error('저장 중입니다. 잠시 후 다시 시도하세요.'));
+    }
+    state.saving = true;
+    return saveCodesApi(payload)
+      .then(function (data) {
+        return reloadGroups().then(function () {
+          return data;
+        });
+      })
+      .then(function (data) {
+        notify(successMessage || data.message || '저장되었습니다.', 'success');
+        return data;
+      })
+      .catch(function (err) {
+        notify(
+          err && err.message ? err.message : '코드 저장 중 오류가 발생했습니다.',
+          'error'
+        );
+        throw err;
+      })
+      .finally(function () {
+        state.saving = false;
+      });
+  }
+
+  function saveCodesApi(payload) {
+    return fetch('/api/admin/codes/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(payload)
+    }).then(parseApiResponse);
+  }
+
   function saveAll() {
-    notify('저장 API는 아직 연동되지 않았습니다. 조회는 common_code 테이블을 사용합니다.', 'info');
+    var payload = buildSavePayload();
+    if (!payload.groups.length) {
+      notify('저장할 코드그룹이 없습니다. 조회하거나 그룹을 추가하세요.', 'warning');
+      return;
+    }
+    persistToDb(payload);
   }
 
   function handlePanelClick(e) {
     var btn = e.target.closest('button');
     if (!btn) {
+      return;
+    }
+    if (btn.classList.contains('code-group-edit-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerGroupEdit(btn.getAttribute('data-group'));
+      return;
+    }
+    if (btn.classList.contains('code-detail-edit-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerDetailEdit(btn.getAttribute('data-code-val'));
       return;
     }
     if (btn.classList.contains('btn-add-group')) {
@@ -1007,9 +1775,10 @@
 
   function bind() {
     var panel = document.getElementById('code-management-panel');
-    if (!panel) {
+    if (!panel || panel._codeMgmtBound) {
       return;
     }
+    panel._codeMgmtBound = true;
 
     var searchForm = document.getElementById('code-group-search-form');
     if (searchForm) {
@@ -1024,6 +1793,36 @@
     }
 
     panel.addEventListener('click', handlePanelClick);
+    bindGridEditInteractions();
+
+    var groupAddForm = document.getElementById('code-group-add-form');
+    if (groupAddForm) {
+      groupAddForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitGroupAdd();
+      });
+    }
+    var detailAddForm = document.getElementById('code-detail-add-form');
+    if (detailAddForm) {
+      detailAddForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitDetailAdd();
+      });
+    }
+    var groupEditForm = document.getElementById('code-group-edit-form');
+    if (groupEditForm) {
+      groupEditForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitGroupEdit();
+      });
+    }
+    var detailEditForm = document.getElementById('code-detail-edit-form');
+    if (detailEditForm) {
+      detailEditForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitDetailEdit();
+      });
+    }
 
     var exportBtn = document.getElementById('code-export-btn');
     var saveBtn = document.getElementById('code-save-btn');
@@ -1042,6 +1841,8 @@
   function init() {
     bind();
   }
+
+  window.CodeMgmtInit = init;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

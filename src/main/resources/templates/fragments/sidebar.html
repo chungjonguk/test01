@@ -231,38 +231,6 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="sidebar-e-learning">
-                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#sidebar-course" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-e-learning">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                      <ul class="nav collapse" id="sidebar-course">
-                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-list}" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course list</span>
-                            </div>
-                          </a>
-                          <!-- more inner pages-->
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-grid}" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course grid</span>
-                            </div>
-                          </a>
-                          <!-- more inner pages-->
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/course-details}" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Course details</span>
-                            </div>
-                          </a>
-                          <!-- more inner pages-->
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/course/create-a-course}" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Create a course</span>
-                            </div>
-                          </a>
-                          <!-- more inner pages-->
-                        </li>
-                      </ul>
-                    </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/app/e-learning/student-overview}" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Student overview</span>
                         </div>
@@ -614,6 +582,10 @@
                   </a>
                   <!-- parent pages--><a class="nav-link" th:href="@{/admin/codes}" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code"></span></span><span class="nav-link-text ps-1">코드관리</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/menus}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-sitemap"></span></span><span class="nav-link-text ps-1">메뉴관리</span>
                     </div>
                   </a>
                   <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-orders" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-orders">

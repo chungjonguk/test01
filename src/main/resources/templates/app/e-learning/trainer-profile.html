@@ -465,10 +465,7 @@
                   <h6 class="mb-0">Other Courses by Bill Finger</h6>
                   <div>
                     <select class="form-select form-select-sm">
-                      <option value="" selected="selected">Sort by</option>
-                      <option value="oldest">Oldest</option>
-                      <option value="newest">Newest</option>
-                      <option value="name">Name</option>
+                      <th:block th:replace="~{fragments/code-select :: optionsByGroup('LIST_SORT', '')}"></th:block>
                     </select>
                   </div>
                 </div>

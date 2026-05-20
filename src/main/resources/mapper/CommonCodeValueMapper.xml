@@ -38,4 +38,44 @@
         </where>
         ORDER BY code_id, code_val
     </select>
+
+    <select id="findByCodeIdAndCodeVal" resultMap="commonCodeValueResultMap">
+        SELECT <include refid="commonCodeValueColumns"/>
+        FROM common_code_value
+        WHERE code_id = #{codeId}
+          AND code_val = #{codeVal}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, regdate_dt, update_id, update_dt)
+        VALUES (#{codeId}, #{codeVal}, #{useYn}, #{regId}, #{regdateDt}, #{updateId}, #{updateDt})
+    </insert>
+
+    <update id="update">
+        UPDATE common_code_value
+        SET use_yn = #{useYn},
+            update_id = #{updateId},
+            update_dt = #{updateDt}
+        WHERE code_id = #{codeId}
+          AND code_val = #{codeVal}
+    </update>
+
+    <delete id="deleteByCodeId">
+        DELETE FROM common_code_value
+        WHERE code_id = #{codeId}
+    </delete>
+
+    <delete id="deleteByCodeIds">
+        DELETE FROM common_code_value
+        WHERE code_id IN
+        <foreach collection="codeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByCodeIdAndCodeVal">
+        DELETE FROM common_code_value
+        WHERE code_id = #{codeId}
+          AND code_val = #{codeVal}
+    </delete>
 </mapper>

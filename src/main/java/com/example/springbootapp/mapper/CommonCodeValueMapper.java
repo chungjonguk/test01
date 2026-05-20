@@ -13,4 +13,18 @@ public interface CommonCodeValueMapper {
 	List<CommonCodeValue> findByCodeId(@Param("codeId") String codeId);
 
 	List<CommonCodeValue> findByCodeIds(@Param("codeIds") List<String> codeIds);
+
+	CommonCodeValue findByCodeIdAndCodeVal(
+			@Param("codeId") String codeId,
+			@Param("codeVal") String codeVal);
+
+	int insert(CommonCodeValue value);
+
+	int update(CommonCodeValue value);
+
+	int deleteByCodeId(@Param("codeId") String codeId);
+
+	int deleteByCodeIds(@Param("codeIds") List<String> codeIds);
+
+	int deleteByCodeIdAndCodeVal(@Param("codeId") String codeId, @Param("codeVal") String codeVal);
 }

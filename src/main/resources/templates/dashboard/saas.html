@@ -198,18 +198,7 @@
                         </div>
                         <div class="col-auto">
                           <select class="form-select form-select-sm pe-4" id="select-gross-revenue-month">
-                            <option value="0">Jan</option>
-                            <option value="1">Feb</option>
-                            <option value="2">Mar</option>
-                            <option value="3">Apr</option>
-                            <option value="4">May</option>
-                            <option value="5">Jun</option>
-                            <option value="6">Jul</option>
-                            <option value="7">Aug</option>
-                            <option value="8">Sep</option>
-                            <option value="9">Oct</option>
-                            <option value="10">Nov</option>
-                            <option value="11">Dec</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('DASHBOARD_MONTH', '0')}"></th:block>
                           </select>
                         </div>
                       </div>
@@ -342,9 +331,7 @@
                       <div class="row flex-between-center">
                         <div class="col-auto">
                           <select class="form-select form-select-sm">
-                            <option>Last 6 Months</option>
-                            <option>Last Year</option>
-                            <option>Last 2 Year</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('DASHBOARD_BANDWIDTH_PERIOD', '')}"></th:block>
                           </select>
                         </div>
                         <div class="col-auto"><a class="fs--1 font-sans-serif" href="#!">Help</a></div>
@@ -413,9 +400,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -436,9 +421,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -459,9 +442,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -482,9 +463,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -505,9 +484,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -528,9 +505,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -551,9 +526,7 @@
                         </td>
                         <td class="align-middle ps-4 pe-1 border-0" style="width: 130px; min-width: 130px;">
                           <select class="form-select form-select-sm px-2 bg-transparent">
-                            <option>Action</option>
-                            <option>Archive</option>
-                            <option>Delete</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('ROW_ACTION', '')}"></th:block>
                           </select>
                         </td>
                       </tr>
@@ -563,11 +536,7 @@
                 <div class="card-footer bg-light py-2">
                   <div class="row flex-between-center">
                     <div class="col-auto">
-                      <select class="form-select form-select-sm">
-                        <option>Last 7 days</option>
-                        <option>Last Month</option>
-                        <option>Last Year</option>
-                      </select>
+                      <th:block th:replace="~{fragments/form-controls :: dashboardDateRange('week', 'form-select-sm')}"></th:block>
                     </div>
                     <div class="col-auto"><a class="btn btn-link btn-sm px-0 fw-medium" href="#!">View All<span class="fas fa-chevron-right ms-1 fs--2"></span></a></div>
                   </div>

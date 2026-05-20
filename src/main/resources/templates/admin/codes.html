@@ -7,14 +7,16 @@
     <div th:fragment="page-content">
           <div class="card mb-3" id="code-management-panel">
             <div class="card-header">
-              <div class="row flex-between-center">
-                <div class="col-auto">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
                   <h5 class="mb-0">코드 관리</h5>
-                  <p class="fs--1 mb-0 text-600">위: 코드그룹 · 아래: 상세코드 (그리드 상단에서 추가·삭제)</p>
+                  <p class="fs--1 mb-0 text-600">코드ID 옆 <span class="fas fa-edit text-primary"></span> 또는 행 더블클릭으로 수정 · 추가/수정 시 자동 DB 저장 · 상단 저장은 전체 일괄 반영</p>
                 </div>
-                <div class="col-auto">
-                  <button class="btn btn-falcon-default btn-sm" type="button" id="code-export-btn"><span class="fas fa-download me-1"></span>CSV</button>
-                  <button class="btn btn-primary btn-sm ms-2" type="button" id="code-save-btn"><span class="fas fa-save me-1"></span>저장</button>
+                <div class="col-12 col-lg-auto">
+                  <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-falcon-default btn-sm" type="button" id="code-export-btn"><span class="fas fa-download me-1"></span>CSV</button>
+                    <button class="btn btn-primary btn-sm" type="button" id="code-save-btn"><span class="fas fa-save me-1"></span>저장</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -32,23 +34,21 @@
                 </div>
                 <div class="card-body pb-2">
                   <form id="code-group-search-form" class="row g-2 align-items-end">
-                    <div class="col-md-3 col-sm-6">
-                      <label class="form-label fs--1 mb-1" for="search-group-key">코드</label>
-                      <input class="form-control form-control-sm" id="search-group-key" type="text" placeholder="예: ORDER_STATUS" autocomplete="off" />
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-code-id">코드ID</label>
+                      <input class="form-control form-control-sm" id="search-code-id" type="text" placeholder="code_id · 예: ORDER_STATUS" autocomplete="off" />
                     </div>
-                    <div class="col-md-3 col-sm-6">
-                      <label class="form-label fs--1 mb-1" for="search-group-name">코드명</label>
-                      <input class="form-control form-control-sm" id="search-group-name" type="text" placeholder="예: 주문상태" autocomplete="off" />
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-code-nm">코드명</label>
+                      <input class="form-control form-control-sm" id="search-code-nm" type="text" placeholder="code_nm · 예: 주문상태" autocomplete="off" />
                     </div>
-                    <div class="col-md-2 col-sm-4">
+                    <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-group-use">사용여부</label>
                       <select class="form-select form-select-sm" id="search-group-use">
-                        <option value="">전체</option>
-                        <option value="Y">사용</option>
-                        <option value="N">미사용</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_FILTER', '')}"></th:block>
                       </select>
                     </div>
-                    <div class="col-md-4 col-sm-8">
+                    <div class="col-6 col-sm-8 col-lg-4">
                       <div class="d-flex flex-wrap gap-2">
                         <button class="btn btn-primary btn-sm" type="submit" id="btn-search-groups"><span class="fas fa-search me-1"></span>조회</button>
                         <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-search"><span class="fas fa-redo me-1"></span>초기화</button>
@@ -58,17 +58,17 @@
                 </div>
                 <div class="card-body pt-0 px-0">
                   <div class="table-responsive scrollbar code-mgmt-search-table-wrap">
-                    <table class="table table-sm table-striped table-hover fs--1 mb-0">
+                    <table class="table table-sm table-striped table-hover fs--1 mb-0 code-mgmt-table">
                       <thead class="bg-200 text-900">
                         <tr>
-                          <th class="ps-3 text-center" style="width:3rem">No</th>
-                          <th>코드</th>
-                          <th>코드명</th>
-                          <th class="text-center">사용</th>
-                          <th>등록자</th>
-                          <th>등록일시</th>
-                          <th>수정자</th>
-                          <th>수정일시</th>
+                          <th class="ps-3 text-center col-no">No</th>
+                          <th class="col-code">코드</th>
+                          <th class="col-code-nm">코드명</th>
+                          <th class="text-center col-use">사용</th>
+                          <th class="col-reg-id d-none d-xl-table-cell">등록자</th>
+                          <th class="col-reg-dt d-none d-xl-table-cell">등록일시</th>
+                          <th class="col-upd-id d-none d-xl-table-cell">수정자</th>
+                          <th class="col-upd-dt d-none d-xl-table-cell">수정일시</th>
                         </tr>
                       </thead>
                       <tbody id="code-group-search-grid-body">
@@ -95,22 +95,23 @@
                     </div>
                     <div class="card-body p-0">
                       <div class="table-responsive scrollbar code-mgmt-table-wrap">
-                        <table class="table table-sm table-hover fs--1 mb-0">
+                        <table class="table table-sm table-hover fs--1 mb-0 code-mgmt-table">
                           <thead class="bg-200 text-900">
                             <tr>
-                              <th class="code-mgmt-check-col">
+                              <th class="col-check code-mgmt-check-col">
                                 <div class="form-check fs-0 mb-0 d-flex align-items-center justify-content-center">
                                   <input class="form-check-input" id="code-group-check-all" type="checkbox" title="전체 선택" aria-label="코드그룹 전체 선택" />
                                 </div>
                               </th>
-                              <th class="ps-3 text-center" style="width:3rem">No</th>
-                              <th>코드</th>
-                              <th>코드명</th>
-                              <th class="text-center">건수</th>
-                              <th>등록자</th>
-                              <th>등록일시</th>
-                              <th>수정자</th>
-                              <th>수정일시</th>
+                              <th class="ps-3 text-center col-no">No</th>
+                              <th class="col-code-id">코드ID</th>
+                              <th class="col-code-nm">코드명</th>
+                              <th class="text-center col-use">사용여부</th>
+                              <th class="text-center col-count">상세건수</th>
+                              <th class="col-reg-id d-none d-xl-table-cell">등록자</th>
+                              <th class="col-reg-dt d-none d-xl-table-cell">등록일시</th>
+                              <th class="col-upd-id d-none d-xl-table-cell">수정자</th>
+                              <th class="col-upd-dt d-none d-xl-table-cell">수정일시</th>
                             </tr>
                           </thead>
                           <tbody id="code-group-grid-body"></tbody>
@@ -136,23 +137,22 @@
                     </div>
                     <div class="card-body p-0">
                       <div class="table-responsive scrollbar code-mgmt-table-wrap">
-                        <table class="table table-sm table-hover fs--1 mb-0">
+                        <table class="table table-sm table-hover fs--1 mb-0 code-mgmt-table">
                           <thead class="bg-200 text-900">
                             <tr>
-                              <th class="code-mgmt-check-col">
+                              <th class="col-check code-mgmt-check-col">
                                 <div class="form-check fs-0 mb-0 d-flex align-items-center justify-content-center">
                                   <input class="form-check-input" id="code-detail-check-all" type="checkbox" title="전체 선택" aria-label="상세코드 전체 선택" disabled="disabled" />
                                 </div>
                               </th>
-                              <th class="ps-3 text-center" style="width:3rem">No</th>
-                              <th>코드</th>
-                              <th>코드명</th>
-                              <th class="text-center">정렬</th>
-                              <th class="text-center">사용</th>
-                              <th>등록자</th>
-                              <th>등록일시</th>
-                              <th>수정자</th>
-                              <th>수정일시</th>
+                              <th class="ps-3 text-center col-no">No</th>
+                              <th class="col-code-val">코드값</th>
+                              <th class="text-center col-sort">정렬</th>
+                              <th class="text-center col-use">사용</th>
+                              <th class="col-reg-id d-none d-xl-table-cell">등록자</th>
+                              <th class="col-reg-dt d-none d-xl-table-cell">등록일시</th>
+                              <th class="col-upd-id d-none d-xl-table-cell">수정자</th>
+                              <th class="col-upd-dt d-none d-xl-table-cell">수정일시</th>
                             </tr>
                           </thead>
                           <tbody id="code-detail-grid-body"></tbody>
@@ -166,8 +166,159 @@
             </div>
           </div>
 
+          <div class="modal fade" id="code-group-add-modal" tabindex="-1" aria-labelledby="code-group-add-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="code-group-add-modal-label">코드그룹 추가</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <form id="code-group-add-form">
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label class="form-label" for="code-group-add-code-id">코드ID (code_id)</label>
+                      <input class="form-control form-control-sm" id="code-group-add-code-id" type="text" placeholder="예: ORDER_TYPE" autocomplete="off" required />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="code-group-add-code-nm">코드명 (code_nm)</label>
+                      <input class="form-control form-control-sm" id="code-group-add-code-nm" type="text" placeholder="예: 주문유형" autocomplete="off" />
+                    </div>
+                    <div class="mb-0">
+                      <label class="form-label" for="code-group-add-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="code-group-add-use-yn" required>
+                        <option value="Y">사용</option>
+                        <option value="N">사용안함</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit">확인</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="code-group-edit-modal" tabindex="-1" aria-labelledby="code-group-edit-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="code-group-edit-modal-label">코드그룹 수정</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <form id="code-group-edit-form">
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label class="form-label" for="code-group-edit-code-id">코드ID (code_id)</label>
+                      <input class="form-control form-control-sm" id="code-group-edit-code-id" type="text" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="code-group-edit-code-nm">코드명 (code_nm)</label>
+                      <input class="form-control form-control-sm" id="code-group-edit-code-nm" type="text" autocomplete="off" required />
+                    </div>
+                    <div class="mb-0">
+                      <label class="form-label" for="code-group-edit-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="code-group-edit-use-yn" required>
+                        <option value="Y">사용</option>
+                        <option value="N">사용안함</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit">확인</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="code-detail-edit-modal" tabindex="-1" aria-labelledby="code-detail-edit-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="code-detail-edit-modal-label">상세코드 수정</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <form id="code-detail-edit-form">
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label class="form-label" for="code-detail-edit-code-val">코드값 (code_val)</label>
+                      <input class="form-control form-control-sm" id="code-detail-edit-code-val" type="text" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="code-detail-edit-sort">정렬</label>
+                      <input class="form-control form-control-sm" id="code-detail-edit-sort" type="number" min="1" />
+                    </div>
+                    <div class="mb-0">
+                      <label class="form-label" for="code-detail-edit-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="code-detail-edit-use-yn" required>
+                        <option value="Y">사용</option>
+                        <option value="N">사용안함</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit">확인</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="code-detail-add-modal" tabindex="-1" aria-labelledby="code-detail-add-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="code-detail-add-modal-label">상세코드 추가</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <form id="code-detail-add-form">
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label class="form-label" for="code-detail-add-code-val">코드값 (code_val)</label>
+                      <input class="form-control form-control-sm" id="code-detail-add-code-val" type="text" placeholder="예: SHIPPED 또는 week|Last 7 days" autocomplete="off" required />
+                      <div class="form-text">값|표시명 형식은 대시보드 콤보용 (| 포함 시 그대로 저장)</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="code-detail-add-sort">정렬</label>
+                      <input class="form-control form-control-sm" id="code-detail-add-sort" type="number" min="1" placeholder="1" />
+                    </div>
+                    <div class="mb-0">
+                      <label class="form-label" for="code-detail-add-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="code-detail-add-use-yn" required>
+                        <option value="Y">사용</option>
+                        <option value="N">사용안함</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit">확인</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
     </th:block>
+    <script>
+      (function () {
+        function bootCodeMgmt() {
+          if (typeof window.CodeMgmtInit === 'function') {
+            window.CodeMgmtInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootCodeMgmt);
+        } else {
+          bootCodeMgmt();
+        }
+      })();
+    </script>
 </body>
 </html>

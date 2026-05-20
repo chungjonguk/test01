@@ -14,4 +14,14 @@ public interface CommonCodeMapper {
 			@Param("codeId") String codeId,
 			@Param("codeNm") String codeNm,
 			@Param("useYn") String useYn);
+
+	CommonCode findByCodeId(@Param("codeId") String codeId);
+
+	int insert(CommonCode group);
+
+	int update(CommonCode group);
+
+	int deleteByCodeId(@Param("codeId") String codeId);
+
+	int deleteByCodeIds(@Param("codeIds") List<String> codeIds);
 }

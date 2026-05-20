@@ -88,11 +88,7 @@
                             <div class="mb-3">
                                 <label class="fs-0" for="eventLabel">라벨</label>
                                 <select class="form-select" id="eventLabel" name="label">
-                                    <option value="" selected="selected">없음</option>
-                                    <option value="primary">업무</option>
-                                    <option value="danger">중요</option>
-                                    <option value="success">개인</option>
-                                    <option value="warning">필수 참석</option>
+                                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('CALENDAR_EVENT_LABEL', '')}"></th:block>
                                 </select>
                             </div>
                         </div>

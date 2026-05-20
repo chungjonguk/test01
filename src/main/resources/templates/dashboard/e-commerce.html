@@ -352,10 +352,7 @@
                       <div class="d-none" id="table-purchases-actions">
                         <div class="d-flex">
                           <select class="form-select form-select-sm" aria-label="일괄 작업">
-                            <option selected="">일괄 작업</option>
-                            <option value="Refund">환불</option>
-                            <option value="Delete">삭제</option>
-                            <option value="Archive">보관</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('BULK_ACTION_KO', '')}"></th:block>
                           </select>
                           <button class="btn btn-falcon-default btn-sm ms-2" type="button">적용</button>
                         </div>
@@ -712,18 +709,7 @@
                     </div>
                     <div class="col-auto">
                       <select class="form-select form-select-sm pe-4" id="select-returning-customer-month">
-                        <option value="0">1월</option>
-                        <option value="1">2월</option>
-                        <option value="2">3월</option>
-                        <option value="3">4월</option>
-                        <option value="4">5월</option>
-                        <option value="5">6월</option>
-                        <option value="6">7월</option>
-                        <option value="7">8월</option>
-                        <option value="8">9월</option>
-                        <option value="9">10월</option>
-                        <option value="10">11월</option>
-                        <option value="11">12월</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('DASHBOARD_MONTH_KO', '0')}"></th:block>
                       </select>
                     </div>
                   </div>
@@ -945,11 +931,7 @@
                 <div class="card-footer bg-light py-2">
                   <div class="row flex-between-center">
                     <div class="col-auto">
-                      <select class="form-select form-select-sm">
-                        <option>최근 7일</option>
-                        <option>지난달</option>
-                        <option>작년</option>
-                      </select>
+                      <th:block th:replace="~{fragments/form-controls :: dashboardDateRangeKo('', 'form-select-sm')}"></th:block>
                     </div>
                     <div class="col-auto"><a class="btn btn-sm btn-falcon-default" href="#!">전체 보기</a></div>
                   </div>

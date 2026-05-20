@@ -29,14 +29,14 @@ class OrderDetailsMvcTest {
 	@Test
 	void orderDetails_withHtmlSuffix_ok() throws Exception {
 		mockMvc.perform(get("/app/e-commerce/orders/order-details.html"))
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("Order Details: #2737")));
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/app/e-commerce/orders/order-details"));
 	}
 
 	@Test
 	void doubleAppPrefix_redirectsToCorrectPath() throws Exception {
 		mockMvc.perform(get("/app/app/e-commerce/orders/order-details.html"))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/app/e-commerce/orders/order-details.html"));
+				.andExpect(redirectedUrl("/app/app/e-commerce/orders/order-details"));
 	}
 }

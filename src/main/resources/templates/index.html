@@ -118,11 +118,7 @@
                                 <h6 class="mb-0">Running Projects</h6>
                             </div>
                             <div class="col-auto d-flex align-items-center gap-2 pe-card">
-                                <select class="form-select form-select-sm">
-                                    <option>Working Time</option>
-                                    <option>Estimated Time</option>
-                                    <option>Billable Time</option>
-                                </select>
+                                <th:block th:replace="~{fragments/form-controls :: dashboardProjectTime('WORKING', 'form-select-sm')}"></th:block>
                                 <div th:replace="~{fragments/widget-actions :: widgetMenu('running-projects')}"></div>
                             </div>
                         </div>
@@ -260,20 +256,7 @@
                                 <h6 class="mb-0">Total Sales</h6>
                             </div>
                             <div class="col-auto d-flex">
-                                <select class="form-select form-select-sm select-month me-2">
-                                    <option value="0">January</option>
-                                    <option value="1">February</option>
-                                    <option value="2">March</option>
-                                    <option value="3">April</option>
-                                    <option value="4">May</option>
-                                    <option value="5">Jun</option>
-                                    <option value="6">July</option>
-                                    <option value="7">August</option>
-                                    <option value="8">September</option>
-                                    <option value="9">October</option>
-                                    <option value="10">November</option>
-                                    <option value="11">December</option>
-                                </select>
+                                <th:block th:replace="~{fragments/form-controls :: dashboardMonth('0', 'form-select-sm select-month me-2')}"></th:block>
                                 <div th:replace="~{fragments/widget-actions :: widgetMenu('total-sales')}"></div>
                             </div>
                         </div>
@@ -449,11 +432,7 @@
                     <div class="card-footer bg-light py-2">
                         <div class="row flex-between-center">
                             <div class="col-auto">
-                                <select class="form-select form-select-sm">
-                                    <option>Last 7 days</option>
-                                    <option>Last Month</option>
-                                    <option>Last Year</option>
-                                </select>
+                                <th:block th:replace="~{fragments/form-controls :: dashboardDateRange('week', 'form-select-sm')}"></th:block>
                             </div>
                             <div class="col-auto"><a class="btn btn-sm btn-falcon-default" href="#!">View All</a></div>
                         </div>
@@ -613,11 +592,7 @@
                     <div class="card-footer bg-light py-2">
                         <div class="row flex-between-center">
                             <div class="col-auto">
-                                <select class="form-select form-select-sm">
-                                    <option>Last 6 Months</option>
-                                    <option>Last Year</option>
-                                    <option>Last 2 Year</option>
-                                </select>
+                                <th:block th:replace="~{fragments/form-controls :: dashboardBandwidthPeriod('6months', 'form-select-sm')}"></th:block>
                             </div>
                             <div class="col-auto"><a class="fs--1 font-sans-serif" href="#!">Help</a></div>
                         </div>

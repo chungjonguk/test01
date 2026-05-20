@@ -335,8 +335,7 @@
                 </div>
                 <div class="card-body bg-light">
                   <select class="form-select mb-3" id="billing-cycle" aria-label="Billing cycle">
-                    <option selected="">Monthly Plan</option>
-                    <option value="1">Annual Plan</option>
+                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('BILLING_CYCLE', '')}"></th:block>
                   </select>
                   <div class="d-flex justify-content-between fs--1 mb-1">
                     <p class="mb-0">Due in 30 days</p><span>$375.00</span>

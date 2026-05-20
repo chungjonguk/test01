@@ -720,9 +720,7 @@
                             <div class="col-auto d-none d-lg-block"><small class="fw-semi-bold">Sort by:</small></div>
                             <div class="col-auto">
                               <select class="form-select form-select-sm" aria-label="Bulk actions">
-                                <option value="rating">Rating</option>
-                                <option value="review">Review</option>
-                                <option value="price">Price</option>
+                                <th:block th:replace="~{fragments/code-select :: optionsByGroup('COURSE_SORT', 'rating')}"></th:block>
                               </select>
                             </div>
                           </form>
@@ -1105,9 +1103,7 @@
                         <div class="col-auto"><small>Show:</small></div>
                         <div class="col-auto">
                           <select class="form-select form-select-sm" aria-label="Show courses">
-                            <option selected="selected" value="9">9</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('PAGE_SIZE', '9')}"></th:block>
                           </select>
                         </div>
                       </form>

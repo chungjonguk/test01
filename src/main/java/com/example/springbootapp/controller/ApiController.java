@@ -25,14 +25,6 @@ public class ApiController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/greet")
-	public ResponseEntity<Map<String, String>> greet(@RequestParam(defaultValue = "Guest") String name) {
-		Map<String, String> response = new HashMap<>();
-		response.put("message", "안녕하세요, " + name + "님!");
-		response.put("greeting", "Welcome to Spring Boot Application");
-		return ResponseEntity.ok(response);
-	}
-
 	@PostMapping("/upload")
 	public ResponseEntity<Map<String, Object>> upload(@RequestParam("file") MultipartFile file) {
 		Map<String, Object> response = new HashMap<>();

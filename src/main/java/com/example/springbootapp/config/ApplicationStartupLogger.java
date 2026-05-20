@@ -10,19 +10,15 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 
-import com.example.springbootapp.repository.ShopOrderRepository;
-
 @Configuration
 public class ApplicationStartupLogger implements ApplicationListener<ApplicationReadyEvent> {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationStartupLogger.class);
 
 	private final DataSource dataSource;
-	private final ShopOrderRepository shopOrderRepository;
 
-	public ApplicationStartupLogger(DataSource dataSource, ShopOrderRepository shopOrderRepository) {
+	public ApplicationStartupLogger(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.shopOrderRepository = shopOrderRepository;
 	}
 
 	@Override
@@ -33,12 +29,10 @@ public class ApplicationStartupLogger implements ApplicationListener<Application
 		int port = webCtx.getWebServer().getPort();
 		String name = event.getApplicationContext().getEnvironment().getProperty("spring.application.name", "app");
 		try (var connection = dataSource.getConnection()) {
-			log.info("[{}] MySQL 연결 성공 — url={}, 주문 건수={}",
-					name, connection.getMetaData().getURL(), shopOrderRepository.count());
+			log.info("[{}] MySQL 연결 성공 — url={}", name, connection.getMetaData().getURL());
 		} catch (Exception ex) {
 			log.error("[{}] MySQL 연결 실패", name, ex);
 		}
-		log.info("[{}] 서버 포트 {} — 주문 상세 예: http://localhost:{}/app/e-commerce/orders/order-details.html",
-				name, port, port);
+		log.info("[{}] 서버 포트 {} — 예: http://localhost:{}/dashboard", name, port, port);
 	}
 }

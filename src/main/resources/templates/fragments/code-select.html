@@ -1,0 +1,23 @@
+<!-- codes: List<CodeOption> (직접 전달) -->
+<th:block th:fragment="options(codes, selected)">
+    <option th:each="opt : ${codes}"
+            th:value="${opt.value}"
+            th:text="${opt.label}"
+            th:selected="${selected != null and selected == opt.value}"></option>
+</th:block>
+
+<!-- codeOptions 맵에서 그룹 ID로 조회 (전역 @ModelAttribute codeOptions) -->
+<th:block th:fragment="optionsByGroup(groupId, selected)">
+    <option th:each="opt : ${codeOptions != null ? codeOptions.get(groupId) : T(java.util.Collections).emptyList()}"
+            th:value="${opt.value}"
+            th:text="${opt.label}"
+            th:selected="${selected != null and selected == opt.value}"></option>
+</th:block>
+
+<!-- 빈 value 허용(전체/placeholder) -->
+<th:block th:fragment="optionsByGroupAllowEmpty(groupId, selected)">
+    <option th:each="opt : ${codeOptions != null ? codeOptions.get(groupId) : T(java.util.Collections).emptyList()}"
+            th:value="${opt.value}"
+            th:text="${opt.label}"
+            th:selected="${(selected == null or selected == '') ? (opt.value == null or opt.value == '') : (selected == opt.value)}"></option>
+</th:block>

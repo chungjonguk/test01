@@ -29,13 +29,7 @@
                     <div class="col-sm-6 mb-3">
                       <label class="form-label" for="course-category">Category<span class="text-danger">*</span></label>
                       <select class="form-select" id="course-category" name="course-category" required="required">
-                        <option>Select a category</option>
-                        <option>Class, Training, or Workshop</option>
-                        <option>Concert or Performance</option>
-                        <option>Conference</option>
-                        <option>Convention</option>
-                        <option>Dinner or Gala</option>
-                        <option>Festival or Fair</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('COURSE_CATEGORY', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-sm-6 mb-3">
@@ -213,11 +207,7 @@
                     <button class="btn btn-link btn-sm fw-medium p-0" type="button">Add New</button>
                   </div>
                   <select class="form-select js-choice" id="course-features" multiple="multiple" size="1" name="features" data-options='{"removeItemButton":true,"placeholder":true}'>
-                    <option value="">Select multiple features...</option>
-                    <option>Total 13 hours of video lectures</option>
-                    <option>12 premium article access</option>
-                    <option>11 downloadable resources</option>
-                    <option>Mobile, Tab or TV friendly content </option>
+                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('COURSE_FEATURE', '')}"></th:block>
                   </select>
                 </div>
               </div>

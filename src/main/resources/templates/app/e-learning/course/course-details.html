@@ -639,10 +639,7 @@
                     <button class="btn btn-falcon-default btn-sm" type="button"><span class="d-none d-sm-inline-block me-1">Filter</span><span class="fs--2 fas fa-filter"></span></button>
                     <div>
                       <select class="form-select form-select-sm">
-                        <option value="" selected="selected">Sort by</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="newest">Newest</option>
-                        <option value="name">Name</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('LIST_SORT', '')}"></th:block>
                       </select>
                     </div>
                   </div>

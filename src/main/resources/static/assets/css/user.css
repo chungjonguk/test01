@@ -56,6 +56,22 @@ html[data-navbar-position="top"] .content {
   max-width: 100%;
 }
 
+body.layout-hide-sidebar #layoutSidebar,
+body.layout-hide-sidebar #layoutHeaderVertical .navbar-toggler {
+  display: none !important;
+}
+
+body.layout-hide-sidebar .main > .container > .content,
+body.layout-hide-sidebar .main > .container-fluid > .content {
+  margin-left: 0 !important;
+  max-width: 100%;
+  padding-top: 0.5rem;
+}
+
+body.layout-hide-sidebar #kanban-page .kanban-header {
+  margin-top: 0;
+}
+
 /* 전역 로딩바 (app-loading.js) */
 #app-global-loading-bar {
   position: fixed;
@@ -142,14 +158,79 @@ html.app-is-loading {
   cursor: pointer;
 }
 
-/* 코드 관리 — 조회 그리드 + 코드그룹/상세코드 상하 배치 */
-.code-mgmt-search-table-wrap {
-  max-height: 12rem;
-  min-height: 6rem;
+/* 코드 관리 — 조회 그리드 + 코드그룹/상세코드 (뷰포트 맞춤) */
+#code-management-panel .card-body {
+  min-width: 0;
 }
-.code-mgmt-search-table-wrap table,
-.code-mgmt-table-wrap table {
-  min-width: 52rem;
+.code-mgmt-search-table-wrap,
+.code-mgmt-table-wrap {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.code-mgmt-search-table-wrap {
+  max-height: min(11rem, calc((100vh - 17rem) * 0.28));
+  min-height: 5.5rem;
+}
+.code-mgmt-search-table-wrap .code-mgmt-table,
+.code-mgmt-table-wrap .code-mgmt-table {
+  width: 100%;
+  table-layout: fixed;
+  margin-bottom: 0;
+  min-width: 0;
+}
+.code-mgmt-search-table-wrap .code-mgmt-table th,
+.code-mgmt-search-table-wrap .code-mgmt-table td,
+.code-mgmt-table-wrap .code-mgmt-table th,
+.code-mgmt-table-wrap .code-mgmt-table td {
+  vertical-align: middle;
+}
+.code-mgmt-truncate,
+.menu-mgmt-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.code-mgmt-table .col-no {
+  width: 2.75rem;
+}
+.code-mgmt-table .col-check {
+  width: 2.25rem;
+}
+.code-mgmt-table .col-use,
+.code-mgmt-table .col-sort,
+.code-mgmt-table .col-count {
+  width: 3.25rem;
+}
+.code-mgmt-table .col-code-id,
+.code-mgmt-table .col-code {
+  width: 18%;
+}
+.code-mgmt-table .col-code-nm,
+.code-mgmt-table .col-code-val {
+  width: 20%;
+}
+.code-mgmt-table .col-reg-id,
+.code-mgmt-table .col-upd-id {
+  width: 8%;
+}
+.code-mgmt-table .col-reg-dt,
+.code-mgmt-table .col-upd-dt {
+  width: 10rem;
+}
+.code-mgmt-code-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.code-mgmt-code-cell .code-mgmt-truncate {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.code-mgmt-code-cell .btn {
+  flex: 0 0 auto;
 }
 .code-group-search-row {
   cursor: pointer;
@@ -159,11 +240,12 @@ html.app-is-loading {
   outline-offset: -2px;
 }
 .code-mgmt-split .code-mgmt-pane {
-  min-height: 22rem;
+  min-height: 0;
 }
-.code-mgmt-table-wrap {
-  max-height: 22rem;
-  min-height: 16rem;
+.code-mgmt-pane-group .code-mgmt-table-wrap,
+.code-mgmt-pane-detail .code-mgmt-table-wrap {
+  max-height: min(16rem, calc((100vh - 17rem) * 0.36));
+  min-height: 8rem;
 }
 .code-mgmt-grid-toolbar .btn {
   min-width: 4.5rem;
@@ -177,21 +259,122 @@ html.app-is-loading {
   cursor: pointer;
 }
 .code-group-row,
-.code-detail-row {
+.code-detail-row,
+.code-group-search-row {
   cursor: pointer;
+}
+.code-group-row:hover,
+.code-detail-row:hover,
+.code-group-search-row:hover {
+  background-color: rgba(44, 123, 229, 0.06);
+}
+.code-group-edit-btn,
+.code-detail-edit-btn {
+  vertical-align: middle;
+  line-height: 1;
 }
 .code-group-row:focus,
 .code-detail-row:focus {
   outline: 2px solid var(--falcon-primary, #2c7be5);
   outline-offset: -2px;
 }
-@media (max-width: 991.98px) {
-  .code-mgmt-pane-group .code-mgmt-table-wrap {
-    max-height: 12rem;
-    min-height: 7rem;
+@media (max-width: 1199.98px) {
+  .code-mgmt-search-table-wrap {
+    max-height: min(10rem, calc((100vh - 15rem) * 0.26));
   }
+  .code-mgmt-pane-group .code-mgmt-table-wrap,
   .code-mgmt-pane-detail .code-mgmt-table-wrap {
-    max-height: 14rem;
-    min-height: 8rem;
+    max-height: min(14rem, calc((100vh - 15rem) * 0.34));
+  }
+}
+@media (max-width: 767.98px) {
+  .code-mgmt-table .col-code-id,
+  .code-mgmt-table .col-code {
+    width: 24%;
+  }
+  .code-mgmt-table .col-code-nm,
+  .code-mgmt-table .col-code-val {
+    width: 28%;
+  }
+}
+
+/* 코드 관리 — SweetAlert 추가/수정 폼 */
+.code-mgmt-swal-html {
+  overflow: visible !important;
+  padding: 0.25rem 0.5rem 0;
+}
+.code-mgmt-prompt-fields .code-mgmt-prompt-select,
+.code-mgmt-prompt-fields .form-select {
+  display: block;
+  width: 100%;
+  min-height: 2rem;
+  margin-top: 0.125rem;
+}
+.code-mgmt-prompt-fields .form-control {
+  width: 100%;
+}
+
+/* 메뉴관리 — 화면 목록 그리드 (뷰포트 맞춤·가로 스크롤) */
+#menu-management-panel .card-body {
+  min-width: 0;
+}
+.menu-mgmt-table-wrap {
+  max-height: min(32rem, calc(100vh - 15rem));
+  min-height: 10rem;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.menu-mgmt-table-wrap .menu-mgmt-table {
+  width: 100%;
+  table-layout: fixed;
+  margin-bottom: 0;
+}
+.menu-mgmt-table-wrap .menu-mgmt-table th,
+.menu-mgmt-table-wrap .menu-mgmt-table td {
+  vertical-align: middle;
+}
+.menu-mgmt-table .col-no {
+  width: 2.75rem;
+}
+.menu-mgmt-table .col-sort,
+.menu-mgmt-table .col-use {
+  width: 3.25rem;
+}
+.menu-mgmt-table .col-screen-id {
+  width: 14%;
+}
+.menu-mgmt-table .col-screen-nm {
+  width: 16%;
+}
+.menu-mgmt-table .col-uri {
+  width: 26%;
+}
+.menu-mgmt-table .col-update-id {
+  width: 8%;
+}
+.menu-mgmt-table .col-update-dt {
+  width: 11rem;
+}
+@media (max-width: 1199.98px) {
+  .menu-mgmt-table-wrap {
+    max-height: min(28rem, calc(100vh - 14rem));
+  }
+  .menu-mgmt-table .col-update-id,
+  .menu-mgmt-table .col-update-dt {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .menu-mgmt-table-wrap {
+    max-height: min(24rem, calc(100vh - 12rem));
+  }
+  .menu-mgmt-table .col-screen-id {
+    width: 22%;
+  }
+  .menu-mgmt-table .col-screen-nm {
+    width: 24%;
+  }
+  .menu-mgmt-table .col-uri {
+    width: 38%;
   }
 }

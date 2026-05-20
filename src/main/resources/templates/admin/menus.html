@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3" id="menu-management-panel">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
+                  <h5 class="mb-0">메뉴관리</h5>
+                  <p class="fs--1 mb-0 text-600">screen_list 조회 전용 · DB 화면명이 없으면 사이드바 메뉴명으로 표시 · 사용여부 N이면 사이드바 숨김·URL 접근 불가</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>화면 조회</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="menu-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-screen-id">화면ID</label>
+                      <input class="form-control form-control-sm" id="search-screen-id" type="text" placeholder="screen_id" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-screen-nm">화면명</label>
+                      <input class="form-control form-control-sm" id="search-screen-nm" type="text" placeholder="화면명 검색" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-uri-path">URL 경로</label>
+                      <input class="form-control form-control-sm" id="search-uri-path" type="text" placeholder="/admin/menus" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="search-use-yn">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_FILTER', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-8 col-lg-3">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-menus"><span class="fas fa-search me-1"></span>조회</button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-menu-search"><span class="fas fa-redo me-1"></span>초기화</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="menu-search-result-count">0건</span>
+                <span class="fs--1 text-600">조회 전용 · 좁은 화면에서는 가로 스크롤</span>
+              </div>
+
+              <div class="table-responsive scrollbar menu-mgmt-table-wrap">
+                <table class="table table-sm table-striped table-hover fs--1 mb-0 menu-mgmt-table">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="ps-3 text-center col-no">No</th>
+                      <th class="col-screen-id">화면ID</th>
+                      <th class="col-screen-nm">화면명</th>
+                      <th class="col-uri">URL 경로</th>
+                      <th class="text-center col-sort">정렬</th>
+                      <th class="text-center col-use">사용</th>
+                      <th class="col-update-id d-none d-xl-table-cell">수정자</th>
+                      <th class="col-update-dt d-none d-xl-table-cell">수정일시</th>
+                    </tr>
+                  </thead>
+                  <tbody id="menu-grid-body">
+                    <tr>
+                      <td colspan="8" class="text-center text-600 py-4">조회 버튼을 눌러 화면 목록을 불러오세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+    <script>
+      (function () {
+        function bootMenuMgmt() {
+          if (typeof window.MenuMgmtInit === 'function') {
+            window.MenuMgmtInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootMenuMgmt);
+        } else {
+          bootMenuMgmt();
+        }
+      })();
+    </script>
+</body>
+</html>

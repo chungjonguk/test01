@@ -34,4 +34,37 @@
         </where>
         ORDER BY code_id
     </select>
+
+    <select id="findByCodeId" resultMap="commonCodeResultMap">
+        SELECT <include refid="commonCodeColumns"/>
+        FROM common_code
+        WHERE code_id = #{codeId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, regdate_dt, update_id, update_dt)
+        VALUES (#{codeId}, #{codeNm}, #{useYn}, #{regId}, #{regdateDt}, #{updateId}, #{updateDt})
+    </insert>
+
+    <update id="update">
+        UPDATE common_code
+        SET code_nm = #{codeNm},
+            use_yn = #{useYn},
+            update_id = #{updateId},
+            update_dt = #{updateDt}
+        WHERE code_id = #{codeId}
+    </update>
+
+    <delete id="deleteByCodeId">
+        DELETE FROM common_code
+        WHERE code_id = #{codeId}
+    </delete>
+
+    <delete id="deleteByCodeIds">
+        DELETE FROM common_code
+        WHERE code_id IN
+        <foreach collection="codeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

@@ -441,9 +441,7 @@
                   <div class="row justify-content-between">
                     <div class="col-auto">
                       <select class="form-select form-select-sm">
-                        <option value="today" selected="selected">Today</option>
-                        <option value="week">last week</option>
-                        <option value="month">last month</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('APP_DATE_RANGE_SHORT', 'today')}"></th:block>
                       </select>
                     </div>
                     <div class="col-auto"><a class="btn btn-sm btn-falcon-default" href="#!">View All</a></div>

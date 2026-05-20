@@ -2,7 +2,6 @@ package com.example.springbootapp.controller.page;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Locale;
-import java.util.Set;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Controller
 public class FalconTemplateController {
-
-    private static final Set<String> DROPZONE_VIEWS = Set.of("modules/forms/advance/file-uploader");
 
     private final ResourceLoader resourceLoader;
 
@@ -52,21 +49,8 @@ public class FalconTemplateController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        model.addAttribute("title", humanizeTitle(viewName));
-        if (DROPZONE_VIEWS.contains(viewName)) {
-            model.addAttribute("loadDropzone", true);
-        }
-        if ("modules/components/calendar".equals(viewName)) {
-            model.addAttribute("loadCalendar", true);
-        }
-        if ("modules/charts/chartjs".equals(viewName)) {
-            model.addAttribute("loadChartJs", true);
-        }
-        if ("modules/charts/d3js".equals(viewName)) {
-            model.addAttribute("loadD3", true);
-        }
-        if (viewName.startsWith("modules/charts/echarts/")) {
-            model.addAttribute("loadEchartsExamples", true);
+        if (!model.containsAttribute("title")) {
+            model.addAttribute("title", humanizeTitle(viewName));
         }
 
         return viewName;
