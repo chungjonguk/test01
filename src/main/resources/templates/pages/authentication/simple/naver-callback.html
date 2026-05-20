@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Naver Login Callback</title>
+</head>
+<body>
+<main>
+    <h1>Naver Login Callback</h1>
+    <p>state 검증: <span th:text="${stateValid}">false</span></p>
+    <p th:if="${error != null}">에러: <span th:text="${error}">error</span></p>
+    <p th:if="${code != null}">인가 코드: <span th:text="${code}">code</span></p>
+    <div th:if="${tokenResponse != null}">
+        <h2>토큰 응답</h2>
+        <pre th:text="${tokenResponse}">token</pre>
+    </div>
+    <div th:if="${userResponse != null}">
+        <h2>사용자 응답</h2>
+        <pre th:text="${userResponse}">user</pre>
+    </div>
+    <p><a th:href="@{/pages/authentication/simple/login}">로그인으로 돌아가기</a></p>
+</main>
+</body>
+</html>

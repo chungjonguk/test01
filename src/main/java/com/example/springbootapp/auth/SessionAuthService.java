@@ -48,6 +48,15 @@ public class SessionAuthService {
         establishSession(session, loginSession);
     }
 
+    public void loginFromNaver(HttpSession session, Map<String, Object> naverBody) {
+        LoginSession loginSession = new LoginSession();
+        loginSession.setUserId(resolveNaverUserId(naverBody));
+        loginSession.setUserName(resolveNaverDisplayName(naverBody));
+        loginSession.setEmail(resolveNaverEmail(naverBody));
+        loginSession.setLoginType("NAVER");
+        establishSession(session, loginSession);
+    }
+
     private void establishSession(HttpSession session, LoginSession loginSession) {
         loginSession.setLoginAt(LocalDateTime.now());
         session.setAttribute(ATTR_LOGIN_USER, loginSession);
@@ -116,6 +125,50 @@ public class SessionAuthService {
             if (email != null && !email.toString().isBlank()) {
                 return email.toString();
             }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> resolveNaverProfile(Map<String, Object> naverBody) {
+        if (naverBody == null) {
+            return Map.of();
+        }
+        Object response = naverBody.get("response");
+        if (response instanceof Map<?, ?> profile) {
+            return (Map<String, Object>) profile;
+        }
+        return Map.of();
+    }
+
+    public static String resolveNaverUserId(Map<String, Object> naverBody) {
+        Map<String, Object> profile = resolveNaverProfile(naverBody);
+        Object id = profile.get("id");
+        if (id == null || id.toString().isBlank()) {
+            return "naver:unknown";
+        }
+        return "naver:" + id;
+    }
+
+    public static String resolveNaverDisplayName(Map<String, Object> naverBody) {
+        Map<String, Object> profile = resolveNaverProfile(naverBody);
+        Object name = profile.get("name");
+        if (name != null && !name.toString().isBlank()) {
+            return name.toString();
+        }
+        Object nickname = profile.get("nickname");
+        if (nickname != null && !nickname.toString().isBlank()) {
+            return nickname.toString();
+        }
+        Object id = profile.get("id");
+        return id != null ? "네이버 " + id : "네이버 사용자";
+    }
+
+    public static String resolveNaverEmail(Map<String, Object> naverBody) {
+        Map<String, Object> profile = resolveNaverProfile(naverBody);
+        Object email = profile.get("email");
+        if (email != null && !email.toString().isBlank()) {
+            return email.toString();
         }
         return null;
     }

@@ -72,3 +72,72 @@ html[data-navbar-position="top"] .content {
 html.app-is-loading {
   cursor: progress;
 }
+
+/* E-commerce product list — 이미지 영역 최소 높이 (h-sm-100만으로는 모바일에서 0px) */
+.product-list-media {
+  min-height: 12rem;
+}
+@media (min-width: 576px) {
+  .product-list-media {
+    min-height: 14rem;
+    height: 100%;
+  }
+}
+.product-list-media .product-list-img,
+.product-list-media .swiper-slide img {
+  width: 100%;
+  min-height: 12rem;
+  max-height: 14rem;
+  object-fit: cover;
+}
+@media (min-width: 576px) {
+  .product-list-media .product-list-img,
+  .product-list-media .swiper-slide img {
+    min-height: 14rem;
+    max-height: none;
+    height: 14rem;
+  }
+}
+
+/* E-commerce product details — 갤러리 Swiper (부모 높이 없음 + position-lg-absolute 시 0px) */
+.product-details-gallery {
+  position: relative;
+  min-height: 20rem;
+}
+@media (min-width: 992px) {
+  .product-details-gallery {
+    min-height: 24rem;
+    height: 24rem;
+  }
+}
+.product-details-gallery .swiper-container {
+  min-height: inherit;
+  height: 100%;
+}
+.product-details-gallery .swiper-wrapper,
+.product-details-gallery .swiper-slide {
+  height: auto;
+}
+.product-details-gallery .product-details-img,
+.product-details-gallery .swiper-slide img {
+  display: block;
+  width: 100%;
+  min-height: 20rem;
+  height: 20rem;
+  object-fit: cover;
+}
+@media (min-width: 992px) {
+  .product-details-gallery .product-details-img,
+  .product-details-gallery .swiper-slide img {
+    min-height: 24rem;
+    height: 24rem;
+  }
+}
+.product-details-gallery .swiper-container.thumb {
+  margin-top: 0.5rem;
+}
+.product-details-gallery .swiper-container.thumb .swiper-slide img {
+  min-height: 4rem;
+  height: 4rem;
+  cursor: pointer;
+}

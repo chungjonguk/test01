@@ -5,7 +5,7 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-
+          <div class="card mb-3" id="customersTable" data-list='{"valueNames":["name","email","phone","address","joined"],"page":10,"pagination":true}'>
             <div class="card-header">
               <div class="row flex-between-center">
                 <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
@@ -24,9 +24,9 @@
                     </div>
                   </div>
                   <div id="table-customers-replace-element">
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">New</span></button>
-                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Export</span></button>
+                    <a class="btn btn-falcon-default btn-sm" th:href="@{/app/e-commerce/customer-details}"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">New</span></a>
+                    <button class="btn btn-falcon-default btn-sm mx-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#customersFilterOffcanvas" aria-controls="customersFilterOffcanvas"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
+                    <button class="btn btn-falcon-default btn-sm" type="button" id="customers-export-btn"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Export</span></button>
                   </div>
                 </div>
               </div>
@@ -797,6 +797,24 @@
               <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
             </div>
           </div>
+
+          <div class="offcanvas offcanvas-end" id="customersFilterOffcanvas" tabindex="-1" aria-labelledby="customersFilterOffcanvasLabel">
+            <div class="offcanvas-header border-bottom">
+              <h5 class="offcanvas-title" id="customersFilterOffcanvasLabel">고객 필터</h5>
+              <button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <div class="mb-3">
+                <label class="form-label" for="customer-filter-keyword">검색</label>
+                <input class="form-control form-control-sm" id="customer-filter-keyword" type="search" placeholder="이름, 이메일, 전화…" />
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-sm" type="button" id="customer-filter-apply">적용</button>
+                <button class="btn btn-falcon-default btn-sm" type="button" id="customer-filter-reset">초기화</button>
+              </div>
+            </div>
+          </div>
+
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
     </th:block>

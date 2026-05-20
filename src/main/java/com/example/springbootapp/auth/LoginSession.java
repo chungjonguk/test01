@@ -14,7 +14,7 @@ public class LoginSession implements Serializable {
     private String userId;
     private String userName;
     private String email;
-    /** FORM, KAKAO */
+    /** FORM, KAKAO, NAVER */
     private String loginType;
     private LocalDateTime loginAt;
 

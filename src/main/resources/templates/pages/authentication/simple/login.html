@@ -111,7 +111,8 @@
                 <div class="row g-2 mt-2">
                   <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
                   <div class="col-sm-6"><a class="btn btn-outline-facebook btn-sm d-block w-100" href="#"><span class="fab fa-facebook-square me-2" data-fa-transform="grow-8"></span> facebook</a></div>
-                  <div class="col-sm-12"><a class="btn btn-warning btn-sm d-block w-100" th:href="@{/auth/kakao/login}"><span class="me-2">K</span> kakao</a></div>
+                  <div class="col-sm-6"><a class="btn btn-warning btn-sm d-block w-100" th:href="@{/auth/kakao/login}"><span class="me-2">K</span> kakao</a></div>
+                  <div class="col-sm-6"><a class="btn btn-sm d-block w-100 text-white" style="background-color:#03C75A;border-color:#03C75A" th:href="@{/auth/naver/login}"><span class="fw-bold me-2">N</span> naver</a></div>
                 </div>
               </div>
             </div>
@@ -198,7 +199,7 @@
         <hr />
         <h5 class="fs-0 d-flex align-items-center">Vertical Navbar Style</h5>
         <p class="fs--1 mb-0">Switch between styles for your vertical navbar </p>
-        <p> <a class="fs--1" th:href="@{/modules/components/navs-and-tabs/vertical-navbar}#navbar-styles">See Documentation</a></p>
+        <p> <a class="fs--1" th:href="|@{/modules/components/navs-and-tabs/vertical-navbar}#navbar-styles|">See Documentation</a></p>
         <div class="btn-group d-block w-100 btn-group-navbar-style">
           <div class="row gx-2">
             <div class="col-6">

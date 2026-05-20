@@ -75,24 +75,28 @@ public class AppController {
     @GetMapping({"/app/e-commerce/product/product-list", "/app/e-commerce/product/product-list.html"})
     public String appEcommerceProductList(Model model) {
         model.addAttribute("title", "상품 목록");
+        model.addAttribute("loadSwiper", true);
         return "app/e-commerce/product/product-list";
     }
 
     @GetMapping({"/app/e-commerce/product/product-grid", "/app/e-commerce/product/product-grid.html"})
     public String appEcommerceProductGrid(Model model) {
         model.addAttribute("title", "상품 그리드");
+        model.addAttribute("loadSwiper", true);
         return "app/e-commerce/product/product-grid";
     }
 
     @GetMapping({"/app/e-commerce/product/product-details", "/app/e-commerce/product/product-details.html"})
     public String appEcommerceProductDetails(Model model) {
         model.addAttribute("title", "상품 상세");
+        model.addAttribute("loadSwiper", true);
         return "app/e-commerce/product/product-details";
     }
 
     @GetMapping({"/app/e-commerce/orders/order-list", "/app/e-commerce/orders/order-list.html"})
     public String appEcommerceOrderList(Model model) {
         model.addAttribute("title", "주문 목록");
+        model.addAttribute("loadOrderListActions", true);
         return "app/e-commerce/orders/order-list";
     }
 
@@ -105,30 +109,35 @@ public class AppController {
     @GetMapping({"/app/e-commerce/customers", "/app/e-commerce/customers.html"})
     public String appEcommerceCustomers(Model model) {
         model.addAttribute("title", "고객");
+        model.addAttribute("loadCustomersActions", true);
         return "app/e-commerce/customers";
     }
 
     @GetMapping({"/app/e-commerce/customer-details", "/app/e-commerce/customer-details.html"})
     public String appEcommerceCustomerDetails(Model model) {
         model.addAttribute("title", "고객 상세");
+        model.addAttribute("loadCustomerDetailsActions", true);
         return "app/e-commerce/customer-details";
     }
 
     @GetMapping({"/app/e-commerce/shopping-cart", "/app/e-commerce/shopping-cart.html"})
     public String appEcommerceShoppingCart(Model model) {
         model.addAttribute("title", "장바구니");
+        model.addAttribute("loadShoppingCartActions", true);
         return "app/e-commerce/shopping-cart";
     }
 
     @GetMapping({"/app/e-commerce/checkout", "/app/e-commerce/checkout.html"})
     public String appEcommerceCheckout(Model model) {
         model.addAttribute("title", "결제");
+        model.addAttribute("loadCheckoutActions", true);
         return "app/e-commerce/checkout";
     }
 
     @GetMapping({"/app/e-commerce/billing", "/app/e-commerce/billing.html"})
     public String appEcommerceBilling(Model model) {
         model.addAttribute("title", "청구");
+        model.addAttribute("loadBillingActions", true);
         return "app/e-commerce/billing";
     }
 

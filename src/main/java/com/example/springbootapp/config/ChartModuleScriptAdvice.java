@@ -29,5 +29,26 @@ public class ChartModuleScriptAdvice {
         if (uri.contains("/modules/charts/chartjs")) {
             model.addAttribute("loadChartJs", true);
         }
+        if (uri.contains("/app/e-commerce/product") || uri.contains("/modules/components/carousel")) {
+            model.addAttribute("loadSwiper", true);
+        }
+        if (uri.contains("/app/e-commerce/orders/order-list")) {
+            model.addAttribute("loadOrderListActions", true);
+        }
+        if (uri.contains("/app/e-commerce/customer-details")) {
+            model.addAttribute("loadCustomerDetailsActions", true);
+        }
+        if (uri.contains("/app/e-commerce/billing")) {
+            model.addAttribute("loadBillingActions", true);
+        }
+        if (uri.contains("/app/e-commerce/checkout")) {
+            model.addAttribute("loadCheckoutActions", true);
+        }
+        if (uri.contains("/app/e-commerce/customers")) {
+            model.addAttribute("loadCustomersActions", true);
+        }
+        if (uri.contains("/app/e-commerce/shopping-cart")) {
+            model.addAttribute("loadShoppingCartActions", true);
+        }
     }
 }

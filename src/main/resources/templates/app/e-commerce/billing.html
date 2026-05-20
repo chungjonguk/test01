@@ -1,20 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}">
 </head>
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-
+          <div class="card mb-3">
             <div class="card-body position-relative">
               <div class="row">
                 <div class="col-lg-8">
                   <h3>Get started with your free trial</h3>
-                  <p class="mt-2">Premium team - 5 Seats. Free for 30 days, cancel at any time. <br />$6.25 / seat month after a trial</p>
+                  <p class="mt-2" id="billing-plan-summary">Premium team - 5 Seats. Free for 30 days, cancel at any time. <br />$6.25 / seat month after a trial</p>
                   <div class="dropdown">
                     <button class="btn btn-link dropdown-toggle ps-0 btn-sm" id="change-plan" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Change plan</button>
                     <div class="dropdown-menu py-3" aria-labelledby="change-plan" style="min-width: 15rem;">
-                      <div class="dropdown-item px-3 py-2"><span class="d-flex justify-content-between fs--1 text-black"><span class="fw-semi-bold">Standard License</span><span>$59.00</span></span>
+                      <div class="dropdown-item px-3 py-2 billing-plan-option" role="button" tabindex="0" data-plan-name="Standard License" data-plan-price="$59.00"><span class="d-flex justify-content-between fs--1 text-black"><span class="fw-semi-bold">Standard License</span><span>$59.00</span></span>
                         <ul class="list-unstyled ps-1 my-2 fs--1">
                           <li> <span class="fas fa-circle" data-fa-transform="shrink-11"></span><span class="ms-1">Use for a single product</span></li>
                           <li><span class="fas fa-circle" data-fa-transform="shrink-11"></span><span class="ms-1">Non-paying users only</span></li>
@@ -22,7 +22,7 @@
                         <p class="fs--2 mb-0">Read the full <a href="#!">Standard License </a></p>
                       </div>
                       <div class="dropdown-divider my-0"></div>
-                      <div class="dropdown-item px-3 py-2"><span class="d-flex justify-content-between fs--1 text-black"><span class="fw-semi-bold">Extended License</span><span>$99.00</span></span>
+                      <div class="dropdown-item px-3 py-2 billing-plan-option" role="button" tabindex="0" data-plan-name="Extended License" data-plan-price="$99.00"><span class="d-flex justify-content-between fs--1 text-black"><span class="fw-semi-bold">Extended License</span><span>$99.00</span></span>
                         <ul class="list-unstyled ps-1 my-2 fs--1">
                           <li> <span class="fas fa-circle" data-fa-transform="shrink-11"></span><span class="ms-1">Unlimited websites</span></li>
                           <li> <span class="fas fa-circle" data-fa-transform="shrink-11"></span><span class="ms-1">Paying users allowed</span></li>
@@ -35,25 +35,26 @@
               </div>
             </div>
           </div>
-          <div class="row g-3 mb-3">
+          <form id="billing-form" class="row g-3 mb-3" novalidate>
             <div class="col-lg-8">
               <div class="card h-100">
                 <div class="card-header">
                   <h5 class="mb-0">Billing Details</h5>
                 </div>
-                <div class="card-body bg-light">
+                <div class="card-body bg-light" id="billing-payment-fields">
                   <div class="form-check mb-0">
-                    <input class="form-check-input" type="radio" value="" id="paypal" name="billing" />
+                    <input class="form-check-input" type="radio" value="paypal" id="paypal" name="billing" />
                     <label class="form-check-label mb-0 d-block" for="paypal"><img th:src="@{/assets/img/icons/icon-paypal-full.png}" height="20" alt="" />
                     </label>
                   </div>
                   <p class="fs--1 mb-4">Pay with PayPal, Apple Pay, PayPal Credit and much more</p>
                   <div class="form-check mb-0">
-                    <input class="form-check-input" type="radio" value="" id="credit-card" checked="checked" name="billing" />
+                    <input class="form-check-input" type="radio" value="card" id="credit-card" checked="checked" name="billing" />
                     <label class="form-check-label d-flex align-items-center mb-0" for="credit-card"><span class="fs-1 text-nowrap">Credit Card</span><img class="d-none d-sm-inline-block ms-2 mt-lg-0" th:src="@{/assets/img/icons/icon-payment-methods.png}" height="20" alt="" />
                     </label>
                   </div>
                   <p class="fs--1 mb-4">Safe money transfer using your bank accounts. Visa, maestro, discover, american express.</p>
+                  <div id="billing-card-fields">
                   <div class="row gx-3 mb-3">
                     <div class="col">
                       <label class="form-label ls text-uppercase text-600 fw-semi-bold mb-0 fs--1" for="cardNumber">Card Number</label>
@@ -323,6 +324,7 @@
                       <input class="form-control" id="cvv" placeholder="123" maxlength="3" pattern="[0-9]{3}" type="text" />
                     </div>
                   </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -332,7 +334,7 @@
                   <h5 class="mb-0">Billing</h5>
                 </div>
                 <div class="card-body bg-light">
-                  <select class="form-select mb-3" aria-label="Default select example">
+                  <select class="form-select mb-3" id="billing-cycle" aria-label="Billing cycle">
                     <option selected="">Monthly Plan</option>
                     <option value="1">Annual Plan</option>
                   </select>
@@ -345,12 +347,12 @@
                   <hr />
                   <h5 class="d-flex justify-content-between"><span>Due today</span><span>$0.00</span></h5>
                   <p class="fs--1 text-600">Once you start your trial, you will have 30 days to use Falcon Premium for free. After 30 days you’ll be charged based on your selected plan.</p>
-                  <button class="btn btn-primary d-block w-100" type="submit"><span class="fa fa-lock me-2"></span>Start free trial</button>
+                  <button class="btn btn-primary d-block w-100" type="submit" id="billing-start-trial-btn"><span class="fa fa-lock me-2"></span>Start free trial</button>
                   <div class="text-center mt-2"><small class="d-inline-block">By continuing, you are agreeing to our subscriber <a href="#!">terms</a> and will be charged at the end of the trial. </small></div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">Frequently asked questions</h5>
@@ -393,21 +395,21 @@
                       <button class="btn-close btn-close-white text-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form id="billing-question-form">
                         <div class="mb-3">
                           <label for="name">Name</label>
-                          <input class="form-control" id="name" type="text" />
+                          <input class="form-control" id="name" type="text" required="required" />
                         </div>
                         <div class="mb-3">
                           <label for="emailModal">Email</label>
-                          <input class="form-control" id="emailModal" type="email" />
+                          <input class="form-control" id="emailModal" type="email" required="required" />
                         </div>
                         <div class="mb-3">
                           <label for="question">Question</label>
-                          <textarea class="form-control" id="question" rows="4"></textarea>
+                          <textarea class="form-control" id="question" rows="4" required="required"></textarea>
                         </div>
                       </form>
-                      <button class="btn btn-primary btn-sm px-4" type="submit"><span class="fas fa-paper-plane me-2" aria-hidden="true"> </span>Send</button>
+                      <button class="btn btn-primary btn-sm px-4" type="submit" form="billing-question-form" id="billing-question-send-btn"><span class="fas fa-paper-plane me-2" aria-hidden="true"> </span>Send</button>
                     </div>
                   </div>
                 </div>

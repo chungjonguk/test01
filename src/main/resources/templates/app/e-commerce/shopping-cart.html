@@ -5,7 +5,7 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-
+          <div class="card mb-3" id="shoppingCartCard">
             <div class="card-header">
               <div class="row justify-content-between">
                 <div class="col-md-auto">
@@ -29,7 +29,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/1.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple MacBook Pro 15&quot; Z0V20008N: 2.9GHz 6-core 8th-Gen Intel Core i9, 32GB RAM</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -53,7 +53,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/2.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iMac Pro (27-inch with Retina 5K Display, 3.0GHz 10-core Intel Xeon W, 1TB SSD)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -77,7 +77,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/4.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iPad Air 2019 (3GB RAM, 128GB ROM, 8MP Main Camera)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -101,7 +101,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/3.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iPhone XS Max (4GB RAM, 512GB ROM, 12MP Main Camera)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -125,7 +125,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/5.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple Watch Series 4 44mm GPS Only</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/7.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Nikon D3200 Digital DSLR Camera</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -173,7 +173,7 @@
                   <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/8.jpg}" alt="" width="60" /></a>
                     <div class="flex-1">
                       <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Canon Standard Zoom Lens</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger" href="#!">Remove</a></div>
+                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
                     </div>
                   </div>
                 </div>
@@ -203,10 +203,10 @@
               </div>
             </div>
             <div class="card-footer bg-light d-flex justify-content-end">
-              <form class="me-3">
+              <form class="me-3" id="cart-promo-form">
                 <div class="input-group input-group-sm">
-                  <input class="form-control" type="text" placeholder="Promocode" />
-                  <button class="btn btn-outline-secondary border-300 btn-sm shadow-none" type="submit">Apply</button>
+                  <input class="form-control" id="cart-promo-code" type="text" placeholder="Promocode" />
+                  <button class="btn btn-outline-secondary border-300 btn-sm shadow-none" type="submit" id="cart-promo-apply-btn">Apply</button>
                 </div>
               </form><a class="btn btn-sm btn-primary" th:href="@{/app/e-commerce/checkout.html}">Checkout</a>
             </div>

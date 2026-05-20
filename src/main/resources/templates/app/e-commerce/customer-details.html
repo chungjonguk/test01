@@ -5,14 +5,19 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-
+          <div class="card mb-3">
             <div class="card-header">
               <div class="row">
                 <div class="col">
-                  <h5 class="mb-2">Tony Robbins (<a href="mailto:tony@gmail.com">tony@gmail.com</a>)</h5><a class="btn btn-falcon-default btn-sm" href="#!"><span class="fas fa-plus fs--2 me-1"></span>Add note</a>
+                  <h5 class="mb-2">Tony Robbins (<a href="mailto:tony@gmail.com">tony@gmail.com</a>)</h5>
+                  <a class="btn btn-falcon-default btn-sm" href="#!" id="customer-add-note-btn" role="button"><span class="fas fa-plus fs--2 me-1"></span>Add note</a>
                   <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-                  <div class="dropdown-menu"><a class="dropdown-item" href="#">Edit</a><a class="dropdown-item" href="#">Report</a><a class="dropdown-item" href="#">Archive</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#">Delete user</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item customer-action-link" href="#!" data-action="edit">Edit</a>
+                    <a class="dropdown-item customer-action-link" href="#!" data-action="report">Report</a>
+                    <a class="dropdown-item customer-action-link" href="#!" data-action="archive">Archive</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger customer-action-link" href="#!" data-action="delete">Delete user</a>
                   </div>
                 </div>
                 <div class="col-auto d-none d-sm-block">
@@ -35,7 +40,7 @@
                 <div class="col">
                   <h5 class="mb-0">Details</h5>
                 </div>
-                <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="#!"><span class="fas fa-pencil-alt fs--2 me-1"></span>Update details</a></div>
+                <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="#!" id="customer-update-details-btn" role="button"><span class="fas fa-pencil-alt fs--2 me-1"></span>Update details</a></div>
               </div>
             </div>
             <div class="card-body bg-light border-top">
@@ -110,7 +115,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer border-top text-end"><a class="btn btn-falcon-default btn-sm" href="#!"><span class="fas fa-dollar-sign fs--2 me-1"></span>Refund</a><a class="btn btn-falcon-default btn-sm ms-2" href="#!"><span class="fas fa-check fs--2 me-1"></span>Save changes</a></div>
+            <div class="card-footer border-top text-end"><a class="btn btn-falcon-default btn-sm" href="#!" id="customer-refund-btn" role="button"><span class="fas fa-dollar-sign fs--2 me-1"></span>Refund</a><a class="btn btn-falcon-default btn-sm ms-2" href="#!" id="customer-save-btn" role="button"><span class="fas fa-check fs--2 me-1"></span>Save changes</a></div>
           </div>
           <div class="card mb-3">
             <div class="card-header">
@@ -160,7 +165,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer bg-light p-0"><a class="btn btn-link d-block w-100" href="#!">View more logs<span class="fas fa-chevron-right fs--2 ms-1"></span></a></div>
+            <div class="card-footer bg-light p-0"><a class="btn btn-link d-block w-100" href="#!" id="customer-more-logs-btn" role="button">View more logs<span class="fas fa-chevron-right fs--2 ms-1"></span></a></div>
           </div>
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
