@@ -122,66 +122,77 @@ public class ModulesController {
     @GetMapping("/modules/charts/chartjs")
     public String modulesChartsChartjs(Model model) {
         model.addAttribute("title", "Chart.js");
+        model.addAttribute("loadChartJs", true);
         return "modules/charts/chartjs";
     }
 
     @GetMapping("/modules/charts/d3js")
     public String modulesChartsD3js(Model model) {
         model.addAttribute("title", "D3.js");
+        model.addAttribute("loadD3", true);
         return "modules/charts/d3js";
     }
 
     @GetMapping("/modules/charts/echarts/line-charts")
     public String modulesChartsEchartsLineCharts(Model model) {
         model.addAttribute("title", "선형 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/line-charts";
     }
 
     @GetMapping("/modules/charts/echarts/bar-charts")
     public String modulesChartsEchartsBarCharts(Model model) {
         model.addAttribute("title", "막대 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/bar-charts";
     }
 
     @GetMapping("/modules/charts/echarts/candlestick-charts")
     public String modulesChartsEchartsCandlestickCharts(Model model) {
         model.addAttribute("title", "캔들스틱 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/candlestick-charts";
     }
 
     @GetMapping("/modules/charts/echarts/geo-map")
     public String modulesChartsEchartsGeoMap(Model model) {
         model.addAttribute("title", "지도");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/geo-map";
     }
 
     @GetMapping("/modules/charts/echarts/scatter-charts")
     public String modulesChartsEchartsScatterCharts(Model model) {
         model.addAttribute("title", "산점도 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/scatter-charts";
     }
 
     @GetMapping("/modules/charts/echarts/pie-charts")
     public String modulesChartsEchartsPieCharts(Model model) {
         model.addAttribute("title", "원형 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/pie-charts";
     }
 
     @GetMapping("/modules/charts/echarts/radar-charts")
     public String modulesChartsEchartsRadarCharts(Model model) {
         model.addAttribute("title", "레이더 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/radar-charts";
     }
 
     @GetMapping("/modules/charts/echarts/heatmap-charts")
     public String modulesChartsEchartsHeatmapCharts(Model model) {
         model.addAttribute("title", "히트맵 차트");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/heatmap-charts";
     }
 
     @GetMapping("/modules/charts/echarts/how-to-use")
     public String modulesChartsEchartsHowToUse(Model model) {
         model.addAttribute("title", "사용 방법");
+        model.addAttribute("loadEchartsExamples", true);
         return "modules/charts/echarts/how-to-use";
     }
 
@@ -243,10 +254,4 @@ public class ModulesController {
         return "modules/utilities/colors";
     }
 
-    // Modules - Widgets
-    @GetMapping("/modules/widgets")
-    public String modulesWidgets(Model model) {
-        model.addAttribute("title", "위젯");
-        return "modules/widgets";
-    }
 }

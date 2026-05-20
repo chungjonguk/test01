@@ -135,6 +135,7 @@ public class AppController {
     @GetMapping({"/app/e-commerce/invoice", "/app/e-commerce/invoice.html"})
     public String appEcommerceInvoice(Model model) {
         model.addAttribute("title", "인보이스");
+        model.addAttribute("loadInvoicePdf", true);
         return "app/e-commerce/invoice";
     }
 

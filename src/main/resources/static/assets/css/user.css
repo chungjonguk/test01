@@ -55,3 +55,20 @@ html[data-navbar-position="top"] .content {
   margin-left: 0 !important;
   max-width: 100%;
 }
+
+/* 전역 로딩바 (app-loading.js) */
+#app-global-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 11000;
+  height: 4px;
+  margin: 0;
+  border-radius: 0;
+  pointer-events: none;
+}
+
+html.app-is-loading {
+  cursor: progress;
+}
