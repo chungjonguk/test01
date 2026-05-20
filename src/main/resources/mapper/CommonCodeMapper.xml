@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.CommonCodeMapper">
+
+    <resultMap id="commonCodeResultMap" type="CommonCode">
+        <id property="codeId" column="code_id"/>
+        <result property="codeNm" column="code_nm"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regdateDt" column="regdate_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <sql id="commonCodeColumns">
+        code_id, code_nm, use_yn, reg_id, regdate_dt, update_id, update_dt
+    </sql>
+
+    <select id="search" resultMap="commonCodeResultMap">
+        SELECT <include refid="commonCodeColumns"/>
+        FROM common_code
+        <where>
+            <if test="codeId != null and codeId != ''">
+                AND UPPER(code_id) LIKE CONCAT('%', UPPER(#{codeId}), '%')
+            </if>
+            <if test="codeNm != null and codeNm != ''">
+                AND code_nm LIKE CONCAT('%', #{codeNm}, '%')
+            </if>
+            <if test="useYn != null and useYn != ''">
+                AND use_yn = #{useYn}
+            </if>
+        </where>
+        ORDER BY code_id
+    </select>
+</mapper>

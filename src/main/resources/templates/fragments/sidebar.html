@@ -508,7 +508,7 @@
                       <!-- more inner pages-->
                     </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/settings}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">설정</span>
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">계정 설정</span>
                         </div>
                       </a>
                       <!-- more inner pages-->
@@ -593,6 +593,100 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/privacy-policy}" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Privacy policy</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">관리자
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/users}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-users-cog"></span></span><span class="nav-link-text ps-1">사용자 관리</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/codes}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code"></span></span><span class="nav-link-text ps-1">코드관리</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-orders" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-orders">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shopping-bag"></span></span><span class="nav-link-text ps-1">주문·판매</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-admin-orders">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">주문 목록</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-details}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">주문 상세</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/invoice}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">인보이스</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/app/e-commerce/customers}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user-friends"></span></span><span class="nav-link-text ps-1">고객 관리</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-product" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-product">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-box-open"></span></span><span class="nav-link-text ps-1">상품 관리</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-admin-product">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/product/product-list}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품 목록</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/product/product-grid}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">상품 그리드</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/billing}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">청구</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-settings" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-settings">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-cog"></span></span><span class="nav-link-text ps-1">설정</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-admin-settings">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/settings}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">사용자 설정</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#settings-offcanvas" data-bs-toggle="offcanvas" data-bs-target="#settings-offcanvas" aria-controls="settings-offcanvas">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">테마·레이아웃</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/configuration}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">시스템 설정</span>
                         </div>
                       </a>
                       <!-- more inner pages-->
@@ -1298,6 +1392,48 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-poll"></span></span><span class="nav-link-text ps-1">위젯</span>
                     </div>
                   </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-settings" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-settings">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-cog"></span></span><span class="nav-link-text ps-1">설정</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-settings">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/settings}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">사용자 설정</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/user/profile}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">프로필</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#settings-offcanvas" data-bs-toggle="offcanvas" data-bs-target="#settings-offcanvas" aria-controls="settings-offcanvas">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">테마·레이아웃</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/configuration}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">시스템 설정</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/styling}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">스타일</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/documentation/customization/dark-mode}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">다크 모드</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
                   <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-multi-level" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-multi-level">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-layer-group"></span></span><span class="nav-link-text ps-1">Multi level</span>
                     </div>

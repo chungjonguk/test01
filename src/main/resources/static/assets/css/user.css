@@ -141,3 +141,57 @@ html.app-is-loading {
   height: 4rem;
   cursor: pointer;
 }
+
+/* 코드 관리 — 조회 그리드 + 코드그룹/상세코드 상하 배치 */
+.code-mgmt-search-table-wrap {
+  max-height: 12rem;
+  min-height: 6rem;
+}
+.code-mgmt-search-table-wrap table,
+.code-mgmt-table-wrap table {
+  min-width: 52rem;
+}
+.code-group-search-row {
+  cursor: pointer;
+}
+.code-group-search-row:focus {
+  outline: 2px solid var(--falcon-primary, #2c7be5);
+  outline-offset: -2px;
+}
+.code-mgmt-split .code-mgmt-pane {
+  min-height: 22rem;
+}
+.code-mgmt-table-wrap {
+  max-height: 22rem;
+  min-height: 16rem;
+}
+.code-mgmt-grid-toolbar .btn {
+  min-width: 4.5rem;
+}
+.code-mgmt-check-col {
+  width: 2.25rem;
+}
+.code-mgmt-check-cell .form-check-input {
+  margin: 0;
+  float: none;
+  cursor: pointer;
+}
+.code-group-row,
+.code-detail-row {
+  cursor: pointer;
+}
+.code-group-row:focus,
+.code-detail-row:focus {
+  outline: 2px solid var(--falcon-primary, #2c7be5);
+  outline-offset: -2px;
+}
+@media (max-width: 991.98px) {
+  .code-mgmt-pane-group .code-mgmt-table-wrap {
+    max-height: 12rem;
+    min-height: 7rem;
+  }
+  .code-mgmt-pane-detail .code-mgmt-table-wrap {
+    max-height: 14rem;
+    min-height: 8rem;
+  }
+}

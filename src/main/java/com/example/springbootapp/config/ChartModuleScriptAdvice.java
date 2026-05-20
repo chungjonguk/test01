@@ -50,5 +50,8 @@ public class ChartModuleScriptAdvice {
         if (uri.contains("/app/e-commerce/shopping-cart")) {
             model.addAttribute("loadShoppingCartActions", true);
         }
+        if (uri.contains("/admin/codes")) {
+            model.addAttribute("loadCodeManagementActions", true);
+        }
     }
 }
