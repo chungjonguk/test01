@@ -140,7 +140,24 @@
                   </div>
                   <div class="tab-pane px-sm-3 px-md-5" role="tabpanel" aria-labelledby="bootstrap-wizard-tab3" id="bootstrap-wizard-tab3">
                     <form class="needs-validation" novalidate="novalidate" id="wizard-address-form">
-                      <p class="text-600 fs--1 mb-3">배송 및 청구에 사용할 주소를 입력해 주세요. 카카오 로컬 API로 주소를 검색할 수 있습니다.</p>
+                      <p class="text-600 fs--1 mb-4">배송·청구에 사용할 수령인, 연락처, 주소를 순서대로 입력해 주세요.</p>
+
+                      <h6 class="mb-3 text-800 border-bottom pb-2"><span class="fas fa-user me-2 text-primary"></span>수령인</h6>
+                      <div class="mb-4">
+                        <label class="form-label" for="wizard-address-recipient">이름</label>
+                        <input class="form-control" type="text" name="recipient" id="wizard-address-recipient" placeholder="홍길동" required="required" autocomplete="name" />
+                        <div class="invalid-feedback">수령인 이름을 입력해 주세요.</div>
+                      </div>
+
+                      <h6 class="mb-3 text-800 border-bottom pb-2"><span class="fas fa-phone me-2 text-primary"></span>연락처</h6>
+                      <div class="mb-4">
+                        <label class="form-label" for="wizard-address-phone">휴대전화</label>
+                        <input class="form-control" type="tel" name="addressPhone" id="wizard-address-phone" placeholder="010-1234-5678" pattern="^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$" required="required" autocomplete="tel" />
+                        <div class="form-text">배송 안내에 사용됩니다. (예: 010-1234-5678)</div>
+                        <div class="invalid-feedback">연락처를 올바르게 입력해 주세요.</div>
+                      </div>
+
+                      <h6 class="mb-3 text-800 border-bottom pb-2"><span class="fas fa-map-marker-alt me-2 text-primary"></span>주소 정보</h6>
                       <div class="mb-3" id="wizard-kakao-address-search">
                         <label class="form-label" for="wizard-address-search-query">주소 검색</label>
                         <div class="input-group">
@@ -151,63 +168,44 @@
                         <div class="list-group mt-2 d-none" id="wizard-address-search-results" role="listbox" aria-label="주소 검색 결과"></div>
                         <div class="alert alert-warning py-2 px-3 mt-2 mb-0 fs--1 d-none" id="wizard-address-search-hint" role="alert"></div>
                       </div>
+                      <input type="hidden" name="country" id="wizard-address-country" value="KR" />
+                      <p class="text-600 fs--1 mb-3">우편번호·기본 주소는 검색으로만 채워지며, 직접 수정할 수 없습니다.</p>
                       <div class="mb-3">
-                        <label class="form-label" for="wizard-address-recipient">수령인</label>
-                        <input class="form-control" type="text" name="recipient" id="wizard-address-recipient" placeholder="홍길동" required="required" />
-                        <div class="invalid-feedback">수령인 이름을 입력해 주세요.</div>
+                        <label class="form-label" for="wizard-address-postal">우편번호</label>
+                        <input class="form-control wizard-address-field--locked" type="text" name="postalCode" id="wizard-address-postal" placeholder="주소 검색 후 자동 입력" pattern="[0-9]{5}" maxlength="5" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
+                        <div class="invalid-feedback">주소를 검색해 우편번호를 채워 주세요.</div>
                       </div>
                       <div class="row g-2">
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label class="form-label" for="wizard-address-postal">우편번호</label>
-                            <input class="form-control" type="text" name="postalCode" id="wizard-address-postal" placeholder="06234" pattern="[0-9]{5}" maxlength="5" required="required" readonly="readonly" />
-                            <div class="invalid-feedback">5자리 우편번호를 입력해 주세요.</div>
+                            <label class="form-label" for="wizard-address-state">시/도</label>
+                            <input class="form-control wizard-address-field--locked" type="text" name="state" id="wizard-address-state" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
+                            <div class="invalid-feedback">주소를 검색해 주세요.</div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label class="form-label" for="wizard-address-country">국가</label>
-                            <select class="form-select" name="country" id="wizard-address-country" required="required">
-                              <option value="">국가 선택…</option>
-                              <option value="KR" selected="selected">대한민국</option>
-                              <option value="US">미국</option>
-                              <option value="JP">일본</option>
-                              <option value="CN">중국</option>
-                              <option value="OTHER">기타</option>
-                            </select>
-                            <div class="invalid-feedback">국가를 선택해 주세요.</div>
+                            <label class="form-label" for="wizard-address-city">시/군/구</label>
+                            <input class="form-control wizard-address-field--locked" type="text" name="city" id="wizard-address-city" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
+                            <div class="invalid-feedback">주소를 검색해 주세요.</div>
                           </div>
                         </div>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="wizard-address-line1">기본 주소</label>
-                        <input class="form-control" type="text" name="addressLine1" id="wizard-address-line1" placeholder="서울특별시 강남구 테헤란로 123" required="required" readonly="readonly" />
-                        <div class="invalid-feedback">기본 주소를 입력해 주세요.</div>
+                        <input class="form-control wizard-address-field--locked" type="text" name="addressLine1" id="wizard-address-line1" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
+                        <div class="invalid-feedback">주소 검색 후 기본 주소가 채워집니다.</div>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label" for="wizard-address-line2">상세 주소 <span class="text-500 fw-normal">(선택)</span></label>
-                        <input class="form-control" type="text" name="addressLine2" id="wizard-address-line2" placeholder="101동 1001호" />
+                        <label class="form-label" for="wizard-address-line2">상세 주소 <span class="text-500 fw-normal">(직접 입력)</span></label>
+                        <input class="form-control" type="text" name="addressLine2" id="wizard-address-line2" placeholder="101동 1001호" autocomplete="address-line2" />
+                        <div class="form-text">동·호수 등 상세 주소만 입력할 수 있습니다.</div>
                       </div>
-                      <div class="row g-2">
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label class="form-label" for="wizard-address-city">시/군/구</label>
-                            <input class="form-control" type="text" name="city" id="wizard-address-city" placeholder="강남구" required="required" readonly="readonly" />
-                            <div class="invalid-feedback">시/군/구를 입력해 주세요.</div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label class="form-label" for="wizard-address-state">시/도</label>
-                            <input class="form-control" type="text" name="state" id="wizard-address-state" placeholder="서울특별시" required="required" readonly="readonly" />
-                            <div class="invalid-feedback">시/도를 입력해 주세요.</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mb-0">
-                        <label class="form-label" for="wizard-address-phone">연락처</label>
-                        <input class="form-control" type="tel" name="addressPhone" id="wizard-address-phone" placeholder="010-1234-5678" required="required" />
-                        <div class="invalid-feedback">연락처를 입력해 주세요.</div>
+                      <div id="wizard-kakao-map-wrap" class="d-none mb-0" aria-hidden="true">
+                        <label class="form-label mb-1" for="wizard-kakao-map">위치 확인 (카카오맵)</label>
+                        <div id="wizard-kakao-map" class="wizard-kakao-map border rounded"></div>
+                        <div id="wizard-kakao-map-status" class="alert alert-warning py-2 px-3 mt-2 mb-0 fs--1 d-none" role="status"></div>
+                        <div class="form-text mb-0">주소 검색 후 목록에서 주소를 선택하면 지도에 표시됩니다.</div>
                       </div>
                     </form>
                   </div>

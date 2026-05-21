@@ -1,5 +1,8 @@
 # 이 파일을 application-local.properties 로 복사한 뒤 REST API 키를 입력하세요.
 # developers.kakao.com > 내 애플리케이션 > 앱 키 > REST API 키
 kakao.client-id=여기에_REST_API_키_입력
-# 실제 카카오 API 사용 시 데모 모드 끄기
+# 카카오맵 JS — REST API 키와 다른 JavaScript 키 (필수, 별도 발급)
+kakao.javascript-key=여기에_JavaScript_키_입력
 kakao.local.mock-enabled=false
+# developers.kakao.com → 카카오맵 ON, 플랫폼 Web → http://localhost:8081 등록
+# kakao.local.fallback-mock-on-local-disabled=false

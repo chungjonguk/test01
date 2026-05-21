@@ -6,12 +6,13 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springbootapp.dto.KakaoAddressItemDto;
+import com.example.springbootapp.service.KakaoLocalApiDisabledException;
 import com.example.springbootapp.service.KakaoLocalService;
 
 /**
@@ -39,11 +40,18 @@ public class KakaoLocalApiController {
 				body.put("message", "카카오 REST API 키가 설정되지 않았습니다.");
 				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);
 			}
-			List<KakaoAddressItemDto> items = kakaoLocalService.searchAddress(query, page, size);
+			var result = kakaoLocalService.searchAddress(query, page, size);
 			body.put("configured", kakaoLocalService.isConfigured());
-			body.put("mock", kakaoLocalService.usesMock());
-			body.put("items", items);
+			body.put("mock", result.mock());
+			body.put("items", result.items());
+			if (StringUtils.hasText(result.warning())) {
+				body.put("warning", result.warning());
+			}
 			return ResponseEntity.ok(body);
+		} catch (KakaoLocalApiDisabledException ex) {
+			body.put("configured", kakaoLocalService.isConfigured());
+			body.put("message", ex.getMessage());
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			body.put("configured", kakaoLocalService.isConfigured());
 			body.put("message", ex.getMessage());

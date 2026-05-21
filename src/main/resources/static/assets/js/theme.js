@@ -3540,20 +3540,36 @@ var listInit = function listInit() {
 
 var lottieInit = function lottieInit() {
   var lotties = document.querySelectorAll('.lottie');
+  var lottieApi = window.lottie || window.bodymovin;
 
-  if (lotties.length) {
-    lotties.forEach(function (item) {
-      var options = utils.getData(item, 'options');
-      window.bodymovin.loadAnimation(_objectSpread({
-        container: item,
-        path: '../img/animated-icons/warning-light.json',
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        name: 'Hello World'
-      }, options));
-    });
+  if (!lotties.length || !lottieApi || typeof lottieApi.loadAnimation !== 'function') {
+    return;
   }
+
+  lotties.forEach(function (item) {
+    var options = utils.getData(item, 'options') || {};
+    var path = options.path;
+
+    if (!path) {
+      return;
+    }
+
+    if (path.indexOf('/') !== 0) {
+      path = '/assets/img/animated-icons/' + path.replace(/^\.?\//, '');
+      options = _objectSpread({}, options, {
+        path: path
+      });
+    }
+
+    lottieApi.loadAnimation(_objectSpread({
+      container: item,
+      path: '/assets/img/animated-icons/warning-light.json',
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      name: 'animation'
+    }, options));
+  });
 };
 /* -------------------------------------------------------------------------- */
 

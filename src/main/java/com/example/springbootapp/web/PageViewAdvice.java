@@ -2,8 +2,10 @@ package com.example.springbootapp.web;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -19,7 +21,15 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice(basePackages = "com.example.springbootapp.controller")
 public class PageViewAdvice {
 
+	private static final String KAKAO_KEY_PLACEHOLDER = "YOUR_KAKAO_REST_API_KEY";
+
 	private final ScreenListService screenListService;
+
+	@Value("${kakao.javascript-key:}")
+	private String kakaoJavascriptKey;
+
+	@Value("${kakao.client-id:}")
+	private String kakaoClientId;
 
 	public PageViewAdvice(ScreenListService screenListService) {
 		this.screenListService = screenListService;
@@ -150,11 +160,37 @@ public class PageViewAdvice {
 		if (uri.contains("/app/kanban")) {
 			setIfAbsent(model, "hideSidebar", true);
 		}
+		if (uri.contains("/pages/authentication/wizard")
+				|| uri.contains("/modules/components/animated-icons")
+				|| uri.contains("/pages/errors/")) {
+			setIfAbsent(model, "loadLottie", true);
+		}
+		if (uri.contains("/modules/forms/wizard")) {
+			setIfAbsent(model, "loadLottie", true);
+		}
 		if (uri.contains("/pages/authentication/wizard")) {
 			setIfAbsent(model, "hideSidebar", true);
 			setIfAbsent(model, "loadDropzone", true);
 			setIfAbsent(model, "loadWizardKakaoAddress", true);
+			if (isKakaoMapKeyConfigured()) {
+				setIfAbsent(model, "kakaoMapAppKey", kakaoJavascriptKey.trim());
+			}
+			if (StringUtils.hasText(kakaoClientId)) {
+				setIfAbsent(model, "kakaoRestApiKeyForMapHint", kakaoClientId.trim());
+			}
 		}
+	}
+
+	private boolean isKakaoMapKeyConfigured() {
+		if (!StringUtils.hasText(kakaoJavascriptKey)) {
+			return false;
+		}
+		String jsKey = kakaoJavascriptKey.trim();
+		if (KAKAO_KEY_PLACEHOLDER.equals(jsKey)) {
+			return false;
+		}
+		// REST API 키를 JavaScript 키 자리에 넣으면 카카오맵 SDK가 로드되지 않음
+		return !StringUtils.hasText(kakaoClientId) || !jsKey.equals(kakaoClientId.trim());
 	}
 
 	private static void setIfAbsent(Model model, String name, Object value) {

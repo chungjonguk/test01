@@ -428,3 +428,17 @@ body[data-screen-id="APP_ORDER_LIST"] #ordersTable td.address {
 #wizard-address-search-results .list-group-item {
   cursor: pointer;
 }
+
+/* 마법사 — 주소 검색으로만 채워지는 필드 (상세 주소 제외) */
+.wizard-address-field--locked {
+  background-color: var(--falcon-gray-100, #f8f9fa) !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 마법사 — 카카오맵 (주소 검색 하단) */
+.wizard-kakao-map {
+  width: 100%;
+  height: 240px;
+  background-color: var(--falcon-gray-100, #f8f9fa);
+}
