@@ -11,8 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
 
-import com.example.springbootapp.mapper.CommonCodeMapper;
-
 import javax.sql.DataSource;
 
 /**
@@ -23,14 +21,11 @@ import javax.sql.DataSource;
 public class CommonCodeSeedRunner implements ApplicationRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeSeedRunner.class);
-	private static final String COMBO_SEED_MARKER = "BULK_ACTION";
 
 	private final DataSource dataSource;
-	private final CommonCodeMapper commonCodeMapper;
 
-	public CommonCodeSeedRunner(DataSource dataSource, CommonCodeMapper commonCodeMapper) {
+	public CommonCodeSeedRunner(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.commonCodeMapper = commonCodeMapper;
 	}
 
 	@Override
@@ -39,14 +34,11 @@ public class CommonCodeSeedRunner implements ApplicationRunner {
 			var populator = new ResourceDatabasePopulator();
 			populator.setContinueOnError(true);
 			populator.setSqlScriptEncoding(StandardCharsets.UTF_8.name());
-			if (commonCodeMapper.findByCodeId("DASHBOARD_PROJECT_TIME") == null) {
-				populator.addScript(new ClassPathResource("schema/common_code_seed.sql"));
-			}
-			if (commonCodeMapper.findByCodeId(COMBO_SEED_MARKER) == null) {
-				populator.addScript(new ClassPathResource("schema/common_code_combo_seed.sql"));
-			}
+			populator.addScript(new ClassPathResource("schema/common_code_charset.sql"));
+			populator.addScript(new ClassPathResource("schema/common_code_seed.sql"));
+			populator.addScript(new ClassPathResource("schema/common_code_combo_seed.sql"));
 			populator.execute(dataSource);
-			log.info("공통코드 시드 적용 완료 (콤보박스용)");
+			log.info("공통코드 시드·한글(utf8mb4) 갱신 완료");
 		} catch (Exception ex) {
 			log.warn("공통코드 시드 자동 적용 실패 — 수동 실행 또는 PK 설정 확인: {}", ex.getMessage());
 		}

@@ -75,7 +75,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8</jvmArguments>
+                    <jvmArguments>-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR</jvmArguments>
                 </configuration>
             </plugin>
             <plugin>

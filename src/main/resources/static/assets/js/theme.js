@@ -4264,7 +4264,9 @@ var tinymceInit = function tinymceInit() {
     var tinymces = document.querySelectorAll('.tinymce');
 
     if (tinymces.length) {
-      window.tinymce.execCommand('mceFocus', false, 'course-description');
+      if (document.getElementById('course-description')) {
+        window.tinymce.execCommand('mceFocus', false, 'course-description');
+      }
       window.tinymce.init({
         selector: '.tinymce',
         height: '50vh',
@@ -4293,8 +4295,11 @@ var tinymceInit = function tinymceInit() {
       var control = _ref12.detail.control;
 
       if (control === 'theme') {
-        window.tinyMCE.editors.forEach(function (el) {
-          el.dom.addStyle(".mce-content-body{color: ".concat(utils.getGrays().black, " !important;}"));
+        var editors = window.tinymce && window.tinymce.editors ? window.tinymce.editors : [];
+        editors.forEach(function (el) {
+          if (el && el.dom && typeof el.dom.addStyle === 'function') {
+            el.dom.addStyle(".mce-content-body{color: ".concat(utils.getGrays().black, " !important;}"));
+          }
         });
       }
     });

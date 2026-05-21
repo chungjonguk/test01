@@ -378,3 +378,53 @@ html.app-is-loading {
     width: 38%;
   }
 }
+
+/* 메일 작성 — TinyMCE iframe이 하단 버튼을 가리지 않도록 */
+.email-compose-page .email-compose-editor-wrap {
+  min-height: 280px;
+  max-height: 50vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.email-compose-page .email-compose-footer {
+  position: relative;
+  z-index: 10;
+  background-color: var(--falcon-card-bg, #fff);
+}
+
+.email-compose-page .tox-tinymce {
+  max-height: 50vh;
+}
+
+/* 주문 목록 — 테이블만 가로 스크롤, 드롭다운은 잘리지 않게 */
+body[data-screen-id="APP_ORDER_LIST"] .content {
+  min-width: 0;
+}
+
+body[data-screen-id="APP_ORDER_LIST"] #ordersTable .table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+body[data-screen-id="APP_ORDER_LIST"] #ordersTable .table-responsive .dropdown-menu {
+  z-index: 1055;
+}
+
+body[data-screen-id="APP_ORDER_LIST"] #ordersTable td.address {
+  white-space: normal !important;
+  max-width: 16rem;
+  word-break: break-word;
+}
+
+/* 마법사 — 카카오 주소 검색 결과 */
+#wizard-address-search-results {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+#wizard-address-search-results .list-group-item {
+  cursor: pointer;
+}

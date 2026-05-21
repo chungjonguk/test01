@@ -57,8 +57,42 @@ public class PageViewAdvice {
 		if (uri.contains("/modules/charts/echarts")) {
 			setIfAbsent(model, "loadEchartsExamples", true);
 		}
-		if (uri.contains("/modules/charts/d3js")) {
+		if (uri.contains("/modules/charts/d3js") || uri.contains("/dashboard/lms")) {
 			setIfAbsent(model, "loadD3", true);
+		}
+		if (uri.contains("/dashboard/analytics")) {
+			setIfAbsent(model, "loadDayjs", true);
+			setIfAbsent(model, "loadCountUp", true);
+			setIfAbsent(model, "loadWorldMap", true);
+		}
+		if (uri.contains("/dashboard/lms")) {
+			setIfAbsent(model, "loadChartJs", true);
+			setIfAbsent(model, "loadCountUp", true);
+			setIfAbsent(model, "loadWorldMap", true);
+		}
+		if (uri.contains("/dashboard/saas") || uri.contains("/dashboard/e-commerce")) {
+			setIfAbsent(model, "loadCountUp", true);
+			setIfAbsent(model, "loadDayjs", true);
+		}
+		if (uri.contains("/dashboard/project-management")) {
+			setIfAbsent(model, "loadCountUp", true);
+			setIfAbsent(model, "loadDayjs", true);
+			setIfAbsent(model, "loadLeaflet", true);
+			setIfAbsent(model, "loadCalendar", true);
+		}
+		if (uri.contains("/widgets")) {
+			setIfAbsent(model, "loadChartJs", true);
+			setIfAbsent(model, "loadCountUp", true);
+			setIfAbsent(model, "loadDayjs", true);
+			setIfAbsent(model, "loadWorldMap", true);
+			setIfAbsent(model, "loadLeaflet", true);
+			setIfAbsent(model, "loadCalendar", true);
+			setIfAbsent(model, "loadD3", true);
+			setIfAbsent(model, "loadTinymce", true);
+			setIfAbsent(model, "loadDropzone", true);
+		}
+		if (uri.contains("/modules/maps/leaflet")) {
+			setIfAbsent(model, "loadLeaflet", true);
 		}
 		if (uri.contains("/modules/charts/chartjs")) {
 			setIfAbsent(model, "loadChartJs", true);
@@ -93,6 +127,20 @@ public class PageViewAdvice {
 		if (uri.contains("/admin/menus")) {
 			setIfAbsent(model, "loadMenuManagementActions", true);
 		}
+		if (uri.contains("/app/email/email-detail")) {
+			setIfAbsent(model, "loadEmailDetailActions", true);
+		}
+		if (uri.contains("/app/email/inbox")) {
+			setIfAbsent(model, "loadEmailInboxActions", true);
+		}
+		if (uri.contains("/app/email/compose")
+				|| uri.contains("/modules/forms/advance/editor")
+				|| uri.contains("/app/e-learning/course/create-a-course")) {
+			setIfAbsent(model, "loadTinymce", true);
+		}
+		if (uri.contains("/app/email/compose")) {
+			setIfAbsent(model, "loadEmailComposeActions", true);
+		}
 		if (uri.contains("/app/calendar") || uri.contains("/modules/components/calendar")) {
 			setIfAbsent(model, "loadCalendar", true);
 		}
@@ -101,6 +149,11 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/app/kanban")) {
 			setIfAbsent(model, "hideSidebar", true);
+		}
+		if (uri.contains("/pages/authentication/wizard")) {
+			setIfAbsent(model, "hideSidebar", true);
+			setIfAbsent(model, "loadDropzone", true);
+			setIfAbsent(model, "loadWizardKakaoAddress", true);
 		}
 	}
 

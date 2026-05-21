@@ -2,11 +2,10 @@
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}">
 </head>
-<body>
-    <th:block th:replace="~{layout :: body}">
+<body th:replace="~{layout :: body}">
     <div th:fragment="page-content">
 
-          <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":true}'>
+          <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":{"innerWindow":2,"left":1,"right":1}}'>
             <div class="card-header">
               <div class="row flex-between-center">
                 <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
@@ -29,12 +28,12 @@
             </div>
             <div class="card-body p-0">
               <div class="table-responsive scrollbar">
-                <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
+                <table class="table table-sm table-striped fs--1 mb-0">
                   <thead class="bg-200 text-900">
                     <tr>
                       <th>
                         <div class="form-check fs-0 mb-0 d-flex align-items-center">
-                          <input class="form-check-input" id="checkbox-bulk-customers-select" type="checkbox" data-bulk-select='{"body":"table-orders-body","actions":"orders-bulk-actions","replacedElement":"orders-actions"}' />
+                          <input class="form-check-input" id="checkbox-bulk-orders-select" type="checkbox" data-bulk-select='{"body":"table-orders-body","actions":"orders-bulk-actions","replacedElement":"orders-actions"}' />
                         </div>
                       </th>
                       <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Order</th>
@@ -834,6 +833,5 @@
 
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
-    </th:block>
 </body>
 </html>

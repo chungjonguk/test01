@@ -28,3 +28,7 @@
 
 Thumbs.db
 
+# 로컬 카카오/비밀 설정 (application-local.properties.example 참고)
+application-local.properties
+src/main/resources/application-local.properties
+

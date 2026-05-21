@@ -1,5 +1,5 @@
 -- 코드 관리 화면 조회용 샘플 (common_code + common_code_value)
--- 실행: mysql -u springuser -p spring_boot_app < src/main/resources/schema/common_code_seed.sql
+-- 실행: mysql -u redcroxx -p spring_boot_app < src/main/resources/schema/common_code_seed.sql
 
 INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('ORDER_STATUS', '주문상태', 'Y', 'SYSTEM', 'SYSTEM'),

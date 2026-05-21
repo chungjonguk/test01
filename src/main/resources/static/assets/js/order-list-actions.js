@@ -1,12 +1,98 @@
 /**
- * 주문 목록 — New / Filter / Export / Bulk Apply
+ * 주문 목록 — Filter / Export / Bulk / 페이지네이션 / 행 메뉴
  */
 (function () {
   'use strict';
 
+  var ROOT_ID = 'ordersTable';
+
+  function getRoot() {
+    return document.getElementById(ROOT_ID);
+  }
+
   function getList() {
-    var root = document.getElementById('ordersTable');
+    var root = getRoot();
     return root && root._falconList ? root._falconList : null;
+  }
+
+  function notify(message, icon) {
+    if (window.Swal) {
+      window.Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: icon || 'info',
+        title: message,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
+      return;
+    }
+    window.alert(message);
+  }
+
+  function currentPage(list) {
+    var pageSize = list.page || 10;
+    return Math.max(1, Math.ceil(list.i / pageSize));
+  }
+
+  function totalPages(list) {
+    var pageSize = list.page || 10;
+    var total = list.matchingItems ? list.matchingItems.length : list.items.length;
+    return Math.max(1, Math.ceil(total / pageSize));
+  }
+
+  function goToPage(list, page) {
+    var pageSize = list.page || 10;
+    var maxPage = totalPages(list);
+    var target = Math.min(Math.max(1, page), maxPage);
+    list.show((target - 1) * pageSize + 1, pageSize);
+  }
+
+  function renderPaginationControls() {
+    var root = getRoot();
+    var list = getList();
+    if (!root || !list) {
+      return;
+    }
+
+    var ul = root.querySelector('.pagination');
+    if (!ul) {
+      return;
+    }
+
+    var page = currentPage(list);
+    var maxPage = totalPages(list);
+    ul.innerHTML = '';
+
+    for (var p = 1; p <= maxPage; p += 1) {
+      var li = document.createElement('li');
+      li.className = 'page-item' + (p === page ? ' active' : '');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'page';
+      btn.textContent = String(p);
+      btn.addEventListener('click', function (pageNum) {
+        return function (e) {
+          e.preventDefault();
+          goToPage(list, pageNum);
+          renderPaginationControls();
+        };
+      }(p));
+      li.appendChild(btn);
+      ul.appendChild(li);
+    }
+
+    var prevBtn = root.querySelector('[data-list-pagination="prev"]');
+    var nextBtn = root.querySelector('[data-list-pagination="next"]');
+    if (prevBtn) {
+      prevBtn.disabled = page <= 1;
+      prevBtn.classList.toggle('disabled', page <= 1);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = page >= maxPage;
+      nextBtn.classList.toggle('disabled', page >= maxPage);
+    }
   }
 
   function applyFilters() {
@@ -34,6 +120,8 @@
         .toLowerCase();
       return matchStatus && rowText.indexOf(keyword) !== -1;
     });
+    goToPage(list, 1);
+    renderPaginationControls();
   }
 
   function resetFilters() {
@@ -49,6 +137,8 @@
     if (list) {
       list.filter();
       list.search();
+      goToPage(list, 1);
+      renderPaginationControls();
     }
   }
 
@@ -101,22 +191,6 @@
     return text;
   }
 
-  function notify(message, icon) {
-    if (window.Swal) {
-      window.Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: icon || 'info',
-        title: message,
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true
-      });
-      return;
-    }
-    window.alert(message);
-  }
-
   function onBulkApply() {
     var select = document.querySelector('#orders-bulk-actions select');
     var action = select ? select.value : '';
@@ -132,14 +206,109 @@
     notify(checked.length + '건에 "' + action + '" 적용 (데모)', 'success');
   }
 
-  function bind() {
+  function statusBadgeClass(label) {
+    var key = label.toLowerCase();
+    if (key.indexOf('completed') !== -1) {
+      return 'badge-soft-success';
+    }
+    if (key.indexOf('processing') !== -1) {
+      return 'badge-soft-primary';
+    }
+    if (key.indexOf('hold') !== -1) {
+      return 'badge-soft-secondary';
+    }
+    if (key.indexOf('pending') !== -1) {
+      return 'badge-soft-warning';
+    }
+    return 'badge-soft-info';
+  }
+
+  function statusBadgeHtml(label) {
+    var cls = statusBadgeClass(label);
+    var icon =
+      label.toLowerCase().indexOf('completed') !== -1
+        ? '<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>'
+        : label.toLowerCase().indexOf('hold') !== -1
+          ? '<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>'
+          : label.toLowerCase().indexOf('pending') !== -1
+            ? '<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>'
+            : label.toLowerCase().indexOf('processing') !== -1
+              ? '<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>'
+              : '';
+    return (
+      '<span class="badge badge rounded-pill d-block ' +
+      cls +
+      '">' +
+      label +
+      icon +
+      '</span>'
+    );
+  }
+
+  function applyRowStatus(row, label) {
+    var statusCell = row.querySelector('td.status');
+    if (statusCell) {
+      statusCell.innerHTML = statusBadgeHtml(label);
+    }
+  }
+
+  function onRowMenuClick(e) {
+    var item = e.target.closest('a.dropdown-item, button.dropdown-item');
+    if (!item) {
+      return;
+    }
+    var root = getRoot();
+    if (!root || !root.contains(item)) {
+      return;
+    }
+    var href = item.getAttribute('href');
+    if (href && href !== '#' && href !== '#!') {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    var label = (item.textContent || '').trim();
+    var row = item.closest('tr');
+    var toggle = item.closest('.dropdown') && item.closest('.dropdown').querySelector('[data-bs-toggle="dropdown"]');
+
+    if (item.classList.contains('text-danger')) {
+      notify('삭제는 데모 화면에서 지원하지 않습니다.', 'info');
+    } else if (row) {
+      applyRowStatus(row, label);
+      notify('주문 상태를 "' + label + '"(으)로 변경했습니다.', 'success');
+    } else {
+      notify('상태를 "' + label + '"(으)로 변경 (데모)', 'success');
+    }
+
+    if (toggle && window.bootstrap && window.bootstrap.Dropdown) {
+      var instance = window.bootstrap.Dropdown.getInstance(toggle);
+      if (instance) {
+        instance.hide();
+      }
+    }
+  }
+
+  function bindRowDropdowns() {
+    var root = getRoot();
+    if (!root || root.dataset.orderRowMenuBound) {
+      return;
+    }
+    root.dataset.orderRowMenuBound = '1';
+    root.addEventListener('click', onRowMenuClick);
+  }
+
+  function bindStaticControls() {
     var exportBtn = document.getElementById('order-export-btn');
-    if (exportBtn) {
+    if (exportBtn && !exportBtn.dataset.orderListBound) {
+      exportBtn.dataset.orderListBound = '1';
       exportBtn.addEventListener('click', exportCsv);
     }
 
     var applyFilterBtn = document.getElementById('order-filter-apply');
-    if (applyFilterBtn) {
+    if (applyFilterBtn && !applyFilterBtn.dataset.orderListBound) {
+      applyFilterBtn.dataset.orderListBound = '1';
       applyFilterBtn.addEventListener('click', function () {
         applyFilters();
         var offcanvas = document.getElementById('ordersFilterOffcanvas');
@@ -153,17 +322,20 @@
     }
 
     var resetFilterBtn = document.getElementById('order-filter-reset');
-    if (resetFilterBtn) {
+    if (resetFilterBtn && !resetFilterBtn.dataset.orderListBound) {
+      resetFilterBtn.dataset.orderListBound = '1';
       resetFilterBtn.addEventListener('click', resetFilters);
     }
 
     var bulkApplyBtn = document.getElementById('orders-bulk-apply-btn');
-    if (bulkApplyBtn) {
+    if (bulkApplyBtn && !bulkApplyBtn.dataset.orderListBound) {
+      bulkApplyBtn.dataset.orderListBound = '1';
       bulkApplyBtn.addEventListener('click', onBulkApply);
     }
 
     var keywordEl = document.getElementById('order-filter-keyword');
-    if (keywordEl) {
+    if (keywordEl && !keywordEl.dataset.orderListBound) {
+      keywordEl.dataset.orderListBound = '1';
       keywordEl.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
           applyFilters();
@@ -172,25 +344,39 @@
     }
   }
 
-  function waitForList(attempt) {
-    if (getList()) {
-      bind();
+  function bindListHooks() {
+    var list = getList();
+    if (!list || list._orderListHooksBound) {
       return;
     }
-    if (attempt > 40) {
-      bind();
+    list._orderListHooksBound = true;
+    list.on('updated', function () {
+      renderPaginationControls();
+    });
+  }
+
+  function init(attempt) {
+    bindStaticControls();
+    bindRowDropdowns();
+    var list = getList();
+    if (list) {
+      bindListHooks();
+      renderPaginationControls();
+      return;
+    }
+    if (attempt > 50) {
       return;
     }
     window.setTimeout(function () {
-      waitForList(attempt + 1);
+      init(attempt + 1);
     }, 100);
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
-      waitForList(0);
+      init(0);
     });
   } else {
-    waitForList(0);
+    init(0);
   }
 })();
