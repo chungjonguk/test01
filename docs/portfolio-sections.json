@@ -1,0 +1,112 @@
+[
+  {
+    "title": "1. 프로젝트 개요 — 반응형 웹 앱",
+    "body": [
+      "프로젝트명: Spring Boot App (Falcon UI)",
+      "본 프로젝트는 PC·태블릿·모바일에 대응하는 반응형(Responsive) 웹 애플리케이션입니다.",
+      "Falcon + Bootstrap 5 그리드·유틸리티로 화면 크기에 따라 레이아웃·메뉴·카드가 자동 재배치됩니다.",
+      "GitHub: https://github.com/chungjonguk/test01 | 로컬: http://localhost:8081"
+    ],
+    "image": null
+  },
+  {
+    "title": "2. 개발환경",
+    "body": [
+      "IDE: Cursor + STS | Build: Maven 3.9 / Java 17",
+      "UI: Thymeleaf + Falcon + Bootstrap 5.2.1 (반응형 기본 제공)",
+      "DB: MySQL 8 + MyBatis | DevTools + src 직접 로드"
+    ],
+    "image": null
+  },
+  {
+    "title": "3. 반응형 웹 앱 — 구성 요약",
+    "body": [
+      "단일 코드베이스으로 데스크톱·모바일 브라우저 모두 지원 (별도 네이티브 앱 없음).",
+      "layout.html: viewport meta, container/container-fluid, data-navbar-position (vertical/top).",
+      "Bootstrap: col-*/sm/md/lg/xxl, d-none d-md-block, flex, navbar-expand.",
+      "user.css·layout-navbar.css: @media (min-width: 576px, 992px) 커스텀 보강.",
+      "아래 캡처: 반응형 구성 요약 다이어그램."
+    ],
+    "image": "screenshots/10-responsive-overview.png"
+  },
+  {
+    "title": "4. 반응형 — 데스크톱 (1400px)",
+    "body": [
+      "URL: /dashboard/analytics",
+      "와이드 화면: 사이드바 + 다열 카드·차트 그리드. ECharts·CountUp 등 대시보드 위젯 전체 표시.",
+      "Falcon Analytics는 대화면에서 정보 밀도를 높이도록 설계된 대표 화면입니다."
+    ],
+    "image": "screenshots/02-dashboard-analytics.png"
+  },
+  {
+    "title": "5. 반응형 — 모바일 (390px)",
+    "body": [
+      "동일 URL을 모바일 뷰포트(390×844)로 캡처한 예시입니다.",
+      "사이드바·카드·테이블이 세로 스택으로 재배치되며, 터치에 맞는 버튼·간격을 유지합니다.",
+      "홈(/) 모바일 — 네비게이션·콘텐츠가 한 컬럼으로 표시됩니다."
+    ],
+    "image": "screenshots/11-responsive-mobile-home.png"
+  },
+  {
+    "title": "6. 반응형 — 모바일 대시보드",
+    "body": [
+      "URL: /dashboard/analytics (390px)",
+      "차트·통계 카드가 세로로 쌓이며 가로 스크롤 없이 주요 지표를 확인할 수 있습니다.",
+      "동일 Thymeleaf 템플릿 — CSS 미디어쿼리만으로 레이아웃 전환."
+    ],
+    "image": "screenshots/12-responsive-mobile-analytics.png"
+  },
+  {
+    "title": "7. 반응형 — 마법사·주소 (모바일)",
+    "body": [
+      "URL: /pages/authentication/wizard",
+      "col-sm-10 col-lg-7 col-xxl-5 — 작은 화면에서도 폼 너비 자동 조절.",
+      "탭 라벨: d-none d-md-block — 모바일은 아이콘만, 태블릿 이상에서 텍스트 라벨 표시.",
+      "hideSidebar + container-fluid — 마법사는 전폭 레이아웃으로 모바일 입력에 최적화."
+    ],
+    "image": "screenshots/13-responsive-mobile-wizard.png"
+  },
+  {
+    "title": "8. Thymeleaf — 템플릿 구조",
+    "body": [
+      "243+ HTML — layout + fragments + page-content. prefix=file: templates/, cache=false."
+    ],
+    "image": "screenshots/07-thymeleaf-architecture.png"
+  },
+  {
+    "title": "9. Thymeleaf — layout · fragment",
+    "body": [
+      "th:replace layout head/body, fragments/footer. 예: /pages/starter"
+    ],
+    "image": "screenshots/08-pages-starter.png"
+  },
+  {
+    "title": "10. Thymeleaf — 조건부 리소스 (th:if)",
+    "body": [
+      "PageViewAdvice URI별 loadEcharts, loadWizardKakaoAddress 등. layout.html th:if 스크립트 로드."
+    ],
+    "image": "screenshots/09-email-compose.png"
+  },
+  {
+    "title": "11. 관리 · 이커머스 (데스크톱)",
+    "body": [
+      "메뉴관리 /admin/menus — screen_list CRUD",
+      "주문목록 /app/e-commerce/orders/order-list — 테이블 반응형 스크롤"
+    ],
+    "image": "screenshots/04-admin-menus.png"
+  },
+  {
+    "title": "12. 커스텀 — 카카오 주소/지도",
+    "body": [
+      "카카오 로컬 API 검색, 카카오맵 JS, readonly 주소 필드. 데스크톱 캡처 참고."
+    ],
+    "image": "screenshots/03-wizard.png"
+  },
+  {
+    "title": "13. 아키텍처 · REST API",
+    "body": [
+      "MVC Thymeleaf + REST /api/* | OAuth 카카오/네이버 | MyBatis + MySQL"
+    ],
+    "image": null
+  }
+]

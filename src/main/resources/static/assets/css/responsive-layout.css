@@ -1,0 +1,255 @@
+/**
+ * 반응형 레이아웃 보정 (전역)
+ * Falcon + Bootstrap — 모든 화면·사이드바 breakpoint 공통
+ */
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+.main {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.main [data-layout="container"],
+.main > .container,
+.main > .container-fluid {
+  max-width: 100%;
+}
+
+/* layout :: body 안에 중첩된 Falcon 데모/인증 페이지 구조 */
+.content > .main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.content > .main > .container,
+.content > .main > .container-fluid {
+  max-width: 100%;
+  width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+body.layout-hide-sidebar .main > .container > .content,
+body.layout-hide-sidebar .main > .container-fluid > .content,
+body.layout-hide-sidebar .content {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  min-width: 0;
+}
+
+html[data-navbar-position="top"] .content {
+  margin-left: 0 !important;
+  max-width: 100% !important;
+}
+
+/* ── 사이드바: xl (1200px) ── */
+@media (max-width: 1199.98px) {
+  .navbar-vertical.navbar-expand-xl {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .navbar-vertical.navbar-expand-xl + .content,
+  .navbar-vertical.navbar-expand-xl.navbar-card + .content,
+  html.navbar-vertical-collapsed .navbar-vertical.navbar-expand-xl + .content {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0;
+  }
+
+  html.navbar-vertical-collapsed .navbar-vertical.navbar-expand-xl + .content .navbar-top,
+  .navbar-vertical.navbar-expand-xl + .content .navbar-top {
+    padding-left: 0 !important;
+  }
+}
+
+/* ── 사이드바: lg/md/sm 및 공통 모바일 (992px 이하) ── */
+@media (max-width: 991.98px) {
+  .navbar-vertical[class*="navbar-expand"] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .navbar-vertical[class*="navbar-expand"] + .content,
+  .navbar-vertical[class*="navbar-expand"].navbar-card + .content,
+  html.navbar-vertical-collapsed .navbar-vertical[class*="navbar-expand"] + .content {
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  html.navbar-vertical-collapsed .navbar-vertical[class*="navbar-expand"] + .content .navbar-top,
+  .navbar-vertical[class*="navbar-expand"] + .content .navbar-top {
+    padding-left: 0 !important;
+  }
+
+  html.navbar-vertical-collapsed .navbar-vertical[class*="navbar-expand"] {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .content,
+  .content > .main {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .content .row {
+    --bs-gutter-x: 1rem;
+  }
+
+  .content .row > [class*="col-"],
+  .content > .main .row > [class*="col-"] {
+    min-width: 0;
+  }
+
+  .ecommerce-card-min-width,
+  .card[style*="min-width"] {
+    min-width: 0 !important;
+    width: 100%;
+  }
+
+  .content .table-responsive,
+  .content > .main .table-responsive {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .content .card-body > .table:not(.table-responsive .table),
+  .content > .main .card-body > .table:not(.table-responsive .table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 인증 split / card 레이아웃 */
+  .content .min-vh-100 > [class*="col-"],
+  .content > .main .min-vh-100 > [class*="col-"] {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .content .min-vh-100 .col-sm-10,
+  .content > .main .min-vh-100 .col-sm-10 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+
+  /* 모바일 사이드바 오버레이 */
+  body.sidebar-overlay-active::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 1015;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  #navbarVerticalCollapse.show {
+    z-index: 1020;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .layout-header-vertical .navbar-brand {
+    max-width: 55vw;
+  }
+
+  .layout-header-vertical .search-box {
+    display: none;
+  }
+
+  /* FullCalendar */
+  .calendar-outline,
+  #appCalendar {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .fc .fc-toolbar {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+  }
+
+  .fc .fc-button {
+    padding: 0.25em 0.45em;
+    font-size: 0.8rem;
+  }
+
+  /* Kanban (사이드바 없음) */
+  body.layout-hide-sidebar .kanban-container,
+  .kanban-container {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  /* ECharts / 차트 */
+  [data-echart-responsive],
+  .echart-bar-weekly-sales,
+  .echarts-chart,
+  .chartjs,
+  canvas.chart {
+    max-width: 100% !important;
+  }
+
+  /* 대시보드 analytics 등 넓은 카드 헤더 */
+  .card-header .row.flex-between-center {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .layout-header-vertical .navbar-brand span.font-sans-serif {
+    font-size: 0.95rem;
+  }
+
+  .wizard-kakao-map {
+    height: 200px;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  /* 랜딩·독립 페이지 */
+  .navbar-standard .navbar-collapse {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+/* 독립 페이지 (로그인·에러·랜딩 등) */
+@media (max-width: 991.98px) {
+  .main > .container > .row.flex-center,
+  .main > .container-fluid > .row.flex-center {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thymeleaf 구성 — spring-boot-app</title>
+  <style>
+    body { font-family: "Malgun Gothic", sans-serif; margin: 32px; color: #111; font-size: 13px; line-height: 1.5; }
+    h1 { font-size: 22px; color: #1e40af; margin-bottom: 8px; }
+    h2 { font-size: 15px; margin: 20px 0 8px; border-bottom: 2px solid #2563eb; padding-bottom: 4px; }
+    pre { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px; font-size: 11px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 12px; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+    th { background: #e2e8f0; }
+    .tree { font-family: Consolas, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Thymeleaf 구성 (spring-boot-app-fixed)</h1>
+  <p>Spring MVC + Thymeleaf 3 · Falcon 템플릿 · layout/fragment 패턴</p>
+
+  <h2>1. 템플릿 디렉터리 구조</h2>
+  <pre class="tree">src/main/resources/templates/
+├── layout.html              ← 공통 head/body fragment
+├── fragments/
+│   ├── sidebar.html         ← 사이드바 (th:href 메뉴)
+│   ├── footer.html          ← footer fragment
+│   └── app-loading.html
+├── pages/                   ← 인증·FAQ·에러 등
+│   └── authentication/wizard.html
+├── dashboard/               ← 대시보드 화면
+├── app/                     ← 앱(e-commerce, email…)
+├── modules/                 ← Falcon 컴포넌트 데모
+└── admin/                   ← 메뉴·공통코드 관리</pre>
+
+  <h2>2. 페이지 조립 패턴</h2>
+  <pre>각 화면 HTML:
+  head  → th:replace="~{layout :: head}"
+  body  → th:replace="~{layout :: body}"
+           └── th:fragment="page-content"  ← 화면별 본문
+  footer → th:replace="~{fragments/footer :: footer}"</pre>
+
+  <h2>3. application.properties (개발)</h2>
+  <table>
+    <tr><th>설정</th><th>값</th><th>의미</th></tr>
+    <tr><td>spring.thymeleaf.prefix</td><td>file:src/main/resources/templates/</td><td>저장 즉시 반영</td></tr>
+    <tr><td>spring.thymeleaf.cache</td><td>false</td><td>개발 캐시 OFF</td></tr>
+    <tr><td>spring.thymeleaf.encoding</td><td>UTF-8</td><td>한글</td></tr>
+  </table>
+
+  <h2>4. 서버 → Model 주입</h2>
+  <table>
+    <tr><th>컴포넌트</th><th>역할</th></tr>
+    <tr><td>PageViewAdvice</td><td>URI별 loadEcharts, loadWizardKakaoAddress, kakaoMapAppKey …</td></tr>
+    <tr><td>PageCodeOptionsAdvice</td><td>공통코드 콤보 __CODE_OPTIONS__</td></tr>
+    <tr><td>ScreenListService</td><td>title, screenId, screenNm</td></tr>
+    <tr><td>LoginSessionControllerAdvice</td><td>로그인 세션 표시</td></tr>
+  </table>
+
+  <h2>5. layout.html 조건부 스크립트 (th:if)</h2>
+  <pre>th:if="${loadWizardKakaoAddress}"  → wizard-kakao-address.js
+th:if="${loadLottie}"               → lottie.min.js
+th:if="${loadTinymce}"              → tinymce (이메일 작성)
+th:inline="javascript"              → __KAKAO_MAP_APP_KEY__, __CODE_OPTIONS__</pre>
+</body>
+</html>

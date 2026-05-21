@@ -1,8 +1,8 @@
-<nav th:fragment="header" id="layoutHeaderVertical" class="navbar navbar-light navbar-glass navbar-top navbar-expand layout-header-vertical">
+﻿<nav th:fragment="header" id="layoutHeaderVertical" class="navbar navbar-light navbar-glass navbar-top navbar-expand layout-header-vertical">
 
             <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="내비게이션 토글"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
             <a class="navbar-brand me-1 me-sm-3" th:href="@{/}">
-              <div class="d-flex align-items-center"><img class="me-2" th:src="@{/assets/img/icons/spot-illustrations/falcon.png}" alt="" width="40" /><span class="font-sans-serif">falcon</span>
+              <div class="d-flex align-items-center"><span class="font-sans-serif" th:text="${appBrandName}">PrintMall</span>
               </div>
             </a>
             <ul class="navbar-nav align-items-center d-none d-lg-block">
@@ -64,7 +64,7 @@
                         <div class="d-flex align-items-center">
                           <div class="file-thumbnail me-2"><img class="img-fluid" th:src="@{/assets/img/icons/zip.png}" alt="" /></div>
                           <div class="flex-1">
-                            <h6 class="mb-0 title">Falcon v1.8.2</h6>
+                            <h6 class="mb-0 title">PrintMall v1.8.2</h6>
                             <p class="fs--2 mb-0 d-flex"><span class="fw-semi-bold">John</span><span class="fw-medium text-600 ms-2">30 Sep at 12:30 PM</span></p>
                           </div>
                         </div>

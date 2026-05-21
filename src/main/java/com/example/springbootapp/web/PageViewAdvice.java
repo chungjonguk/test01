@@ -31,6 +31,9 @@ public class PageViewAdvice {
 	@Value("${kakao.client-id:}")
 	private String kakaoClientId;
 
+	@Value("${app.brand-name:PrintMall}")
+	private String appBrandName;
+
 	public PageViewAdvice(ScreenListService screenListService) {
 		this.screenListService = screenListService;
 	}
@@ -38,6 +41,11 @@ public class PageViewAdvice {
 	@ModelAttribute("activeScreenUris")
 	public List<String> activeScreenUris() {
 		return screenListService.findActiveUriPaths();
+	}
+
+	@ModelAttribute("appBrandName")
+	public String appBrandName() {
+		return appBrandName;
 	}
 
 	@ModelAttribute
@@ -158,6 +166,9 @@ public class PageViewAdvice {
 			setIfAbsent(model, "loadDropzone", true);
 		}
 		if (uri.contains("/app/kanban")) {
+			setIfAbsent(model, "hideSidebar", true);
+		}
+		if (uri.contains("/pages/authentication/")) {
 			setIfAbsent(model, "hideSidebar", true);
 		}
 		if (uri.contains("/pages/authentication/wizard")

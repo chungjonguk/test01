@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>반응형 웹 앱 — spring-boot-app</title>
+  <style>
+    body { font-family: "Malgun Gothic", sans-serif; margin: 28px; font-size: 13px; color: #111; }
+    h1 { color: #1e40af; font-size: 20px; }
+    h2 { font-size: 14px; margin-top: 18px; border-bottom: 2px solid #2563eb; padding-bottom: 4px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 12px; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+    th { background: #e2e8f0; }
+    .badge { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 4px 10px; margin: 4px 4px 0 0; border-radius: 4px; font-size: 11px; }
+    pre { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <h1>반응형 웹 앱 (Responsive Web App)</h1>
+  <p>PC · 태블릿 · 모바일 브라우저에서 동일 URL로 최적화된 Falcon UI</p>
+  <p>
+    <span class="badge">Bootstrap 5 Grid</span>
+    <span class="badge">viewport meta</span>
+    <span class="badge">d-none d-md-*</span>
+    <span class="badge">@media CSS</span>
+    <span class="badge">navbar vertical/top</span>
+  </p>
+
+  <h2>1. 핵심 기술</h2>
+  <table>
+    <tr><th>항목</th><th>구현</th></tr>
+    <tr><td>뷰포트</td><td>layout.html — meta viewport width=device-width</td></tr>
+    <tr><td>그리드</td><td>col-*, col-sm-*, col-md-*, col-lg-*, col-xxl-*</td></tr>
+    <tr><td>표시 제어</td><td>d-none d-md-block — 모바일은 아이콘만, PC는 라벨</td></tr>
+    <tr><td>컨테이너</td><td>container / container-fluid (isFluid localStorage)</td></tr>
+    <tr><td>커스텀 CSS</td><td>user.css, layout-navbar.css — @media (min-width: 576px/992px)</td></tr>
+    <tr><td>네비 전환</td><td>navbar-position-settings.js — vertical ↔ top</td></tr>
+  </table>
+
+  <h2>2. 화면별 반응형 예</h2>
+  <pre>마법사: col-sm-10 col-lg-7 col-xxl-5, d-none d-md-block (탭 라벨)
+대시보드: 카드 row + col — 브레이크포인트별 재배치
+관리 화면: code-mgmt-table @media 가로 스크롤/열 숨김
+마법사 전용: hideSidebar → container-fluid 전폭</pre>
+
+  <h2>3. 테스트 방법</h2>
+  <p>Chrome F12 → 기기 툴바 (375px / 768px / 1400px) 또는 실제 스마트폰에서 http://localhost:8081 접속</p>
+</body>
+</html>

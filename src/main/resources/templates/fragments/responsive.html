@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <!-- layout.html 및 독립 페이지 head에 포함 -->
+  <th:block th:fragment="head">
+    <link th:href="@{/assets/css/responsive-layout.css(v=2)}" rel="stylesheet" id="responsive-layout-style" />
+  </th:block>
+
+  <!-- layout.html body 하단 및 독립 페이지에 포함 -->
+  <th:block th:fragment="scripts">
+    <script th:src="@{/assets/js/responsive-layout.js(v=2)}"></script>
+  </th:block>
+</body>
+</html>

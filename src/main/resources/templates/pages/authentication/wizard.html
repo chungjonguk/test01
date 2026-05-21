@@ -1,27 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}">
 </head>
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-
-
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
-    <main class="main" id="top">
-      <div class="container" data-layout="container">
-        <script>
-          var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-          if (isFluid) {
-            var container = document.querySelector('[data-layout]');
-            container.classList.remove('container');
-            container.classList.add('container-fluid');
-          }
-        </script>
         <div class="row justify-content-center pt-6">
-          <div class="col-sm-10 col-lg-7 col-xxl-5"><a class="d-flex flex-center mb-4" th:href="@{/}"><img class="me-2" th:src="@{/assets/img/icons/spot-illustrations/falcon.png}" alt="" width="45" /><span class="font-sans-serif fw-bolder fs-4 d-inline-block">falcon</span></a>
+          <div class="col-sm-10 col-lg-7 col-xxl-5"><a class="d-flex flex-center mb-4" th:href="@{/}"><span class="font-sans-serif fw-bolder fs-4 d-inline-block" th:text="${appBrandName}">PrintMall</span></a>
             <div class="card theme-wizard mb-5" id="wizard">
               <div class="card-header bg-light pt-3 pb-2">
                 <ul class="nav justify-content-between nav-wizard">
@@ -246,8 +231,6 @@
             </div>
           </div>
         </div>
-      </div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         (function initBirthDateSelects() {

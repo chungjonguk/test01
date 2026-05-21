@@ -1,49 +1,39 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head}">
-</head>
-<body>
-    <th:block th:replace="~{layout :: body}">
-    <div th:fragment="page-content">
+<head th:replace="~{fragments/auth-simple :: head}"></head>
+<body class="auth-simple-page">
+    <th:block th:replace="~{fragments/app-loading :: bar}"></th:block>
 
-
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
     <main class="main" id="top">
-      <div class="container" data-layout="container">
-        <script>
-          var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-          if (isFluid) {
-            var container = document.querySelector('[data-layout]');
-            container.classList.remove('container');
-            container.classList.add('container-fluid');
-          }
-        </script>
-        <div class="row flex-center min-vh-100 py-6 text-center">
-          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4"><a class="d-flex flex-center mb-4" href="../../../index.html"><img class="me-2" src="/assets/img/icons/spot-illustrations/falcon.png" alt="" width="58" /><span class="font-sans-serif fw-bolder fs-5 d-inline-block">falcon</span></a>
-            <div class="card">
-              <div class="card-body p-4 p-sm-5">
-                <div class="avatar avatar-4xl">
-                  <img class="rounded-circle" src="/assets/img/team/1.jpg" alt="" />
-
+        <div class="container" data-layout="container">
+            <div class="row flex-center min-vh-100 py-6 text-center">
+                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <a class="d-flex flex-center mb-4" th:href="@{/}">
+                        <span class="font-sans-serif fw-bolder fs-5 d-inline-block" th:text="${appBrandName}">PrintMall</span>
+                    </a>
+                    <div class="card">
+                        <div class="card-body p-4 p-sm-5">
+                            <div class="avatar avatar-4xl">
+                                <img class="rounded-circle" th:src="@{/assets/img/team/1.jpg}" alt="" />
+                            </div>
+                            <h5 class="mt-3 mb-0">Hi! Emma Watson</h5>
+                            <small>Enter your password to access the admin.</small>
+                            <form class="mt-4 row g-0 mx-sm-4">
+                                <div class="col">
+                                    <input class="form-control me-2 mb-2" type="password" placeholder="Enter your password" aria-label="User's password" aria-describedby="user-password" />
+                                </div>
+                                <div class="col-auto ps-2">
+                                    <button class="btn btn-primary px-3 mb-2" id="user-password" type="button">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <h5 class="mt-3 mb-0">Hi! Emma Watson</h5><small>Enter your password to access the admin.</small>
-                <form class="mt-4 row g-0 mx-sm-4">
-                  <div class="col">
-                    <input class="form-control me-2 mb-2" type="password" placeholder="Enter your password" aria-label="User's password" aria-describedby="user-password" />
-                  </div>
-                  <div class="col-auto ps-2">
-                    <button class="btn btn-primary px-3 mb-2" id="user-password" type="button">Login</button>
-                  </div>
-                </form>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
-    </div>
-    </th:block>
+    </main>
+
+    <th:block th:replace="~{fragments/settings :: settings}"></th:block>
+    <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
 </body>
 </html>

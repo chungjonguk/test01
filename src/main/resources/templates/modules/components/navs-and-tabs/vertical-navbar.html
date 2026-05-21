@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}">
 </head>
@@ -15,7 +15,7 @@
               <div class="row">
                 <div class="col-lg-8">
                   <h3>Navbar Vertical</h3>
-                  <p class="mb-0">Here is the available built-in option of Falcon's powerful, responsive vertical navigation. The following sections describe how you can customize both the responsive breakpoint and collapsing behavior.</p>
+                  <p class="mb-0">Here is the available built-in option of PrintMall's powerful, responsive vertical navigation. The following sections describe how you can customize both the responsive breakpoint and collapsing behavior.</p>
                 </div>
               </div>
             </div>
@@ -25,7 +25,7 @@
               <h5 class="mb-0" data-anchor="data-anchor">Responsive behavior</h5>
             </div>
             <div class="card-body bg-light">
-              <p>Falcon used the Bootstrap's <code>.navbar-expand{-sm|-md|-lg|-xl|-xxl} </code>classes in <code>.navbar-vertical </code>element to decide when the navbar vertical will expand or not. </p>
+              <p>PrintMall used the Bootstrap's <code>.navbar-expand{-sm|-md|-lg|-xl|-xxl} </code>classes in <code>.navbar-vertical </code>element to decide when the navbar vertical will expand or not. </p>
               <pre class="scrollbar mt-2"><code class="language-html">&lt;nav class=&quot;navbar navbar-vertical navbar-expand-xl navbar-light&quot;&gt;
 
   &lt;!-- Content--&gt;
@@ -41,7 +41,7 @@
           <div class="card mb-3">
             <div class="card-header">
               <h5 class="mb-0" data-anchor="data-anchor">Collapsing behavior </h5>
-              <p class="mt-2 mb-0">You can control the default collapsing behavior of Falcon's vertical navigation - whether it will show up with the collapsed or expanded state when the page loads.</p>
+              <p class="mt-2 mb-0">You can control the default collapsing behavior of PrintMall's vertical navigation - whether it will show up with the collapsed or expanded state when the page loads.</p>
             </div>
             <div class="card-body bg-light">
               <p>From your project directory, If you are using gulp version open <code>src/js/config.js </code>or if you are using directly from the public folder open <code>public/assets/js/theme.js </code>and set <code>isNavbarVerticalCollapsed: true</code> of <code>CONFIG </code>object
@@ -85,7 +85,7 @@
           <div class="card mb-3">
             <div class="card-header">
               <h5 class="mb-0" data-anchor="data-anchor">Event</h5>
-              <p class="mt-2 mb-0">Falcon navbar vertical exposes <code>navbar.vertical.toggle </code>event for hooking into navbar vertical collapse functionality. The event fire immediately after <code>.navbar-vertical-toggle </code>element is clicked.</p>
+              <p class="mt-2 mb-0">PrintMall navbar vertical exposes <code>navbar.vertical.toggle </code>event for hooking into navbar vertical collapse functionality. The event fire immediately after <code>.navbar-vertical-toggle </code>element is clicked.</p>
             </div>
             <div class="card-body bg-light">
               <pre><code class="lang-html">const navbarVerticalToggle = document.querySelector(.navbar-vertical-toggle);
@@ -98,11 +98,11 @@ navbarVerticalToggle.addEventListener('navbar.vertical.toggle', function () {
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0" data-anchor="data-anchor">Customize</h5>
-              <p class="mt-2 mb-0">You can easily customize Falcon's <strong>Navbar Vertical </strong>style using SCSS variables. All available variables are listed below:</p>
+              <p class="mt-2 mb-0">You can easily customize PrintMall's <strong>Navbar Vertical </strong>style using SCSS variables. All available variables are listed below:</p>
             </div>
             <div class="card-body bg-light">
               <h6 class="fs-0">Breakpoints</h6>
-              <p>Falcon use <code>$grid-brekpoints </code>in reversed order for styling navbar vertical when screen size is above the breakpoint. Note: Falcon get the brekpoint from <code>.navbar-expand-* </code>class.</p>
+              <p>PrintMall use <code>$grid-brekpoints </code>in reversed order for styling navbar vertical when screen size is above the breakpoint. Note: PrintMall get the brekpoint from <code>.navbar-expand-* </code>class.</p>
               <pre class="scrollbar mt-2 mb-4"><code class="language-html">$navbar-vertical-breakpoints: mapReverse($grid-breakpoints) !default;</code></pre>
               <h6 class="fs-0">Width</h6>
               <p>It's possible to update navbar vertical default width when screen size is above breakpoint. </p>
@@ -120,7 +120,7 @@ navbarVerticalToggle.addEventListener('navbar.vertical.toggle', function () {
               <p>Update navbar vertical shadow on mouse over</p>
               <pre class="scrollbar mt-2 mb-4"><code class="language-html">$navbar-vertical-collapsed-hover-shadow: 0.625rem 0 0.625rem -0.5625rem rgba($black, 0.2) !default;</code></pre>
               <h6 class="fs-0">Variation Width</h6>
-              <p>Falcon comes with different types of navbar vertical and you can change the width of those navbar by updating the variable.</p>
+              <p>PrintMall comes with different types of navbar vertical and you can change the width of those navbar by updating the variable.</p>
               <pre class="scrollbar mt-2 mb-4"><code class="language-html">$navbar-vertical-variation-width: 14.5rem !default;</code></pre>
               <h6 class="fs-0">Variation collapsed width</h6>
               <p>To change the collapsed with of navbar vertical variation update the variable.</p>
@@ -209,7 +209,7 @@ navbarVerticalToggle.addEventListener('navbar.vertical.toggle', function () {
               <h5 class="mb-0" data-anchor="data-anchor">SCSS</h5>
             </div>
             <div class="card-body bg-light">
-              <p>Falcon allow you to customize your Navbar Inverted with SCSS variables. The available options are listed below: </p>
+              <p>PrintMall allow you to customize your Navbar Inverted with SCSS variables. The available options are listed below: </p>
               <h6 class="fs-0">Background color</h6>
               <p class="mb-2">To change the background color of the Navbar Inverted, add the SCSS variable <code>$navbar-inverted-bg  </code>in your <code>_user-variables.scss</code>. Example: </p>
               <pre class="scrollbar mt-2 mb-4"><code class="language-html">$navbar-inverted-bg: $gray-1000;</code></pre>
@@ -235,7 +235,7 @@ navbarVerticalToggle.addEventListener('navbar.vertical.toggle', function () {
               <div class="d-flex align-items-start"><img class="me-3 border border-2 rounded-3 bg-200" src="/assets/img/generic/vibrant.png" alt="" width="100" />
                 <div class="flex-1">
                   <h5 class="mb-0" data-anchor="data-anchor">Navbar Vertical Vibrant</h5>
-                  <p class="mb-1">Make your Navbar Vertical more live and awesome with Falcon Navbar Vibrant.</p><a class="btn btn-link btn-sm ps-0" href="../../../demo/navbar-vertical-vibrant.html" target="_blank"> See the implementation here <span class="fas fa-chevron-right ms-1 fs--2"></span></a>
+                  <p class="mb-1">Make your Navbar Vertical more live and awesome with PrintMall Navbar Vibrant.</p><a class="btn btn-link btn-sm ps-0" href="../../../demo/navbar-vertical-vibrant.html" target="_blank"> See the implementation here <span class="fas fa-chevron-right ms-1 fs--2"></span></a>
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@ navbarVerticalToggle.addEventListener('navbar.vertical.toggle', function () {
               <div class="d-flex align-items-start"><img class="me-3 border border-2 rounded-3 bg-200" src="/assets/img/generic/card.png" alt="" width="100" />
                 <div class="flex-1">
                   <h5 class="mb-0" data-anchor="data-anchor">Navbar Vertical Card</h5>
-                  <p class="mb-1">Make your navbar vertical like Falcon card by using Navbar Vertical Card.</p><a class="btn btn-link btn-sm ps-0" href="../../../demo/navbar-vertical-card.html" target="_blank"> See the implementation here <span class="fas fa-chevron-right ms-1 fs--2"></span></a>
+                  <p class="mb-1">Make your navbar vertical like PrintMall card by using Navbar Vertical Card.</p><a class="btn btn-link btn-sm ps-0" href="../../../demo/navbar-vertical-card.html" target="_blank"> See the implementation here <span class="fas fa-chevron-right ms-1 fs--2"></span></a>
                 </div>
               </div>
             </div>

@@ -442,3 +442,57 @@ body[data-screen-id="APP_ORDER_LIST"] #ordersTable td.address {
   height: 240px;
   background-color: var(--falcon-gray-100, #f8f9fa);
 }
+
+/* 반응형 레이아웃 (전역 — 모든 user.css 로드 페이지) */
+@import url("responsive-layout.css");
+
+/* 인증 페이지 — Bootstrap .container 최대 너비 유지 (전체 화면 fluid 방지) */
+body.auth-simple-page,
+body.auth-card-page,
+body.auth-split-page {
+  min-height: 100vh;
+}
+
+body.auth-simple-page .main,
+body.auth-card-page .main,
+body.auth-split-page .main {
+  min-height: 100vh;
+}
+
+/* 설정 패널 isFluid와 무관하게 인증 화면은 항상 container */
+body.auth-simple-page .main > .container,
+body.auth-card-page .main > .container,
+body.auth-split-page .main > .container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.auth-simple-page .main > .container-fluid,
+body.auth-card-page .main > .container-fluid,
+body.auth-split-page .main > .container-fluid {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  padding-right: var(--bs-gutter-x, 0.75rem);
+}
+
+body.auth-card-page .bg-auth-circle-shape,
+body.auth-card-page .bg-auth-circle-shape-2 {
+  max-width: 40vw;
+}
+
+/* Falcon 로고·테마 미리보기 이미지 비활성화 (전역) */
+img[src*="spot-illustrations/falcon.png"],
+img[src*="falcon-mode-default.jpg"],
+img[src*="falcon-mode-dark.jpg"],
+.navbar-brand img.brand-logo-falcon,
+img.brand-logo-falcon {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

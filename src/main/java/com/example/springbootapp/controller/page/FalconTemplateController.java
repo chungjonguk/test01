@@ -2,6 +2,7 @@ package com.example.springbootapp.controller.page;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class FalconTemplateController {
 
     private final ResourceLoader resourceLoader;
+
+    @Value("${app.brand-name:PrintMall}")
+    private String appBrandName;
 
     public FalconTemplateController(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -50,7 +54,7 @@ public class FalconTemplateController {
         }
 
         if (!model.containsAttribute("title")) {
-            model.addAttribute("title", humanizeTitle(viewName));
+            model.addAttribute("title", humanizeTitle(viewName) + " | " + appBrandName);
         }
 
         return viewName;
@@ -61,12 +65,12 @@ public class FalconTemplateController {
         return resource.exists();
     }
 
-    private static String humanizeTitle(String viewName) {
+    private String humanizeTitle(String viewName) {
         int slash = viewName.lastIndexOf('/');
         String leaf = slash >= 0 ? viewName.substring(slash + 1) : viewName;
         String spaced = leaf.replace('-', ' ').replace('_', ' ');
         if (spaced.isEmpty()) {
-            return "Falcon";
+            return appBrandName;
         }
         return spaced.substring(0, 1).toUpperCase(Locale.ROOT) + spaced.substring(1);
     }

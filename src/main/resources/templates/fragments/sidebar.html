@@ -1,4 +1,4 @@
-<nav th:fragment="sidebar" id="layoutSidebar" class="navbar navbar-light navbar-vertical navbar-expand-xl">
+<nav th:fragment="sidebar" id="layoutSidebar" class="navbar navbar-light navbar-vertical navbar-expand-lg">
     <script>
       var navbarStyle = localStorage.getItem("navbarStyle");
       if (navbarStyle && navbarStyle !== 'transparent') {
@@ -12,7 +12,7 @@
             </button>
         </div>
             <a class="navbar-brand" th:href="@{/}">
-              <div class="d-flex align-items-center py-3"><img class="me-2" th:src="@{/assets/img/icons/spot-illustrations/falcon.png}" alt="" width="40" /><span class="font-sans-serif">falcon</span>
+              <div class="d-flex align-items-center py-3"><span class="font-sans-serif" th:text="${appBrandName}">PrintMall</span>
               </div>
             </a>
     </div>
@@ -1583,7 +1583,7 @@
                       <button class="btn btn-link btn-close-falcon p-0" aria-label="닫기" data-bs-dismiss="alert"></button>
                     </div>
                     <div class="text-center"><img th:src="@{/assets/img/icons/spot-illustrations/navbar-vertical.png}" alt="" width="80" />
-                      <p class="fs--2 mt-2">Loving what you see? <br />Get your copy of <a href="#!">Falcon</a></p>
+                      <p class="fs--2 mt-2">Loving what you see? <br />Get your copy of <a href="#!" th:text="${appBrandName}">PrintMall</a></p>
                       <div class="d-grid"><a class="btn btn-sm btn-purchase" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">Purchase</a></div>
                     </div>
                   </div>

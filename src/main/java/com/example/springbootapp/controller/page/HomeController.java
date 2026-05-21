@@ -1,5 +1,6 @@
 package com.example.springbootapp.controller.page;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+	@Value("${app.brand-name:PrintMall}")
+	private String appBrandName;
+
 	// 홈 페이지
 	@GetMapping("/")
 	public String home(Model model) {
-		model.addAttribute("title", "Falcon | 대시보드 및 웹 앱 템플릿");
+		model.addAttribute("title", appBrandName + " | 대시보드 및 웹 앱 템플릿");
 		return "index";
 	}
 

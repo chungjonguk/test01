@@ -1,26 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head}">
-</head>
-<body>
-    <th:block th:replace="~{layout :: body}">
-    <div th:fragment="page-content">
+<head th:replace="~{fragments/auth-simple :: head}"></head>
+<body class="auth-simple-page auth-split-page">
+    <th:block th:replace="~{fragments/app-loading :: bar}"></th:block>
 
-
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
     <main class="main" id="top">
-      <div class="container-fluid">
-        <script>
-          var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-          if (isFluid) {
-            var container = document.querySelector('[data-layout]');
-            container.classList.remove('container');
-            container.classList.add('container-fluid');
-          }
-        </script>
-        <div class="row min-vh-100 bg-100">
+<div class="container">
+<div class="row min-vh-100 bg-100">
           <div class="col-6 d-none d-lg-block position-relative">
             <div class="bg-holder" style="background-image:url(/assets/img/generic/19.jpg);">
             </div>
@@ -31,11 +17,11 @@
             <div class="row justify-content-center g-0">
               <div class="col-lg-9 col-xl-8 col-xxl-6">
                 <div class="card">
-                  <div class="card-header bg-circle-shape bg-shape text-center p-2"><a class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light" href="../../../index.html">falcon</a></div>
+                  <div class="card-header bg-circle-shape bg-shape text-center p-2"><a class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light" th:href="@{/}">PrintMall</a></div>
                   <div class="card-body p-4">
-                    <div class="text-center"><img class="d-block mx-auto mb-4" src="/assets/img/icons/spot-illustrations/45.png" alt="shield" width="100" />
+                    <div class="text-center"><img class="d-block mx-auto mb-4" th:src="@{/assets/img/icons/spot-illustrations/45.png}" alt="shield" width="100" />
                       <h3>See you again!</h3>
-                      <p>Thanks for using Falcon. You are <br />now successfully signed out.</p><a class="btn btn-primary btn-sm mt-3" href="../../../pages/authentication/split/login.html"><span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4 down-1"></span>Return to Login</a>
+                      <p>Thanks for using PrintMall. You are <br />now successfully signed out.</p><a class="btn btn-primary btn-sm mt-3" href="../../../pages/authentication/split/login.html"><span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4 down-1"></span>Return to Login</a>
                     </div>
                   </div>
                 </div>
@@ -44,8 +30,9 @@
           </div>
         </div>
       </div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
-    </div>
-    </th:block>
+    </main>
+
+    <th:block th:replace="~{fragments/settings :: settings}"></th:block>
+    <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
 </body>
 </html>
