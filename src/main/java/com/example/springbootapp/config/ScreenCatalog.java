@@ -43,6 +43,7 @@ public final class ScreenCatalog {
 				"app/e-commerce/product/product-images", 170);
 		put(byUri, "ADMIN_MENUS", "메뉴관리", "/admin/menus", "admin/menus", 25);
 		put(byUri, "ADMIN_USER_ACCESS_LOGS", "접속 로그", "/admin/user-access-logs", "admin/user-access-logs", 26);
+		put(byUri, "ADMIN_COMPANIES", "업체관리", "/admin/companies", "admin/companies", 27);
 	}
 
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {

@@ -31,6 +31,9 @@ public final class ScreenTableResolver {
 		if ("/admin/user-access-logs".equals(uri)) {
 			return db("user_access_log", "user", "사용자 접속 로그 조회");
 		}
+		if ("/admin/companies".equals(uri)) {
+			return db("biz_company", null, "업체(거래처) 마스터 관리");
+		}
 		if (uri.startsWith("/dashboard")) {
 			return codeOnly("common_code,common_code_value", "대시보드 콤보(공통코드)");
 		}

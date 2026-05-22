@@ -168,6 +168,9 @@ public class PageViewAdvice {
 		if (uri.contains("/admin/user-access-logs")) {
 			setIfAbsent(model, "loadUserAccessLogActions", true);
 		}
+		if (uri.contains("/admin/companies")) {
+			setIfAbsent(model, "loadCompanyManageActions", true);
+		}
 		if (uri.contains("/app/email/email-detail")) {
 			setIfAbsent(model, "loadEmailDetailActions", true);
 		}

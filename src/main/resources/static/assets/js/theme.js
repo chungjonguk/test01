@@ -7446,7 +7446,7 @@ var closedVsGoalInit = function closedVsGoalInit() {
             show: true,
             color: utils.getGrays()['400'],
             formatter: function formatter(value) {
-              return "$".concat(value);
+              return "".concat(Number(value).toLocaleString('ko-KR'), "원");
             },
             margin: 15
           },
@@ -8411,7 +8411,7 @@ var linePaymentChartInit = function linePaymentChartInit() {
           borderWidth: 1,
           transitionDuration: 0,
           formatter: function formatter(params) {
-            return "".concat(params[0].axisValue, " - ").concat(params[0].value, " USD");
+            return "".concat(params[0].axisValue, " - ").concat(params[0].value, " 원");
           },
           textStyle: {
             fontWeight: 500,

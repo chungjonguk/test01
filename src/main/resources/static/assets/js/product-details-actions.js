@@ -54,6 +54,9 @@
   }
 
   function formatPrice(n) {
+    if (window.PrintMallCurrency && window.PrintMallCurrency.formatWon) {
+      return window.PrintMallCurrency.formatWon(n);
+    }
     return n == null ? '0원' : Number(n).toLocaleString('ko-KR') + '원';
   }
 

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.BizCompanyMapper">
+
+    <resultMap id="bizCompanyResultMap" type="BizCompany">
+        <id property="companyId" column="company_id"/>
+        <result property="companyNm" column="company_nm"/>
+        <result property="bizNo" column="biz_no"/>
+        <result property="ceoNm" column="ceo_nm"/>
+        <result property="tel" column="tel"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="memo" column="memo"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <sql id="companyColumns">
+        company_id, company_nm, biz_no, ceo_nm, tel, email, address,
+        status_cd, use_yn, memo, reg_id, reg_dt, update_id, update_dt
+    </sql>
+
+    <select id="search" resultMap="bizCompanyResultMap">
+        SELECT <include refid="companyColumns"/>
+        FROM biz_company
+        <where>
+            <if test="companyNm != null and companyNm != ''">
+                AND company_nm LIKE CONCAT('%', #{companyNm}, '%')
+            </if>
+            <if test="bizNo != null and bizNo != ''">
+                AND biz_no LIKE CONCAT('%', #{bizNo}, '%')
+            </if>
+            <if test="statusCd != null and statusCd != ''">
+                AND status_cd = #{statusCd}
+            </if>
+            <if test="useYn != null and useYn != ''">
+                AND use_yn = #{useYn}
+            </if>
+        </where>
+        ORDER BY company_id DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findById" resultMap="bizCompanyResultMap">
+        SELECT <include refid="companyColumns"/>
+        FROM biz_company
+        WHERE company_id = #{companyId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="companyId">
+        INSERT INTO biz_company (
+            company_nm, biz_no, ceo_nm, tel, email, address,
+            status_cd, use_yn, memo, reg_id, update_id
+        ) VALUES (
+            #{companyNm}, #{bizNo}, #{ceoNm}, #{tel}, #{email}, #{address},
+            #{statusCd}, #{useYn}, #{memo}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE biz_company
+        SET company_nm = #{companyNm},
+            biz_no = #{bizNo},
+            ceo_nm = #{ceoNm},
+            tel = #{tel},
+            email = #{email},
+            address = #{address},
+            status_cd = #{statusCd},
+            use_yn = #{useYn},
+            memo = #{memo},
+            update_id = #{updateId}
+        WHERE company_id = #{companyId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM biz_company WHERE company_id = #{companyId}
+    </delete>
+</mapper>

@@ -79,6 +79,9 @@
   }
 
   function formatPrice(n) {
+    if (window.PrintMallCurrency && window.PrintMallCurrency.formatWon) {
+      return window.PrintMallCurrency.formatWon(n);
+    }
     if (n == null || n === '') {
       return '0원';
     }

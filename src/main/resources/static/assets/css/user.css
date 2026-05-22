@@ -1,3 +1,17 @@
+/* 한글·영문 통합 폰트 (Poppins/Open Sans 단독 사용 시 한글이 깨져 보일 수 있음) */
+:root {
+  --falcon-font-sans-serif: "Poppins", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --falcon-body-font-family: "Noto Sans KR", "Open Sans", "Malgun Gothic", "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--falcon-body-font-family);
+}
+
+.font-sans-serif {
+  font-family: var(--falcon-font-sans-serif);
+}
+
 /* Settings panel — Navigation Position 라디오 (가로 배치) */
 .settings-panel .settings-navbar-position-options {
   display: flex;
