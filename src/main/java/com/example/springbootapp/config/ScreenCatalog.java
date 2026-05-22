@@ -35,6 +35,12 @@ public final class ScreenCatalog {
 				"app/e-learning/course/course-details", 357);
 		put(byUri, "APP_COURSE_CREATE", "강좌 만들기", "/app/e-learning/course/create-a-course",
 				"app/e-learning/course/create-a-course", 358);
+		put(byUri, "ECM_PRODUCT_REGISTER", "상품 등록", "/app/e-commerce/product/product-register",
+				"app/e-commerce/product/product-register", 168);
+		put(byUri, "ECM_PRODUCT_MANAGE", "상품 관리", "/app/e-commerce/product/product-manage",
+				"app/e-commerce/product/product-manage", 169);
+		put(byUri, "ECM_PRODUCT_IMAGES", "상품 이미지", "/app/e-commerce/product/product-images",
+				"app/e-commerce/product/product-images", 170);
 		put(byUri, "ADMIN_MENUS", "메뉴관리", "/admin/menus", "admin/menus", 25);
 	}
 

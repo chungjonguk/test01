@@ -167,6 +167,9 @@
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/theme.js(v=6)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=3)}"></script>
+    <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
+    <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=2)}"></script>
+    <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=1)}"></script>
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress and kakaoMapAppKey != null}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
       window.__KAKAO_REST_API_KEY__ = /*[[${kakaoRestApiKeyForMapHint}]]*/ '';

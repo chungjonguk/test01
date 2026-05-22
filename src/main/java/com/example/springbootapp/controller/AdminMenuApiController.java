@@ -13,17 +13,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springbootapp.config.ScreenSidebarLoader;
+import com.example.springbootapp.config.ScreenTableResolver;
 import com.example.springbootapp.domain.ScreenList;
+import com.example.springbootapp.domain.ScreenTableMap;
 import com.example.springbootapp.service.ScreenListService;
+import com.example.springbootapp.service.ScreenTableMapService;
 
 @RestController
 @RequestMapping("/api/admin/menus")
 public class AdminMenuApiController {
 
 	private final ScreenListService screenListService;
+	private final ScreenTableMapService screenTableMapService;
 
-	public AdminMenuApiController(ScreenListService screenListService) {
+	public AdminMenuApiController(
+			ScreenListService screenListService,
+			ScreenTableMapService screenTableMapService) {
 		this.screenListService = screenListService;
+		this.screenTableMapService = screenTableMapService;
 	}
 
 	@GetMapping
@@ -32,9 +39,10 @@ public class AdminMenuApiController {
 			@RequestParam(required = false) String screenNm,
 			@RequestParam(required = false) String uriPath,
 			@RequestParam(required = false) String useYn) {
+		Map<String, ScreenTableMap> tableByUri = screenTableMapService.findAllByUri();
 		List<Map<String, Object>> screens = screenListService.searchForAdmin(screenId, screenNm, uriPath, useYn)
 				.stream()
-				.map(this::toDto)
+				.map(screen -> toDto(screen, tableByUri.get(screen.getUriPath())))
 				.collect(Collectors.toList());
 		Map<String, Object> body = new HashMap<>();
 		body.put("screens", screens);
@@ -42,7 +50,8 @@ public class AdminMenuApiController {
 		return ResponseEntity.ok(body);
 	}
 
-	private Map<String, Object> toDto(ScreenList screen) {
+	private Map<String, Object> toDto(ScreenList screen, ScreenTableMap mapped) {
+		ScreenTableResolver.Mapping fallback = ScreenTableResolver.resolve(screen.getUriPath());
 		Map<String, Object> row = new LinkedHashMap<>();
 		row.put("screenId", screen.getScreenId());
 		row.put("screenNm", ScreenSidebarLoader.resolveDisplayName(screen.getScreenNm(), screen.getUriPath()));
@@ -50,6 +59,10 @@ public class AdminMenuApiController {
 		row.put("templatePath", screen.getTemplatePath());
 		row.put("sortOrd", screen.getSortOrd());
 		row.put("useYn", screen.getUseYn());
+		row.put("primaryTable", mapped != null ? mapped.getPrimaryTable() : fallback.primaryTable());
+		row.put("relatedTables", mapped != null ? mapped.getRelatedTables() : fallback.relatedTables());
+		row.put("dataType", mapped != null ? mapped.getDataType() : String.valueOf(fallback.dataType()));
+		row.put("tableDesc", mapped != null ? mapped.getTableDesc() : fallback.tableDesc());
 		row.put("regId", screen.getRegId());
 		row.put("regDt", screen.getRegDt());
 		row.put("updateId", screen.getUpdateId());

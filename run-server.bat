@@ -8,17 +8,30 @@ set JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
 cd /d "%~dp0"
 
 echo.
-echo === Spring Boot 서버 재시작 (UTF-8, 캐시 정리 포함) ===
+echo === Spring Boot 서버 재시작 (DB 확인 후 기동) ===
 echo.
 
-echo [1/3] 8081 포트 사용 프로세스 종료...
+echo [1/4] 8081 포트 사용 프로세스 종료...
 for /f "tokens=5" %%P in ('netstat -ano 2^>nul ^| findstr ":8081" ^| findstr "LISTENING"') do (
   echo   PID %%P 종료
   taskkill /F /PID %%P >nul 2>&1
 )
 timeout /t 2 /nobreak >nul
 
-echo [2/3] 빌드/템플릿 캐시 정리 (target 삭제)...
+echo.
+echo [2/4] MySQL 기동 및 DB 접속 확인...
+call "%~dp0scripts\ensure-mysql.bat"
+if errorlevel 1 (
+  echo.
+  echo [중단] DB 접속에 실패하여 Spring Boot를 시작하지 않습니다.
+  echo   - start-mysql.bat 또는 setup-mysql-redcroxx.bat 실행 후 다시 시도하세요.
+  echo.
+  pause
+  exit /b 1
+)
+
+echo.
+echo [3/4] 빌드/템플릿 캐시 정리 (target 삭제)...
 if exist "target" (
   rmdir /s /q "target"
   echo   target 폴더 삭제 완료
@@ -26,7 +39,8 @@ if exist "target" (
   echo   target 없음 — 건너뜀
 )
 
-echo [3/3] 서버 시작 (mvn clean spring-boot:run, UTF-8)...
+echo.
+echo [4/4] 서버 시작 (mvn clean spring-boot:run, UTF-8)...
 echo.
 mvn clean spring-boot:run -DskipTests "-Dspring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
 

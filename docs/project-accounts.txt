@@ -1,0 +1,206 @@
+================================================================================
+  spring-boot-app-fixed — 프로젝트 계정·인증·Git 정보
+  (application.properties, scripts, schema, git 기준)
+================================================================================
+
+※ 보안: MySQL 비밀번호 등이 설정 파일에 평문으로 있습니다.
+  공개 저장소·공유 시 비밀번호 변경 및 application-local.properties 분리를 권장합니다.
+
+
+--------------------------------------------------------------------------------
+1. MySQL (앱 · DBeaver · 배치 스크립트 공통)
+--------------------------------------------------------------------------------
+
+  호스트      : 127.0.0.1 (또는 localhost)
+  포트        : 3306
+  데이터베이스  : spring_boot_app
+  사용자      : redcroxx
+  비밀번호    : jonguk0412
+
+  JDBC URL (예시):
+  jdbc:mysql://localhost:3306/spring_boot_app?useUnicode=true&characterEncoding=UTF-8
+    &connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Seoul
+    &allowPublicKeyRetrieval=true&useSSL=false&nullCatalogMeansCurrent=true
+
+  DBeaver URL (권장):
+  jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false
+    &serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+  설정 파일:
+    - src/main/resources/application.properties
+    - scripts/ensure-mysql.bat
+    - scripts/create-all-tables.bat
+    - scripts/dbeaver-mysql-connection.txt
+    - scripts/mysql-init-redcroxx.sql
+
+  주석 처리된 대체 계정 (현재 미사용):
+    사용자: springuser
+    비밀번호: spring1234
+
+  MySQL 사용자·DB 생성 (root 계정으로 1회 실행):
+    scripts/mysql-init-redcroxx.sql
+
+
+--------------------------------------------------------------------------------
+2. 웹 애플리케이션 로그인 (user 테이블)
+--------------------------------------------------------------------------------
+
+  서버 포트    : 8081
+  브랜드명     : PrintMall (app.brand-name)
+
+  로그인 화면  : http://localhost:8081/pages/authentication/simple/login
+  로그인 처리  : POST /auth/login  (파라미터: id, pw)
+  로그아웃     : GET 또는 POST /auth/logout
+  회원가입     : http://localhost:8081/pages/authentication/simple/register
+
+  인증 방식    : user 테이블 id/pw — 평문 비교 (BCrypt 미사용)
+  기본 계정    : 시드 SQL 없음 — 회원가입으로 user 테이블에 직접 등록 필요
+
+  비밀번호 정책 (회원가입 시):
+    - 영문자, 숫자, 특수문자 각 1자 이상 포함
+
+  세션         : 비활성 10분 후 만료
+    - server.servlet.session.timeout=10m
+    - app.auth.session-timeout-minutes=10
+
+  등록된 계정 확인 (MySQL):
+    USE spring_boot_app;
+    SELECT id, name, email FROM user;
+
+
+--------------------------------------------------------------------------------
+3. 소셜 로그인 (OAuth)
+--------------------------------------------------------------------------------
+
+  [카카오]
+  설정 키           : kakao.client-id, kakao.client-secret, kakao.rest-api-key
+  기본 client-id    : YOUR_KAKAO_REST_API_KEY (플레이스홀더)
+  client-secret     : (비어 있음)
+  로그인 URL        : http://localhost:8081/auth/kakao/login
+  콜백 URL          : http://localhost:8081/auth/kakao/callback
+  로컬 API mock     : kakao.local.mock-enabled=true (키 없을 때 UI 테스트)
+
+  [네이버]
+  설정 키           : naver.client-id, naver.client-secret
+  기본 client-id    : YOUR_NAVER_CLIENT_ID (플레이스홀더)
+  기본 secret       : YOUR_NAVER_CLIENT_SECRET (플레이스홀더)
+  로그인 URL        : http://localhost:8081/auth/naver/login
+  콜백 URL          : http://localhost:8081/auth/naver/callback
+
+  실제 API 키 입력:
+    - src/main/resources/application-local.properties.example 참고
+    - application-local.properties 로 복사 후 키 입력 (git 제외 권장)
+
+
+--------------------------------------------------------------------------------
+4. 기타 환경·보안 설정
+--------------------------------------------------------------------------------
+
+  Spring Boot     : 3.2.3
+  Java            : 17
+  Maven artifact  : com.example:spring-boot-app:0.0.1-SNAPSHOT
+
+  주민번호 암호화  : app.crypto.rrno.secret-key
+    - 로컬 기본값: 32자 placeholder (application.properties)
+    - 운영: 환경 변수 RRNO_CRYPTO_SECRET_KEY 필수 권장
+
+  테스트 (JUnit)  : H2 in-memory
+    - spring.datasource.username=sa
+    - spring.datasource.password=(없음)
+
+
+--------------------------------------------------------------------------------
+5. Git 저장소 정보
+--------------------------------------------------------------------------------
+  [ 계정 ]
+  id / pw : resident01@naver.com	/ !jonguk0412!
+
+
+  [저장소]
+  로컬 루트 경로   : D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
+  STS 워크스페이스 : new-workspace (상위 폴더)
+  Eclipse 프로젝트명: spring-boot-app (폴더명 spring-boot-app-fixed)
+
+  [원격]
+  remote 이름      : origin
+  fetch URL        : https://github.com/chungjonguk/test01.git
+  push URL         : https://github.com/chungjonguk/test01.git
+  GitHub 저장소    : https://github.com/chungjonguk/test01
+
+  [브랜치]
+  현재 브랜치      : main
+  추적 브랜치      : origin/main
+  원격 기본 브랜치  : origin/HEAD → origin/main
+
+  [최신 원격 반영 커밋 (main HEAD)]
+  해시            : d5023657c704a454b65f40992671b1de49a33f22
+  짧은 해시       : d502365
+  작성자          : resident01 <resident01@naver.com>
+  날짜            : 2026-05-22 01:14:00 +0900
+  메시지          : feat: 반응형 UI·PrintMall 브랜딩·인증 페이지 레이아웃 정리
+
+  [최근 커밋 이력 (상위 5건)]
+  d502365 feat: 반응형 UI·PrintMall 브랜딩·인증 페이지 레이아웃 정리
+  c735049 feat: 마법사 카카오 주소검색·지도 및 JavaScript 키 분리
+  7953098 feat: 카카오 주소 검색·템플릿 레이아웃·이메일·주문 UI 정리
+  f6bcdf5 feat: screen_list 메뉴관리·공통코드 콤보 및 화면 접근 제어
+  d39a79c feat: 코드 관리 화면 및 common_code API 연동
+
+  [로컬 작업 트리 (문서 작성 시점)]
+  - origin/main 과 동기화된 커밋 기준: d502365
+  - 이후 로컬에 미커밋 변경·신규 파일 다수 존재 가능
+    (상품관리, ecm_product, DB 스크립트, run-server.bat 등)
+  - 상태 확인: git status
+
+  [Git에서 제외 (.gitignore 주요 항목)]
+  - target/, logs/
+  - application-local.properties (카카오·로컬 비밀 설정)
+  - .classpath, .project, .settings/, .launch/ (Eclipse/STS)
+  - .metadata/, .idea/, .vscode/launch.json
+  - *.class, *.log
+
+  [자주 쓰는 Git 명령]
+  git status
+  git pull origin main
+  git add .
+  git commit -m "메시지"
+  git push -u origin main
+
+  [GitHub CLI (설치 시)]
+  gh repo view chungjonguk/test01
+  gh pr create --title "제목" --body "본문"
+
+
+--------------------------------------------------------------------------------
+6. 공통코드 역할 (로그인 계정 아님)
+--------------------------------------------------------------------------------
+
+  USER_ROLE 코드 그룹에 ADMIN 값 존재 (common_code_seed.sql)
+  → 역할 코드용이며, 별도 로그인 계정이 아님
+
+
+--------------------------------------------------------------------------------
+7. 주요 실행·관리 URL (로컬)
+--------------------------------------------------------------------------------
+
+  대시보드        : http://localhost:8081/dashboard
+  메뉴 관리       : http://localhost:8081/admin/menus
+  공통코드 관리   : http://localhost:8081/admin/codes
+  상품 관리       : http://localhost:8081/app/e-commerce/product/product-manage
+  상품 등록       : http://localhost:8081/app/e-commerce/product/product-register
+
+
+--------------------------------------------------------------------------------
+8. 관련 배치·스크립트
+--------------------------------------------------------------------------------
+
+  run-server.bat            : 8081 종료 → MySQL 확인 → mvn spring-boot:run
+  start-mysql.bat           : MySQL 기동 확인
+  scripts/ensure-mysql.bat  : DB 접속 대기
+  scripts/create-all-tables.bat : 전체 테이블 생성
+  open-sts-workspace.bat    : STS 워크스페이스 열기 (README 참고)
+
+
+================================================================================
+  문서 끝 — 갱신 시: git log -1 / git remote -v 로 Git 섹션 재확인 권장
+================================================================================

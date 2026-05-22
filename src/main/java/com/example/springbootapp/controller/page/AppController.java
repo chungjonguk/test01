@@ -66,11 +66,6 @@ public class AppController {
         return "app/e-commerce/product/product-grid";
     }
 
-    @GetMapping({"/app/e-commerce/product/product-details", "/app/e-commerce/product/product-details.html"})
-    public String appEcommerceProductDetails() {
-        return "app/e-commerce/product/product-details";
-    }
-
     @GetMapping({"/app/e-commerce/orders/order-list", "/app/e-commerce/orders/order-list.html"})
     public String appEcommerceOrderList() {
         return "app/e-commerce/orders/order-list";

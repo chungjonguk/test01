@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row flex-between-center g-2">
+                <div class="col-sm-auto mb-2 mb-sm-0">
+                  <h6 class="mb-0" id="product-grid-count-label">등록 상품 0건</h6>
+                </div>
+                <div class="col-sm-auto">
+                  <div class="row gx-2 align-items-center">
+                    <div class="col-auto d-none d-md-block">
+                      <form id="product-search-form" class="row gx-2 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-control form-control-sm" id="search-product-nm" type="text" placeholder="상품명" autocomplete="off" style="min-width:120px" />
+                        </div>
+                        <div class="col-auto">
+                          <select class="form-select form-select-sm" id="search-category-cd" aria-label="카테고리">
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
+                          </select>
+                        </div>
+                        <div class="col-auto">
+                          <select class="form-select form-select-sm" id="search-status-cd" aria-label="상태">
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
+                          </select>
+                        </div>
+                        <div class="col-auto">
+                          <button class="btn btn-primary btn-sm" type="submit"><span class="fas fa-search"></span></button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-auto">
+                      <form class="row gx-2 align-items-center">
+                        <div class="col-auto"><small>정렬:</small></div>
+                        <div class="col-auto">
+                          <select class="form-select form-select-sm" id="product-sort" aria-label="정렬">
+                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('PRODUCT_SORT', 'newest')}"></th:block>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-auto pe-0">
+                      <a class="text-600 px-1" th:href="@{/app/e-commerce/product/product-grid}" data-bs-toggle="tooltip" title="데모 Grid"><span class="fas fa-th"></span></a>
+                    </div>
+                    <div class="col-auto pe-0">
+                      <a class="text-600 px-1" th:href="@{/app/e-commerce/product/product-list}" data-bs-toggle="tooltip" title="데모 List"><span class="fas fa-list-ul"></span></a>
+                    </div>
+                    <div class="col-auto">
+                      <a class="btn btn-primary btn-sm" th:href="@{/app/e-commerce/product/product-register}">
+                        <span class="fas fa-plus me-1"></span>등록
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-2 mt-2 d-md-none">
+                <div class="col-12">
+                  <form id="product-search-form-mobile" class="row g-2">
+                    <div class="col-12">
+                      <input class="form-control form-control-sm" id="search-product-nm-mobile" type="text" placeholder="상품명 검색" />
+                    </div>
+                    <div class="col-6">
+                      <select class="form-select form-select-sm" id="search-category-cd-mobile">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select class="form-select form-select-sm" id="search-status-cd-mobile">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary btn-sm w-100" type="button" id="btn-search-mobile">조회</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row" id="product-manage-grid">
+                <div class="col-12 text-center text-600 py-5" id="product-manage-placeholder">조회 중...</div>
+              </div>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-center">
+              <div id="product-manage-pagination">
+                <span class="fs--1 text-600">DB 등록 상품 · 카드 클릭 시 상세</span>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+    <script>
+      (function () {
+        function boot() {
+          if (typeof window.ProductManageInit === 'function') {
+            window.ProductManageInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', boot);
+        } else {
+          boot();
+        }
+      })();
+    </script>
+</body>
+</html>

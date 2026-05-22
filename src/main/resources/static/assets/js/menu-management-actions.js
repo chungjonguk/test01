@@ -73,6 +73,17 @@
     return '<span class="badge badge-soft-secondary">N</span>';
   }
 
+  function dataTypeBadge(dataType) {
+    var t = (dataType || 'S').toUpperCase();
+    if (t === 'D') {
+      return '<span class="badge badge-soft-primary" title="DB 연동">D</span>';
+    }
+    if (t === 'C') {
+      return '<span class="badge badge-soft-info" title="공통코드">C</span>';
+    }
+    return '<span class="badge badge-soft-secondary" title="정적 UI">S</span>';
+  }
+
   function getSearchParams() {
     var params = new URLSearchParams();
     var screenId = $('search-screen-id');
@@ -103,7 +114,7 @@
     var rows = screens || [];
     if (!rows.length) {
       tbody.innerHTML =
-        '<tr><td colspan="8" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
+        '<tr><td colspan="11" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
       if (countEl) {
         countEl.textContent = '0건';
       }
@@ -131,6 +142,15 @@
           '<td class="align-middle col-uri">' +
           truncateCell(uriPath) +
           '</td>' +
+          '<td class="align-middle text-center col-data-type">' +
+          dataTypeBadge(row.dataType) +
+          '</td>' +
+          '<td class="align-middle col-primary-table d-none d-lg-table-cell">' +
+          truncateCell(row.primaryTable || '—') +
+          '</td>' +
+          '<td class="align-middle col-related-tables d-none d-xl-table-cell">' +
+          truncateCell(row.relatedTables || '—') +
+          '</td>' +
           '<td class="align-middle text-center col-sort">' +
           escapeHtml(row.sortOrd) +
           '</td>' +
@@ -157,7 +177,7 @@
     var tbody = $('menu-grid-body');
     if (tbody) {
       tbody.innerHTML =
-        '<tr><td colspan="8" class="text-center text-600 py-4">조회 중...</td></tr>';
+        '<tr><td colspan="11" class="text-center text-600 py-4">조회 중...</td></tr>';
     }
     fetch('/api/admin/menus?' + getSearchParams().toString(), {
       headers: { Accept: 'application/json' }
@@ -174,7 +194,7 @@
       .catch(function () {
         if (tbody) {
           tbody.innerHTML =
-            '<tr><td colspan="8" class="text-center text-danger py-4">조회 중 오류가 발생했습니다.</td></tr>';
+            '<tr><td colspan="11" class="text-center text-danger py-4">조회 중 오류가 발생했습니다.</td></tr>';
         }
       })
       .finally(function () {

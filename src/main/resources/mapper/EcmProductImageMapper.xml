@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmProductImageMapper">
+
+    <resultMap id="ecmProductImageResultMap" type="EcmProductImage">
+        <id property="imageId" column="image_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="sortOrd" column="sort_ord"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+    </resultMap>
+
+    <select id="findByProductId" resultMap="ecmProductImageResultMap">
+        SELECT image_id, product_id, sort_ord, img_url, reg_id, reg_dt
+        FROM ecm_product_image
+        WHERE product_id = #{productId}
+        ORDER BY sort_ord
+    </select>
+
+    <delete id="deleteByProductId">
+        DELETE FROM ecm_product_image WHERE product_id = #{productId}
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId">
+        INSERT INTO ecm_product_image (product_id, sort_ord, img_url, reg_id)
+        VALUES (#{productId}, #{sortOrd}, #{imgUrl}, #{regId})
+    </insert>
+</mapper>

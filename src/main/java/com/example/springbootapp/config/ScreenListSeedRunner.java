@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Profile;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import javax.sql.DataSource;
  */
 @Profile("!test")
 @Component
+@Order(20)
 public class ScreenListSeedRunner implements ApplicationRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(ScreenListSeedRunner.class);

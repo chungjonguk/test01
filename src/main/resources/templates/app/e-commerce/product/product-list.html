@@ -10,10 +10,14 @@
             <div class="card-body">
               <div class="row flex-between-center">
                 <div class="col-sm-auto mb-2 mb-sm-0">
-                  <h6 class="mb-0">Showing 1-24 of 205 Products</h6>
+                  <h6 class="mb-0">상품 목록 (데모 UI)</h6>
                 </div>
                 <div class="col-sm-auto">
                   <div class="row gx-2 align-items-center">
+                    <div class="col-auto">
+                      <a class="btn btn-primary btn-sm" th:href="@{/app/e-commerce/product/product-register}"><span class="fas fa-plus me-1"></span>상품 등록</a>
+                      <a class="btn btn-falcon-default btn-sm ms-1" th:href="@{/app/e-commerce/product/product-manage}"><span class="fas fa-cog me-1"></span>상품 관리</a>
+                    </div>
                     <div class="col-auto">
                       <form class="row gx-2">
                         <div class="col-auto"><small>Sort by: </small></div>

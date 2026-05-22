@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmProductMapper">
+
+    <resultMap id="ecmProductResultMap" type="EcmProduct">
+        <id property="productId" column="product_id"/>
+        <result property="productNm" column="product_nm"/>
+        <result property="categoryCd" column="category_cd"/>
+        <result property="price" column="price"/>
+        <result property="stockQty" column="stock_qty"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="description" column="description"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <sql id="ecmProductColumns">
+        product_id, product_nm, category_cd, price, stock_qty, status_cd,
+        img_url, description, reg_id, reg_dt, update_id, update_dt
+    </sql>
+
+    <select id="findAll" resultMap="ecmProductResultMap">
+        SELECT <include refid="ecmProductColumns"/>
+        FROM ecm_product
+        <where>
+            <if test="productNm != null and productNm != ''">
+                AND product_nm LIKE CONCAT('%', #{productNm}, '%')
+            </if>
+            <if test="categoryCd != null and categoryCd != ''">
+                AND category_cd = #{categoryCd}
+            </if>
+            <if test="statusCd != null and statusCd != ''">
+                AND status_cd = #{statusCd}
+            </if>
+        </where>
+        ORDER BY reg_dt DESC, product_id DESC
+    </select>
+
+    <select id="findById" resultMap="ecmProductResultMap">
+        SELECT <include refid="ecmProductColumns"/>
+        FROM ecm_product
+        WHERE product_id = #{productId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="productId">
+        INSERT INTO ecm_product (
+            product_nm, category_cd, price, stock_qty, status_cd,
+            img_url, description, reg_id, update_id
+        ) VALUES (
+            #{productNm}, #{categoryCd}, #{price}, #{stockQty}, #{statusCd},
+            #{imgUrl}, #{description}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE ecm_product
+        SET product_nm = #{productNm},
+            category_cd = #{categoryCd},
+            price = #{price},
+            stock_qty = #{stockQty},
+            status_cd = #{statusCd},
+            img_url = #{imgUrl},
+            description = #{description},
+            update_id = #{updateId}
+        WHERE product_id = #{productId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM ecm_product WHERE product_id = #{productId}
+    </delete>
+</mapper>

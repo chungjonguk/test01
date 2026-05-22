@@ -118,6 +118,20 @@ public class PageViewAdvice {
 		if (uri.contains("/app/e-commerce/product") || uri.contains("/modules/components/carousel")) {
 			setIfAbsent(model, "loadSwiper", true);
 		}
+		if (uri.contains("/app/e-commerce/product/product-register")) {
+			setIfAbsent(model, "loadProductRegisterActions", true);
+		}
+		if (uri.contains("/app/e-commerce/product/product-manage")) {
+			setIfAbsent(model, "loadProductManageActions", true);
+			setIfAbsent(model, "loadSwiper", true);
+		}
+		if (uri.contains("/app/e-commerce/product/product-details")) {
+			setIfAbsent(model, "loadProductDetailsActions", true);
+			setIfAbsent(model, "loadSwiper", true);
+		}
+		if (uri.contains("/app/e-commerce/product/product-images")) {
+			setIfAbsent(model, "loadProductImagesPage", true);
+		}
 		if (uri.contains("/app/e-commerce/orders/order-list")) {
 			setIfAbsent(model, "loadOrderListActions", true);
 		}

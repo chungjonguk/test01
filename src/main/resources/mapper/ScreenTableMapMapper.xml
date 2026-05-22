@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.ScreenTableMapMapper">
+
+    <resultMap id="screenTableMapResultMap" type="ScreenTableMap">
+        <id property="uriPath" column="uri_path"/>
+        <result property="screenId" column="screen_id"/>
+        <result property="primaryTable" column="primary_table"/>
+        <result property="relatedTables" column="related_tables"/>
+        <result property="dataType" column="data_type"/>
+        <result property="tableDesc" column="table_desc"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <sql id="screenTableMapColumns">
+        uri_path, screen_id, primary_table, related_tables, data_type, table_desc,
+        reg_id, reg_dt, update_id, update_dt
+    </sql>
+
+    <select id="findByUriPath" resultMap="screenTableMapResultMap">
+        SELECT <include refid="screenTableMapColumns"/>
+        FROM screen_table_map
+        WHERE uri_path = #{uriPath}
+    </select>
+
+    <select id="findAll" resultMap="screenTableMapResultMap">
+        SELECT <include refid="screenTableMapColumns"/>
+        FROM screen_table_map
+        ORDER BY uri_path
+    </select>
+
+    <insert id="upsert">
+        INSERT INTO screen_table_map (
+            uri_path, screen_id, primary_table, related_tables, data_type, table_desc,
+            reg_id, reg_dt, update_id, update_dt
+        ) VALUES (
+            #{uriPath}, #{screenId}, #{primaryTable}, #{relatedTables}, #{dataType}, #{tableDesc},
+            #{regId}, #{regDt}, #{updateId}, #{updateDt}
+        )
+        ON DUPLICATE KEY UPDATE
+            screen_id = VALUES(screen_id),
+            primary_table = VALUES(primary_table),
+            related_tables = VALUES(related_tables),
+            data_type = VALUES(data_type),
+            table_desc = VALUES(table_desc),
+            update_id = VALUES(update_id),
+            update_dt = VALUES(update_dt)
+    </insert>
+</mapper>

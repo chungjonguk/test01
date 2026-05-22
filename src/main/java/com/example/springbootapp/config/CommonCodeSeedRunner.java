@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Profile;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import javax.sql.DataSource;
  */
 @Profile("!test")
 @Component
+@Order(10)
 public class CommonCodeSeedRunner implements ApplicationRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeSeedRunner.class);
