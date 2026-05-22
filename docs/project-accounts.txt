@@ -112,9 +112,15 @@
 --------------------------------------------------------------------------------
 5. Git 저장소 정보
 --------------------------------------------------------------------------------
-  [ 계정 ]
-  id / pw : resident01@naver.com	/ !jonguk0412!
 
+  [Git 계정 — 커밋 작성자 (이 저장소 .git/config)]
+  user.name   : resident01
+  user.email  : resident01@naver.com
+
+  [GitHub 로그인 (HTTPS push/pull)]
+  ID          : resident01@naver.com
+  PW          : !jonguk0412!
+  ※ GitHub는 계정 비밀번호 대신 Personal Access Token(PAT)을 요구할 수 있습니다.
 
   [저장소]
   로컬 루트 경로   : D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
@@ -133,24 +139,20 @@
   원격 기본 브랜치  : origin/HEAD → origin/main
 
   [최신 원격 반영 커밋 (main HEAD)]
-  해시            : d5023657c704a454b65f40992671b1de49a33f22
-  짧은 해시       : d502365
+  해시            : e3148e4 (상세는 git log -1 참고)
   작성자          : resident01 <resident01@naver.com>
-  날짜            : 2026-05-22 01:14:00 +0900
-  메시지          : feat: 반응형 UI·PrintMall 브랜딩·인증 페이지 레이아웃 정리
+  메시지          : feat: 상품 CRUD·이미지·DB 스크립트 및 MySQL 기동 자동화
 
   [최근 커밋 이력 (상위 5건)]
+  e3148e4 feat: 상품 CRUD·이미지·DB 스크립트 및 MySQL 기동 자동화
   d502365 feat: 반응형 UI·PrintMall 브랜딩·인증 페이지 레이아웃 정리
   c735049 feat: 마법사 카카오 주소검색·지도 및 JavaScript 키 분리
   7953098 feat: 카카오 주소 검색·템플릿 레이아웃·이메일·주문 UI 정리
   f6bcdf5 feat: screen_list 메뉴관리·공통코드 콤보 및 화면 접근 제어
-  d39a79c feat: 코드 관리 화면 및 common_code API 연동
 
-  [로컬 작업 트리 (문서 작성 시점)]
-  - origin/main 과 동기화된 커밋 기준: d502365
-  - 이후 로컬에 미커밋 변경·신규 파일 다수 존재 가능
-    (상품관리, ecm_product, DB 스크립트, run-server.bat 등)
-  - 상태 확인: git status
+  [로컬 작업 트리]
+  - origin/main 과 동기화 (git status 로 확인)
+  - .dbeaver/ 만 미추적일 수 있음
 
   [Git에서 제외 (.gitignore 주요 항목)]
   - target/, logs/
