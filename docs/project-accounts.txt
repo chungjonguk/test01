@@ -122,6 +122,12 @@
   PW          : !jonguk0412!
   ※ GitHub는 계정 비밀번호 대신 Personal Access Token(PAT)을 요구할 수 있습니다.
 
+  [다운로드 차단 — 저장소 비공개]
+  - GitHub 웹: Settings → Danger Zone → Make private
+    https://github.com/chungjonguk/test01/settings
+  - 또는 scripts/github-make-private.bat 실행 (gh 로그인 필요)
+  - 상세: docs/github-private-repository-guide.txt
+
   [저장소]
   로컬 루트 경로   : D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
   STS 워크스페이스 : new-workspace (상위 폴더)

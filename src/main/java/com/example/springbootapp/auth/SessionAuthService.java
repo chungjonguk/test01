@@ -1,6 +1,9 @@
 package com.example.springbootapp.auth;
 
 import com.example.springbootapp.domain.User;
+import com.example.springbootapp.service.UserAccessLogService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -19,8 +22,14 @@ public class SessionAuthService {
     /** 세션에 저장되는 로그인 사용자 객체 키 */
     public static final String ATTR_LOGIN_USER = "loginUser";
 
+    private final UserAccessLogService userAccessLogService;
+
     @Value("${app.auth.session-timeout-minutes:10}")
     private int sessionTimeoutMinutes;
+
+    public SessionAuthService(UserAccessLogService userAccessLogService) {
+        this.userAccessLogService = userAccessLogService;
+    }
 
     public int getSessionTimeoutSeconds() {
         return Math.max(1, sessionTimeoutMinutes) * 60;
@@ -31,30 +40,45 @@ public class SessionAuthService {
     }
 
     public void loginFromUser(HttpSession session, User user) {
+        loginFromUser(session, user, null);
+    }
+
+    public void loginFromUser(HttpSession session, User user, HttpServletRequest request) {
         LoginSession loginSession = new LoginSession();
         loginSession.setUserId(user.getId());
         loginSession.setUserName(user.getName() != null && !user.getName().isBlank() ? user.getName() : user.getId());
         loginSession.setEmail(user.getEmail());
         loginSession.setLoginType("FORM");
         establishSession(session, loginSession);
+        userAccessLogService.recordLoginSession(request, loginSession);
     }
 
     public void loginFromKakao(HttpSession session, Map<String, Object> kakaoUser) {
+        loginFromKakao(session, kakaoUser, null);
+    }
+
+    public void loginFromKakao(HttpSession session, Map<String, Object> kakaoUser, HttpServletRequest request) {
         LoginSession loginSession = new LoginSession();
         loginSession.setUserId(resolveKakaoUserId(kakaoUser));
         loginSession.setUserName(resolveKakaoNickname(kakaoUser));
         loginSession.setEmail(resolveKakaoEmail(kakaoUser));
         loginSession.setLoginType("KAKAO");
         establishSession(session, loginSession);
+        userAccessLogService.recordLoginSession(request, loginSession);
     }
 
     public void loginFromNaver(HttpSession session, Map<String, Object> naverBody) {
+        loginFromNaver(session, naverBody, null);
+    }
+
+    public void loginFromNaver(HttpSession session, Map<String, Object> naverBody, HttpServletRequest request) {
         LoginSession loginSession = new LoginSession();
         loginSession.setUserId(resolveNaverUserId(naverBody));
         loginSession.setUserName(resolveNaverDisplayName(naverBody));
         loginSession.setEmail(resolveNaverEmail(naverBody));
         loginSession.setLoginType("NAVER");
         establishSession(session, loginSession);
+        userAccessLogService.recordLoginSession(request, loginSession);
     }
 
     private void establishSession(HttpSession session, LoginSession loginSession) {
@@ -84,8 +108,16 @@ public class SessionAuthService {
     }
 
     public void logout(HttpSession session) {
+        logout(session, null);
+    }
+
+    public void logout(HttpSession session, HttpServletRequest request) {
         if (session == null) {
             return;
+        }
+        LoginSession loginSession = getLoginSession(session);
+        if (loginSession != null) {
+            userAccessLogService.recordLogout(request, loginSession);
         }
         session.removeAttribute(ATTR_LOGIN_USER);
         session.invalidate();

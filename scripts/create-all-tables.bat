@@ -22,6 +22,8 @@ if errorlevel 1 goto :fail
 
 echo [2] 핵심 테이블 (user, common_code, screen_list, screen_table_map)...
 "%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\user.sql"
+"%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\user_access_log.sql"
+"%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\ecm_payment.sql"
 "%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\common_code.sql"
 "%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\screen_list.sql"
 "%MYSQL_BIN%" -h 127.0.0.1 -u redcroxx -pjonguk0412 --default-character-set=utf8mb4 spring_boot_app < "%SCHEMA%\screen_table_map.sql"

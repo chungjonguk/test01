@@ -29,9 +29,9 @@ public class ApplicationStartupLogger implements ApplicationListener<Application
 		int port = webCtx.getWebServer().getPort();
 		String name = event.getApplicationContext().getEnvironment().getProperty("spring.application.name", "app");
 		try (var connection = dataSource.getConnection()) {
-			log.info("[{}] MySQL 연결 성공 — url={}", name, connection.getMetaData().getURL());
+			log.info("[{}] 서비스 준비 완료 — DB url={}", name, connection.getMetaData().getURL());
 		} catch (Exception ex) {
-			log.error("[{}] MySQL 연결 실패", name, ex);
+			log.warn("[{}] 서비스 준비됨 — DB 재확인 실패(이미 기동 검사 통과 후 연결 끊김 가능)", name, ex);
 		}
 		log.info("[{}] 서버 포트 {} — 예: http://localhost:{}/dashboard", name, port, port);
 	}

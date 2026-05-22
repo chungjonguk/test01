@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmPaymentMapper">
+
+    <resultMap id="ecmPaymentResultMap" type="EcmPayment">
+        <id property="paymentId" column="payment_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="orderId" column="order_id"/>
+        <result property="pgCd" column="pg_cd"/>
+        <result property="mid" column="mid"/>
+        <result property="tid" column="tid"/>
+        <result property="amount" column="amount"/>
+        <result property="currencyCd" column="currency_cd"/>
+        <result property="goodName" column="good_name"/>
+        <result property="buyerName" column="buyer_name"/>
+        <result property="buyerTel" column="buyer_tel"/>
+        <result property="buyerEmail" column="buyer_email"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="resultCode" column="result_code"/>
+        <result property="resultMsg" column="result_msg"/>
+        <result property="authToken" column="auth_token"/>
+        <result property="idcName" column="idc_name"/>
+        <result property="rawAuthJson" column="raw_auth_json"/>
+        <result property="rawApproveJson" column="raw_approve_json"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="paymentId">
+        INSERT INTO ecm_payment (
+            order_no, order_id, pg_cd, mid, amount, currency_cd,
+            good_name, buyer_name, buyer_tel, buyer_email, status_cd, reg_id, update_id
+        ) VALUES (
+            #{orderNo}, #{orderId}, #{pgCd}, #{mid}, #{amount}, #{currencyCd},
+            #{goodName}, #{buyerName}, #{buyerTel}, #{buyerEmail}, #{statusCd}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <select id="findByOrderNo" resultMap="ecmPaymentResultMap">
+        SELECT payment_id, order_no, order_id, pg_cd, mid, tid, amount, currency_cd,
+               good_name, buyer_name, buyer_tel, buyer_email, status_cd,
+               result_code, result_msg, auth_token, idc_name,
+               raw_auth_json, raw_approve_json, reg_id, reg_dt, update_id, update_dt
+        FROM ecm_payment
+        WHERE order_no = #{orderNo}
+    </select>
+
+    <update id="updateAfterAuth">
+        UPDATE ecm_payment
+        SET status_cd = #{statusCd},
+            result_code = #{resultCode},
+            result_msg = #{resultMsg},
+            auth_token = #{authToken},
+            idc_name = #{idcName},
+            raw_auth_json = #{rawAuthJson},
+            update_id = #{updateId}
+        WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="updateAfterApprove">
+        UPDATE ecm_payment
+        SET status_cd = #{statusCd},
+            tid = #{tid},
+            result_code = #{resultCode},
+            result_msg = #{resultMsg},
+            raw_approve_json = #{rawApproveJson},
+            update_id = #{updateId}
+        WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="updateOrderId">
+        UPDATE ecm_payment
+        SET order_id = #{orderId},
+            update_id = #{updateId}
+        WHERE order_no = #{orderNo}
+    </update>
+</mapper>

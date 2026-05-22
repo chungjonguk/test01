@@ -5,6 +5,10 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
+        <script>
+            window.__CALENDAR_USE_DB__ = true;
+            window.__CALENDAR_API_BASE__ = '/api/calendar/events';
+        </script>
         <link th:href="@{/vendors/fullcalendar/main.min.css}" rel="stylesheet" />
         <link th:href="@{/vendors/flatpickr/flatpickr.min.css}" rel="stylesheet" />
 
@@ -60,8 +64,9 @@
             <div class="modal-dialog">
                 <div class="modal-content border">
                     <form id="addEventForm" autocomplete="off">
+                        <input type="hidden" id="eventId" name="eventId" value="" />
                         <div class="modal-header px-card bg-light border-bottom-0">
-                            <h5 class="modal-title">일정 만들기</h5>
+                            <h5 class="modal-title" id="addEventModalTitle">일정 만들기</h5>
                             <button class="btn-close me-n1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body p-card">
@@ -82,8 +87,18 @@
                                 <label class="form-check-label" for="eventAllDay">종일</label>
                             </div>
                             <div class="mb-3">
+                                <label class="fs-0" for="eventLocation">장소</label>
+                                <input class="form-control" id="eventLocation" type="text" name="location" />
+                            </div>
+                            <div class="mb-3">
                                 <label class="fs-0" for="eventDescription">설명</label>
                                 <textarea class="form-control" rows="3" name="description" id="eventDescription"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="fs-0" for="eventCategory">카테고리</label>
+                                <select class="form-select" id="eventCategory" name="category">
+                                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('EVENT_CATEGORY', '')}"></th:block>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label class="fs-0" for="eventLabel">라벨</label>
@@ -92,9 +107,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="modal-footer d-flex justify-content-end align-items-center bg-light border-0">
-                            <a class="me-3 text-600" th:href="@{/app/events/create-an-event}">더 많은 옵션</a>
-                            <button class="btn btn-primary px-4" type="submit">저장</button>
+                        <div class="modal-footer d-flex justify-content-between align-items-center bg-light border-0">
+                            <button class="btn btn-outline-danger btn-sm d-none" type="button" id="eventDeleteBtn">삭제</button>
+                            <button class="btn btn-primary px-4 ms-auto" type="submit" id="eventSaveBtn">저장</button>
                         </div>
                     </form>
                 </div>

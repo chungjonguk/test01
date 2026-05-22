@@ -24,13 +24,26 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                  <div class="product-details-gallery border rounded-1 p-2 bg-light" th:if="${!displayImageUrls.isEmpty()}">
-                    <div class="product-slider" id="galleryTop" th:if="${#lists.size(displayImageUrls) > 1}">
-                      <div class="swiper-container theme-slider" data-swiper='{"spaceBetween":8,"loop":true,"navigation":{"nextEl":".swiper-button-next","prevEl":".swiper-button-prev"}}'>
+                <div class="col-lg-6 mb-4 mb-lg-0" id="product-details-gallery-col">
+                  <div class="product-details-gallery border rounded-1 p-2 bg-light text-center"
+                       th:if="${!displayImageUrls.isEmpty() and #lists.size(displayImageUrls) == 1}">
+                    <img class="rounded-1 w-100 product-details-main-img"
+                         th:src="${displayImgUrl}" th:alt="${product.productNm}" style="max-height:420px;object-fit:contain"
+                         onerror="this.src='/assets/img/products/1.jpg'" />
+                  </div>
+                  <div class="product-details-gallery border rounded-1 p-2 bg-light"
+                       th:if="${#lists.size(displayImageUrls) > 1}">
+                    <div class="product-slider" id="galleryTop">
+                      <div class="swiper-container theme-slider product-details-swiper"
+                           data-swiper='{"spaceBetween":8,"loop":true,"loopedSlides":5,"autoplay":{"delay":4000,"disableOnInteraction":false},"thumb":{"spaceBetween":8,"slidesPerView":5,"loop":true,"freeMode":true,"grabCursor":true,"loopedSlides":5,"centeredSlides":true,"slideToClickedSlide":true,"watchSlidesVisibility":true,"watchSlidesProgress":true},"slideToClickedSlide":true}'>
                         <div class="swiper-wrapper">
-                          <div class="swiper-slide" th:each="url : ${displayImageUrls}">
-                            <img class="rounded-1 w-100 product-details-main-img" th:src="${url}" th:alt="${product.productNm}" style="max-height:420px;object-fit:contain" />
+                          <div class="swiper-slide" th:each="url, stat : ${displayImageUrls}">
+                            <div class="position-relative text-center">
+                              <img class="rounded-1 w-100 product-details-main-img" th:src="${url}" th:alt="${product.productNm}"
+                                   style="max-height:420px;object-fit:contain" onerror="this.src='/assets/img/products/1.jpg'" />
+                              <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2 fs--2"
+                                    th:if="${stat.index == 0}">대표</span>
+                            </div>
                           </div>
                         </div>
                         <div class="swiper-nav">
@@ -38,12 +51,6 @@
                           <div class="swiper-button-prev swiper-button-white"></div>
                         </div>
                       </div>
-                    </div>
-                    <img th:if="${#lists.size(displayImageUrls) <= 1}" class="rounded-1 w-100 product-details-main-img"
-                         th:src="${displayImgUrl}" th:alt="${product.productNm}" style="max-height:420px;object-fit:contain" />
-                    <div class="d-flex flex-wrap gap-2 mt-2 justify-content-center">
-                      <img th:each="url : ${displayImageUrls}" th:src="${url}" alt=""
-                           class="rounded-1 border" style="width:64px;height:64px;object-fit:cover" />
                     </div>
                   </div>
                   <p class="fs--2 text-500 mb-0 mt-2" th:if="${displayImageUrls.isEmpty()}">등록된 이미지가 없습니다.</p>

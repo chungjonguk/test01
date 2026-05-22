@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.UserAccessLogMapper">
+
+    <resultMap id="userAccessLogResultMap" type="UserAccessLog">
+        <id property="accessId" column="access_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userNm" column="user_nm"/>
+        <result property="accessTypeCd" column="access_type_cd"/>
+        <result property="loginTypeCd" column="login_type_cd"/>
+        <result property="successYn" column="success_yn"/>
+        <result property="requestUri" column="request_uri"/>
+        <result property="httpMethod" column="http_method"/>
+        <result property="clientIp" column="client_ip"/>
+        <result property="userAgent" column="user_agent"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="failReason" column="fail_reason"/>
+        <result property="accessDt" column="access_dt"/>
+        <result property="regId" column="reg_id"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="accessId">
+        INSERT INTO user_access_log (
+            user_id, user_nm, access_type_cd, login_type_cd, success_yn,
+            request_uri, http_method, client_ip, user_agent, session_id,
+            fail_reason, access_dt, reg_id
+        ) VALUES (
+            #{userId}, #{userNm}, #{accessTypeCd}, #{loginTypeCd}, #{successYn},
+            #{requestUri}, #{httpMethod}, #{clientIp}, #{userAgent}, #{sessionId},
+            #{failReason}, COALESCE(#{accessDt}, CURRENT_TIMESTAMP), #{regId}
+        )
+    </insert>
+
+    <select id="findByUserId" resultMap="userAccessLogResultMap">
+        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
+               request_uri, http_method, client_ip, user_agent, session_id,
+               fail_reason, access_dt, reg_id
+        FROM user_access_log
+        WHERE user_id = #{userId}
+        ORDER BY access_dt DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findByRange" resultMap="userAccessLogResultMap">
+        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
+               request_uri, http_method, client_ip, user_agent, session_id,
+               fail_reason, access_dt, reg_id
+        FROM user_access_log
+        WHERE access_dt &gt;= #{rangeStart}
+          AND access_dt &lt; #{rangeEnd}
+        ORDER BY access_dt DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="search" resultMap="userAccessLogResultMap">
+        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
+               request_uri, http_method, client_ip, user_agent, session_id,
+               fail_reason, access_dt, reg_id
+        FROM user_access_log
+        <where>
+            <if test="userId != null and userId != ''">
+                AND user_id LIKE CONCAT('%', #{userId}, '%')
+            </if>
+            <if test="accessTypeCd != null and accessTypeCd != ''">
+                AND access_type_cd = #{accessTypeCd}
+            </if>
+            <if test="loginTypeCd != null and loginTypeCd != ''">
+                AND login_type_cd = #{loginTypeCd}
+            </if>
+            <if test="successYn != null and successYn != ''">
+                AND success_yn = #{successYn}
+            </if>
+            <if test="rangeStart != null">
+                AND access_dt &gt;= #{rangeStart}
+            </if>
+            <if test="rangeEnd != null">
+                AND access_dt &lt; #{rangeEnd}
+            </if>
+        </where>
+        ORDER BY access_dt DESC
+        LIMIT #{limit}
+    </select>
+</mapper>

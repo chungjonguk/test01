@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <span class="fas fa-check-circle text-success fs-3 mb-3"></span>
+                <h4 class="mb-2">결제 완료</h4>
+                <p class="text-600 mb-3" th:text="${paymentResult.message}">결제가 완료되었습니다.</p>
+                <p class="fs--1 text-600" th:if="${paymentResult.orderNo != null}">
+                    주문번호: <code th:text="${paymentResult.orderNo}"></code>
+                </p>
+                <p class="fs--1 text-600" th:if="${paymentResult.tid != null}">
+                    거래번호(TID): <code th:text="${paymentResult.tid}"></code>
+                </p>
+                <a class="btn btn-primary mt-3" th:href="@{/app/e-commerce/orders/order-list}">주문 목록</a>
+                <a class="btn btn-falcon-default mt-3 ms-2" th:href="@{/dashboard}">대시보드</a>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

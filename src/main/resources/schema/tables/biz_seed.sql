@@ -31,9 +31,11 @@ INSERT INTO lms_trainer (trainer_id, trainer_nm, email, bio) VALUES
 (2, 'Cody Fisher', 'cody@example.com', '프론트엔드 강사')
 ON DUPLICATE KEY UPDATE trainer_nm = VALUES(trainer_nm);
 
-INSERT INTO calendar_event (event_id, title, category_cd, start_dt, end_dt, location, reg_id, update_id) VALUES
-(1, '팀 미팅', 'MEETING', '2026-05-22 10:00:00', '2026-05-22 11:00:00', '회의실 A', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE title = VALUES(title), update_id = VALUES(update_id);
+INSERT INTO calendar_event (event_id, title, category_cd, label_cd, start_dt, end_dt, location, description, all_day_yn, reg_id, update_id) VALUES
+(1, '팀 미팅', 'BUSINESS', 'primary', '2026-05-22 10:00:00', '2026-05-22 11:00:00', '회의실 A', '주간 스프린트 리뷰', 'N', 'SYSTEM', 'SYSTEM'),
+(2, '휴가', 'OTHER', 'success', '2026-05-25 00:00:00', '2026-05-26 00:00:00', NULL, '연차', 'Y', 'SYSTEM', 'SYSTEM')
+ON DUPLICATE KEY UPDATE title = VALUES(title), label_cd = VALUES(label_cd), description = VALUES(description),
+  all_day_yn = VALUES(all_day_yn), update_id = VALUES(update_id);
 
 INSERT INTO email_message (message_id, folder_cd, subject, sender_email, recipient, body_text, read_yn) VALUES
 (1, 'INBOX', '주문 확인', 'orders@printmall.com', 'user@example.com', '주문이 접수되었습니다.', 'N')

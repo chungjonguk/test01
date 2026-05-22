@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3" id="user-access-log-panel">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
+                  <h5 class="mb-0">사용자 접속 로그</h5>
+                  <p class="fs--1 mb-0 text-600">user_access_log · 로그인·로그아웃·접속 이력 조회 (최근 30일 기본)</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>조회 조건</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="access-log-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-user-id">사용자 ID</label>
+                      <input class="form-control form-control-sm" id="search-user-id" type="text" placeholder="user id" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-access-type">접속 유형</label>
+                      <select class="form-select form-select-sm" id="search-access-type">
+                        <option value="">전체</option>
+                        <option value="LOGIN">LOGIN</option>
+                        <option value="LOGOUT">LOGOUT</option>
+                        <option value="PAGE">PAGE</option>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-login-type">로그인 방식</label>
+                      <select class="form-select form-select-sm" id="search-login-type">
+                        <option value="">전체</option>
+                        <option value="FORM">FORM</option>
+                        <option value="KAKAO">KAKAO</option>
+                        <option value="NAVER">NAVER</option>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-1">
+                      <label class="form-label fs--1 mb-1" for="search-success-yn">성공</label>
+                      <select class="form-select form-select-sm" id="search-success-yn">
+                        <option value="">전체</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-date-from">시작일</label>
+                      <input class="form-control form-control-sm" id="search-date-from" type="date" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-date-to">종료일</label>
+                      <input class="form-control form-control-sm" id="search-date-to" type="date" />
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-access-logs"><span class="fas fa-search me-1"></span>조회</button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-access-log-search"><span class="fas fa-redo me-1"></span>초기화</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="access-log-result-count">0건</span>
+                <span class="fs--1 text-600">최대 500건 · 최신순</span>
+              </div>
+
+              <div class="table-responsive scrollbar access-log-table-wrap">
+                <table class="table table-sm table-striped table-hover fs--1 mb-0 access-log-table">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="ps-3 text-center col-no">No</th>
+                      <th class="col-access-dt">접속일시</th>
+                      <th class="col-user-id">사용자ID</th>
+                      <th class="col-user-nm d-none d-md-table-cell">이름</th>
+                      <th class="text-center col-access-type">유형</th>
+                      <th class="text-center col-login-type d-none d-lg-table-cell">로그인</th>
+                      <th class="text-center col-success">성공</th>
+                      <th class="col-client-ip d-none d-xl-table-cell">IP</th>
+                      <th class="col-uri d-none d-xl-table-cell">URI</th>
+                      <th class="col-fail d-none d-xxl-table-cell">실패사유</th>
+                    </tr>
+                  </thead>
+                  <tbody id="access-log-grid-body">
+                    <tr>
+                      <td colspan="10" class="text-center text-600 py-4">조회 버튼을 눌러 접속 로그를 불러오세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+    <script>
+      (function () {
+        function bootAccessLogMgmt() {
+          if (typeof window.UserAccessLogMgmtInit === 'function') {
+            window.UserAccessLogMgmtInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootAccessLogMgmt);
+        } else {
+          bootAccessLogMgmt();
+        }
+      })();
+    </script>
+</body>
+</html>

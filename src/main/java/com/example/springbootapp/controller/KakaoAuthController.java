@@ -150,7 +150,7 @@ public class KakaoAuthController {
         responseSummary.put("user", kakaoUser);
 
         HttpSession session = request.getSession(true);
-        sessionAuthService.loginFromKakao(session, kakaoUser);
+        sessionAuthService.loginFromKakao(session, kakaoUser, request);
         session.removeAttribute("kakao_oauth_state");
 
         model.addAttribute("code", code);

@@ -6,3 +6,10 @@ kakao.javascript-key=여기에_JavaScript_키_입력
 kakao.local.mock-enabled=false
 # developers.kakao.com → 카카오맵 ON, 플랫폼 Web → http://localhost:8081 등록
 # kakao.local.fallback-mock-on-local-disabled=false
+
+# --- KG이니시스 테스트 결제창 (가맹점 계약 후 sign-key 교체) ---
+# payment.inicis.mock-enabled=false
+# payment.inicis.mid=INIpayTest
+# payment.inicis.sign-key=발급받은_signKey
+# payment.inicis.std-pay-js-url=https://stgstdpay.inicis.com/stdjs/INIStdPay.js
+# payment.inicis.base-url=http://localhost:8081

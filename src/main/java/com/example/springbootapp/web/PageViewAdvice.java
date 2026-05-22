@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.example.springbootapp.config.InicisProperties;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
 
@@ -24,6 +25,7 @@ public class PageViewAdvice {
 	private static final String KAKAO_KEY_PLACEHOLDER = "YOUR_KAKAO_REST_API_KEY";
 
 	private final ScreenListService screenListService;
+	private final InicisProperties inicisProperties;
 
 	@Value("${kakao.javascript-key:}")
 	private String kakaoJavascriptKey;
@@ -34,8 +36,9 @@ public class PageViewAdvice {
 	@Value("${app.brand-name:PrintMall}")
 	private String appBrandName;
 
-	public PageViewAdvice(ScreenListService screenListService) {
+	public PageViewAdvice(ScreenListService screenListService, InicisProperties inicisProperties) {
 		this.screenListService = screenListService;
+		this.inicisProperties = inicisProperties;
 	}
 
 	@ModelAttribute("activeScreenUris")
@@ -141,8 +144,11 @@ public class PageViewAdvice {
 		if (uri.contains("/app/e-commerce/billing")) {
 			setIfAbsent(model, "loadBillingActions", true);
 		}
-		if (uri.contains("/app/e-commerce/checkout")) {
+		if (uri.contains("/app/e-commerce/checkout") && !uri.contains("/inicis/")) {
 			setIfAbsent(model, "loadCheckoutActions", true);
+			setIfAbsent(model, "inicisMockEnabled", inicisProperties.isMockEnabled());
+			setIfAbsent(model, "inicisUseRealGateway", inicisProperties.useRealGateway());
+			setIfAbsent(model, "inicisMid", inicisProperties.getMid());
 		}
 		if (uri.contains("/app/e-commerce/customers")) {
 			setIfAbsent(model, "loadCustomersActions", true);
@@ -158,6 +164,9 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/admin/menus")) {
 			setIfAbsent(model, "loadMenuManagementActions", true);
+		}
+		if (uri.contains("/admin/user-access-logs")) {
+			setIfAbsent(model, "loadUserAccessLogActions", true);
 		}
 		if (uri.contains("/app/email/email-detail")) {
 			setIfAbsent(model, "loadEmailDetailActions", true);
@@ -175,6 +184,9 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/app/calendar") || uri.contains("/modules/components/calendar")) {
 			setIfAbsent(model, "loadCalendar", true);
+		}
+		if (uri.contains("/app/calendar")) {
+			setIfAbsent(model, "loadCalendarActions", true);
 		}
 		if (uri.contains("/modules/forms/advance/file-uploader")) {
 			setIfAbsent(model, "loadDropzone", true);

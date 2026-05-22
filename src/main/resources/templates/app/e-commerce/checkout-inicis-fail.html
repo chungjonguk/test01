@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <span class="fas fa-times-circle text-danger fs-3 mb-3"></span>
+                <h4 class="mb-2">결제 실패</h4>
+                <p class="text-600 mb-3" th:text="${paymentResult.message}">결제에 실패했습니다.</p>
+                <a class="btn btn-primary mt-3" th:href="@{/app/e-commerce/checkout}">결제 화면으로</a>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

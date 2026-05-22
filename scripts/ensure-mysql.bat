@@ -50,4 +50,8 @@ goto :wait_connect
 
 :connected
 echo [DB] 접속 OK — %MYSQL_HOST%:%MYSQL_PORT% / %MYSQL_DB% (%MYSQL_USER%)
+for /f "delims=" %%V in ('"%MYSQL_BIN%\mysql.exe" -h %MYSQL_HOST% -P %MYSQL_PORT% -u %MYSQL_USER% -p%MYSQL_PASS% -D %MYSQL_DB% -N -e "SELECT VERSION();" 2^>nul') do (
+  echo [DB] MySQL 버전: %%V
+)
+echo [DB] JDBC: jdbc:mysql://%MYSQL_HOST%:%MYSQL_PORT%/%MYSQL_DB%
 exit /b 0

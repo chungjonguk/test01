@@ -165,11 +165,11 @@
     <script th:src="@{/assets/js/screen-menu-filter.js(v=1)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script th:src="@{/assets/js/theme.js(v=6)}"></script>
+    <script th:src="@{/assets/js/theme.js(v=7)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=3)}"></script>
     <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
     <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=2)}"></script>
-    <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=1)}"></script>
+    <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress and kakaoMapAppKey != null}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
       window.__KAKAO_REST_API_KEY__ = /*[[${kakaoRestApiKeyForMapHint}]]*/ '';
@@ -178,17 +178,19 @@
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress}" th:src="@{/assets/js/wizard-kakao-address.js(v=10)}"></script>
     <script th:if="${loadCustomerDetailsActions}" th:src="@{/assets/js/customer-details-actions.js(v=1)}"></script>
     <script th:if="${loadBillingActions}" th:src="@{/assets/js/billing-actions.js(v=1)}"></script>
-    <script th:if="${loadCheckoutActions}" th:src="@{/assets/js/checkout-actions.js(v=1)}"></script>
+    <script th:if="${loadCheckoutActions}" th:src="@{/assets/js/checkout-actions.js(v=3)}"></script>
     <script th:if="${loadCustomersActions}" th:src="@{/assets/js/customers-actions.js(v=1)}"></script>
     <script th:if="${loadShoppingCartActions}" th:src="@{/assets/js/shopping-cart-actions.js(v=1)}"></script>
     <script th:if="${loadCodeManagementActions}" th:src="@{/assets/js/code-management-actions.js(v=26)}"></script>
     <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=3)}"></script>
+    <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=1)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
     <script th:if="${loadEmailInboxActions}" th:src="@{/assets/js/email-inbox-actions.js(v=1)}"></script>
     <script th:if="${loadEmailComposeActions}" th:src="@{/assets/js/email-compose-actions.js(v=4)}"></script>
     <script th:src="@{/assets/js/dashboard-widget-actions.js(v=2)}"></script>
     <script th:src="@{/assets/js/navbar-position-settings.js(v=9)}"></script>
     <th:block th:replace="~{fragments/responsive :: scripts}"></th:block>
+    <script th:if="${loadCalendarActions}" th:src="@{/assets/js/app-calendar-actions.js(v=1)}"></script>
     <script th:if="${loadCalendar}" th:src="@{/assets/js/app-calendar-modal-fix.js(v=2)}"></script>
     <script th:if="${loadInvoicePdf}" src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
     <script th:if="${loadInvoicePdf}" th:src="@{/assets/js/invoice-pdf.js(v=3)}"></script>

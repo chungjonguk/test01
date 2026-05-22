@@ -1,0 +1,46 @@
+================================================================================
+  KG이니시스 표준결제 — 개발자 가이드 (spring-boot-app-fixed)
+================================================================================
+
+1. 이니시스 테스트 결제창 (기본 연동)
+--------------------------------------------------------------------------------
+  payment.inicis.mock-enabled=false
+  application-local.properties 에 테스트 키 포함 (자동 로드)
+
+  - /app/e-commerce/checkout → "이니시스 결제하기"
+  - INIStdPay 스테이징 결제창 → 인증 → 승인 → 성공 페이지
+  - ecm_payment + ecm_order( PROCESSING → COMPLETED ) 동시 저장
+
+2. 모의 결제만 쓸 때
+--------------------------------------------------------------------------------
+  payment.inicis.mock-enabled=true
+    payment.inicis.mid=INIpayTest
+    payment.inicis.sign-key=SU5JTElURV9UUklQTEVERVNfS0VZU1RS
+    payment.inicis.std-pay-js-url=https://stgstdpay.inicis.com/stdjs/INIStdPay.js
+    payment.inicis.base-url=http://localhost:8081
+
+  - 서버 재시작 후 checkout 에서 결제 → INIStdPay 팝업
+  - 인증 후 returnUrl → 서버 승인 API → 성공/실패 페이지
+
+  매뉴얼: https://manual.inicis.com
+
+3. API
+--------------------------------------------------------------------------------
+  POST /api/payments/inicis/prepare     결제 요청 파라미터·서명 생성
+  POST /api/payments/inicis/mock-complete?orderNo=  모의 승인 (mock 전용)
+
+  returnUrl : /app/e-commerce/checkout/inicis/return
+  closeUrl  : /app/e-commerce/checkout/inicis/close
+
+4. DB
+--------------------------------------------------------------------------------
+  테이블: ecm_payment
+  스크립트: src/main/resources/schema/ecm_payment.sql
+  기동 시 ScreenTableSchemaRunner 가 CREATE IF NOT EXISTS 적용
+
+5. 운영 전환
+--------------------------------------------------------------------------------
+  - 가맹점 계약 후 mid, signKey 운영값으로 교체
+  - std-pay-js-url → https://stdpay.inicis.com/stdjs/INIStdPay.js
+  - base-url → 운영 도메인 (HTTPS)
+  - signKey·Secret 은 Git 커밋 금지 (application-local.properties)

@@ -158,7 +158,7 @@ public class NaverAuthController {
         }
 
         HttpSession session = request.getSession(true);
-        sessionAuthService.loginFromNaver(session, naverBody);
+        sessionAuthService.loginFromNaver(session, naverBody, request);
         session.removeAttribute("naver_oauth_state");
 
         return "redirect:/";

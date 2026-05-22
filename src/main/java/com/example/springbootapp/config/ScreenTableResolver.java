@@ -20,7 +20,7 @@ public final class ScreenTableResolver {
 				: uriPath;
 
 		if ("/users".equals(uri)) {
-			return db("user", null, "회원 목록·등록");
+			return db("user", "user_access_log", "회원 목록·등록·접속이력");
 		}
 		if ("/admin/codes".equals(uri)) {
 			return db("common_code", "common_code_value", "공통코드·상세코드 관리");
@@ -28,12 +28,24 @@ public final class ScreenTableResolver {
 		if ("/admin/menus".equals(uri)) {
 			return db("screen_list", "screen_table_map", "화면·테이블 매핑 조회");
 		}
+		if ("/admin/user-access-logs".equals(uri)) {
+			return db("user_access_log", "user", "사용자 접속 로그 조회");
+		}
 		if (uri.startsWith("/dashboard")) {
 			return codeOnly("common_code,common_code_value", "대시보드 콤보(공통코드)");
 		}
 		if (uri.contains("/authentication/simple/login") || uri.contains("/authentication/card/login")
 				|| uri.contains("/authentication/split/login")) {
-			return db("user", null, "로그인(세션)");
+			return db("user", "user_access_log", "로그인(세션·접속이력)");
+		}
+		if (uri.contains("/authentication") && uri.contains("logout")) {
+			return db("user_access_log", "user", "로그아웃(접속이력)");
+		}
+		if (uri.startsWith("/auth/")) {
+			return db("user_access_log", "user", "인증 API(접속이력)");
+		}
+		if (uri.contains("kakao-callback") || uri.contains("naver-callback")) {
+			return db("user_access_log", "user", "소셜 로그인 콜백(접속이력)");
 		}
 		if (uri.contains("/authentication") && uri.contains("register")) {
 			return db("user", null, "회원가입 폼(UI)");
@@ -75,7 +87,7 @@ public final class ScreenTableResolver {
 			return db("ecm_cart_item", "ecm_product", "장바구니");
 		}
 		if (uri.contains("/app/e-commerce/checkout")) {
-			return db("ecm_order", "ecm_cart_item,ecm_customer", "결제");
+			return db("ecm_payment", "ecm_order,ecm_cart_item,ecm_customer", "결제(이니시스)");
 		}
 		if (uri.contains("/app/e-commerce/billing")) {
 			return db("ecm_billing", "ecm_customer", "청구");

@@ -32,6 +32,63 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `user_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ########## user_access_log.sql ##########
+USE spring_boot_app;
+
+CREATE TABLE IF NOT EXISTS user_access_log (
+  access_id       BIGINT        NOT NULL AUTO_INCREMENT COMMENT '접속이력ID',
+  user_id         VARCHAR(100)  NULL COMMENT '사용자ID (user.id, 실패 시 시도 ID)',
+  user_nm         VARCHAR(100)  NULL COMMENT '접속 시점 표시명',
+  access_type_cd  VARCHAR(30)   NOT NULL COMMENT 'LOGIN|LOGOUT|PAGE',
+  login_type_cd   VARCHAR(30)   NULL COMMENT 'FORM|KAKAO|NAVER',
+  success_yn      CHAR(1)       NOT NULL DEFAULT 'Y' COMMENT '성공여부 Y/N',
+  request_uri     VARCHAR(500)  NULL COMMENT '요청 URI',
+  http_method     VARCHAR(10)   NULL COMMENT 'HTTP 메서드',
+  client_ip       VARCHAR(45)   NULL COMMENT '클라이언트 IP',
+  user_agent      VARCHAR(500)  NULL COMMENT 'User-Agent',
+  session_id      VARCHAR(64)   NULL COMMENT 'HTTP 세션 ID',
+  fail_reason     VARCHAR(255)  NULL COMMENT '실패 사유',
+  access_dt       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '접속일시',
+  reg_id          VARCHAR(100)  NOT NULL DEFAULT 'SYSTEM',
+  PRIMARY KEY (access_id),
+  KEY idx_user_access_log_user_dt (user_id, access_dt),
+  KEY idx_user_access_log_dt (access_dt),
+  KEY idx_user_access_log_type (access_type_cd)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ########## ecm_payment.sql ##########
+USE spring_boot_app;
+
+CREATE TABLE IF NOT EXISTS ecm_payment (
+  payment_id      BIGINT        NOT NULL AUTO_INCREMENT COMMENT '결제ID',
+  order_no        VARCHAR(64)   NOT NULL COMMENT '가맹점 주문번호(oid)',
+  order_id        BIGINT        NULL COMMENT 'ecm_order.order_id',
+  pg_cd           VARCHAR(20)   NOT NULL DEFAULT 'INICIS' COMMENT 'PG사',
+  mid             VARCHAR(20)   NULL COMMENT '상점ID',
+  tid             VARCHAR(100)  NULL COMMENT '이니시스 거래번호',
+  amount          DECIMAL(12,2) NOT NULL COMMENT '결제금액',
+  currency_cd     VARCHAR(10)   NOT NULL DEFAULT 'WON',
+  good_name       VARCHAR(200)  NOT NULL,
+  buyer_name      VARCHAR(100)  NULL,
+  buyer_tel       VARCHAR(30)   NULL,
+  buyer_email     VARCHAR(200)  NULL,
+  status_cd       VARCHAR(30)   NOT NULL DEFAULT 'READY' COMMENT 'READY|PENDING_AUTH|PAID|FAILED|CANCELLED',
+  result_code     VARCHAR(20)   NULL,
+  result_msg      VARCHAR(500)  NULL,
+  auth_token      VARCHAR(500)  NULL,
+  idc_name        VARCHAR(50)   NULL,
+  raw_auth_json   TEXT          NULL,
+  raw_approve_json TEXT         NULL,
+  reg_id          VARCHAR(100)  NOT NULL DEFAULT 'SYSTEM',
+  reg_dt          DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_id       VARCHAR(100)  NOT NULL DEFAULT 'SYSTEM',
+  update_dt       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (payment_id),
+  UNIQUE KEY uk_ecm_payment_order_no (order_no),
+  KEY idx_ecm_payment_status (status_cd),
+  KEY idx_ecm_payment_tid (tid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ########## common_code.sql ##########
 -- 공통코드 마스터·상세 (신규 DB용)
 USE spring_boot_app;

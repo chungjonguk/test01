@@ -7,10 +7,12 @@ spring_boot_app 테이블 목록 (생성 스크립트)
 
 [개별 CREATE]
   schema/user.sql                   user
+  schema/user_access_log.sql        user_access_log
   schema/common_code.sql            common_code, common_code_value
   schema/screen_list.sql            screen_list
   schema/screen_table_map.sql       screen_table_map (화면↔테이블 매핑)
   schema/tables/biz_schema.sql      업무 22개 테이블
+  (기동 시 ScreenTableSchemaRunner가 user_access_log.sql 도 적용)
 
 [시드 INSERT]
   schema/common_code_seed.sql
@@ -27,9 +29,11 @@ spring_boot_app 테이블 목록 (생성 스크립트)
   scripts\create-all-tables.bat     (Windows, MySQL 기동·접속 확인 포함)
   scripts\apply-screen-tables.bat   (업무+매핑만)
 
-테이블 (27개)
+테이블 (29개)
 -------------
   user
+  user_access_log
+  ecm_payment
   common_code, common_code_value
   screen_list, screen_table_map
   ecm_product, ecm_customer, ecm_order, ecm_order_item, ecm_cart_item, ecm_invoice, ecm_billing

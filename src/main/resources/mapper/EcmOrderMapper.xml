@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmOrderMapper">
+
+    <resultMap id="ecmOrderResultMap" type="EcmOrder">
+        <id property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="orderDt" column="order_dt"/>
+        <result property="shipTo" column="ship_to"/>
+        <result property="shippingMethod" column="shipping_method"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="amount" column="amount"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO ecm_order (
+            order_no, customer_id, order_dt, ship_to, shipping_method,
+            status_cd, amount, reg_id, update_id
+        ) VALUES (
+            #{orderNo}, #{customerId}, #{orderDt}, #{shipTo}, #{shippingMethod},
+            #{statusCd}, #{amount}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <select id="findByOrderNo" resultMap="ecmOrderResultMap">
+        SELECT order_id, order_no, customer_id, order_dt, ship_to, shipping_method,
+               status_cd, amount, reg_id, reg_dt, update_id, update_dt
+        FROM ecm_order
+        WHERE order_no = #{orderNo}
+    </select>
+
+    <update id="updateStatusByOrderNo">
+        UPDATE ecm_order
+        SET status_cd = #{statusCd},
+            update_id = #{updateId}
+        WHERE order_no = #{orderNo}
+    </update>
+</mapper>

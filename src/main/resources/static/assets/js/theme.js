@@ -4717,6 +4717,9 @@ var events = [{
 -----------------------------------------------*/
 
 var appCalendarInit = function appCalendarInit() {
+  if (window.__CALENDAR_USE_DB__) {
+    return;
+  }
   var Selectors = {
     ACTIVE: '.active',
     ADD_EVENT_FORM: '#addEventForm',

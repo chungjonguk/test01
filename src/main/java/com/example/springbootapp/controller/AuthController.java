@@ -3,6 +3,7 @@ package com.example.springbootapp.controller;
 import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.User;
 import com.example.springbootapp.mapper.UserMapper;
+import com.example.springbootapp.service.UserAccessLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,15 @@ public class AuthController {
 
     private final UserMapper userMapper;
     private final SessionAuthService sessionAuthService;
+    private final UserAccessLogService userAccessLogService;
 
-    public AuthController(UserMapper userMapper, SessionAuthService sessionAuthService) {
+    public AuthController(
+            UserMapper userMapper,
+            SessionAuthService sessionAuthService,
+            UserAccessLogService userAccessLogService) {
         this.userMapper = userMapper;
         this.sessionAuthService = sessionAuthService;
+        this.userAccessLogService = userAccessLogService;
     }
 
     @GetMapping("/login")
@@ -38,24 +44,26 @@ public class AuthController {
     ) {
         String trimmedId = id != null ? id.trim() : "";
         if (trimmedId.isEmpty() || pw == null || pw.isBlank()) {
+            userAccessLogService.recordLogin(request, null, "FORM", false, "입력값 없음");
             redirectAttributes.addFlashAttribute("loginError", "아이디와 비밀번호를 입력하세요.");
             return "redirect:/pages/authentication/simple/login";
         }
 
         Optional<User> user = userMapper.findById(trimmedId);
         if (user.isEmpty() || !pw.equals(user.get().getPw())) {
+            userAccessLogService.recordLogin(request, user.orElse(null), "FORM", false, "인증 실패");
             redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호가 올바르지 않습니다.");
             return "redirect:/pages/authentication/simple/login";
         }
 
-        sessionAuthService.loginFromUser(request.getSession(true), user.get());
+        sessionAuthService.loginFromUser(request.getSession(true), user.get(), request);
         redirectAttributes.addFlashAttribute("loginSuccess", user.get().getName() + "님, 로그인되었습니다.");
         return "redirect:/dashboard";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        sessionAuthService.logout(request.getSession(false));
+        sessionAuthService.logout(request.getSession(false), request);
         redirectAttributes.addFlashAttribute("logoutSuccess", true);
         return "redirect:/pages/authentication/simple/login";
     }

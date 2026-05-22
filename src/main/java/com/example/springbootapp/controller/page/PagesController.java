@@ -127,7 +127,7 @@ public class PagesController {
     }
 
     private String performLogout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        sessionAuthService.logout(request.getSession(false));
+        sessionAuthService.logout(request.getSession(false), request);
         redirectAttributes.addFlashAttribute("logoutSuccess", true);
         return "redirect:/pages/authentication/simple/login";
     }
