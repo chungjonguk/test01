@@ -78,4 +78,10 @@ public class CalendarEventFormDto {
 	public void setAllDay(Boolean allDay) {
 		this.allDay = allDay;
 	}
+	@Override
+	public String toString() {
+		return "CalendarEventFormDto{eventId=" + eventId + ", title='" + title + "', categoryCd='" + categoryCd
+				+ "', labelCd='" + labelCd + "', startDt='" + startDt + "', endDt='" + endDt + "', location='"
+				+ location + "', description='" + description + "', allDay=" + allDay + "}";
+	}
 }

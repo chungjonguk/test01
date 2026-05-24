@@ -86,4 +86,11 @@ public class EcmProduct {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "EcmProduct{productId=" + productId + ", productNm='" + productNm + "', categoryCd='" + categoryCd
+				+ "', price=" + price + ", stockQty=" + stockQty + ", statusCd='" + statusCd + "', imgUrl='" + imgUrl
+				+ "', description='" + description + "', regId='" + regId + "', regDt=" + regDt + ", updateId='"
+				+ updateId + "', updateDt=" + updateDt + "}";
+	}
 }

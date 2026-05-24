@@ -90,4 +90,11 @@ public class EcmProductFormDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	@Override
+	public String toString() {
+		return "EcmProductFormDto{productId=" + productId + ", productNm='" + productNm + "', categoryCd='"
+				+ categoryCd + "', price=" + price + ", stockQty=" + stockQty + ", statusCd='" + statusCd
+				+ "', imgUrl='" + imgUrl + "', mainImageUrl='" + mainImageUrl + "', imageUrls=" + imageUrls
+				+ ", description='" + description + "'}";
+	}
 }

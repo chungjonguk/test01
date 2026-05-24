@@ -16,4 +16,8 @@ public class CodeGroupSaveRequest {
 	public void setGroups(List<CodeGroupSaveDto> groups) {
 		this.groups = groups != null ? groups : new ArrayList<>();
 	}
+	@Override
+	public String toString() {
+		return "CodeGroupSaveRequest{groups=" + groups + "}";
+	}
 }

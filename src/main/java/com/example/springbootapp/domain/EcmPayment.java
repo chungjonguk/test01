@@ -163,4 +163,15 @@ public class EcmPayment {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "EcmPayment{paymentId=" + paymentId + ", orderNo='" + orderNo + "', orderId=" + orderId + ", pgCd='"
+				+ pgCd + "', mid='" + mid + "', tid='" + tid + "', amount=" + amount + ", currencyCd='" + currencyCd
+				+ "', goodName='" + goodName + "', buyerName='" + buyerName + "', buyerTel='" + buyerTel
+				+ "', buyerEmail='" + buyerEmail + "', statusCd='" + statusCd + "', resultCode='" + resultCode
+				+ "', resultMsg='" + resultMsg + "', authToken='***', idcName='" + idcName + "', rawAuthJson="
+				+ (rawAuthJson != null ? "[present]" : "null") + ", rawApproveJson="
+				+ (rawApproveJson != null ? "[present]" : "null") + ", regId='" + regId + "', regDt=" + regDt
+				+ ", updateId='" + updateId + "', updateDt=" + updateDt + "}";
+	}
 }

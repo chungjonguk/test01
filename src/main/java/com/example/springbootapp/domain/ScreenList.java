@@ -71,4 +71,10 @@ public class ScreenList {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "ScreenList{screenId='" + screenId + "', screenNm='" + screenNm + "', uriPath='" + uriPath
+				+ "', templatePath='" + templatePath + "', sortOrd=" + sortOrd + ", useYn='" + useYn + "', regId='"
+				+ regId + "', regDt=" + regDt + ", updateId='" + updateId + "', updateDt=" + updateDt + "}";
+	}
 }

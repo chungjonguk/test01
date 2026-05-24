@@ -22,4 +22,8 @@ public class CodeDetailSaveDto {
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
 	}
+	@Override
+	public String toString() {
+		return "CodeDetailSaveDto{codeVal='" + codeVal + "', useYn='" + useYn + "'}";
+	}
 }

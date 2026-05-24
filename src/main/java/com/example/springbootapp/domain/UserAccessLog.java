@@ -127,4 +127,13 @@ public class UserAccessLog {
 	public void setRegId(String regId) {
 		this.regId = regId;
 	}
+	@Override
+	public String toString() {
+		return "UserAccessLog{accessId=" + accessId + ", userId='" + userId + "', userNm='" + userNm
+				+ "', accessTypeCd='" + accessTypeCd + "', loginTypeCd='" + loginTypeCd + "', successYn='" + successYn
+				+ "', requestUri='" + requestUri + "', httpMethod='" + httpMethod + "', clientIp='" + clientIp
+				+ "', deviceTypeCd='" + deviceTypeCd + "', deviceOs='" + deviceOs + "', deviceBrowser='" + deviceBrowser
+				+ "', deviceModel='" + deviceModel + "', userAgent='" + userAgent + "', sessionId='" + sessionId
+				+ "', failReason='" + failReason + "', accessDt=" + accessDt + ", regId='" + regId + "'}";
+	}
 }

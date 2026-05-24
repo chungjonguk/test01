@@ -71,4 +71,11 @@ public class ScreenTableMap {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "ScreenTableMap{uriPath='" + uriPath + "', screenId='" + screenId + "', primaryTable='" + primaryTable
+				+ "', relatedTables='" + relatedTables + "', dataType='" + dataType + "', tableDesc='" + tableDesc
+				+ "', regId='" + regId + "', regDt=" + regDt + ", updateId='" + updateId + "', updateDt=" + updateDt
+				+ "}";
+	}
 }

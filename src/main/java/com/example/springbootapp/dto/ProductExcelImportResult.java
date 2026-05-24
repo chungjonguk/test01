@@ -52,4 +52,9 @@ public class ProductExcelImportResult {
 	public boolean hasErrors() {
 		return !errors.isEmpty();
 	}
+	@Override
+	public String toString() {
+		return "ProductExcelImportResult{created=" + created + ", updated=" + updated + ", skipped=" + skipped
+				+ ", errors=" + errors + "}";
+	}
 }

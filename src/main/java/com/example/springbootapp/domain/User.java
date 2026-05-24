@@ -85,4 +85,10 @@ public class User {
 	public void setUpdDt(LocalDateTime updDt) {
 		this.updDt = updDt;
 	}
+	@Override
+	public String toString() {
+		return "User{id='" + id + "', pw='***', name='" + name + "', sex='" + sex + "', rrno='***', email='" + email
+				+ "', zipcode='" + zipcode + "', address='" + address + "', addressDetail='" + addressDetail
+				+ "', updateId='" + updateId + "', regDt=" + regDt + ", updDt=" + updDt + "}";
+	}
 }

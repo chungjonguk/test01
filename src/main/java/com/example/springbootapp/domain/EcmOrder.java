@@ -87,4 +87,11 @@ public class EcmOrder {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "EcmOrder{orderId=" + orderId + ", orderNo='" + orderNo + "', customerId=" + customerId + ", orderDt="
+				+ orderDt + ", shipTo='" + shipTo + "', shippingMethod='" + shippingMethod + "', statusCd='" + statusCd
+				+ "', amount=" + amount + ", regId='" + regId + "', regDt=" + regDt + ", updateId='" + updateId
+				+ "', updateDt=" + updateDt + "}";
+	}
 }

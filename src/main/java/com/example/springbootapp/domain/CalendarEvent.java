@@ -92,4 +92,11 @@ public class CalendarEvent {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "CalendarEvent{eventId=" + eventId + ", title='" + title + "', categoryCd='" + categoryCd
+				+ "', labelCd='" + labelCd + "', startDt=" + startDt + ", endDt=" + endDt + ", location='" + location
+				+ "', description='" + description + "', allDayYn='" + allDayYn + "', regId='" + regId + "', regDt="
+				+ regDt + ", updateId='" + updateId + "', updateDt=" + updateDt + "}";
+	}
 }

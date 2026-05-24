@@ -78,4 +78,11 @@ public class NasFile {
 	public void setRegDt(LocalDateTime regDt) {
 		this.regDt = regDt;
 	}
+	@Override
+	public String toString() {
+		return "NasFile{fileId=" + fileId + ", mediaTypeCd='" + mediaTypeCd + "', storedNm='" + storedNm
+				+ "', originalNm='" + originalNm + "', fileExt='" + fileExt + "', fileSize=" + fileSize + ", filePath='"
+				+ filePath + "', urlPath='" + urlPath + "', contentType='" + contentType + "', regId='" + regId
+				+ "', regDt=" + regDt + "}";
+	}
 }

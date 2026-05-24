@@ -43,4 +43,9 @@ public class EcmProductImage {
 	public void setRegDt(LocalDateTime regDt) {
 		this.regDt = regDt;
 	}
+	@Override
+	public String toString() {
+		return "EcmProductImage{imageId=" + imageId + ", productId=" + productId + ", sortOrd=" + sortOrd
+				+ ", imgUrl='" + imgUrl + "', regId='" + regId + "', regDt=" + regDt + "}";
+	}
 }

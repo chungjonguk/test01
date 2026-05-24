@@ -71,4 +71,10 @@ public class InicisPrepareRequest {
 	public void setShipTo(String shipTo) {
 		this.shipTo = shipTo;
 	}
+	@Override
+	public String toString() {
+		return "InicisPrepareRequest{amount=" + amount + ", goodName='" + goodName + "', buyerName='" + buyerName
+				+ "', buyerTel='" + buyerTel + "', buyerEmail='" + buyerEmail + "', orderId=" + orderId
+				+ ", customerId=" + customerId + ", shipTo='" + shipTo + "'}";
+	}
 }

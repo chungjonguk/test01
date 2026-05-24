@@ -20,4 +20,8 @@ public class CodeOption {
 	public String getLabel() {
 		return label;
 	}
+	@Override
+	public String toString() {
+		return "CodeOption{value='" + value + "', label='" + label + "'}";
+	}
 }

@@ -50,4 +50,9 @@ public class CommonCodeValue {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "CommonCodeValue{codeId='" + codeId + "', codeVal='" + codeVal + "', useYn='" + useYn + "', regId='"
+				+ regId + "', regdateDt=" + regdateDt + ", updateId='" + updateId + "', updateDt=" + updateDt + "}";
+	}
 }

@@ -99,4 +99,11 @@ public class BizCompany {
 	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}
+	@Override
+	public String toString() {
+		return "BizCompany{companyId=" + companyId + ", companyNm='" + companyNm + "', bizNo='" + bizNo + "', ceoNm='"
+				+ ceoNm + "', tel='" + tel + "', email='" + email + "', address='" + address + "', statusCd='"
+				+ statusCd + "', useYn='" + useYn + "', memo='" + memo + "', regId='" + regId + "', regDt=" + regDt
+				+ ", updateId='" + updateId + "', updateDt=" + updateDt + "}";
+	}
 }

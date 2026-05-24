@@ -78,4 +78,10 @@ public class UserRegisterDto {
 	public void setAddressDetail(String addressDetail) {
 		this.addressDetail = addressDetail;
 	}
+	@Override
+	public String toString() {
+		return "UserRegisterDto{id='" + id + "', pw='***', name='" + name + "', sex='" + sex + "', rrno='***', email='"
+				+ email + "', zipcode='" + zipcode + "', address='" + address + "', addressDetail='" + addressDetail
+				+ "'}";
+	}
 }

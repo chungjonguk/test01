@@ -86,4 +86,10 @@ public class BizCompanyFormDto {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	@Override
+	public String toString() {
+		return "BizCompanyFormDto{companyId=" + companyId + ", companyNm='" + companyNm + "', bizNo='" + bizNo
+				+ "', ceoNm='" + ceoNm + "', tel='" + tel + "', email='" + email + "', address='" + address
+				+ "', statusCd='" + statusCd + "', useYn='" + useYn + "', memo='" + memo + "'}";
+	}
 }

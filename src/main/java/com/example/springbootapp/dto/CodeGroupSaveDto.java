@@ -40,4 +40,9 @@ public class CodeGroupSaveDto {
 	public void setCodes(List<CodeDetailSaveDto> codes) {
 		this.codes = codes != null ? codes : new ArrayList<>();
 	}
+	@Override
+	public String toString() {
+		return "CodeGroupSaveDto{codeId='" + codeId + "', codeNm='" + codeNm + "', useYn='" + useYn + "', codes="
+				+ codes + "}";
+	}
 }
