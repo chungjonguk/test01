@@ -5,10 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.example.springbootapp.auth.LoginSession;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.springbootapp.dto.UserRegisterDto;
 import com.example.springbootapp.service.UserService;
@@ -84,10 +86,14 @@ public class UserController {
 	 * @return out: 뷰 이름 {@code users}
 	 */
 	@GetMapping
-	public String usersPage(Model model) {
+	public String usersPage(Model model, @RequestParam(required = false) String email) {
 		model.addAttribute("title", "사용자 관리");
 		model.addAttribute("users", userService.findAll());
-		model.addAttribute("userForm", new UserRegisterDto());
+		UserRegisterDto userForm = new UserRegisterDto();
+		if (email != null && !email.isBlank()) {
+			userForm.setEmail(email.trim());
+		}
+		model.addAttribute("userForm", userForm);
 		return "users";
 	}
 	/**
@@ -103,6 +109,29 @@ public class UserController {
 			userService.register(userForm);
 			redirectAttributes.addFlashAttribute("successMessage", "사용자가 등록되었습니다: " + trim(userForm.getId()));
 		} catch (IllegalArgumentException ex) {
+			redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+		}
+		return "redirect:/users";
+	}
+	/**
+	 * 사용자 비밀번호를 아이디와 동일한 값으로 초기화합니다.
+	 *
+	 * @param id                 in: 대상 사용자 아이디
+	 * @param loginUser          in: 로그인 세션 (수정자 기록용, 없으면 대상 아이디)
+	 * @param redirectAttributes in: 리다이렉트 시 플래시 메시지 전달용
+	 * @return out: {@code redirect:/users}
+	 */
+	@PostMapping("/{id}/reset-password")
+	public String resetPassword(
+			@PathVariable String id,
+			@ModelAttribute("loginUser") LoginSession loginUser,
+			RedirectAttributes redirectAttributes) {
+		try {
+			String updateId = loginUser != null ? trim(loginUser.getUserId()) : "";
+			userService.resetPasswordToInitial(id, updateId);
+			redirectAttributes.addFlashAttribute("successMessage",
+					"비밀번호가 아이디(" + trim(id) + ")와 동일하게 초기화되었습니다.");
+		} catch (IllegalArgumentException | IllegalStateException ex) {
 			redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		}
 		return "redirect:/users";

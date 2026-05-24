@@ -15,39 +15,52 @@
                         <div class="card-body p-4 p-sm-5">
                             <div class="row flex-between-center mb-2">
                                 <div class="col-auto">
-                                    <h5>Register</h5>
+                                    <h5>회원가입</h5>
                                 </div>
                                 <div class="col-auto fs--1 text-600">
-                                    <span class="mb-0">Have an account?</span>
-                                    <span><a th:href="@{/pages/authentication/simple/login}">Login</a></span>
+                                    <span class="mb-0">이미 계정이 있으신가요?</span>
+                                    <span><a th:href="@{/pages/authentication/simple/login}">로그인</a></span>
                                 </div>
                             </div>
-                            <form>
+                            <form data-auth-register
+                                  th:attr="data-check-email-url=@{/users/check-email},data-redirect-url=@{/users}">
                                 <div class="mb-3">
-                                    <input class="form-control" type="text" autocomplete="on" placeholder="Name" />
+                                    <label class="form-label" for="simple-name">이름</label>
+                                    <input class="form-control" type="text" id="simple-name" autocomplete="name" placeholder="이름" />
                                 </div>
                                 <div class="mb-3">
-                                    <input class="form-control" type="email" autocomplete="on" placeholder="Email address" />
+                                    <label class="form-label" for="simple-email">이메일 <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="email" id="simple-email" data-auth-email
+                                               autocomplete="email" placeholder="email@example.com" required />
+                                        <button class="btn btn-outline-primary" type="button" data-auth-check-email>중복 확인</button>
+                                    </div>
+                                    <div class="form-text text-muted" data-auth-email-message>이메일 중복 확인 후 비밀번호를 입력할 수 있습니다.</div>
                                 </div>
                                 <div class="row gx-2">
                                     <div class="mb-3 col-sm-6">
-                                        <input class="form-control" type="password" autocomplete="on" placeholder="Password" />
+                                        <label class="form-label" for="simple-password">비밀번호</label>
+                                        <input class="form-control" type="password" id="simple-password" data-auth-password
+                                               autocomplete="new-password" placeholder="영문·숫자·특수문자" required />
+                                        <div class="form-text text-muted">영문자, 숫자, 특수문자를 각각 1자 이상 포함해 주세요.</div>
                                     </div>
                                     <div class="mb-3 col-sm-6">
-                                        <input class="form-control" type="password" autocomplete="on" placeholder="Confirm Password" />
+                                        <label class="form-label" for="simple-confirm-password">비밀번호 확인</label>
+                                        <input class="form-control" type="password" id="simple-confirm-password" data-auth-confirm-password
+                                               autocomplete="new-password" placeholder="비밀번호 재입력" required />
                                     </div>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="basic-register-checkbox" />
-                                    <label class="form-label" for="basic-register-checkbox">I accept the <a href="#!">terms</a> and <a href="#!">privacy policy</a></label>
+                                    <input class="form-check-input" type="checkbox" id="basic-register-checkbox" required />
+                                    <label class="form-label" for="basic-register-checkbox"><a href="#!">이용약관</a> 및 <a href="#!">개인정보 처리방침</a>에 동의합니다.</label>
                                 </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Register</button>
+                                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">다음 단계 (상세 정보 입력)</button>
                                 </div>
                             </form>
                             <div class="position-relative mt-4">
                                 <hr />
-                                <div class="divider-content-center">or register with</div>
+                                <div class="divider-content-center">또는 소셜 계정으로 가입</div>
                             </div>
                             <div class="row g-2 mt-2">
                                 <div class="col-sm-6"><a class="btn btn-outline-google-plus btn-sm d-block w-100" href="#"><span class="fab fa-google-plus-g me-2" data-fa-transform="grow-8"></span> google</a></div>
@@ -62,5 +75,7 @@
 
     <th:block th:replace="~{fragments/settings :: settings}"></th:block>
     <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
+    <script th:src="@{/assets/js/user-form-validation.js(v=1)}"></script>
+    <script th:src="@{/assets/js/auth-register.js(v=1)}"></script>
 </body>
 </html>

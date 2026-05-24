@@ -198,6 +198,8 @@
 
                                 <th scope="col">수정일시</th>
 
+                                <th scope="col" class="text-end">관리</th>
+
                             </tr>
 
                         </thead>
@@ -206,7 +208,7 @@
 
                             <tr th:if="${#lists.isEmpty(users)}">
 
-                                <td colspan="9" class="text-center text-600 py-4">등록된 사용자가 없습니다.</td>
+                                <td colspan="10" class="text-center text-600 py-4">등록된 사용자가 없습니다.</td>
 
                             </tr>
 
@@ -227,6 +229,13 @@
                                 <td th:text="${#temporals.format(user.regDt, 'yyyy-MM-dd HH:mm:ss')}">2026-05-14</td>
 
                                 <td th:text="${#temporals.format(user.updDt, 'yyyy-MM-dd HH:mm:ss')}">2026-05-14</td>
+
+                                <td class="text-end">
+                                    <form class="d-inline user-reset-password-form" th:action="@{/users/{id}/reset-password(id=${user.id})}" method="post">
+                                        <button class="btn btn-outline-warning btn-sm" type="submit"
+                                                th:attr="data-user-id=${user.id}">비밀번호 초기화</button>
+                                    </form>
+                                </td>
 
                             </tr>
 
@@ -263,7 +272,9 @@
         </div>
 
         <script th:src="@{/assets/js/users-postcode.js(v=2)}"></script>
-        <script th:src="@{/assets/js/users-register.js(v=3)}"></script>
+        <script th:src="@{/assets/js/user-form-validation.js(v=1)}"></script>
+        <script th:src="@{/assets/js/users-register.js(v=4)}"></script>
+        <script th:src="@{/assets/js/users-manage.js(v=1)}"></script>
 
     </div>
 

@@ -69,6 +69,13 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updatePassword">
+        UPDATE `user`
+        SET pw = #{pw},
+            update_id = #{updateId}
+        WHERE id = #{id}
+    </update>
+
     <delete id="deleteById">
         DELETE FROM `user`
         WHERE id = #{id}

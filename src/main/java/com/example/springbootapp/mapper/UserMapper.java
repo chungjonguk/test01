@@ -51,6 +51,15 @@ public interface UserMapper {
 	 */
 	int update(User user);
 	/**
+	 * 비밀번호와 수정자만 갱신합니다.
+	 *
+	 * @param id       사용자 아이디
+	 * @param pw       새 비밀번호
+	 * @param updateId 수정자 아이디
+	 * @return 반영된 행 수
+	 */
+	int updatePassword(@Param("id") String id, @Param("pw") String pw, @Param("updateId") String updateId);
+	/**
 	 * 로그인 ID로 사용자를 삭제합니다.
 	 *
 	 * @param id 로그인 ID

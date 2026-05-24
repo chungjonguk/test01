@@ -108,6 +108,31 @@ public class UserService {
 		}
 		log.info("user 테이블 저장 완료: id={}, email={}", user.getId(), user.getEmail());
 	}
+	/**
+	 * 비밀번호를 아이디와 동일한 값으로 초기화한다.
+	 *
+	 * @param userId   대상 사용자 아이디
+	 * @param updateId 수정자 아이디 (없으면 대상 아이디 사용)
+	 */
+	@Transactional
+	public void resetPasswordToInitial(String userId, String updateId) {
+		String id = trim(userId);
+		if (id.isEmpty()) {
+			throw new IllegalArgumentException("아이디를 입력해 주세요.");
+		}
+		if (!existsById(id)) {
+			throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + id);
+		}
+		String operator = trim(updateId);
+		if (operator.isEmpty()) {
+			operator = id;
+		}
+		int rows = userMapper.updatePassword(id, id, operator);
+		if (rows != 1) {
+			throw new IllegalStateException("비밀번호 초기화 실패: id=" + id);
+		}
+		log.info("user 비밀번호 초기화 완료: id={}, updateId={}", id, operator);
+	}
 	private String trim(String value) {
 		return value == null ? "" : value.trim();
 	}
