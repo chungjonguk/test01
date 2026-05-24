@@ -1,0 +1,148 @@
+================================================================================
+  PrintMall Spring Boot — Eclipse / STS 연동 가이드
+  프로젝트: spring-boot-app (Maven)
+  문서 위치: docs/eclipse-setup.txt
+================================================================================
+
+[ 필요 환경 ]
+  - IDE   : Eclipse 2023-12 이상 또는 Spring Tools 4 (STS)
+  - JDK   : 17 (Workspace 기본 JRE도 17로 설정)
+  - Maven : 3.9 이상 (Eclipse 내장 m2e 사용 가능)
+  - DB    : MySQL 8.x, 데이터베이스명 spring_boot_app
+
+================================================================================
+1. 프로젝트 가져오기
+================================================================================
+
+■ 방법 A — Maven 프로젝트 Import (권장)
+
+  1) File → Import → Maven → Existing Maven Projects
+  2) Root Directory: pom.xml 이 있는 프로젝트 루트 폴더 선택
+     (예: spring-boot-app-fixed)
+  3) Projects 목록에서 spring-boot-app 체크 → Finish
+  4) 프로젝트 우클릭 → Maven → Update Project (단축키 Alt+F5)
+     - Force Update of Snapshots/Releases 체크 → OK
+
+■ 방법 B — Eclipse 메타데이터로 열기
+
+  저장소에 .project, .classpath, .settings, .launch 가 있을 때:
+
+  1) File → Open Projects from File System
+  2) Directory 에 프로젝트 루트 지정 → Finish
+  3) Maven → Update Project 실행
+
+================================================================================
+2. JDK 17 설정
+================================================================================
+
+  1) Window → Preferences → Java → Installed JREs
+     - JDK 17 추가 후 default(기본) 로 지정
+
+  2) Window → Preferences → Java → Compiler
+     - Compiler compliance level: 17
+
+  3) 프로젝트 우클릭 → Properties → Java Build Path → Libraries
+     - JRE System Library 가 JavaSE-17 인지 확인
+
+================================================================================
+3. UTF-8 설정 (한글 깨짐 방지)
+================================================================================
+
+  1) Window → Preferences → General → Workspace
+     - Text file encoding: UTF-8
+
+  2) (선택) Java → Installed JREs → JDK 17 → Edit → Default VM arguments:
+
+     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
+
+================================================================================
+4. 애플리케이션 실행
+================================================================================
+
+■ Run Configuration (프로젝트에 포함된 설정)
+
+  Run → Run Configurations 또는 Debug Configurations:
+
+  [ spring-boot-app-java ]
+    - SpringBootAppApplication Java Application 실행
+    - 메인 클래스: com.example.springbootapp.SpringBootAppApplication
+
+  [ spring-boot-app-maven ]
+    - mvn clean spring-boot:run -DskipTests
+    - MySQL 이 먼저 기동되어 있어야 함
+
+  .launch 폴더에서 가져오기:
+    Run Configurations → 해당 유형 → Import launch configurations
+    → .launch 폴더 선택
+
+■ STS Spring Boot Dashboard (STS 설치 시)
+
+  1) Window → Show View → Other → Spring → Boot Dashboard
+  2) spring-boot-app 프로젝트 → (Re)start
+
+■ Eclipse 밖에서 실행 (Windows)
+
+  프로젝트 루트에서 run-server.bat 실행
+  - MySQL 확인/기동
+  - 8081 포트 정리
+  - mvn clean spring-boot:run
+
+================================================================================
+5. 접속 URL
+================================================================================
+
+  메인        : http://localhost:8081/
+  업체관리    : http://localhost:8081/admin/companies
+  메뉴관리    : http://localhost:8081/admin/menus
+  코드관리    : http://localhost:8081/admin/codes
+
+  (서버 포트는 application.properties 의 server.port=8081)
+
+================================================================================
+6. 자주 나는 문제
+================================================================================
+
+  [ Maven 의존성 오류 / 빨간 느낌표 ]
+    → 프로젝트 우클릭 → Maven → Update Project
+
+  [ target 없음, 클래스를 찾을 수 없음 ]
+    → Run As → Maven build… → Goals: compile
+    → 또는 터미널: mvn compile
+
+  [ Spring Boot nature / springbootbuilder 오류 ]
+    → Spring Tools 4(STS) 플러그인 설치
+    → 또는 Java Application 실행만 사용 (spring-boot-app-java)
+
+  [ DB 연결 실패 ]
+    → MySQL 서비스 기동
+    → DB spring_boot_app 존재 여부 확인
+    → application.properties 의 datasource 설정 확인
+    → application-local.properties.example 참고 (로컬 비밀번호)
+
+  [ 포트 8081 이미 사용 중 ]
+    → run-server.bat (8081 프로세스 종료 포함)
+    → 또는 netstat / taskkill 로 해당 PID 종료
+
+================================================================================
+7. 프로젝트 Eclipse 관련 파일
+================================================================================
+
+  .project     — Eclipse 프로젝트 정의
+  .classpath   — 소스·Maven 클래스패스
+  .settings/   — JDK 17, UTF-8, m2e, Spring Boot 설정
+  .launch/     — 실행 구성 (java / maven)
+
+  Git: 팀과 공유하려면 커밋 가능 (.gitignore 에서 제외됨)
+       로컬 전용이면 .gitignore 에 다시 추가
+
+================================================================================
+8. 로컬 DB·계정 (참고)
+================================================================================
+
+  - MySQL 호스트: 127.0.0.1:3306
+  - DB 이름     : spring_boot_app
+  - 상세 계정   : application.properties, application-local.properties
+
+================================================================================
+  끝 — 추가 문의 시 docs/eclipse-setup.md (동일 내용 마크다운) 참고
+================================================================================

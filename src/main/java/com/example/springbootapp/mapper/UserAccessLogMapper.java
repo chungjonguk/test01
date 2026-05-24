@@ -24,6 +24,7 @@ public interface UserAccessLogMapper {
 
 	List<UserAccessLog> search(
 			@Param("userId") String userId,
+			@Param("clientIp") String clientIp,
 			@Param("accessTypeCd") String accessTypeCd,
 			@Param("loginTypeCd") String loginTypeCd,
 			@Param("successYn") String successYn,

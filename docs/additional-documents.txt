@@ -1,0 +1,204 @@
+================================================================================
+                    ADDITIONAL DOCUMENTS — 지원용 추가 서류 가이드
+              (Additional Documents checklist & templates for job applications)
+================================================================================
+
+  본 문서는 채용 사이트의 "Additional Documents / 기타 서류" 업로드 시
+  무엇을 첨부할지, 이 프로젝트(PrintMall) 기준으로 정리한 안내입니다.
+
+================================================================================
+1. 필수·권장 첨부 목록 (Checklist)
+================================================================================
+
+  [ ] Resume / CV ...................... docs/resume-cv.txt → PDF 변환 권장
+  [ ] Cover Letter ..................... 아래 섹션 3 템플릿 (회사별 수정)
+  [ ] Portfolio / Project Summary ...... docs/portfolio-spring-boot-app.pdf
+                                        또는 docs/portfolio-spring-boot-app.docx
+  [ ] GitHub 링크 ...................... https://github.com/chungjonguk/test01
+  [ ] (선택) 스크린샷 ZIP .............. docs/screenshots/ 폴더 (대표 5~8장)
+  [ ] (선택) Architecture / 기술 설명 .. docs/thymeleaf-architecture.html → PDF 인쇄
+  [ ] (국내) 경력기술서 ................ 아래 섹션 4 (별도 PDF)
+  [ ] (국내) 자기소개서 ................ 아래 섹션 5 (항목별 작성)
+
+  ※ 한 번에 1개 파일만 허용하는 경우: portfolio-spring-boot-app.pdf 우선
+
+================================================================================
+2. 이 저장소에서 바로 쓸 수 있는 파일
+================================================================================
+
+  | 용도              | 파일 경로
+  |-------------------|--------------------------------------------------
+  | 이력서 초안       | docs/resume-cv.txt
+  | 포트폴리오 PDF    | docs/portfolio-spring-boot-app.pdf
+  | 포트폴리오 Word   | docs/portfolio-spring-boot-app.docx
+  | 포트폴리오 Markdown| docs/portfolio-spring-boot-app.md
+  | Eclipse 연동      | docs/eclipse-setup.txt
+  | 결제 연동 기술    | docs/inicis-developer-guide.txt
+  | 반응형 개요 HTML  | docs/responsive-overview.html
+  | Thymeleaf 구조    | docs/thymeleaf-architecture.html
+  | 화면 캡처         | docs/screenshots/*.png
+
+  ■ 업로드하면 안 되는 파일 (보안)
+    - docs/project-accounts.txt (DB·Git 계정 등)
+    - application-local.properties
+    - .env, 비밀키, API 키가 포함된 모든 파일
+
+================================================================================
+3. Cover Letter — 커버레터 템플릿 (영문 예시)
+================================================================================
+
+  [Date: YYYY-MM-DD]
+
+  Hiring Manager
+  [Company Name]
+  [Department / Job Title applied for]
+
+  Dear Hiring Manager,
+
+  I am writing to apply for the [Position Title] role at [Company Name].
+  I am a developer with hands-on experience building full-stack web
+  applications using Java 17, Spring Boot 3, MyBatis, and MySQL.
+
+  In my project PrintMall (Spring Boot + Falcon UI), I implemented:
+  - OAuth2 authentication (Kakao/Naver) and session-based access control
+  - Admin modules: common codes, menus, access logs, and vendor management
+  - E-commerce product CRUD and KG Inicis payment integration
+  - Responsive Thymeleaf UI (243+ screens) with REST APIs
+
+  I am confident my skills in backend design, database modeling, and
+  third-party API integration align with your team's needs. I would
+  welcome the opportunity to discuss how I can contribute to [Company Name].
+
+  Thank you for your consideration.
+
+  Sincerely,
+  [Your Name]
+  [Email] | [Phone] | GitHub: github.com/chungjonguk
+
+  ---
+  [국문 커버레터 — 짧은 버전]
+
+  귀사 [직무명] 채용에 지원합니다.
+
+  Java 17·Spring Boot 3 기반 웹 애플리케이션(PrintMall)을 설계·구현하였으며,
+  OAuth 인증, MyBatis/MySQL, 관리자 CRUD, PG 결제 연동, 반응형 UI까지
+  풀스택 개발 경험을 보유하고 있습니다.
+
+  귀사의 [서비스/팀]에 기여하고 싶습니다. 검토 부탁드립니다.
+
+  [성명]
+  [연락처]
+
+================================================================================
+4. 경력기술서 — 프로젝트 중심 (국내 지원용, 1~2페이지)
+================================================================================
+
+  ■ 프로젝트명: PrintMall (Spring Boot Admin & E-Commerce Web App)
+  ■ 기간: [YYYY.MM — YYYY.MM]
+  ■ 인원/역할: [1인 / 풀스택 개발]
+  ■ 사용 기술: Java 17, Spring Boot 3.2, Thymeleaf, MyBatis, MySQL 8,
+               Bootstrap 5, OAuth2, KG Inicis PG, Git, Maven
+
+  ■ 프로젝트 개요
+    Falcon UI 템플릿 기반 관리자·이커머스 통합 웹 애플리케이션.
+    240개 이상 화면, MySQL 30+ 테이블, 기동 시 DDL/시드 자동화.
+
+  ■ 담당 업무 및 성과
+    1) 백엔드: MVC·REST Controller, Service, MyBatis Mapper 계층 설계
+    2) 인증: 카카오·네이버 OAuth, 세션 타임아웃, 접속 로그(user_access_log)
+    3) 관리자: 공통코드, 메뉴(screen_list), 접속로그, 업체(biz_company) CRUD
+    4) 이커merce: 상품·이미지 관리, 체크아웃, 이니시스 표준결제·ecm_payment
+    5) 기타: 캘린더 DB 연동, 카카오 주소/지도, 원화 표시·한글 폰트, Eclipse 연동
+    6) 배포/운영: run-server.bat, MySQL 기동 검증, UTF-8 전역 설정
+
+  ■ URL / 저장소
+    GitHub: https://github.com/chungjonguk/test01
+    로컬 데모: http://localhost:8081
+
+================================================================================
+5. 자기소개서 — 항목별 작성 가이드 (국내 대기업·공채 형식)
+================================================================================
+
+  지원처에서 항목명이 다를 수 있으므로, 아래 bullet을 해당 문항에 맞게 옮겨 쓰세요.
+
+  [지원 동기]
+    - Spring Boot 기반 실무형 웹 서비스를 end-to-end로 구현해 본 경험을
+      [회사명]의 [직무/서비스] 개발에 연결하고 싶습니다.
+
+  [직무 역량 / 핵심 competency]
+    - Spring MVC·REST API 설계, MyBatis SQL·트랜잭션 처리
+    - OAuth2·세션 기반 인증, 접근 로그·관리자 기능
+    - 외부 API(카카오, 이니시스 PG) 연동 및 오류 처리
+
+  [문제 해결 사례] (STAR: Situation → Task → Action → Result)
+    S: Falcon 데모 UI를 실제 DB·결제·인증과 연동해야 했음
+    T: 관리자 메뉴·코드·주문·결제를 일관된 아키텍처로 통합
+    A: screen_list 메뉴체계, ScreenTableResolver, REST API, 이니시스 연동 구현
+    R: 로그인~관리~체크아웃~결제 저장까지 로컬 환경에서 검증 완료
+
+  [협업·Git]
+    - Git(main), 커밋 메시지 feat/fix/docs 구분, .gitignore로 비밀 설정 분리
+    - Cursor·STS 동일 소스 병행 개발 (docs/eclipse-setup.txt)
+
+  [입사 후 포부]
+    - [회사명]에서 [백엔드/풀스택]로 서비스 안정성·코드 품질·사용자 경험 개선에 기여
+
+================================================================================
+6. Additional Documents — 유형별 업로드 팁
+================================================================================
+
+  | 사이트 표현              | 추천 첨부물
+  |-------------------------|------------------------------------------
+  | Additional Documents    | portfolio-spring-boot-app.pdf
+  | Portfolio               | PDF + GitHub URL (설명란)
+  | Writing Sample          | 경력기술서 또는 기술 블로그 URL
+  | Transcript              | (학력 해당 시) 졸업증명·성적증명 — 별도 준비
+  | Certificate             | (자격증 해당 시) PDF 스캔
+  | Reference               | 추천인 연락처 — 별도 준비
+  | Other                   | 스크린샷 ZIP, architecture PDF
+
+  ■ PDF 만들기 (Windows)
+    - .txt / .md : 메모장·Word 열기 → 인쇄 → PDF로 저장
+    - .html : 브라우저 열기 → Ctrl+P → PDF 저장
+    - .docx : Word에서 PDF 내보내기
+
+  ■ 파일명 예시 (깔끔하게)
+    HongGildong_Resume_2026.pdf
+    HongGildong_Portfolio_PrintMall.pdf
+    HongGildong_CoverLetter_[CompanyName].pdf
+
+================================================================================
+7. 한 페이지 프로젝트 요약 (Additional Doc로 단독 첨부 가능)
+================================================================================
+
+  PrintMall — Spring Boot 3 Full-Stack Web Application
+
+  Stack     Java 17 | Spring Boot 3.2 | Thymeleaf | MyBatis | MySQL 8
+  UI        Falcon + Bootstrap 5 (Responsive, 243+ pages)
+  Auth      Form login, Kakao/Naver OAuth2, session timeout, access logs
+  Admin     Codes, menus, access logs, vendor(company) management
+  Commerce  Product CRUD, checkout, KG Inicis payment (ecm_payment)
+  DevOps    Maven, Git, MySQL bootstrap, run-server.bat, Eclipse/STS
+  Repo      https://github.com/chungjonguk/test01
+
+  Highlights
+  • DB-driven menu (screen_list) with access control
+  • REST APIs for admin, calendar, payments
+  • UTF-8/Korean locale, KRW currency display
+  • Documented: portfolio PDF, resume, Eclipse setup guide
+
+  Contact: [Name] | [Email] | [Phone]
+
+================================================================================
+8. 관련 문서 링크 (프로젝트 내)
+================================================================================
+
+  docs/resume-cv.txt ..................... 이력서
+  docs/eclipse-setup.txt ................. 개발환경(Eclipse)
+  docs/inicis-developer-guide.txt ........ PG 연동
+  docs/portfolio-spring-boot-app.pdf ..... 포트폴리오 (메인 추가 서류)
+
+================================================================================
+  파일: docs/additional-documents.txt
+  용도: 채용 Additional Documents 업로드 가이드 + 커버레터·경력기술서·자소서 초안
+================================================================================

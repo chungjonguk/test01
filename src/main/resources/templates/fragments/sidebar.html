@@ -17,6 +17,14 @@
             </a>
     </div>
     <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+        <script>
+          (function () {
+            var el = document.getElementById('navbarVerticalCollapse');
+            if (el && window.matchMedia('(min-width: 992px)').matches) {
+              el.classList.add('show');
+            }
+          })();
+        </script>
         <div class="navbar-vertical-content scrollbar">
             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                 <!-- 대시보드 -->

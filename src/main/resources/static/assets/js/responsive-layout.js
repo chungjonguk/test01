@@ -50,6 +50,15 @@
     if (narrow) {
       html.classList.remove('navbar-vertical-collapsed', 'navbar-vertical-collapsed-hover');
       hideVerticalCollapse();
+    } else {
+      var collapseEl = document.getElementById('navbarVerticalCollapse');
+      if (collapseEl) {
+        collapseEl.classList.add('show');
+        var toggler = document.querySelector('[data-bs-target="#navbarVerticalCollapse"]');
+        if (toggler) {
+          toggler.setAttribute('aria-expanded', 'true');
+        }
+      }
     }
     document.body.classList.toggle('layout-viewport-narrow', narrow);
     document.body.classList.toggle('layout-has-sidebar', !!nav && !document.body.classList.contains('layout-hide-sidebar'));

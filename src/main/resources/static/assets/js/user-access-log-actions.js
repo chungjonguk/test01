@@ -87,9 +87,42 @@
     }
   }
 
+  function deviceTypeBadge(type) {
+    var t = (type || '').toUpperCase();
+    if (t === 'MOBILE') {
+      return '<span class="badge badge-soft-info">MOBILE</span>';
+    }
+    if (t === 'TABLET') {
+      return '<span class="badge badge-soft-primary">TABLET</span>';
+    }
+    if (t === 'DESKTOP') {
+      return '<span class="badge badge-soft-secondary">DESKTOP</span>';
+    }
+    return truncateCell(t || '—');
+  }
+
+  function formatDeviceInfo(row) {
+    var parts = [];
+    if (row.deviceOs) {
+      parts.push(row.deviceOs);
+    }
+    if (row.deviceBrowser) {
+      parts.push(row.deviceBrowser);
+    }
+    if (row.deviceModel) {
+      parts.push(row.deviceModel);
+    }
+    var summary = parts.join(' · ');
+    if (!summary) {
+      return truncateCell(row.userAgent);
+    }
+    return truncateCell(summary);
+  }
+
   function getSearchParams() {
     var params = new URLSearchParams();
     var userId = $('search-user-id');
+    var clientIp = $('search-client-ip');
     var accessType = $('search-access-type');
     var loginType = $('search-login-type');
     var successYn = $('search-success-yn');
@@ -97,6 +130,9 @@
     var dateTo = $('search-date-to');
     if (userId && userId.value.trim()) {
       params.set('userId', userId.value.trim());
+    }
+    if (clientIp && clientIp.value.trim()) {
+      params.set('clientIp', clientIp.value.trim());
     }
     if (accessType && accessType.value) {
       params.set('accessType', accessType.value);
@@ -126,7 +162,7 @@
     var rows = logs || [];
     if (!rows.length) {
       tbody.innerHTML =
-        '<tr><td colspan="10" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
+        '<tr><td colspan="12" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
       if (countEl) {
         countEl.textContent = '0건';
       }
@@ -160,8 +196,13 @@
           '<td class="align-middle text-center col-success">' +
           successBadge(row.successYn) +
           '</td>' +
-          '<td class="align-middle col-client-ip d-none d-xl-table-cell">' +
-          truncateCell(row.clientIp) +
+          '<td class="align-middle col-client-ip"><code class="fs--2">' +
+          escapeHtml(row.clientIp || '—') +
+          '</code></td>' +
+          '<td class="align-middle col-device d-none d-lg-table-cell">' +
+          deviceTypeBadge(row.deviceTypeCd) +
+          ' ' +
+          formatDeviceInfo(row) +
           '</td>' +
           '<td class="align-middle col-uri d-none d-xl-table-cell">' +
           truncateCell(row.requestUri) +
@@ -183,7 +224,7 @@
     var tbody = $('access-log-grid-body');
     if (tbody) {
       tbody.innerHTML =
-        '<tr><td colspan="10" class="text-center text-600 py-4">조회 중...</td></tr>';
+        '<tr><td colspan="12" class="text-center text-600 py-4">조회 중...</td></tr>';
     }
     fetch('/api/admin/user-access-logs?' + getSearchParams().toString(), {
       headers: { Accept: 'application/json' }
@@ -202,7 +243,7 @@
       .catch(function (err) {
         if (tbody) {
           tbody.innerHTML =
-            '<tr><td colspan="10" class="text-center text-danger py-4">' +
+            '<tr><td colspan="12" class="text-center text-danger py-4">' +
             escapeHtml(err.message || '조회 중 오류가 발생했습니다.') +
             '</td></tr>';
         }
@@ -214,6 +255,7 @@
 
   function resetSearch() {
     var userId = $('search-user-id');
+    var clientIp = $('search-client-ip');
     var accessType = $('search-access-type');
     var loginType = $('search-login-type');
     var successYn = $('search-success-yn');
@@ -221,6 +263,9 @@
     var dateTo = $('search-date-to');
     if (userId) {
       userId.value = '';
+    }
+    if (clientIp) {
+      clientIp.value = '';
     }
     if (accessType) {
       accessType.value = '';

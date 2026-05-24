@@ -12,6 +12,8 @@ import com.example.springbootapp.auth.LoginSession;
 import com.example.springbootapp.domain.User;
 import com.example.springbootapp.domain.UserAccessLog;
 import com.example.springbootapp.mapper.UserAccessLogMapper;
+import com.example.springbootapp.util.ClientDeviceResolver;
+import com.example.springbootapp.util.ClientDeviceResolver.ClientDeviceInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -94,6 +96,7 @@ public class UserAccessLogService {
 	@Transactional(readOnly = true)
 	public List<UserAccessLog> searchForAdmin(
 			String userId,
+			String clientIp,
 			String accessTypeCd,
 			String loginTypeCd,
 			String successYn,
@@ -102,6 +105,7 @@ public class UserAccessLogService {
 			int limit) {
 		return userAccessLogMapper.search(
 				trimToNull(userId),
+				trimToNull(clientIp),
 				trimToNull(accessTypeCd),
 				trimToNull(loginTypeCd),
 				trimToNull(successYn),
@@ -143,8 +147,13 @@ public class UserAccessLogService {
 		}
 		row.setRequestUri(trim(request.getRequestURI(), 500));
 		row.setHttpMethod(trim(request.getMethod(), 10));
-		row.setClientIp(resolveClientIp(request));
+		row.setClientIp(ClientDeviceResolver.resolveClientIp(request));
 		row.setUserAgent(trim(request.getHeader("User-Agent"), 500));
+		ClientDeviceInfo device = ClientDeviceResolver.resolveDevice(request);
+		row.setDeviceTypeCd(device.getDeviceTypeCd());
+		row.setDeviceOs(device.getDeviceOs());
+		row.setDeviceBrowser(device.getDeviceBrowser());
+		row.setDeviceModel(device.getDeviceModel());
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			row.setSessionId(trim(session.getId(), 64));
@@ -158,18 +167,6 @@ public class UserAccessLogService {
 		} catch (Exception ex) {
 			log.warn("접속 이력 저장 실패: userId={}, type={}", row.getUserId(), row.getAccessTypeCd(), ex);
 		}
-	}
-
-	static String resolveClientIp(HttpServletRequest request) {
-		String[] headers = { "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP" };
-		for (String header : headers) {
-			String value = request.getHeader(header);
-			if (value != null && !value.isBlank() && !"unknown".equalsIgnoreCase(value)) {
-				int comma = value.indexOf(',');
-				return trim(comma > 0 ? value.substring(0, comma) : value, 45);
-			}
-		}
-		return trim(request.getRemoteAddr(), 45);
 	}
 
 	private static String trim(String value, int maxLen) {

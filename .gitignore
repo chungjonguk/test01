@@ -12,11 +12,12 @@
 .metadata/
 .recommenders/
 
-# Eclipse / STS project metadata (프로젝트 루트)
-.classpath
-.project
-.settings/
-.launch/
+# Eclipse / STS — docs/eclipse-setup.md 참고 (팀 import용으로 커밋 가능)
+# 로컬만 쓰려면 아래 4줄 주석 해제
+# .classpath
+# .project
+# .settings/
+# .launch/
 
 *.class
 
@@ -31,4 +32,10 @@ Thumbs.db
 # 로컬 카카오/비밀 설정 (application-local.properties.example 참고)
 application-local.properties
 src/main/resources/application-local.properties
+
+# React / Node.js
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+scripts/react-dev/*.zip
 

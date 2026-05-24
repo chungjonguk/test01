@@ -1,0 +1,137 @@
+================================================================================
+                              RESUME / CV
+                    (이력서 — 지원용 초안, 본인 정보는 수정 후 사용)
+================================================================================
+
+[ PERSONAL INFORMATION / 인적사항 ]
+  Name (성명)     : [홍길동]
+  Email           : [your.email@example.com]
+  Phone           : [010-0000-0000]
+  Location        : [서울, 대한민국]
+  GitHub          : https://github.com/chungjonguk
+  Portfolio Repo  : https://github.com/chungjonguk/test01
+
+================================================================================
+[ PROFESSIONAL SUMMARY / 요약 ]
+================================================================================
+
+  Java 17 · Spring Boot 3 기반 풀스택 웹 애플리케이션 개발 경험.
+  Thymeleaf + Bootstrap 반응형 UI, MyBatis/MySQL 백엔드, REST API 설계·구현.
+  OAuth2(카카오·네이버) 인증, PG(이니시스) 결제 연동, 관리자 CRUD·공통코드·
+  메뉴·접속로그·업체관리 등 운영 기능 구현.
+  Cursor·Eclipse(STS) 병행 개발, Git 기반 버전 관리.
+
+================================================================================
+[ TECHNICAL SKILLS / 기술 스택 ]
+================================================================================
+
+  Language        Java 17, JavaScript, SQL, HTML/CSS
+  Framework       Spring Boot 3.2, Spring MVC, Spring Session
+  View            Thymeleaf, Falcon UI Template, Bootstrap 5
+  Persistence     MyBatis 3, MySQL 8
+  Build / Tools   Maven 3.9, Git, Spring DevTools
+  IDE             Eclipse STS, Cursor
+  Integration     Kakao OAuth / Local API / Maps, Naver OAuth,
+                  KG Inicis PG (INIStdPay), SweetAlert2
+  Other           UTF-8/i18n(ko_KR), 반응형 웹, screen_list 기반 메뉴·접근제어
+
+================================================================================
+[ PROJECT EXPERIENCE / 프로젝트 ]
+================================================================================
+
+  Project   PrintMall — Spring Boot Admin & E-Commerce Web App
+  Period    [2025.XX — 2026.XX]
+  Role      Full-stack Developer (개인/팀 프로젝트)
+  Repo      https://github.com/chungjonguk/test01
+  Demo      http://localhost:8081 (로컬)
+
+  ■ Overview
+    - Falcon 템플릿 기반 243+ Thymeleaf 화면을 Spring Boot MVC로 통합
+    - PC·태블릿·모바일 반응형 단일 코드베이스
+    - MySQL spring_boot_app DB, 30+ 업무 테이블, 기동 시 스키마·시드 자동 적용
+
+  ■ Backend
+    - Layered architecture: Controller(MVC/REST) → Service → MyBatis Mapper
+    - PageViewAdvice: URI별 JS/CSS·Thymeleaf 플래그 주입
+    - ScreenAccessInterceptor: screen_list use_yn 기반 화면 접근 제어
+    - ScreenCatalog / ScreenSidebarLoader: 사이드바 ↔ DB 메뉴 동기화
+
+  ■ Authentication & Security
+    - 폼 로그인 + 카카오·네이버 OAuth2
+    - HTTP 세션 타임아웃(10분), user_access_log 접속·로그인·로그아웃 이력
+
+  ■ Admin Features (관리자)
+    - 공통코드 관리 (/admin/codes): 그룹·상세 CRUD, 콤보 연동
+    - 메뉴관리 (/admin/menus): screen_list 조회·화면-테이블 매핑
+    - 접속 로그 (/admin/user-access-logs): 조건 검색·그리드
+    - 업체관리 (/admin/companies): biz_company CRUD, REST API
+
+  ■ E-Commerce & Payment
+    - 상품 등록·관리·이미지(최대 5장), Swiper 상세
+    - 체크아웃 + KG이니시스 표준결제(INIStdPay), ecm_payment·ecm_order 연동
+    - 원화(KRW) 표시 통일, 테스트 MID·스테이징 결제창
+
+  ■ Other Features
+    - 캘린더 일정 DB 연동 (calendar_event, FullCalendar API)
+    - 카카오 주소 검색·카카오맵 (회원가입 마법사)
+    - MySQL 자동 기동·DB 검증(MysqlBootstrap), run-server.bat
+
+  ■ Tech Highlights
+    Spring Boot 3.2 | Java 17 | Thymeleaf | MyBatis | MySQL 8 |
+    OAuth2 | Inicis PG | REST API | Git
+
+================================================================================
+[ KEY ACHIEVEMENTS / 주요 성과 (Bullet — 이력서·LinkedIn용) ]
+================================================================================
+
+  • Spring Boot 3 + MyBatis로 30+ 테이블 업무 DB 설계·연동 및 기동 시 DDL/시드 자동화
+  • screen_list 기반 동적 메뉴·접근제어로 240+ 화면 운영 구조 구축
+  • 카카오·네이버 OAuth 및 접속 로그로 인증·감사(Audit) 흐름 구현
+  • 이니시스 PG 표준결제 연동으로 체크아웃·결제 이력(ecm_payment) 저장
+  • 관리자 업체·코드·메뉴 CRUD 및 REST API + Thymeleaf 관리 화면 개발
+  • 반응형 Falcon UI + UTF-8/한글 폰트(Noto Sans KR) 적용
+
+================================================================================
+[ EDUCATION / 학력 ]  ← 본인 정보로 수정
+================================================================================
+
+  [YYYY.MM — YYYY.MM]  [대학교명]  [전공]  [학위]
+
+================================================================================
+[ CERTIFICATIONS / 자격증 ]  ← 해당 시 기재
+================================================================================
+
+  [자격증명]  [발급기관]  [YYYY.MM]
+
+================================================================================
+[ WORK EXPERIENCE / 경력 ]  ← 해당 시 기재
+================================================================================
+
+  [YYYY.MM — YYYY.MM]  [회사명]  [직무/직급]
+    - [담당 업무 1]
+    - [담당 업무 2]
+
+================================================================================
+[ ENGLISH SUMMARY (Optional — for international applications) ]
+================================================================================
+
+  Full-stack developer with hands-on experience building a Spring Boot 3
+  web application (PrintMall) using Java 17, Thymeleaf, MyBatis, and MySQL.
+  Implemented OAuth2 login, admin modules (codes, menus, access logs, vendors),
+  e-commerce product management, and KG Inicis payment integration.
+  Comfortable with responsive UI (Bootstrap), REST APIs, and Git workflow.
+
+================================================================================
+[ ATTACHMENTS CHECKLIST / 지원 시 첨부 ]
+================================================================================
+
+  [ ] Resume / CV (본 파일 PDF 변환)
+  [ ] Cover Letter (커버레터 — 지원 회사·직무별 맞춤)
+  [ ] Portfolio: docs/portfolio-spring-boot-app.pdf 또는 GitHub README
+  [ ] (선택) 스크린샷: docs/screenshots/
+
+================================================================================
+  파일 위치: docs/resume-cv.txt
+  관련 문서: docs/portfolio-spring-boot-app.md, docs/eclipse-setup.txt
+  최종 수정: 프로젝트 spring-boot-app-fixed 기준
+================================================================================

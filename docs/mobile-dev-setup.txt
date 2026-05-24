@@ -1,0 +1,137 @@
+================================================================================
+  모바일 개발환경 셋팅 가이드 (PrintMall + 모의투자)
+  문서: docs/mobile-dev-setup.txt
+================================================================================
+
+[ 개요 ]
+  Spring Boot 웹앱을 휴대폰·태블릿에서 테스트하는 환경입니다.
+  네이티브 앱(Android/iOS) 개발이 아니라, 반응형 웹 + 실기기 LAN 테스트입니다.
+
+[ 필요 환경 ]
+  - PC: Windows 10/11, JDK 17, Maven, MySQL
+  - 휴대폰: Android 또는 iPhone (Chrome / Safari)
+  - PC와 폰이 같은 Wi-Fi (게스트 Wi-Fi는 기기 간 차단되는 경우 많음)
+  - (선택) Microsoft Edge — PC에서 모바일 화면 에뮬레이션
+
+================================================================================
+1. 빠른 시작 (3단계)
+================================================================================
+
+  1) 방화벽 (최초 1회, 관리자)
+     scripts\mobile-dev\setup-mobile-firewall.bat
+     → 우클릭 → 관리자 권한으로 실행
+
+  2) 모바일용 서버 기동
+     PrintMall  : run-server-mobile.bat
+     모의투자   : stock-mock-trading\run-server-mobile.bat
+
+  3) 휴대폰 브라우저에서 접속
+     scripts\mobile-dev\get-lan-ip.ps1 실행 → 나온 IP 사용
+     예) http://192.168.0.15:8081/
+
+================================================================================
+2. run-server.bat vs run-server-mobile.bat
+================================================================================
+
+  run-server.bat
+    - localhost(127.0.0.1)만 접속 가능
+    - 일반 PC 개발용
+
+  run-server-mobile.bat
+    - server.address=0.0.0.0 (모든 네트워크 인터페이스)
+    - profile=mobile (application-mobile.properties)
+    - 같은 Wi-Fi 휴대폰에서 PC IP로 접속 가능
+
+================================================================================
+3. PC에서 모바일 화면 미리보기 (실기기 없을 때)
+================================================================================
+
+  ■ Edge 모바일 창
+     powershell -File scripts\mobile-dev\open-mobile-preview.ps1
+     powershell -File scripts\mobile-dev\open-mobile-preview.ps1 -Target printmall-analytics
+     powershell -File scripts\mobile-dev\open-mobile-preview.ps1 -Target stock
+
+  ■ Edge 개발자 도구
+     F12 → Ctrl+Shift+M (디바이스 툴바)
+     기기: iPhone 14 Pro (390×844) 등 선택
+
+  ■ 모바일 스크린샷 (서버 기동 후)
+     powershell -File docs\capture-all-screenshots.ps1
+     → 11~13번이 모바일 해상도 캡처
+
+================================================================================
+4. Cursor / VS Code
+================================================================================
+
+  .vscode\tasks.json 에 등록된 작업:
+    - Mobile: PrintMall 서버 (LAN)
+    - Mobile: PC IP 확인
+    - Mobile: Edge 미리보기
+
+  실행: Ctrl+Shift+P → Tasks: Run Task
+
+================================================================================
+5. 카카오 로그인 / 카카오맵 (PrintMall)
+================================================================================
+
+  카카오 개발자 콘솔(https://developers.kakao.com) → 내 앱 → 플랫폼
+
+  PC 테스트:
+    - Web 도메인: http://localhost:8081
+
+  휴대폰 LAN 테스트:
+    - Web 도메인 추가: http://192.168.x.x:8081  (PC IP, http 유지)
+    - IP가 바뀔 때마다 콘솔에 다시 등록
+
+  운영(도메인):
+    - https://yourdomain.com 만 등록 (HTTPS 필수)
+
+================================================================================
+6. 이니시스 결제 (모바일)
+================================================================================
+
+  LAN IP(http://192.168.x.x:8081)는 이니시스 운영/스테이징 returnUrl 검증에
+  통과하지 않을 수 있습니다.
+
+  - 로컬 모바일 UI 테스트: mock 결제 또는 화면만 확인
+  - 결제 연동 테스트: localhost + PC Edge 모바일 에뮬 또는 HTTPS 도메인
+
+  docs\inicis-developer-guide.txt 참고
+
+================================================================================
+7. 문제 해결
+================================================================================
+
+  ■ 휴대폰에서 "연결할 수 없음"
+    - PC와 폰 같은 Wi-Fi 확인
+    - run-server-mobile.bat 로 기동했는지 확인 (일반 run-server.bat 아님)
+    - setup-mobile-firewall.bat 관리자 실행
+    - PC IP 재확인: get-lan-ip.ps1
+
+  ■ IP가 자주 바뀜
+    - 공유기에서 PC MAC 고정 IP(DHCP 예약) 설정
+
+  ■ 카카오 로그인 실패 (모바일)
+    - 카카오 콘솔 Web 도메인에 http://<PC-IP>:8081 추가
+
+  ■ Android Studio / Flutter 네이티브 앱 개발
+    - 별도 설치 필요 (본 가이드 범위 밖)
+    - WebView로 위 URL을 띄우는 하이브리드 앱은 가능
+
+================================================================================
+8. 파일 목록
+================================================================================
+
+  spring-boot-app-fixed\
+    run-server-mobile.bat
+    src\main\resources\application-mobile.properties
+    scripts\mobile-dev\get-lan-ip.ps1
+    scripts\mobile-dev\setup-mobile-firewall.bat
+    scripts\mobile-dev\open-mobile-preview.ps1
+    docs\mobile-dev-setup.txt
+
+  stock-mock-trading\
+    run-server-mobile.bat
+    src\main\resources\application-mobile.properties
+
+================================================================================

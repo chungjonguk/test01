@@ -29,6 +29,7 @@ public class AdminUserAccessLogApiController {
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> search(
 			@RequestParam(required = false) String userId,
+			@RequestParam(required = false) String clientIp,
 			@RequestParam(required = false) String accessType,
 			@RequestParam(required = false) String loginType,
 			@RequestParam(required = false) String successYn,
@@ -39,7 +40,7 @@ public class AdminUserAccessLogApiController {
 			LocalDateTime rangeStart = resolveRangeStart(start);
 			LocalDateTime rangeEnd = resolveRangeEnd(end);
 			List<Map<String, Object>> logs = userAccessLogService
-					.searchForAdmin(userId, accessType, loginType, successYn, rangeStart, rangeEnd, limit)
+					.searchForAdmin(userId, clientIp, accessType, loginType, successYn, rangeStart, rangeEnd, limit)
 					.stream()
 					.map(this::toDto)
 					.collect(Collectors.toList());
@@ -83,6 +84,10 @@ public class AdminUserAccessLogApiController {
 		row.put("requestUri", log.getRequestUri());
 		row.put("httpMethod", log.getHttpMethod());
 		row.put("clientIp", log.getClientIp());
+		row.put("deviceTypeCd", log.getDeviceTypeCd());
+		row.put("deviceOs", log.getDeviceOs());
+		row.put("deviceBrowser", log.getDeviceBrowser());
+		row.put("deviceModel", log.getDeviceModel());
 		row.put("userAgent", log.getUserAgent());
 		row.put("sessionId", log.getSessionId());
 		row.put("failReason", log.getFailReason());

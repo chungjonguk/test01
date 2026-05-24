@@ -13,6 +13,10 @@ public class UserAccessLog {
 	private String requestUri;
 	private String httpMethod;
 	private String clientIp;
+	private String deviceTypeCd;
+	private String deviceOs;
+	private String deviceBrowser;
+	private String deviceModel;
 	private String userAgent;
 	private String sessionId;
 	private String failReason;
@@ -89,6 +93,38 @@ public class UserAccessLog {
 
 	public void setClientIp(String clientIp) {
 		this.clientIp = clientIp;
+	}
+
+	public String getDeviceTypeCd() {
+		return deviceTypeCd;
+	}
+
+	public void setDeviceTypeCd(String deviceTypeCd) {
+		this.deviceTypeCd = deviceTypeCd;
+	}
+
+	public String getDeviceOs() {
+		return deviceOs;
+	}
+
+	public void setDeviceOs(String deviceOs) {
+		this.deviceOs = deviceOs;
+	}
+
+	public String getDeviceBrowser() {
+		return deviceBrowser;
+	}
+
+	public void setDeviceBrowser(String deviceBrowser) {
+		this.deviceBrowser = deviceBrowser;
+	}
+
+	public String getDeviceModel() {
+		return deviceModel;
+	}
+
+	public void setDeviceModel(String deviceModel) {
+		this.deviceModel = deviceModel;
 	}
 
 	public String getUserAgent() {

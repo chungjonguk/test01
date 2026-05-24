@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+spring.boot.ide.eclipse.prefs.problem.application-properties.disabled=ignore
+spring.boot.ide.eclipse.prefs.problem.application-yaml.disabled=ignore

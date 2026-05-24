@@ -1,0 +1,83 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Mobile: PrintMall 서버 (LAN)",
+      "type": "shell",
+      "command": "${workspaceFolder}/run-server-mobile.bat",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Mobile: PC IP 확인",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/mobile-dev/get-lan-ip.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Mobile: Edge 미리보기 (PrintMall)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/mobile-dev/open-mobile-preview.ps1",
+        "-Target",
+        "printmall"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Mobile: Edge 미리보기 (Analytics)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/mobile-dev/open-mobile-preview.ps1",
+        "-Target",
+        "printmall-analytics"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "React: 개발환경 셋업",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/react-dev/setup-react-dev.bat",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "React: Vite dev 서버",
+      "type": "shell",
+      "command": "${workspaceFolder}/run-react-dev.bat",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

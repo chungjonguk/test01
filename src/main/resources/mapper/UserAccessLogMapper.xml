@@ -4,6 +4,12 @@
 
 <mapper namespace="com.example.springbootapp.mapper.UserAccessLogMapper">
 
+    <sql id="userAccessLogColumns">
+        access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
+        request_uri, http_method, client_ip, device_type_cd, device_os, device_browser, device_model,
+        user_agent, session_id, fail_reason, access_dt, reg_id
+    </sql>
+
     <resultMap id="userAccessLogResultMap" type="UserAccessLog">
         <id property="accessId" column="access_id"/>
         <result property="userId" column="user_id"/>
@@ -14,6 +20,10 @@
         <result property="requestUri" column="request_uri"/>
         <result property="httpMethod" column="http_method"/>
         <result property="clientIp" column="client_ip"/>
+        <result property="deviceTypeCd" column="device_type_cd"/>
+        <result property="deviceOs" column="device_os"/>
+        <result property="deviceBrowser" column="device_browser"/>
+        <result property="deviceModel" column="device_model"/>
         <result property="userAgent" column="user_agent"/>
         <result property="sessionId" column="session_id"/>
         <result property="failReason" column="fail_reason"/>
@@ -24,19 +34,17 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="accessId">
         INSERT INTO user_access_log (
             user_id, user_nm, access_type_cd, login_type_cd, success_yn,
-            request_uri, http_method, client_ip, user_agent, session_id,
-            fail_reason, access_dt, reg_id
+            request_uri, http_method, client_ip, device_type_cd, device_os, device_browser, device_model,
+            user_agent, session_id, fail_reason, access_dt, reg_id
         ) VALUES (
             #{userId}, #{userNm}, #{accessTypeCd}, #{loginTypeCd}, #{successYn},
-            #{requestUri}, #{httpMethod}, #{clientIp}, #{userAgent}, #{sessionId},
-            #{failReason}, COALESCE(#{accessDt}, CURRENT_TIMESTAMP), #{regId}
+            #{requestUri}, #{httpMethod}, #{clientIp}, #{deviceTypeCd}, #{deviceOs}, #{deviceBrowser}, #{deviceModel},
+            #{userAgent}, #{sessionId}, #{failReason}, COALESCE(#{accessDt}, CURRENT_TIMESTAMP), #{regId}
         )
     </insert>
 
     <select id="findByUserId" resultMap="userAccessLogResultMap">
-        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
-               request_uri, http_method, client_ip, user_agent, session_id,
-               fail_reason, access_dt, reg_id
+        SELECT <include refid="userAccessLogColumns"/>
         FROM user_access_log
         WHERE user_id = #{userId}
         ORDER BY access_dt DESC
@@ -44,9 +52,7 @@
     </select>
 
     <select id="findByRange" resultMap="userAccessLogResultMap">
-        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
-               request_uri, http_method, client_ip, user_agent, session_id,
-               fail_reason, access_dt, reg_id
+        SELECT <include refid="userAccessLogColumns"/>
         FROM user_access_log
         WHERE access_dt &gt;= #{rangeStart}
           AND access_dt &lt; #{rangeEnd}
@@ -55,13 +61,14 @@
     </select>
 
     <select id="search" resultMap="userAccessLogResultMap">
-        SELECT access_id, user_id, user_nm, access_type_cd, login_type_cd, success_yn,
-               request_uri, http_method, client_ip, user_agent, session_id,
-               fail_reason, access_dt, reg_id
+        SELECT <include refid="userAccessLogColumns"/>
         FROM user_access_log
         <where>
             <if test="userId != null and userId != ''">
                 AND user_id LIKE CONCAT('%', #{userId}, '%')
+            </if>
+            <if test="clientIp != null and clientIp != ''">
+                AND client_ip LIKE CONCAT('%', #{clientIp}, '%')
             </if>
             <if test="accessTypeCd != null and accessTypeCd != ''">
                 AND access_type_cd = #{accessTypeCd}

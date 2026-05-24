@@ -38,7 +38,7 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=26)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=27)}" rel="stylesheet" id="user-style-default" />
     <link th:if="${loadSwiper}" th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet/leaflet.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.css}" rel="stylesheet" />
@@ -163,7 +163,8 @@
     <script th:if="${activeScreenUris != null}" th:inline="javascript">
       window.__ACTIVE_SCREEN_URIS__ = /*[[${activeScreenUris}]]*/ [];
     </script>
-    <script th:src="@{/assets/js/screen-menu-filter.js(v=1)}"></script>
+    <script th:src="@{/assets/js/sidebar-menu-init.js(v=1)}"></script>
+    <script th:src="@{/assets/js/screen-menu-filter.js(v=2)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/currency-won.js(v=2)}"></script>
@@ -185,7 +186,7 @@
     <script th:if="${loadShoppingCartActions}" th:src="@{/assets/js/shopping-cart-actions.js(v=1)}"></script>
     <script th:if="${loadCodeManagementActions}" th:src="@{/assets/js/code-management-actions.js(v=26)}"></script>
     <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=3)}"></script>
-    <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=1)}"></script>
+    <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=2)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=1)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
     <script th:if="${loadEmailInboxActions}" th:src="@{/assets/js/email-inbox-actions.js(v=1)}"></script>
@@ -197,51 +198,5 @@
     <script th:if="${loadCalendar}" th:src="@{/assets/js/app-calendar-modal-fix.js(v=2)}"></script>
     <script th:if="${loadInvoicePdf}" src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
     <script th:if="${loadInvoicePdf}" th:src="@{/assets/js/invoice-pdf.js(v=3)}"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var navRoot = document.getElementById('navbarVerticalNav');
-        if (!navRoot) {
-          return;
-        }
-
-        var normalizePath = function normalizePath(path) {
-          if (!path) {
-            return '/';
-          }
-          var trimmed = path.replace(/\/+$/, '').replace(/\.html$/, '');
-          return trimmed.length ? trimmed : '/';
-        };
-
-        var currentPath = normalizePath(window.location.pathname);
-        var links = navRoot.querySelectorAll('a.nav-link[href]');
-        links.forEach(function (link) {
-          var href = link.getAttribute('href');
-          if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0) {
-            return;
-          }
-          var url;
-          try {
-            url = new URL(href, window.location.origin);
-          } catch (e) {
-            return;
-          }
-          if (normalizePath(url.pathname) !== currentPath) {
-            return;
-          }
-
-          link.classList.add('active');
-          var parentCollapse = link.closest('.collapse');
-          while (parentCollapse) {
-            parentCollapse.classList.add('show');
-            var toggle = navRoot.querySelector('[href="#' + parentCollapse.id + '"],[data-bs-target="#' + parentCollapse.id + '"]');
-            if (toggle) {
-              toggle.classList.add('active');
-              toggle.setAttribute('aria-expanded', 'true');
-            }
-            parentCollapse = parentCollapse.parentElement ? parentCollapse.parentElement.closest('.collapse') : null;
-          }
-        });
-      });
-    </script>
 </body>
 </html>

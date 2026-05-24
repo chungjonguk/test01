@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,0,17,0" defaultVMInstalled\="true">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="JavaSE-17" os\="win32" arch\="x86_64">\r\n<attributes>\r\n<attribute name\="org.eclipse.jdt.launching.JAVA_HOME" value\=""/>\r\n</attributes>\r\n</vm>\r\n</vmType>\r\n</vmSettings>\r\n

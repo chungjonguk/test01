@@ -22,6 +22,10 @@
                 <div class="card-body pb-2">
                   <form id="access-log-search-form" class="row g-2 align-items-end">
                     <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-client-ip">장비 IP</label>
+                      <input class="form-control form-control-sm" id="search-client-ip" type="text" placeholder="192.168.x.x" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-user-id">사용자 ID</label>
                       <input class="form-control form-control-sm" id="search-user-id" type="text" placeholder="user id" autocomplete="off" />
                     </div>
@@ -85,14 +89,15 @@
                       <th class="text-center col-access-type">유형</th>
                       <th class="text-center col-login-type d-none d-lg-table-cell">로그인</th>
                       <th class="text-center col-success">성공</th>
-                      <th class="col-client-ip d-none d-xl-table-cell">IP</th>
+                      <th class="col-client-ip">장비 IP</th>
+                      <th class="col-device d-none d-lg-table-cell">장비 정보</th>
                       <th class="col-uri d-none d-xl-table-cell">URI</th>
                       <th class="col-fail d-none d-xxl-table-cell">실패사유</th>
                     </tr>
                   </thead>
                   <tbody id="access-log-grid-body">
                     <tr>
-                      <td colspan="10" class="text-center text-600 py-4">조회 버튼을 눌러 접속 로그를 불러오세요.</td>
+                      <td colspan="12" class="text-center text-600 py-4">조회 버튼을 눌러 접속 로그를 불러오세요.</td>
                     </tr>
                   </tbody>
                 </table>
