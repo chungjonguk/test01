@@ -35,7 +35,7 @@
             </div>
             <div class="card-body bg-light">
                 <form class="dropzone dropzone-single p-0" id="dropzone-single" data-dropzone="data-dropzone"
-                      data-options='{"url":"/api/upload","maxFiles":1,"paramName":"file","autoProcessQueue":true}'>
+                      data-options='{"url":"/api/upload?type=image","maxFiles":1,"paramName":"file","autoProcessQueue":true}'>
                     <div class="fallback">
                         <input type="file" name="file" />
                     </div>
@@ -65,7 +65,7 @@
             <div class="card-body bg-light">
                 <form class="dropzone dropzone-multiple p-0" id="dropzone-multiple"
                       data-dropzone="data-dropzone"
-                      data-options='{"url":"/api/upload","paramName":"file","autoProcessQueue":true}'>
+                      data-options='{"url":"/api/upload?type=document","paramName":"file","autoProcessQueue":true}'>
                     <div class="fallback">
                         <input name="file" type="file" multiple="multiple" />
                     </div>

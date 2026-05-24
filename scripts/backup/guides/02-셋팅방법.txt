@@ -1,0 +1,186 @@
+================================================================================
+  셋팅방법 — 프로젝트·DB·실행 환경 구성
+  위치: D:\backup\docs\02-셋팅방법.txt
+  전제: docs\01-설치방법.txt 완료
+================================================================================
+
+================================================================================
+1. 프로젝트 복원 (projects/*.zip)
+================================================================================
+
+  [1-1] 작업 폴더 생성
+
+    mkdir D:\spirngboot_workspace\spirngboot_workspace\new-workspace
+
+  [1-2] 압축 해제
+
+    spring-boot-app-fixed_*.zip
+      → D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed\
+
+    stock-mock-trading_*.zip
+      → ...\new-workspace\stock-mock-trading\
+
+    kotlin-hello_*.zip (선택)
+      → ...\new-workspace\kotlin-hello\
+
+  [1-3] 배치 파일 경로 수정 (사용자명이 chung 이 아닐 때)
+
+    run-server.bat, run-server-mobile.bat, run-react-dev.bat 등에서
+    JAVA_HOME, NODE_HOME 경로를 본인 PC 사용자명으로 변경:
+
+      set JAVA_HOME=C:\Users\<본인>\.local\dev\jdk-17
+      set NODE_HOME=C:\Users\<본인>\.local\dev\node-22
+
+    scripts\react-dev\setup-react-dev.bat, install-node.ps1 도 동일.
+
+================================================================================
+2. MySQL DB 셋팅
+================================================================================
+
+  [2-1] 사용자·DB 생성 (최초 1회, root로 실행)
+
+    mysql -u root -p < spring-boot-app-fixed\scripts\mysql-init-redcroxx.sql
+
+    생성 결과:
+      DB       : spring_boot_app
+      사용자   : redcroxx
+      비밀번호 : jonguk0412
+
+  [2-2] DB 덤프 복원 (database/spring_boot_app_*.sql)
+
+    mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS spring_boot_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -u redcroxx -pjonguk0412 spring_boot_app < D:\backup\database\spring_boot_app_YYYYMMDD_HHMMSS.sql
+
+    ※ 덤프가 없으면 앱 기동 시 스키마·시드가 자동 생성됩니다 (ScreenTableSchemaRunner).
+
+  [2-3] DBeaver 연결
+
+    Host     : 127.0.0.1
+    Port     : 3306
+    Database : spring_boot_app
+    User     : redcroxx
+    Password : jonguk0412
+
+    JDBC URL:
+    jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+================================================================================
+3. PrintMall (spring-boot-app-fixed) 실행
+================================================================================
+
+  [3-1] Cursor에서 프로젝트 열기
+    File → Open Folder → spring-boot-app-fixed
+
+  [3-2] 서버 기동
+    run-server.bat 더블클릭 (또는 터미널에서 실행)
+
+    동작:
+      1) MySQL 기동 확인
+      2) 8081 포트 정리
+      3) mvn clean spring-boot:run
+
+  [3-3] 접속
+    http://localhost:8081/
+
+  [3-4] 로컬 비밀 설정 (카카오·API 키 등, git 제외)
+    application-local.properties.example 참고
+    → application-local.properties 생성
+
+================================================================================
+4. React 프론트엔드 셋팅
+================================================================================
+
+  [4-1] 최초 1회
+    scripts\react-dev\setup-react-dev.bat
+
+  [4-2] 개발 실행
+    run-server.bat          (8081 백엔드)
+    run-react-dev.bat       (5173 Vite)
+
+  [4-3] 접속
+    http://localhost:5173/
+
+  상세 → docs\react-dev-setup.txt
+
+================================================================================
+5. 모바일(LAN) 테스트 셋팅
+================================================================================
+
+  [5-1] 방화벽 (관리자, 최초 1회)
+    scripts\mobile-dev\setup-mobile-firewall.bat
+
+  [5-2] 모바일용 서버
+    run-server-mobile.bat   (PrintMall, 0.0.0.0:8081)
+
+  [5-3] PC IP 확인
+    scripts\mobile-dev\get-lan-ip.ps1
+    휴대폰: http://<PC-IP>:8081/
+
+  상세 → docs\mobile-dev-setup.txt
+
+================================================================================
+6. 모의투자 (stock-mock-trading)
+================================================================================
+
+  포트: 8082
+  DB: spring_boot_app (동일)
+
+  run-server.bat (프로젝트 루트)
+  run-server-mobile.bat (LAN)
+
+================================================================================
+7. Eclipse / STS 셋팅
+================================================================================
+
+  1) 워크스페이스: new-workspace
+  2) Import → Maven → spring-boot-app-fixed
+  3) JDK 17, UTF-8 설정
+  4) .launch/ 실행 구성 사용
+
+  상세 → docs\eclipse-setup.txt
+
+================================================================================
+8. 포트·서비스 요약
+================================================================================
+
+  PrintMall 백엔드   8081   run-server.bat
+  PrintMall 모바일   8081   run-server-mobile.bat (LAN)
+  React dev          5173   run-react-dev.bat
+  모의투자           8082   stock-mock-trading\run-server.bat
+  MySQL              3306
+
+================================================================================
+9. 문제 해결
+================================================================================
+
+  ■ DB 접속 실패
+    start-mysql.bat 또는 services.msc 에서 MySQL84 시작
+    scripts\ensure-mysql.bat 실행
+
+  ■ java/mvn/npm 인식 안 됨
+    docs\01-설치방법.txt PATH 확인
+    run-server.bat 의 JAVA_HOME 경로 확인
+
+  ■ 8081 포트 사용 중
+    run-server.bat 이 자동 종료 시도
+    netstat -ano | findstr ":8081"
+
+  ■ React npm install 실패
+    scripts\react-dev\setup-react-dev.bat 재실행
+
+  ■ 한글 깨짐
+    run-server.bat 사용 (UTF-8 JVM 옵션 포함)
+    Eclipse: docs\eclipse-setup.txt UTF-8 섹션
+
+================================================================================
+10. 셋팅 완료 체크리스트
+================================================================================
+
+  [ ] 프로젝트 zip 압축 해제
+  [ ] run-server.bat JAVA_HOME 경로 수정 (필요 시)
+  [ ] MySQL redcroxx 계정 + DB 덤프 복원
+  [ ] http://localhost:8081/ 접속
+  [ ] (React) setup-react-dev.bat + http://localhost:5173/
+  [ ] (모바일) setup-mobile-firewall.bat + run-server-mobile.bat
+
+================================================================================

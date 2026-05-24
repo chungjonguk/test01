@@ -1,5 +1,8 @@
 /**
- * 상품 등록 — 이미지 최대 5개 (URL + 파일 업로드) · 대표 이미지 선택
+ * 상품 등록·수정 — /app/e-commerce/product/product-register
+ * 이미지 최대 5개 (URL + 파일 업로드) · 대표 이미지 선택
+ * API: /api/ecommerce/products, /api/ecommerce/products/upload-image
+ * @module product-register-actions
  */
 (function () {
   'use strict';
@@ -62,6 +65,10 @@
     );
   }
 
+  /**
+   * 상품 등록·수정 폼 초기화 — 이미지 슬롯·업로드·저장 이벤트 바인딩.
+   * @returns {void}
+   */
   window.ProductRegisterInit = function () {
     var form = $('product-register-form');
     var slotsRoot = $('product-image-slots');

@@ -1,31 +1,35 @@
 package com.example.springbootapp.controller.page;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.dto.EcmProductFormDto;
 import com.example.springbootapp.service.EcmProductService;
-
+/**
+ * 화면 경로: {@code /app/e-commerce/product/product-manage}, {@code product-register}, {@code product-images}, {@code product-details}
+ * <p>상품 CRUD·이미지·상세 미리보기 등 이커머스 상품 관련 업무 화면을 렌더링합니다.</p>
+ */
 @Controller
 public class EcmProductPageController {
-
 	private final EcmProductService ecmProductService;
-
 	public EcmProductPageController(EcmProductService ecmProductService) {
 		this.ecmProductService = ecmProductService;
 	}
-
+	/**
+	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-manage}
+	 */
 	@GetMapping({"/app/e-commerce/product/product-manage", "/app/e-commerce/product/product-manage.html"})
 	public String productManage(Model model) {
 		model.addAttribute("title", "상품 관리");
 		return "app/e-commerce/product/product-manage";
 	}
-
+	/**
+	 * @param id 선택 시 수정 모드로 기존 상품 데이터를 폼에 바인딩
+	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-register}
+	 */
 	@GetMapping({"/app/e-commerce/product/product-register", "/app/e-commerce/product/product-register.html"})
 	public String productRegister(@RequestParam(required = false) Long id, Model model) {
 		EcmProductFormDto form = new EcmProductFormDto();
@@ -68,7 +72,10 @@ public class EcmProductPageController {
 		}
 		return "app/e-commerce/product/product-register";
 	}
-
+	/**
+	 * @param id 상품 ID (없으면 안내 메시지 표시)
+	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-images}
+	 */
 	@GetMapping({"/app/e-commerce/product/product-images", "/app/e-commerce/product/product-images.html"})
 	public String productImages(@RequestParam(required = false) Long id, Model model) {
 		model.addAttribute("title", "상품 이미지");
@@ -93,7 +100,10 @@ public class EcmProductPageController {
 		model.addAttribute("detailUrl", "/app/e-commerce/product/product-details?id=" + product.getProductId());
 		return "app/e-commerce/product/product-images";
 	}
-
+	/**
+	 * @param id 상품 ID (없으면 데모 모드)
+	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-details}
+	 */
 	@GetMapping({"/app/e-commerce/product/product-details", "/app/e-commerce/product/product-details.html"})
 	public String productDetails(@RequestParam(required = false) Long id, Model model) {
 		model.addAttribute("title", "상품 상세");

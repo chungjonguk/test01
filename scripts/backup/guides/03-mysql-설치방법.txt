@@ -1,0 +1,144 @@
+================================================================================
+  MySQL 설치방법 (DB 설치파일·셋팅)
+  위치: D:\backup\docs\03-mysql-설치방법.txt
+================================================================================
+
+  PrintMall / 모의투자 공통 DB: spring_boot_app (MySQL 8.4, 포트 3306)
+
+================================================================================
+1. 백업 폴더의 DB 관련 파일
+================================================================================
+
+  [install/] — MySQL 설치 프로그램
+    mysql-8.4.9-winx64.msi     MSI 설치 (권장, 공식 — 백업 시 다운로드 시도)
+    mysql-8.4.9-winx64.zip     ZIP portable (공식)
+    mysql-server-8.4-installed_*.zip  PC에 설치된 MySQL 8.4 전체 (MSI 없을 때)
+    my.ini.backup              MySQL 설정 파일
+    mysql-setup_YYYYMMDD.zip   DB·사용자 생성 SQL, my.ini, 배치
+      mysql-init-redcroxx.sql       DB·사용자 생성
+      mysql-init-redcroxx-root-only.sql
+      mysql-reset-root.sql
+      mysql-fix-public-key.sql
+      dbeaver-mysql-connection.txt
+      my.ini.example                MySQL 설정 예시
+      install-mysql-service.bat     ZIP 설치 후 서비스 등록 도움
+
+  [database/] — 데이터 백업
+    spring_boot_app_*.sql           테이블·데이터 덤프
+
+================================================================================
+2. 방법 A — MSI 설치 (권장)
+================================================================================
+
+  1) D:\backup\install\mysql-8.4.9-winx64.msi 실행
+  2) Setup Type: Developer Default 또는 Server only
+  3) Port: 3306
+  4) root 비밀번호 설정 (예: jonguk0412 — 본인만 사용)
+  5) Windows Service: MySQL84 시작 유형 Automatic
+
+  설치 경로 (기본):
+    C:\Program Files\MySQL\MySQL Server 8.4\
+    C:\ProgramData\MySQL\MySQL Server 8.4\Data\
+
+  확인:
+    netstat -ano | findstr ":3306"
+    "C:\Program Files\MySQL\MySQL Server 8.4\bin\mysql.exe" -u root -p -e "SELECT VERSION();"
+
+================================================================================
+3. 방법 B — 설치된 MySQL 폴더 복원 (mysql-server-8.4-installed_*.zip)
+================================================================================
+
+  공식 MSI/ZIP이 없고 install 폴더에 mysql-server-8.4-installed_*.zip 이 있을 때:
+
+  1) 압축 해제 → C:\Program Files\MySQL\MySQL Server 8.4\
+  2) install\my.ini.backup → C:\ProgramData\MySQL\MySQL Server 8.4\my.ini
+  3) 관리자 CMD: install-mysql-service.bat (mysql-setup zip)
+  4) mysql-init-redcroxx.sql 실행
+
+================================================================================
+4. 방법 C — ZIP 공식 설치 (MSI 없을 때)
+================================================================================
+
+  1) mysql-8.4.9-winx64.zip → C:\mysql\ 또는
+     C:\Program Files\MySQL\MySQL Server 8.4\ 에 압축 해제
+
+  2) mysql-setup zip 안의 my.ini.example 을
+     C:\ProgramData\MySQL\MySQL Server 8.4\my.ini 로 복사 후
+     basedir, datadir 경로 수정
+
+  3) Data 폴더 초기화 (최초 1회, 관리자 CMD):
+     cd "C:\Program Files\MySQL\MySQL Server 8.4\bin"
+     mysqld --initialize-insecure --console
+     (또는 --initialize 로 임시 root 비밀번호 생성)
+
+  4) 서비스 등록:
+     install-mysql-service.bat (mysql-setup zip 포함) 참고
+
+  5) 서비스 시작:
+     net start MySQL84
+
+================================================================================
+5. DB·사용자 생성 (앱 연동)
+================================================================================
+
+  mysql-setup zip 압축 해제 후, root로 실행:
+
+    mysql -u root -p < mysql-init-redcroxx.sql
+
+  생성 결과:
+    Database : spring_boot_app
+    User     : redcroxx
+    Password : jonguk0412
+    Host     : localhost, 127.0.0.1
+
+================================================================================
+6. 데이터 복원 (database/*.sql)
+================================================================================
+
+  mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS spring_boot_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  mysql -u redcroxx -pjonguk0412 spring_boot_app < D:\backup\database\spring_boot_app_YYYYMMDD.sql
+
+  ※ 덤프 없이 앱만 실행해도 테이블·시드는 자동 생성됩니다.
+    (Spring Boot ScreenTableSchemaRunner)
+
+================================================================================
+7. DBeaver 연결
+================================================================================
+
+  Host     : 127.0.0.1
+  Port     : 3306
+  Database : spring_boot_app
+  User     : redcroxx / Password : jonguk0412
+
+  JDBC:
+  jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+  상세: mysql-setup\dbeaver-mysql-connection.txt
+
+================================================================================
+8. MSI/ZIP 파일이 없을 때
+================================================================================
+
+  1) 프로젝트에서 다운로드 스크립트:
+     powershell -File scripts\backup\download-mysql-installer.ps1
+
+  2) 또는 공식 사이트:
+     https://dev.mysql.com/downloads/mysql/8.4.html
+     → Windows (x86, 64-bit) MSI 또는 ZIP 선택
+
+  3) 백업 재생성:
+     scripts\backup\create-backup.ps1
+
+================================================================================
+9. 체크리스트
+================================================================================
+
+  [ ] MySQL 8.4 설치 (MSI 또는 ZIP)
+  [ ] 3306 포트 LISTENING
+  [ ] mysql-init-redcroxx.sql 실행
+  [ ] spring_boot_app_*.sql 복원 (선택)
+  [ ] run-server.bat → DB 접속 OK
+
+  다음 → docs\02-셋팅방법.txt
+
+================================================================================

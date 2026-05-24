@@ -1,0 +1,210 @@
+================================================================================
+  계정·인증·접속 정보 (PrintMall / 개발환경)
+  위치: D:\backup\docs\05-계정정보.txt
+  프로젝트 원본: spring-boot-app-fixed\docs\project-accounts.txt
+================================================================================
+
+  ※ 보안 주의
+    - 본 문서는 로컬 백업(D:\backup)용입니다.
+    - GitHub 공개 저장소·외부 공유 금지.
+    - 비밀번호·API 키는 주기적으로 변경하세요.
+    - 카카오·네이버·이니시스 실키는 application-local.properties (git 제외)에 보관.
+
+================================================================================
+1. MySQL (DB 서버)
+================================================================================
+
+  호스트       : 127.0.0.1 (localhost)
+  포트         : 3306
+  데이터베이스   : spring_boot_app
+  앱 사용자     : redcroxx
+  앱 비밀번호   : jonguk0412
+
+  root         : MySQL 설치 시 본인이 설정 (예: jonguk0412)
+  root-only 초기화: scripts\mysql-init-redcroxx-root-only.sql
+
+  JDBC URL:
+  jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+  설정 위치:
+    application.properties
+    scripts\ensure-mysql.bat
+    scripts\mysql-init-redcroxx.sql
+
+  (미사용) springuser / spring1234 — application.properties 주석 참고
+
+================================================================================
+2. DBeaver (DB 관리 도구)
+================================================================================
+
+  연결명       : spring_boot_app (PrintMall)
+  Host         : 127.0.0.1:3306
+  Database     : spring_boot_app
+  Username     : redcroxx
+  Password     : jonguk0412
+  Driver       : MySQL 8
+
+  Driver properties:
+    allowPublicKeyRetrieval = true
+    useSSL = false
+
+  가이드: docs\04-dbeaver-설치방법.txt
+  예시 JSON: install\dbeaver-setup_*.zip → data-sources.example.json
+
+================================================================================
+3. PrintMall 웹 애플리케이션
+================================================================================
+
+  서비스 URL   : http://localhost:8081/
+  브랜드명     : PrintMall
+  세션 만료    : 비활성 10분
+
+  [일반 로그인 — user 테이블]
+  로그인 화면  : /pages/authentication/simple/login
+  로그인 처리  : POST /auth/login  (id, pw)
+  로그아웃     : /auth/logout
+  회원가입     : /pages/authentication/simple/register
+
+  인증 방식    : id/pw 평문 비교 (BCrypt 미사용)
+  기본 계정    : 시드 없음 — 회원가입으로 등록
+
+  등록 사용자 확인:
+    USE spring_boot_app;
+    SELECT id, name, email FROM user;
+
+  [관리·주요 URL]
+  접속 로그     : /admin/user-access-logs
+  메뉴 관리     : /admin/menus
+  공통코드      : /admin/codes
+  상품 관리     : /app/e-commerce/product/product-manage
+
+================================================================================
+4. 모바일(LAN) / React 개발
+================================================================================
+
+  LAN PrintMall : http://<PC-IP>:8081/
+  LAN 모의투자  : http://<PC-IP>:8082/
+  React dev     : http://localhost:5173/  (API → 8081 프록시)
+
+  PC IP 확인: scripts\mobile-dev\get-lan-ip.ps1
+
+================================================================================
+5. 소셜 로그인 (OAuth) — API 키
+================================================================================
+
+  실제 키 입력 파일 (git 제외):
+    src\main\resources\application-local.properties
+    (application-local.properties.example 복사 후 수정)
+
+  [카카오] developers.kakao.com
+  REST API 키  : kakao.client-id / kakao.rest-api-key
+  JavaScript 키: kakao.javascript-key (카카오맵용, REST와 별도)
+  Client Secret: kakao.client-secret (선택)
+  Redirect URI : http://localhost:8081/auth/kakao/callback
+  LAN 테스트   : http://<PC-IP>:8081 (Web 도메인에 추가 등록)
+
+  로그인 URL   : /auth/kakao/login
+  Mock 모드    : kakao.local.mock-enabled=true (키 없을 때 UI만)
+
+  [네이버] developers.naver.com
+  Client ID    : naver.client-id
+  Client Secret: naver.client-secret
+  Redirect URI : http://localhost:8081/auth/naver/callback
+  로그인 URL   : /auth/naver/login
+
+  기본값(application.properties): YOUR_KAKAO_* / YOUR_NAVER_* 플레이스홀더
+
+================================================================================
+6. KG 이니시스 결제 (테스트)
+================================================================================
+
+  설정 키 (application.properties):
+    payment.inicis.enabled=true
+    payment.inicis.mock-enabled=false
+    payment.inicis.mid=INIpayTest
+    payment.inicis.sign-key=SU5JTElURV9UUklQTEVERVNfS0VZU1RS
+    payment.inicis.std-pay-js-url=https://stgstdpay.inicis.com/stdjs/INIStdPay.js
+    payment.inicis.base-url=http://localhost:8081
+
+  운영/가맹점 sign-key: application-local.properties 에 설정
+  가이드: docs\inicis-developer-guide.txt
+
+================================================================================
+7. Git / GitHub
+================================================================================
+
+  [커밋 작성자]
+  user.name    : resident01
+  user.email   : resident01@naver.com
+
+  [GitHub]
+  저장소       : https://github.com/chungjonguk/test01.git
+  GitHub ID    : resident01@naver.com
+  (참고 PW)    : !jonguk0412!
+  ※ push 시 Personal Access Token(PAT) 사용 권장
+
+  브랜치       : main → origin/main
+
+  [로컬 경로]
+  프로젝트     : D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
+  STS 워크스페이스: new-workspace (상위)
+
+  [자주 쓰는 명령]
+  git pull origin main
+  git push -u origin main
+
+================================================================================
+8. 개발 도구 경로 (본 PC — chung)
+================================================================================
+
+  JDK 17       : C:\Users\chung\.local\dev\jdk-17
+  Maven 3.9    : C:\Users\chung\.local\dev\apache-maven-3.9.15
+  Node.js 22   : C:\Users\chung\.local\dev\node-22
+  MySQL 8.4    : C:\Program Files\MySQL\MySQL Server 8.4
+  DBeaver      : install\dbeaver-ce-25.3.1-x86_64-setup.exe 로 설치
+
+  ※ 다른 PC 사용자명이 다르면 run-server.bat 등 JAVA_HOME/NODE_HOME 수정
+
+================================================================================
+9. 암호화·보안 키
+================================================================================
+
+  주민번호 AES   : app.crypto.rrno.secret-key
+  기본(로컬)    : abcdefghijklmnopqrstuvwxyz123456 (32자)
+  운영          : 환경변수 RRNO_CRYPTO_SECRET_KEY 필수
+
+  JUnit 테스트   : H2 in-memory (sa / 비밀번호 없음)
+
+================================================================================
+10. 모의투자 (stock-mock-trading)
+================================================================================
+
+  포트         : 8082
+  DB           : spring_boot_app (MySQL 동일 — redcroxx / jonguk0412)
+  프로젝트     : new-workspace\stock-mock-trading
+
+================================================================================
+11. 포트 요약
+================================================================================
+
+  3306  MySQL
+  8081  PrintMall (Spring Boot)
+  8082  모의투자
+  5173  React Vite dev
+
+================================================================================
+12. 관련 문서
+================================================================================
+
+  docs\01-설치방법.txt
+  docs\02-셋팅방법.txt
+  docs\03-mysql-설치방법.txt
+  docs\04-dbeaver-설치방법.txt
+  spring-boot-app-fixed\docs\project-accounts.txt (프로젝트 내 동일 정보)
+  spring-boot-app-fixed\docs\inicis-developer-guide.txt
+  spring-boot-app-fixed\docs\github-private-repository-guide.txt
+
+================================================================================
+  갱신: git log -1, git remote -v 로 Git 섹션 재확인
+  최종 반영: 2026-05-25
+================================================================================

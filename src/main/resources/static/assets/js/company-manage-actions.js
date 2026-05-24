@@ -1,5 +1,7 @@
 /**
- * 관리자 — 업체 관리 (biz_company)
+ * 업체 관리 — /admin/companies
+ * API: /api/admin/companies
+ * @module company-manage-actions
  */
 (function () {
   'use strict';
@@ -121,6 +123,10 @@
       .join('');
   }
 
+  /**
+   * 검색 조건으로 업체 목록을 API에서 조회합니다.
+   * @returns {void}
+   */
   function loadList() {
     fetch(API_BASE + buildQuery(collectSearchParams()), { credentials: 'same-origin' })
       .then(function (res) {
@@ -194,6 +200,11 @@
       });
   }
 
+  /**
+   * 모달 폼 데이터로 업체를 등록·수정합니다.
+   * @param {Event} e 폼 submit 이벤트
+   * @returns {void}
+   */
   function saveCompany(e) {
     e.preventDefault();
     var payload = {
@@ -240,6 +251,11 @@
       });
   }
 
+  /**
+   * 업체 ID로 삭제 API를 호출합니다.
+   * @param {string|number} id 업체 ID
+   * @returns {void}
+   */
   function deleteCompany(id) {
     var doDelete = function () {
       fetch(API_BASE + '/' + encodeURIComponent(id), {
@@ -327,5 +343,9 @@
     loadList();
   }
 
+  /**
+   * 업체 관리 화면 초기화 — 검색·CRUD 이벤트 바인딩 및 목록 조회.
+   * @returns {void}
+   */
   window.CompanyMgmtInit = bind;
 })();

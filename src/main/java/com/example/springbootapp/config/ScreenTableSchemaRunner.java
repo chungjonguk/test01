@@ -1,7 +1,5 @@
 package com.example.springbootapp.config;
-
 import java.nio.charset.StandardCharsets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -11,9 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
-
 /**
  * 공통코드·업무·화면-테이블 매핑 DDL 및 샘플 데이터 적용.
  */
@@ -21,15 +17,11 @@ import javax.sql.DataSource;
 @Component
 @Order(5)
 public class ScreenTableSchemaRunner implements ApplicationRunner {
-
 	private static final Logger log = LoggerFactory.getLogger(ScreenTableSchemaRunner.class);
-
 	private final DataSource dataSource;
-
 	public ScreenTableSchemaRunner(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
 	@Override
 	public void run(ApplicationArguments args) {
 		try {
@@ -40,6 +32,7 @@ public class ScreenTableSchemaRunner implements ApplicationRunner {
 			populator.addScript(new ClassPathResource("schema/screen_table_map.sql"));
 			populator.addScript(new ClassPathResource("schema/user_access_log.sql"));
 			populator.addScript(new ClassPathResource("schema/user_access_log_alter.sql"));
+			populator.addScript(new ClassPathResource("schema/nas_file.sql"));
 			populator.addScript(new ClassPathResource("schema/biz_company.sql"));
 			populator.addScript(new ClassPathResource("schema/biz_company_seed.sql"));
 			populator.addScript(new ClassPathResource("schema/ecm_payment.sql"));

@@ -1,16 +1,12 @@
 package com.example.springbootapp.config;
-
 /**
  * URL 경로별 연동 테이블·데이터 유형을 결정합니다.
  */
 public final class ScreenTableResolver {
-
 	public record Mapping(String primaryTable, String relatedTables, char dataType, String tableDesc) {
 	}
-
 	private ScreenTableResolver() {
 	}
-
 	public static Mapping resolve(String uriPath) {
 		if (uriPath == null || uriPath.isBlank()) {
 			return staticUi(null, "경로 없음");
@@ -18,7 +14,6 @@ public final class ScreenTableResolver {
 		String uri = uriPath.endsWith("/") && uriPath.length() > 1
 				? uriPath.substring(0, uriPath.length() - 1)
 				: uriPath;
-
 		if ("/users".equals(uri)) {
 			return db("user", "user_access_log", "회원 목록·등록·접속이력");
 		}
@@ -144,15 +139,12 @@ public final class ScreenTableResolver {
 		}
 		return staticUi(null, "정적 UI");
 	}
-
 	private static Mapping db(String primary, String related, String desc) {
 		return new Mapping(primary, related, 'D', desc);
 	}
-
 	private static Mapping codeOnly(String related, String desc) {
 		return new Mapping("common_code", related, 'C', desc);
 	}
-
 	private static Mapping staticUi(String related, String desc) {
 		return new Mapping(null, related, 'S', desc);
 	}

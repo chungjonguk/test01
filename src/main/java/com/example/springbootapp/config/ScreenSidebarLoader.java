@@ -1,5 +1,4 @@
 package com.example.springbootapp.config;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -11,33 +10,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-
 import com.example.springbootapp.domain.ScreenList;
-
 /**
  * fragments/sidebar.html 에서 th:href 메뉴 링크를 파싱해 screen_list 항목을 생성합니다.
  */
 public final class ScreenSidebarLoader {
-
 	private static final Logger log = LoggerFactory.getLogger(ScreenSidebarLoader.class);
-
 	private static final Pattern ANCHOR = Pattern.compile(
 			"<a\\s[^>]*th:href=\"@\\{([^}#][^}]*)\\}\"[^>]*>(.*?)</a>",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-
 	private static final Pattern LABEL = Pattern.compile(
 			"nav-link-text\\s+ps-1\">\\s*([^<]+?)\\s*(?:</span>|<span)",
 			Pattern.DOTALL);
-
 	private ScreenSidebarLoader() {
 	}
-
 	private static volatile Map<String, String> uriLabelCache;
-
 	public static String labelForUri(String uriPath) {
 		String uri = normalizeUri(uriPath);
 		if (uri == null) {
@@ -59,14 +49,12 @@ public final class ScreenSidebarLoader {
 		}
 		return labels.getOrDefault(uri, fallbackLabel(uri));
 	}
-
 	public static String resolveDisplayName(String screenNm, String uriPath) {
 		if (screenNm != null && !screenNm.isBlank()) {
 			return screenNm.trim();
 		}
 		return labelForUri(uriPath);
 	}
-
 	public static List<ScreenList> fromSidebar() {
 		String html;
 		try {
@@ -103,7 +91,6 @@ public final class ScreenSidebarLoader {
 		log.info("sidebar 메뉴 파싱 — {}건 (고유 URL)", byUri.size());
 		return new ArrayList<>(byUri.values());
 	}
-
 	static String readSidebarHtml() throws IOException {
 		Path devPath = Path.of("src/main/resources/templates/fragments/sidebar.html");
 		if (Files.isRegularFile(devPath)) {
@@ -114,7 +101,6 @@ public final class ScreenSidebarLoader {
 			return new String(in.readAllBytes(), StandardCharsets.UTF_8);
 		}
 	}
-
 	static String extractLabel(String anchorBody) {
 		Matcher labelMatcher = LABEL.matcher(anchorBody);
 		if (labelMatcher.find()) {
@@ -122,7 +108,6 @@ public final class ScreenSidebarLoader {
 		}
 		return "";
 	}
-
 	static String normalizeUri(String uri) {
 		if (uri == null || uri.isBlank()) {
 			return null;
@@ -136,7 +121,6 @@ public final class ScreenSidebarLoader {
 		}
 		return path;
 	}
-
 	static String uriToScreenId(String uri) {
 		if ("/".equals(uri)) {
 			return "HOME";
@@ -147,14 +131,12 @@ public final class ScreenSidebarLoader {
 		}
 		return id;
 	}
-
 	static String templateFromUri(String uri) {
 		if ("/".equals(uri)) {
 			return "index";
 		}
 		return uri.startsWith("/") ? uri.substring(1) : uri;
 	}
-
 	static String fallbackLabel(String uri) {
 		if ("/".equals(uri)) {
 			return "대시보드 기본";
@@ -166,7 +148,6 @@ public final class ScreenSidebarLoader {
 		}
 		return segment.replace("-", " ");
 	}
-
 	static String decodeHtml(String text) {
 		return text.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");
 	}

@@ -1,5 +1,8 @@
 /**
- * 코드 관리 — 상단 조회그리드 + 코드그룹/상세코드 그리드
+ * 코드 관리 — /admin/codes
+ * 상단 조회그리드 + 코드그룹/상세코드 그리드
+ * API: /api/admin/codes
+ * @module code-management-actions
  * @version 26
  */
 (function () {
@@ -484,6 +487,10 @@
     ).then(parseApiResponse);
   }
 
+  /**
+   * 검색 조건으로 코드그룹 목록을 API에서 조회합니다.
+   * @returns {void}
+   */
   function searchGroups() {
     if (state.loading) {
       return;
@@ -1570,6 +1577,10 @@
     doDelete();
   }
 
+  /**
+   * 현재 조회 결과를 CSV 파일로 내보냅니다.
+   * @returns {void}
+   */
   function exportCsv() {
     var keys = state.searched ? state.filteredKeys || [] : Object.keys(state.groups).sort();
     var lines = [
@@ -1725,6 +1736,10 @@
     }).then(parseApiResponse);
   }
 
+  /**
+   * 조회된 전체 코드그룹·상세코드를 DB에 일괄 저장합니다.
+   * @returns {void}
+   */
   function saveAll() {
     var payload = buildSavePayload();
     if (!payload.groups.length) {
@@ -1838,10 +1853,15 @@
     renderDetails();
   }
 
+  /**
+   * 코드 관리 패널 이벤트·그리드 초기 렌더링을 수행합니다.
+   * @returns {void}
+   */
   function init() {
     bind();
   }
 
+  /** @see init */
   window.CodeMgmtInit = init;
 
   if (document.readyState === 'loading') {

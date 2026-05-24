@@ -1,7 +1,5 @@
 package com.example.springbootapp.config;
-
 import java.nio.charset.StandardCharsets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -11,12 +9,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
-
 import com.example.springbootapp.mapper.ScreenListMapper;
 import com.example.springbootapp.service.ScreenListService;
-
 import javax.sql.DataSource;
-
 /**
  * screen_list DDL 적용 후 Java 시드로 화면명(한글)을 등록·갱신합니다.
  */
@@ -24,13 +19,10 @@ import javax.sql.DataSource;
 @Component
 @Order(20)
 public class ScreenListSeedRunner implements ApplicationRunner {
-
 	private static final Logger log = LoggerFactory.getLogger(ScreenListSeedRunner.class);
-
 	private final DataSource dataSource;
 	private final ScreenListMapper screenListMapper;
 	private final ScreenListService screenListService;
-
 	public ScreenListSeedRunner(
 			DataSource dataSource,
 			ScreenListMapper screenListMapper,
@@ -39,7 +31,6 @@ public class ScreenListSeedRunner implements ApplicationRunner {
 		this.screenListMapper = screenListMapper;
 		this.screenListService = screenListService;
 	}
-
 	@Override
 	public void run(ApplicationArguments args) {
 		try {
@@ -51,7 +42,6 @@ public class ScreenListSeedRunner implements ApplicationRunner {
 			populator.addScript(new ClassPathResource("schema/screen_list_charset.sql"));
 			populator.addScript(new ClassPathResource("schema/screen_list_admin_companies_menu.sql"));
 			populator.execute(dataSource);
-
 			var catalog = ScreenCatalog.all();
 			int saved = 0;
 			for (var screen : catalog) {

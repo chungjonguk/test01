@@ -1,29 +1,31 @@
 package com.example.springbootapp.controller;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
-
+/**
+ * 화면(스크린) 목록 REST API.
+ * <p>기본 경로: {@code /api/screens}</p>
+ */
 @RestController
 @RequestMapping("/api/screens")
 public class ScreenListApiController {
-
 	private final ScreenListService screenListService;
-
 	public ScreenListApiController(ScreenListService screenListService) {
 		this.screenListService = screenListService;
 	}
-
+	/**
+	 * 활성화된 전체 화면 목록을 조회합니다.
+	 *
+	 * @return out: {@code ResponseEntity<Map>} — {@code screens}, {@code count}
+	 */
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> list() {
 		List<Map<String, Object>> rows = screenListService.findAllActive().stream()
@@ -34,7 +36,12 @@ public class ScreenListApiController {
 		body.put("screens", rows);
 		return ResponseEntity.ok(body);
 	}
-
+	/**
+	 * 화면 ID로 단건 정보를 조회합니다.
+	 *
+	 * @param screenId in: 화면 ID
+	 * @return out: {@code ResponseEntity<Map>} — 화면 필드 또는 404
+	 */
 	@GetMapping("/{screenId}")
 	public ResponseEntity<Map<String, Object>> one(@PathVariable String screenId) {
 		ScreenList screen = screenListService.findByScreenId(screenId);
@@ -43,7 +50,6 @@ public class ScreenListApiController {
 		}
 		return ResponseEntity.ok(toDto(screen));
 	}
-
 	private Map<String, Object> toDto(ScreenList screen) {
 		Map<String, Object> row = new LinkedHashMap<>();
 		row.put("screenId", screen.getScreenId());

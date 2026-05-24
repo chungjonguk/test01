@@ -1,30 +1,26 @@
 package com.example.springbootapp.controller.page;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.springbootapp.service.InicisPaymentService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
+/**
+ * 화면 경로: {@code /app/e-commerce/checkout/inicis/*}
+ * <p>KG이니시스 결제 완료·취소 콜백을 처리하고 결제 결과 화면을 렌더링합니다.</p>
+ */
 @Controller
 @RequestMapping("/app/e-commerce/checkout/inicis")
 public class CheckoutInicisController {
-
 	private final InicisPaymentService inicisPaymentService;
-
 	public CheckoutInicisController(InicisPaymentService inicisPaymentService) {
 		this.inicisPaymentService = inicisPaymentService;
 	}
-
 	@PostMapping("/return")
 	public String returnFromInicis(HttpServletRequest request, HttpSession session, Model model) {
 		Map<String, String> params = extractParams(request);
@@ -41,12 +37,16 @@ public class CheckoutInicisController {
 			return "app/e-commerce/checkout-inicis-fail";
 		}
 	}
-
+	/**
+	 * @return out: Thymeleaf view path {@code app/e-commerce/checkout-inicis-success} 또는 {@code checkout-inicis-fail}
+	 */
 	@GetMapping("/return")
 	public String returnGet(HttpServletRequest request, HttpSession session, Model model) {
 		return returnFromInicis(request, session, model);
 	}
-
+	/**
+	 * @return out: Thymeleaf view path {@code app/e-commerce/checkout-inicis-fail}
+	 */
 	@GetMapping("/close")
 	public String close(Model model) {
 		model.addAttribute("paymentResult", Map.of(
@@ -54,7 +54,6 @@ public class CheckoutInicisController {
 				"message", "결제가 취소되었습니다."));
 		return "app/e-commerce/checkout-inicis-fail";
 	}
-
 	private static Map<String, String> extractParams(HttpServletRequest request) {
 		Map<String, String> params = new LinkedHashMap<>();
 		request.getParameterMap().forEach((key, values) -> {

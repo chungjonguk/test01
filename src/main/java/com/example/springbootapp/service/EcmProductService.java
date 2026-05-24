@@ -1,31 +1,27 @@
 package com.example.springbootapp.service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.domain.EcmProductImage;
 import com.example.springbootapp.dto.EcmProductFormDto;
 import com.example.springbootapp.mapper.EcmProductImageMapper;
 import com.example.springbootapp.mapper.EcmProductMapper;
-
 import jakarta.servlet.http.HttpSession;
-
+/**
+ * 이커머스 상품 및 상품 이미지 조회·등록·수정·삭제를 처리하는 서비스.
+ */
 @Service
 @Transactional(readOnly = true)
 public class EcmProductService {
-
 	private final EcmProductMapper ecmProductMapper;
 	private final EcmProductImageMapper ecmProductImageMapper;
 	private final SessionAuthService sessionAuthService;
-
 	public EcmProductService(
 			EcmProductMapper ecmProductMapper,
 			EcmProductImageMapper ecmProductImageMapper,
@@ -34,18 +30,35 @@ public class EcmProductService {
 		this.ecmProductImageMapper = ecmProductImageMapper;
 		this.sessionAuthService = sessionAuthService;
 	}
-
+	/**
+	 * 조건에 맞는 상품 목록을 검색한다.
+	 *
+	 * @param productNm  상품명 (부분 일치, null 허용)
+	 * @param categoryCd 카테고리 코드 (null 허용)
+	 * @param statusCd   판매 상태 코드 (null 허용)
+	 * @return 상품 엔티티 목록
+	 */
 	public List<EcmProduct> search(String productNm, String categoryCd, String statusCd) {
 		return ecmProductMapper.findAll(trimToNull(productNm), trimToNull(categoryCd), trimToNull(statusCd));
 	}
-
+	/**
+	 * 상품 ID로 단건을 조회한다.
+	 *
+	 * @param productId 상품 ID
+	 * @return 상품 엔티티, ID가 null이거나 없으면 null
+	 */
 	public EcmProduct findById(Long productId) {
 		if (productId == null) {
 			return null;
 		}
 		return ecmProductMapper.findById(productId);
 	}
-
+	/**
+	 * 상품에 연결된 이미지 목록을 조회한다. 별도 이미지가 없으면 레거시 imgUrl을 반환한다.
+	 *
+	 * @param productId 상품 ID
+	 * @return 상품 이미지 목록
+	 */
 	public List<EcmProductImage> findImages(Long productId) {
 		if (productId == null) {
 			return List.of();
@@ -64,7 +77,12 @@ public class EcmProductService {
 		}
 		return List.of();
 	}
-
+	/**
+	 * 상품 이미지 URL 목록을 조회한다. 대표 이미지가 맨 앞에 오도록 정렬한다.
+	 *
+	 * @param productId 상품 ID
+	 * @return 표시용 이미지 URL 목록
+	 */
 	public List<String> findImageUrls(Long productId) {
 		List<String> urls = findImages(productId).stream()
 				.map(EcmProductImage::getImgUrl)
@@ -74,7 +92,13 @@ public class EcmProductService {
 		String main = product != null ? trimToNull(product.getImgUrl()) : null;
 		return orderUrlsWithMain(urls, main);
 	}
-
+	/**
+	 * 상품을 신규 등록하거나 기존 상품을 수정한다.
+	 *
+	 * @param dto     상품 입력 폼
+	 * @param session HTTP 세션 (등록·수정자 ID 추출용)
+	 * @return 저장된 상품 ID
+	 */
 	@Transactional
 	public Long save(EcmProductFormDto dto, HttpSession session) {
 		validate(dto);
@@ -84,7 +108,6 @@ public class EcmProductService {
 		product.setImgUrl(imageUrls.isEmpty() ? null : imageUrls.get(0));
 		product.setRegId(actor);
 		product.setUpdateId(actor);
-
 		if (dto.getProductId() == null) {
 			ecmProductMapper.insert(product);
 			saveImages(product.getProductId(), imageUrls, actor);
@@ -99,7 +122,11 @@ public class EcmProductService {
 		saveImages(product.getProductId(), imageUrls, actor);
 		return product.getProductId();
 	}
-
+	/**
+	 * 상품과 연결된 이미지를 삭제한다.
+	 *
+	 * @param productId 삭제할 상품 ID
+	 */
 	@Transactional
 	public void delete(Long productId) {
 		if (productId == null) {
@@ -111,7 +138,6 @@ public class EcmProductService {
 		ecmProductImageMapper.deleteByProductId(productId);
 		ecmProductMapper.deleteById(productId);
 	}
-
 	private void saveImages(Long productId, List<String> imageUrls, String actor) {
 		ecmProductImageMapper.deleteByProductId(productId);
 		int ord = 1;
@@ -124,7 +150,6 @@ public class EcmProductService {
 			ecmProductImageMapper.insert(image);
 		}
 	}
-
 	private List<String> normalizeImageUrls(EcmProductFormDto dto) {
 		Set<String> unique = new LinkedHashSet<>();
 		if (dto.getImageUrls() != null) {
@@ -158,8 +183,13 @@ public class EcmProductService {
 		}
 		return orderUrlsWithMain(urls, main);
 	}
-
-	/** 대표 이미지를 목록 맨 앞으로 배치 (ecm_product.img_url · sort_ord 1과 동기화) */
+	/**
+	 * 대표 이미지 URL을 목록 맨 앞으로 배치한다 (ecm_product.img_url · sort_ord 1과 동기화).
+	 *
+	 * @param urls    이미지 URL 목록
+	 * @param mainUrl 대표 이미지 URL
+	 * @return 대표 이미지가 선두인 URL 목록
+	 */
 	public static List<String> orderUrlsWithMain(List<String> urls, String mainUrl) {
 		if (urls == null || urls.isEmpty() || mainUrl == null || mainUrl.isBlank()) {
 			return urls == null ? List.of() : new ArrayList<>(urls);
@@ -182,7 +212,12 @@ public class EcmProductService {
 		ordered.addAll(rest);
 		return ordered;
 	}
-
+	/**
+	 * 이미지 URL을 화면 표시용 경로로 정규화한다.
+	 *
+	 * @param imgUrl 원본 이미지 URL 또는 경로
+	 * @return 절대 URL 또는 슬래시로 시작하는 경로 (빈 값이면 기본 이미지)
+	 */
 	public static String resolveDisplayPath(String imgUrl) {
 		if (imgUrl == null || imgUrl.isBlank()) {
 			return "/assets/img/products/1.jpg";
@@ -193,7 +228,6 @@ public class EcmProductService {
 		}
 		return "/" + trimmed;
 	}
-
 	private void validate(EcmProductFormDto dto) {
 		if (dto == null) {
 			throw new IllegalArgumentException("입력값이 없습니다.");
@@ -214,7 +248,6 @@ public class EcmProductService {
 			throw new IllegalArgumentException("판매 상태를 선택해 주세요.");
 		}
 	}
-
 	private EcmProduct toEntity(EcmProductFormDto dto) {
 		EcmProduct p = new EcmProduct();
 		p.setProductNm(dto.getProductNm().trim());
@@ -225,12 +258,10 @@ public class EcmProductService {
 		p.setDescription(trimToNull(dto.getDescription()));
 		return p;
 	}
-
 	private String resolveActor(HttpSession session) {
 		String userId = sessionAuthService.getLoginUserId(session);
 		return userId != null && !userId.isBlank() ? userId : "SYSTEM";
 	}
-
 	private static String trimToNull(String value) {
 		if (value == null) {
 			return null;
@@ -238,7 +269,6 @@ public class EcmProductService {
 		String t = value.trim();
 		return t.isEmpty() ? null : t;
 	}
-
 	private static boolean isBlank(String value) {
 		return value == null || value.trim().isEmpty();
 	}

@@ -1,5 +1,4 @@
 package com.example.springbootapp.service;
-
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,9 +22,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import com.example.springbootapp.dto.KakaoAddressItemDto;
-
 /**
  * 카카오 로컬 API — 주소 검색 (주소로 좌표 변환).
  *
@@ -34,23 +30,16 @@ import com.example.springbootapp.dto.KakaoAddressItemDto;
  */
 @Service
 public class KakaoLocalService {
-
 	private static final String PLACEHOLDER_KEY = "YOUR_KAKAO_REST_API_KEY";
-
 	private final RestTemplate restTemplate = new RestTemplate();
-
 	@Value("${kakao.rest-api-key:${kakao.client-id:}}")
 	private String restApiKey;
-
 	@Value("${kakao.local.address-search-url:https://dapi.kakao.com/v2/local/search/address.json}")
 	private String addressSearchUrl;
-
 	@Value("${kakao.local.keyword-search-url:https://dapi.kakao.com/v2/local/search/keyword.json}")
 	private String keywordSearchUrl;
-
 	@Value("${kakao.local.coord2address-url:https://dapi.kakao.com/v2/local/geo/coord2address.json}")
 	private String coord2AddressUrl;
-
 	private static final Map<String, String> REGION1_FULL_NAMES = Map.ofEntries(
 			Map.entry("서울", "서울특별시"),
 			Map.entry("부산", "부산광역시"),
@@ -60,18 +49,14 @@ public class KakaoLocalService {
 			Map.entry("대전", "대전광역시"),
 			Map.entry("울산", "울산광역시"),
 			Map.entry("세종", "세종특별자치시"));
-
 	private static final Pattern ADDRESS_PREFIX_PATTERN = Pattern.compile(
 			"^((?:서울|부산|대구|인천|광주|대전|울산|세종)(?:특별시|광역시|특별자치시)?|"
 					+ "[가-힣]+도)\\s+([가-힣]+(?:시|군|구))\\s+(.+)$");
-
 	@Value("${kakao.local.mock-enabled:true}")
 	private boolean mockEnabled;
-
 	/** 지도/로컬 API 미활성화(403) 시 데모 주소로 대체 */
 	@Value("${kakao.local.fallback-mock-on-local-disabled:true}")
 	private boolean fallbackMockOnLocalDisabled;
-
 	private static final List<KakaoAddressItemDto> MOCK_ADDRESSES = List.of(
 			new KakaoAddressItemDto(
 					"서울특별시 강남구 테헤란로 152",
@@ -117,15 +102,30 @@ public class KakaoLocalService {
 					"해운대해수욕장",
 					129.1658,
 					35.1587));
-
+	/**
+	 * 카카오 REST API 키가 유효하게 설정되어 있는지 확인한다.
+	 *
+	 * @return API 키가 설정되어 있으면 true
+	 */
 	public boolean isConfigured() {
 		return StringUtils.hasText(restApiKey) && !PLACEHOLDER_KEY.equals(restApiKey.trim());
 	}
-
+	/**
+	 * 데모(목) 주소 검색 모드를 사용하는지 확인한다.
+	 *
+	 * @return mockEnabled이고 API 키가 없으면 true
+	 */
 	public boolean usesMock() {
 		return mockEnabled && !isConfigured();
 	}
-
+	/**
+	 * 주소·키워드로 카카오 로컬 API를 호출하여 주소 검색 결과를 반환한다.
+	 *
+	 * @param query 검색어 (2자 이상)
+	 * @param page  페이지 번호 (1~45)
+	 * @param size  페이지당 건수 (1~30)
+	 * @return 검색 결과 (실제 API 또는 목 데이터)
+	 */
 	public KakaoAddressSearchResult searchAddress(String query, int page, int size) {
 		if (!StringUtils.hasText(query) || query.trim().length() < 2) {
 			return KakaoAddressSearchResult.live(Collections.emptyList());
@@ -140,10 +140,8 @@ public class KakaoLocalService {
 			throw new IllegalStateException(
 					"카카오 REST API 키가 설정되지 않았습니다. application.properties 의 kakao.rest-api-key (또는 kakao.client-id)를 등록해 주세요.");
 		}
-
 		int safePage = Math.max(1, Math.min(page, 45));
 		int safeSize = Math.max(1, Math.min(size, 30));
-
 		try {
 			List<KakaoAddressItemDto> items = mergeResults(
 					fetchAddressDocuments(trimmed, safePage, safeSize),
@@ -159,17 +157,14 @@ public class KakaoLocalService {
 			throw ex;
 		}
 	}
-
 	private List<KakaoAddressItemDto> fetchAddressDocuments(String query, int page, int size) {
 		Map<String, Object> body = callKakaoApi(buildSearchUri(addressSearchUrl, query, page, size));
 		return mapAddressDocuments(body);
 	}
-
 	private List<KakaoAddressItemDto> fetchKeywordDocuments(String query, int page, int size) {
 		Map<String, Object> body = callKakaoApi(buildSearchUri(keywordSearchUrl, query, page, size));
 		return mapKeywordDocuments(body);
 	}
-
 	private URI buildSearchUri(String baseUrl, String query, int page, int size) {
 		return UriComponentsBuilder.fromUriString(baseUrl)
 				.queryParam("query", query)
@@ -179,7 +174,6 @@ public class KakaoLocalService {
 				.build()
 				.toUri();
 	}
-
 	private List<KakaoAddressItemDto> mergeResults(
 			List<KakaoAddressItemDto> addressItems,
 			List<KakaoAddressItemDto> keywordItems,
@@ -204,11 +198,9 @@ public class KakaoLocalService {
 		}
 		return merged;
 	}
-
 	private Map<String, Object> callKakaoApi(URI uri) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "KakaoAK " + restApiKey.trim());
-
 		ResponseEntity<Map<String, Object>> response;
 		try {
 			response = restTemplate.exchange(
@@ -225,13 +217,11 @@ public class KakaoLocalService {
 		} catch (RestClientException ex) {
 			throw new IllegalStateException("카카오 로컬 API 호출에 실패했습니다: " + ex.getMessage(), ex);
 		}
-
 		if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
 			throw new IllegalStateException("카카오 로컬 API 응답이 올바르지 않습니다.");
 		}
 		return response.getBody();
 	}
-
 	private List<KakaoAddressItemDto> mockSearch(String query, int size) {
 		int safeSize = Math.max(1, Math.min(size, 10));
 		List<KakaoAddressItemDto> matched = MOCK_ADDRESSES.stream()
@@ -253,7 +243,6 @@ public class KakaoLocalService {
 				null,
 				null));
 	}
-
 	private boolean isLocalApiDisabledError(HttpStatusCodeException ex) {
 		if (ex.getStatusCode() != HttpStatus.FORBIDDEN) {
 			return false;
@@ -262,7 +251,6 @@ public class KakaoLocalService {
 		return body != null
 				&& (body.contains("OPEN_MAP_AND_LOCAL") || body.contains("disabled") && body.contains("LOCAL"));
 	}
-
 	private String summarizeHttpError(HttpStatusCodeException ex) {
 		if (isLocalApiDisabledError(ex)) {
 			return KakaoLocalApiDisabledException.USER_MESSAGE;
@@ -270,7 +258,6 @@ public class KakaoLocalService {
 		return ex.getStatusCode() + " "
 				+ (StringUtils.hasText(ex.getStatusText()) ? ex.getStatusText() : ex.getMessage());
 	}
-
 	private boolean matchesMockQuery(KakaoAddressItemDto item, String query) {
 		String haystack = String.join(
 				" ",
@@ -282,14 +269,12 @@ public class KakaoLocalService {
 				item.buildingName());
 		return haystack.contains(query);
 	}
-
 	@SuppressWarnings("unchecked")
 	private List<KakaoAddressItemDto> mapAddressDocuments(Map<String, Object> body) {
 		Object documentsObj = body.get("documents");
 		if (!(documentsObj instanceof List<?> documents)) {
 			return Collections.emptyList();
 		}
-
 		List<KakaoAddressItemDto> items = new ArrayList<>();
 		for (Object docObj : documents) {
 			if (docObj instanceof Map<?, ?> doc) {
@@ -301,14 +286,12 @@ public class KakaoLocalService {
 		}
 		return items;
 	}
-
 	@SuppressWarnings("unchecked")
 	private List<KakaoAddressItemDto> mapKeywordDocuments(Map<String, Object> body) {
 		Object documentsObj = body.get("documents");
 		if (!(documentsObj instanceof List<?> documents)) {
 			return Collections.emptyList();
 		}
-
 		List<KakaoAddressItemDto> items = new ArrayList<>();
 		for (Object docObj : documents) {
 			if (docObj instanceof Map<?, ?> doc) {
@@ -320,21 +303,17 @@ public class KakaoLocalService {
 		}
 		return items;
 	}
-
 	private KakaoAddressItemDto mapKeywordDocument(Map<String, Object> doc) {
 		String road = stringVal(doc.get("road_address_name"));
 		String jibun = stringVal(doc.get("address_name"));
 		String placeName = stringVal(doc.get("place_name"));
-
 		String displayAddress = StringUtils.hasText(road) ? road : jibun;
 		if (!StringUtils.hasText(displayAddress)) {
 			return null;
 		}
-
 		String addressType = StringUtils.hasText(road) ? "ROAD_ADDR" : "REGION_ADDR";
 		Double x = parseDouble(doc.get("x"));
 		Double y = parseDouble(doc.get("y"));
-
 		return new KakaoAddressItemDto(
 				displayAddress,
 				addressType,
@@ -347,21 +326,17 @@ public class KakaoLocalService {
 				x,
 				y);
 	}
-
 	private KakaoAddressItemDto mapDocument(Map<String, Object> doc) {
 		Map<String, Object> road = asMap(doc.get("road_address"));
 		Map<String, Object> jibun = asMap(doc.get("address"));
-
 		String displayAddress = stringVal(doc.get("address_name"));
 		String addressType = stringVal(doc.get("address_type"));
-
 		String postalCode = "";
 		String addressLine1 = displayAddress;
 		String city = "";
 		String state = "";
 		String region3 = "";
 		String buildingName = "";
-
 		if (road != null && StringUtils.hasText(stringVal(road.get("address_name")))) {
 			addressType = "ROAD_ADDR";
 			addressLine1 = stringVal(road.get("address_name"));
@@ -379,14 +354,11 @@ public class KakaoLocalService {
 			city = stringVal(jibun.get("region_2depth_name"));
 			region3 = stringVal(jibun.get("region_3depth_name"));
 		}
-
 		if (!StringUtils.hasText(displayAddress)) {
 			return null;
 		}
-
 		Double x = parseDouble(doc.get("x"));
 		Double y = parseDouble(doc.get("y"));
-
 		return withFullDisplay(new KakaoAddressItemDto(
 				displayAddress,
 				addressType,
@@ -399,7 +371,6 @@ public class KakaoLocalService {
 				x,
 				y));
 	}
-
 	private KakaoAddressItemDto enrichFromCoordinates(KakaoAddressItemDto item) {
 		if (item.longitude() == null || item.latitude() == null || hasCompleteAddress(item)) {
 			return withFullDisplay(item);
@@ -439,13 +410,11 @@ public class KakaoLocalService {
 		}
 		return withFullDisplay(parseAddressFromLine(item));
 	}
-
 	private boolean hasCompleteAddress(KakaoAddressItemDto item) {
 		return StringUtils.hasText(item.postalCode())
 				&& StringUtils.hasText(item.state())
 				&& StringUtils.hasText(item.city());
 	}
-
 	private KakaoAddressItemDto parseAddressFromLine(KakaoAddressItemDto item) {
 		String line = item.addressLine1();
 		if (!StringUtils.hasText(line)) {
@@ -467,7 +436,6 @@ public class KakaoLocalService {
 				item.longitude(),
 				item.latitude());
 	}
-
 	private KakaoAddressItemDto withFullDisplay(KakaoAddressItemDto item) {
 		String state = normalizeRegion1(item.state());
 		String city = stringVal(item.city());
@@ -488,7 +456,6 @@ public class KakaoLocalService {
 				item.longitude(),
 				item.latitude());
 	}
-
 	private String buildFullDisplayAddress(
 			String postalCode,
 			String state,
@@ -525,7 +492,6 @@ public class KakaoLocalService {
 		}
 		return sb.toString().trim();
 	}
-
 	private boolean containsAdminDivision(String line, String state, String city, String region3) {
 		if (StringUtils.hasText(state)) {
 			String shortState = state.replace("특별시", "").replace("광역시", "").replace("특별자치시", "");
@@ -538,7 +504,6 @@ public class KakaoLocalService {
 		}
 		return StringUtils.hasText(region3) && line.contains(region3);
 	}
-
 	private String normalizeRegion1(String region1) {
 		if (!StringUtils.hasText(region1)) {
 			return "";
@@ -549,7 +514,6 @@ public class KakaoLocalService {
 		}
 		return REGION1_FULL_NAMES.getOrDefault(trimmed, trimmed);
 	}
-
 	@SuppressWarnings("unchecked")
 	private Map<String, Object> asMap(Object value) {
 		if (value instanceof Map<?, ?> map) {
@@ -557,11 +521,9 @@ public class KakaoLocalService {
 		}
 		return null;
 	}
-
 	private String stringVal(Object value) {
 		return value == null ? "" : Objects.toString(value, "").trim();
 	}
-
 	private Double parseDouble(Object value) {
 		if (value == null) {
 			return null;

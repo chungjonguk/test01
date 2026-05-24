@@ -1,20 +1,15 @@
 package com.example.springbootapp.config;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.example.springbootapp.domain.ScreenList;
-
 /**
  * screen_list 시드: 사이드바 전체 메뉴 + 사이드바에 없는 보조 화면.
  */
 public final class ScreenCatalog {
-
 	private ScreenCatalog() {
 	}
-
 	public static List<ScreenList> all() {
 		Map<String, ScreenList> byUri = new LinkedHashMap<>();
 		for (ScreenList fromSidebar : ScreenSidebarLoader.fromSidebar()) {
@@ -23,7 +18,6 @@ public final class ScreenCatalog {
 		addSupplemental(byUri);
 		return new ArrayList<>(byUri.values());
 	}
-
 	/** 사이드바에 링크는 없으나 앱에서 사용하는 화면 */
 	private static void addSupplemental(Map<String, ScreenList> byUri) {
 		put(byUri, "DASHBOARD", "대시보드", "/dashboard", "index", 12);
@@ -45,7 +39,6 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_USER_ACCESS_LOGS", "접속 로그", "/admin/user-access-logs", "admin/user-access-logs", 26);
 		put(byUri, "ADMIN_COMPANIES", "업체관리", "/admin/companies", "admin/companies", 27);
 	}
-
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
 		if (byUri.containsKey(uri)) {
 			ScreenList existing = byUri.get(uri);

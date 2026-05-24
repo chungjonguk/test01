@@ -1,0 +1,84 @@
+================================================================================
+  D:\backup — 백업 폴더 구성 안내
+================================================================================
+
+[ 폴더 구조 ]
+
+  D:\backup\
+    docs\              ← 설치·셋팅 가이드 (본 문서 포함)
+    install\           ← 개발 도구 + MySQL 설치파일 압축
+    projects\          ← 프로젝트 소스 압축
+    database\          ← MySQL DB 덤프 (.sql)
+    README_*.txt       ← 백업 시점·파일 목록 (자동 생성)
+
+================================================================================
+[ install/ — 설치파일 ]
+================================================================================
+
+  dev-tools_YYYYMMDD_HHMMSS.zip
+    jdk-17, apache-maven-3.9.15, node-22, 설치 zip 원본
+
+  mysql-8.4.9-winx64.msi / .zip          MySQL 공식 설치 (있을 때)
+  mysql-server-8.4-installed_*.zip       설치된 MySQL 8.4 폴더
+  mysql-setup_YYYYMMDD.zip               DB 초기화 SQL·my.ini
+  my.ini.backup                          MySQL 설정
+
+  dbeaver-ce-25.3.1-x86_64-setup.exe     DBeaver Windows 설치 (~110 MB)
+  dbeaver-ce-25.3.1-win32.win32.x86_64.zip  DBeaver ZIP portable (~123 MB)
+  dbeaver-setup_YYYYMMDD.zip             MySQL 연결 설정·가이드
+
+  → MySQL: docs\03-mysql-설치방법.txt
+  → DBeaver: docs\04-dbeaver-설치방법.txt
+
+================================================================================
+[ projects/ — 프로젝트 ]
+================================================================================
+
+  spring-boot-app-fixed_*.zip   PrintMall (Spring Boot, 포트 8081)
+  stock-mock-trading_*.zip      모의투자 (포트 8082)
+  kotlin-hello_*.zip            Kotlin 샘플
+
+  제외 항목: target/, node_modules/, frontend/dist/, logs/
+
+  복원 위치 예:
+    D:\spirngboot_workspace\spirngboot_workspace\new-workspace\
+
+  → 상세: docs\02-셋팅방법.txt
+
+================================================================================
+[ database/ — DB 덤프 ]
+================================================================================
+
+  spring_boot_app_*.sql
+
+  MySQL 기동 중에 백업 스크립트 실행 시 생성됩니다.
+  DB명: spring_boot_app
+
+  → 상세: docs\03-mysql-설치방법.txt
+
+================================================================================
+[ docs/ — 가이드 문서 ]
+================================================================================
+
+  00-백업폴더-구성.txt     ← 본 문서
+  01-설치방법.txt          JDK, Maven, Node 설치
+  02-셋팅방법.txt          프로젝트·실행 환경 셋팅
+  03-mysql-설치방법.txt    MySQL MSI/ZIP·DB 초기화
+  04-dbeaver-설치방법.txt  DBeaver DB 관리 도구
+  05-계정정보.txt          MySQL·웹·OAuth·Git 계정 (※ 로컬 전용)
+  project-accounts.txt     프로젝트 원본 계정 문서
+  eclipse-setup.txt        Eclipse/STS 연동
+  react-dev-setup.txt      React(Vite) 개발환경
+  mobile-dev-setup.txt     모바일(LAN) 테스트
+
+================================================================================
+[ 백업 다시 만들기 ]
+================================================================================
+
+  프로젝트 복원 후:
+    spring-boot-app-fixed\scripts\backup\create-backup.ps1
+
+  또는:
+    powershell -ExecutionPolicy Bypass -File scripts\backup\create-backup.ps1
+
+================================================================================

@@ -1,40 +1,49 @@
 package com.example.springbootapp.service;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.BizCompany;
 import com.example.springbootapp.dto.BizCompanyFormDto;
 import com.example.springbootapp.mapper.BizCompanyMapper;
-
 import jakarta.servlet.http.HttpSession;
-
+/**
+ * 업체(비즈니스 회사) 정보 검색·조회·등록·수정·삭제를 처리하는 서비스.
+ */
 @Service
 @Transactional(readOnly = true)
 public class BizCompanyService {
-
 	private static final int MAX_LIMIT = 500;
-
 	private final BizCompanyMapper bizCompanyMapper;
 	private final SessionAuthService sessionAuthService;
-
 	public BizCompanyService(BizCompanyMapper bizCompanyMapper, SessionAuthService sessionAuthService) {
 		this.bizCompanyMapper = bizCompanyMapper;
 		this.sessionAuthService = sessionAuthService;
 	}
-
+	/**
+	 * 조건에 맞는 업체 목록을 검색한다.
+	 *
+	 * @param companyNm 업체명 (부분 일치, null 허용)
+	 * @param bizNo     사업자등록번호 (부분 일치, null 허용)
+	 * @param statusCd  상태 코드 (null 허용)
+	 * @param useYn     사용 여부 Y/N (null 허용)
+	 * @param limit     최대 조회 건수 (1~500으로 보정)
+	 * @return 업체 정보 맵 목록
+	 */
 	public List<Map<String, Object>> search(String companyNm, String bizNo, String statusCd, String useYn, int limit) {
 		int safeLimit = Math.min(Math.max(limit, 1), MAX_LIMIT);
 		return bizCompanyMapper.search(trimToNull(companyNm), trimToNull(bizNo), trimToNull(statusCd), trimToNull(useYn),
 				safeLimit).stream().map(this::toDto).collect(Collectors.toList());
 	}
-
+	/**
+	 * 업체 ID로 상세 정보를 조회한다.
+	 *
+	 * @param companyId 업체 ID
+	 * @return 업체 정보 맵, 없으면 null
+	 */
 	public Map<String, Object> findById(Long companyId) {
 		BizCompany company = bizCompanyMapper.findById(companyId);
 		if (company == null) {
@@ -42,7 +51,13 @@ public class BizCompanyService {
 		}
 		return toDto(company);
 	}
-
+	/**
+	 * 업체를 신규 등록하거나 기존 업체를 수정한다.
+	 *
+	 * @param dto     업체 입력 폼
+	 * @param session HTTP 세션 (등록·수정자 ID 추출용)
+	 * @return 저장된 업체 ID
+	 */
 	@Transactional
 	public Long save(BizCompanyFormDto dto, HttpSession session) {
 		validate(dto);
@@ -62,7 +77,11 @@ public class BizCompanyService {
 		bizCompanyMapper.update(entity);
 		return entity.getCompanyId();
 	}
-
+	/**
+	 * 업체를 삭제한다.
+	 *
+	 * @param companyId 삭제할 업체 ID
+	 */
 	@Transactional
 	public void delete(Long companyId) {
 		if (companyId == null) {
@@ -73,7 +92,6 @@ public class BizCompanyService {
 		}
 		bizCompanyMapper.deleteById(companyId);
 	}
-
 	private void validate(BizCompanyFormDto dto) {
 		if (dto == null || isBlank(dto.getCompanyNm())) {
 			throw new IllegalArgumentException("업체명은 필수입니다.");
@@ -85,7 +103,6 @@ public class BizCompanyService {
 			dto.setUseYn("Y");
 		}
 	}
-
 	private BizCompany toEntity(BizCompanyFormDto dto) {
 		BizCompany c = new BizCompany();
 		c.setCompanyNm(dto.getCompanyNm().trim());
@@ -99,7 +116,6 @@ public class BizCompanyService {
 		c.setMemo(trimToNull(dto.getMemo()));
 		return c;
 	}
-
 	private Map<String, Object> toDto(BizCompany c) {
 		Map<String, Object> row = new LinkedHashMap<>();
 		row.put("companyId", c.getCompanyId());
@@ -118,12 +134,10 @@ public class BizCompanyService {
 		row.put("updateDt", c.getUpdateDt());
 		return row;
 	}
-
 	private String resolveActor(HttpSession session) {
 		String userId = sessionAuthService.getLoginUserId(session);
 		return userId != null && !userId.isBlank() ? userId : "SYSTEM";
 	}
-
 	private static String trimToNull(String value) {
 		if (value == null) {
 			return null;
@@ -131,7 +145,6 @@ public class BizCompanyService {
 		String t = value.trim();
 		return t.isEmpty() ? null : t;
 	}
-
 	private static boolean isBlank(String value) {
 		return value == null || value.trim().isEmpty();
 	}

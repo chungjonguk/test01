@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.NasFileMapper">
+
+    <sql id="nasFileColumns">
+        file_id, media_type_cd, stored_nm, original_nm, file_ext, file_size,
+        file_path, url_path, content_type, reg_id, reg_dt
+    </sql>
+
+    <resultMap id="nasFileResultMap" type="NasFile">
+        <id property="fileId" column="file_id"/>
+        <result property="mediaTypeCd" column="media_type_cd"/>
+        <result property="storedNm" column="stored_nm"/>
+        <result property="originalNm" column="original_nm"/>
+        <result property="fileExt" column="file_ext"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="filePath" column="file_path"/>
+        <result property="urlPath" column="url_path"/>
+        <result property="contentType" column="content_type"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="fileId">
+        INSERT INTO nas_file (
+            media_type_cd, stored_nm, original_nm, file_ext, file_size,
+            file_path, url_path, content_type, reg_id
+        ) VALUES (
+            #{mediaTypeCd}, #{storedNm}, #{originalNm}, #{fileExt}, #{fileSize},
+            #{filePath}, #{urlPath}, #{contentType}, #{regId}
+        )
+    </insert>
+
+    <select id="findById" resultMap="nasFileResultMap">
+        SELECT <include refid="nasFileColumns"/>
+        FROM nas_file
+        WHERE file_id = #{fileId}
+    </select>
+
+    <select id="search" resultMap="nasFileResultMap">
+        SELECT <include refid="nasFileColumns"/>
+        FROM nas_file
+        <where>
+            <if test="mediaTypeCd != null and mediaTypeCd != ''">
+                AND media_type_cd = #{mediaTypeCd}
+            </if>
+        </where>
+        ORDER BY reg_dt DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

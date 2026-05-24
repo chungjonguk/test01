@@ -1,0 +1,27 @@
+=== DBeaver — spring_boot_app 연결 (Public Key 오류 해결) ===
+
+[사전] MySQL 실행: start-mysql.bat 또는 run-server.bat 2단계
+
+--- 방법 A: URL로 연결 (권장) ---
+1. DBeaver → 데이터베이스 → 새 데이터베이스 연결 → MySQL
+2. "URL" 탭 선택 후 아래 전체 붙여넣기:
+
+jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+3. 사용자명: redcroxx
+4. 비밀번호: jonguk0412  (본인 환경에 맞게)
+5. "Test Connection" → 성공 후 Finish
+
+--- 방법 B: Driver properties ---
+1. 연결 편집 → "Driver properties" 탭
+2. 행 추가 (또는 편집):
+   allowPublicKeyRetrieval = true
+   useSSL                 = false
+3. Main 탭: Host 127.0.0.1, Port 3306, Database spring_boot_app
+
+--- 주의 ---
+- Host는 localhost 대신 127.0.0.1 권장
+- MySQL 8.4 드라이버(mysql8) 사용
+- 오류가 계속되면 연결 삭제 후 위 URL로 새로 생성
+
+프로젝트 .dbeaver/data-sources.json 을 DBeaver에서 import 해도 됩니다.

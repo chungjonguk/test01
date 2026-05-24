@@ -1,5 +1,4 @@
 package com.example.springbootapp.controller.page;
-
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,32 +9,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
-
 /**
- * 사이드바 modules 경로 중 ModulesController에 개별 매핑이 없는 템플릿을 렌더링합니다.
+ * 화면 경로: {@code /modules/**}, {@code /modules/widgets} (→ {@code /widgets} 리다이렉트)
+ * <p>ModulesController에 개별 매핑이 없는 modules 하위 템플릿을 동적으로 렌더링합니다.</p>
  */
 @Controller
 public class FalconTemplateController {
-
     private final ResourceLoader resourceLoader;
-
     @Value("${app.brand-name:PrintMall}")
     private String appBrandName;
-
     public FalconTemplateController(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
-
+    /**
+     * @return out: redirect {@code /widgets}
+     */
     @GetMapping("/modules/widgets")
     public String redirectModulesWidgets() {
         return "redirect:/widgets";
     }
-
+    /**
+     * @return out: Thymeleaf view path (요청 URI 기준) 또는 {@code redirect:} (.html 접미사 제거)
+     */
     @GetMapping("/modules/**")
     public String renderModulePage(HttpServletRequest request, Model model) {
         return renderTemplate(request, model, "modules");
     }
-
     private String renderTemplate(HttpServletRequest request, Model model, String prefix) {
         String uri = request.getRequestURI();
         if (uri.endsWith(".html")) {
@@ -43,28 +42,22 @@ public class FalconTemplateController {
             String query = request.getQueryString();
             return "redirect:" + target + (query != null ? "?" + query : "");
         }
-
         String viewName = uri.startsWith("/") ? uri.substring(1) : uri;
         if (!viewName.startsWith(prefix + "/") && !viewName.equals(prefix)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-
         if (!templateExists(viewName)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-
         if (!model.containsAttribute("title")) {
             model.addAttribute("title", humanizeTitle(viewName) + " | " + appBrandName);
         }
-
         return viewName;
     }
-
     private boolean templateExists(String viewName) {
         Resource resource = resourceLoader.getResource("classpath:/templates/" + viewName + ".html");
         return resource.exists();
     }
-
     private String humanizeTitle(String viewName) {
         int slash = viewName.lastIndexOf('/');
         String leaf = slash >= 0 ? viewName.substring(slash + 1) : viewName;

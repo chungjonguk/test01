@@ -1,56 +1,42 @@
 package com.example.springbootapp.web;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import com.example.springbootapp.config.InicisProperties;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * MVC 페이지 공통 Model 주입: 화면ID, 제목, 메뉴 URL, 스크립트 플래그.
  */
 @Profile("!test")
 @ControllerAdvice(basePackages = "com.example.springbootapp.controller")
 public class PageViewAdvice {
-
 	private static final String KAKAO_KEY_PLACEHOLDER = "YOUR_KAKAO_REST_API_KEY";
-
 	private final ScreenListService screenListService;
 	private final InicisProperties inicisProperties;
-
 	@Value("${kakao.javascript-key:}")
 	private String kakaoJavascriptKey;
-
 	@Value("${kakao.client-id:}")
 	private String kakaoClientId;
-
 	@Value("${app.brand-name:PrintMall}")
 	private String appBrandName;
-
 	public PageViewAdvice(ScreenListService screenListService, InicisProperties inicisProperties) {
 		this.screenListService = screenListService;
 		this.inicisProperties = inicisProperties;
 	}
-
 	@ModelAttribute("activeScreenUris")
 	public List<String> activeScreenUris() {
 		return screenListService.findActiveUriPaths();
 	}
-
 	@ModelAttribute("appBrandName")
 	public String appBrandName() {
 		return appBrandName;
 	}
-
 	@ModelAttribute
 	public void applyPageViewAttributes(HttpServletRequest request, Model model) {
 		if (request == null) {
@@ -63,7 +49,6 @@ public class PageViewAdvice {
 		applyScreenAttributes(uri, model);
 		applyScriptFlags(uri, model);
 	}
-
 	private void applyScreenAttributes(String uri, Model model) {
 		ScreenList screen = screenListService.resolveForRequest(uri);
 		if (screen == null || !"Y".equalsIgnoreCase(screen.getUseYn())) {
@@ -73,7 +58,6 @@ public class PageViewAdvice {
 		setIfAbsent(model, "screenNm", screen.getScreenNm());
 		setIfAbsent(model, "title", screen.getScreenNm());
 	}
-
 	private void applyScriptFlags(String uri, Model model) {
 		if (uri.contains("/modules/charts/echarts")) {
 			setIfAbsent(model, "loadEchartsExamples", true);
@@ -168,6 +152,9 @@ public class PageViewAdvice {
 		if (uri.contains("/admin/user-access-logs")) {
 			setIfAbsent(model, "loadUserAccessLogActions", true);
 		}
+		if (uri.contains("/admin/media-storage")) {
+			setIfAbsent(model, "loadMediaStorageActions", true);
+		}
 		if (uri.contains("/admin/companies")) {
 			setIfAbsent(model, "loadCompanyManageActions", true);
 		}
@@ -220,7 +207,6 @@ public class PageViewAdvice {
 			}
 		}
 	}
-
 	private boolean isKakaoMapKeyConfigured() {
 		if (!StringUtils.hasText(kakaoJavascriptKey)) {
 			return false;
@@ -232,13 +218,11 @@ public class PageViewAdvice {
 		// REST API 키를 JavaScript 키 자리에 넣으면 카카오맵 SDK가 로드되지 않음
 		return !StringUtils.hasText(kakaoClientId) || !jsKey.equals(kakaoClientId.trim());
 	}
-
 	private static void setIfAbsent(Model model, String name, Object value) {
 		if (!model.containsAttribute(name)) {
 			model.addAttribute(name, value);
 		}
 	}
-
 	private boolean shouldSkip(String uri) {
 		return uri.startsWith("/api/")
 				|| uri.startsWith("/auth/")

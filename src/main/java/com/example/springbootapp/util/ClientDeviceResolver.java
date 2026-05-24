@@ -1,15 +1,11 @@
 package com.example.springbootapp.util;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * 접속 로그용 클라이언트 IP·장비(User-Agent) 정보 추출
  */
 public final class ClientDeviceResolver {
-
 	private ClientDeviceResolver() {
 	}
-
 	public static String resolveClientIp(HttpServletRequest request) {
 		if (request == null) {
 			return null;
@@ -31,7 +27,6 @@ public final class ClientDeviceResolver {
 		}
 		return normalizeIp(trim(request.getRemoteAddr(), 45));
 	}
-
 	public static ClientDeviceInfo resolveDevice(HttpServletRequest request) {
 		if (request == null) {
 			return ClientDeviceInfo.empty();
@@ -39,32 +34,27 @@ public final class ClientDeviceResolver {
 		String userAgent = request.getHeader("User-Agent");
 		return parseUserAgent(userAgent);
 	}
-
 	public static ClientDeviceInfo parseUserAgent(String userAgent) {
 		if (userAgent == null || userAgent.isBlank()) {
 			return ClientDeviceInfo.empty();
 		}
 		String ua = userAgent.trim();
 		String lower = ua.toLowerCase();
-
 		String deviceType = "DESKTOP";
 		if (lower.contains("ipad") || (lower.contains("tablet") && !lower.contains("mobile"))) {
 			deviceType = "TABLET";
 		} else if (lower.contains("mobile") || lower.contains("iphone") || lower.contains("android")) {
 			deviceType = "MOBILE";
 		}
-
 		String os = resolveOs(ua, lower);
 		String browser = resolveBrowser(ua, lower);
 		String model = resolveModel(ua, lower, deviceType);
-
 		return new ClientDeviceInfo(
 				trim(deviceType, 20),
 				trim(os, 80),
 				trim(browser, 80),
 				trim(model, 120));
 	}
-
 	private static String resolveOs(String ua, String lower) {
 		if (lower.contains("windows nt 10.0")) {
 			return "Windows 10+";
@@ -103,7 +93,6 @@ public final class ClientDeviceResolver {
 		}
 		return "Unknown";
 	}
-
 	private static String resolveBrowser(String ua, String lower) {
 		if (lower.contains("edg/")) {
 			return "Edge";
@@ -125,7 +114,6 @@ public final class ClientDeviceResolver {
 		}
 		return "Unknown";
 	}
-
 	private static String resolveModel(String ua, String lower, String deviceType) {
 		if ("DESKTOP".equals(deviceType)) {
 			return null;
@@ -152,7 +140,6 @@ public final class ClientDeviceResolver {
 		}
 		return null;
 	}
-
 	private static String normalizeIp(String ip) {
 		if (ip == null) {
 			return null;
@@ -165,7 +152,6 @@ public final class ClientDeviceResolver {
 		}
 		return ip;
 	}
-
 	private static String trim(String value, int maxLen) {
 		if (value == null) {
 			return null;
@@ -176,37 +162,29 @@ public final class ClientDeviceResolver {
 		}
 		return t.length() <= maxLen ? t : t.substring(0, maxLen);
 	}
-
 	public static final class ClientDeviceInfo {
-
 		private final String deviceTypeCd;
 		private final String deviceOs;
 		private final String deviceBrowser;
 		private final String deviceModel;
-
 		public ClientDeviceInfo(String deviceTypeCd, String deviceOs, String deviceBrowser, String deviceModel) {
 			this.deviceTypeCd = deviceTypeCd;
 			this.deviceOs = deviceOs;
 			this.deviceBrowser = deviceBrowser;
 			this.deviceModel = deviceModel;
 		}
-
 		public static ClientDeviceInfo empty() {
 			return new ClientDeviceInfo(null, null, null, null);
 		}
-
 		public String getDeviceTypeCd() {
 			return deviceTypeCd;
 		}
-
 		public String getDeviceOs() {
 			return deviceOs;
 		}
-
 		public String getDeviceBrowser() {
 			return deviceBrowser;
 		}
-
 		public String getDeviceModel() {
 			return deviceModel;
 		}

@@ -1,5 +1,7 @@
 /**
- * 주문 목록 — Filter / Export / Bulk / 페이지네이션 / 행 메뉴
+ * 주문 목록 — /app/e-commerce/orders/order-list
+ * Filter / Export / Bulk / 페이지네이션 / 행 메뉴 (List.js 기반 데모)
+ * @module order-list-actions
  */
 (function () {
   'use strict';
@@ -95,6 +97,10 @@
     }
   }
 
+  /**
+   * 키워드·상태 필터를 List.js 목록에 적용합니다.
+   * @returns {void}
+   */
   function applyFilters() {
     var list = getList();
     if (!list) {
@@ -142,6 +148,10 @@
     }
   }
 
+  /**
+   * 현재 목록(필터 적용 결과)을 CSV 파일로 내보냅니다.
+   * @returns {void}
+   */
   function exportCsv() {
     var list = getList();
     var items = list && list.matchingItems && list.matchingItems.length ? list.matchingItems : null;
@@ -355,6 +365,11 @@
     });
   }
 
+  /**
+   * List.js 인스턴스 준비 후 필터·페이지네이션·행 메뉴를 바인딩합니다.
+   * @param {number} attempt List.js 대기 재시도 횟수
+   * @returns {void}
+   */
   function init(attempt) {
     bindStaticControls();
     bindRowDropdowns();

@@ -1,9 +1,7 @@
 package com.example.springbootapp.config;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.charset.StandardCharsets;
-
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Profile;
 import org.springframework.boot.ApplicationRunner;
@@ -11,9 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
-
 /**
  * 대시보드·코드관리용 기본 코드가 없으면 seed SQL을 1회 적용합니다.
  */
@@ -21,15 +17,11 @@ import javax.sql.DataSource;
 @Component
 @Order(10)
 public class CommonCodeSeedRunner implements ApplicationRunner {
-
 	private static final Logger log = LoggerFactory.getLogger(CommonCodeSeedRunner.class);
-
 	private final DataSource dataSource;
-
 	public CommonCodeSeedRunner(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
 	@Override
 	public void run(ApplicationArguments args) {
 		try {

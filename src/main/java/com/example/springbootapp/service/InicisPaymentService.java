@@ -1,11 +1,9 @@
 package com.example.springbootapp.service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
 import com.example.springbootapp.auth.LoginSession;
 import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.config.InicisProperties;
@@ -26,21 +23,19 @@ import com.example.springbootapp.dto.InicisPrepareRequest;
 import com.example.springbootapp.mapper.EcmPaymentMapper;
 import com.example.springbootapp.payment.InicisSignatureHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.http.HttpSession;
-
+/**
+ * KG 이니시스 결제 준비·인증 반환·모의 결제 완료 및 주문 상태 연동을 처리하는 서비스.
+ */
 @Service
 public class InicisPaymentService {
-
 	private static final Logger log = LoggerFactory.getLogger(InicisPaymentService.class);
-
 	private final InicisProperties inicisProperties;
 	private final EcmPaymentMapper ecmPaymentMapper;
 	private final CheckoutOrderService checkoutOrderService;
 	private final SessionAuthService sessionAuthService;
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-
 	public InicisPaymentService(
 			InicisProperties inicisProperties,
 			EcmPaymentMapper ecmPaymentMapper,
@@ -55,14 +50,19 @@ public class InicisPaymentService {
 		this.restTemplate = restTemplate;
 		this.objectMapper = objectMapper;
 	}
-
+	/**
+	 * 결제 정보를 저장하고 이니시스 결제창 호출 파라미터(또는 모의 결제 정보)를 생성한다.
+	 *
+	 * @param request 결제 준비 요청 (금액·상품명·구매자 정보 등)
+	 * @param session HTTP 세션 (등록·수정자 ID 추출용)
+	 * @return 이니시스 결제 파라미터 맵 또는 모의 결제 안내 맵
+	 */
 	@Transactional
 	public Map<String, Object> prepare(InicisPrepareRequest request, HttpSession session) {
 		validatePrepare(request);
 		String actor = resolveActor(session);
 		BigDecimal amount = request.getAmount().setScale(0, RoundingMode.HALF_UP);
 		String orderNo = "ORD" + System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 6);
-
 		EcmPayment payment = new EcmPayment();
 		payment.setOrderNo(orderNo);
 		payment.setOrderId(request.getOrderId());
@@ -81,7 +81,6 @@ public class InicisPaymentService {
 		Long orderId = checkoutOrderService.createPendingOrder(
 				orderNo, amount, request.getCustomerId(), request.getShipTo(), actor);
 		payment.setOrderId(orderId);
-
 		if (!inicisProperties.useRealGateway()) {
 			Map<String, Object> mock = new LinkedHashMap<>();
 			mock.put("mock", true);
@@ -90,11 +89,9 @@ public class InicisPaymentService {
 			mock.put("message", "로컬 모의 결제 모드입니다. mockEnabled=false 및 signKey 설정 시 이니시스 테스트창이 열립니다.");
 			return mock;
 		}
-
 		String price = amount.toPlainString();
 		String timestamp = String.valueOf(System.currentTimeMillis());
 		String signKey = inicisProperties.getSignKey();
-
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("version", "1.0");
 		params.put("gopaymethod", "");
@@ -118,7 +115,13 @@ public class InicisPaymentService {
 		params.put("stdPayJsUrl", inicisProperties.getStdPayJsUrl());
 		return params;
 	}
-
+	/**
+	 * 로컬 모의 결제 모드에서 결제를 승인 완료 처리한다.
+	 *
+	 * @param orderNo 주문번호
+	 * @param session HTTP 세션 (수정자 ID 추출용)
+	 * @return 결제 결과 맵 (success, message, orderNo 등)
+	 */
 	@Transactional
 	public Map<String, Object> completeMock(String orderNo, HttpSession session) {
 		EcmPayment payment = requirePayment(orderNo);
@@ -136,7 +139,13 @@ public class InicisPaymentService {
 		checkoutOrderService.markOrderPaid(orderNo, actor);
 		return resultMap(payment, true, "모의 결제가 완료되었습니다.");
 	}
-
+	/**
+	 * 이니시스 결제 인증 반환 URL 콜백을 처리하고 승인 API를 호출한다.
+	 *
+	 * @param params  이니시스 반환 파라미터
+	 * @param session HTTP 세션 (수정자 ID 추출용)
+	 * @return 결제 결과 맵 (success, message, orderNo 등)
+	 */
 	@Transactional
 	public Map<String, Object> handleReturn(Map<String, String> params, HttpSession session) {
 		String orderNo = firstNonBlank(params.get("MOID"), params.get("oid"), params.get("orderNumber"));
@@ -145,12 +154,10 @@ public class InicisPaymentService {
 		String authToken = params.get("authToken");
 		String authUrl = params.get("authUrl");
 		String idcName = params.get("idc_name");
-
 		EcmPayment payment = orderNo != null ? ecmPaymentMapper.findByOrderNo(orderNo) : null;
 		if (payment == null) {
 			throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다.");
 		}
-
 		String actor = resolveActor(session);
 		payment.setResultCode(resultCode);
 		payment.setResultMsg(resultMsg);
@@ -158,24 +165,20 @@ public class InicisPaymentService {
 		payment.setIdcName(idcName);
 		payment.setRawAuthJson(toJson(params));
 		payment.setUpdateId(actor);
-
 		if (!"0000".equals(resultCode)) {
 			payment.setStatusCd("FAILED");
 			ecmPaymentMapper.updateAfterAuth(payment);
 			checkoutOrderService.markOrderFailed(orderNo, actor);
 			return resultMap(payment, false, resultMsg != null ? resultMsg : "결제 인증에 실패했습니다.");
 		}
-
 		payment.setStatusCd("PENDING_AUTH");
 		ecmPaymentMapper.updateAfterAuth(payment);
-
 		if (authUrl == null || authUrl.isBlank() || authToken == null || authToken.isBlank()) {
 			payment.setStatusCd("FAILED");
 			payment.setResultMsg("authUrl 또는 authToken 없음");
 			ecmPaymentMapper.updateAfterAuth(payment);
 			return resultMap(payment, false, "승인 요청 정보가 없습니다.");
 		}
-
 		try {
 			Map<String, String> approveResponse = requestApprove(authUrl, authToken, payment.getAmount());
 			payment.setRawApproveJson(toJson(approveResponse));
@@ -204,7 +207,6 @@ public class InicisPaymentService {
 			return resultMap(payment, false, "승인 API 호출 중 오류가 발생했습니다.");
 		}
 	}
-
 	private Map<String, String> requestApprove(String authUrl, String authToken, BigDecimal amount) {
 		String timestamp = String.valueOf(System.currentTimeMillis());
 		String signKey = inicisProperties.getSignKey();
@@ -217,14 +219,12 @@ public class InicisPaymentService {
 		body.add("charset", "UTF-8");
 		body.add("format", "JSON");
 		body.add("price", amount.setScale(0, RoundingMode.HALF_UP).toPlainString());
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 		ResponseEntity<String> response = restTemplate.postForEntity(authUrl, entity, String.class);
 		return parseResponseBody(response.getBody());
 	}
-
 	@SuppressWarnings("unchecked")
 	private Map<String, String> parseResponseBody(String body) {
 		if (body == null || body.isBlank()) {
@@ -247,7 +247,6 @@ public class InicisPaymentService {
 			return Map.of("rawBody", body);
 		}
 	}
-
 	private EcmPayment requirePayment(String orderNo) {
 		if (orderNo == null || orderNo.isBlank()) {
 			throw new IllegalArgumentException("주문번호가 없습니다.");
@@ -258,7 +257,6 @@ public class InicisPaymentService {
 		}
 		return payment;
 	}
-
 	private void validatePrepare(InicisPrepareRequest request) {
 		if (request == null || request.getAmount() == null || request.getAmount().signum() <= 0) {
 			throw new IllegalArgumentException("결제 금액이 올바르지 않습니다.");
@@ -267,7 +265,6 @@ public class InicisPaymentService {
 			throw new IllegalArgumentException("상품명을 입력해 주세요.");
 		}
 	}
-
 	private Map<String, Object> resultMap(EcmPayment payment, boolean success, String message) {
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("success", success);
@@ -278,12 +275,10 @@ public class InicisPaymentService {
 		map.put("statusCd", payment.getStatusCd());
 		return map;
 	}
-
 	private String resolveActor(HttpSession session) {
 		LoginSession login = sessionAuthService.getLoginSession(session);
 		return login != null && login.getUserId() != null ? login.getUserId() : "SYSTEM";
 	}
-
 	private String toJson(Object value) {
 		try {
 			return objectMapper.writeValueAsString(value);
@@ -291,7 +286,6 @@ public class InicisPaymentService {
 			return String.valueOf(value);
 		}
 	}
-
 	private static String firstNonBlank(String... values) {
 		for (String v : values) {
 			if (v != null && !v.isBlank()) {
@@ -300,7 +294,6 @@ public class InicisPaymentService {
 		}
 		return null;
 	}
-
 	private static String getMapValue(Map<String, ?> map, String key) {
 		if (map == null || key == null) {
 			return null;
@@ -316,7 +309,6 @@ public class InicisPaymentService {
 		}
 		return null;
 	}
-
 	private static String trim(String value, int max) {
 		if (value == null) {
 			return null;

@@ -1,5 +1,4 @@
 package com.example.springbootapp.exception;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +13,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.Map;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Object handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest request) {
@@ -32,7 +27,6 @@ public class GlobalExceptionHandler {
 		}
 		return "error/404";
 	}
-
 	@ExceptionHandler(ResourceAccessException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Object handleConnectionFailure(ResourceAccessException ex, HttpServletRequest request) {
@@ -43,7 +37,6 @@ public class GlobalExceptionHandler {
 		}
 		return "error/404";
 	}
-
 	@ExceptionHandler(IllegalArgumentException.class)
 	public Object handleIllegalArgument(
 			IllegalArgumentException ex,
@@ -56,7 +49,6 @@ public class GlobalExceptionHandler {
 		redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		return "redirect:/users";
 	}
-
 	@ExceptionHandler(IllegalStateException.class)
 	public Object handleIllegalState(
 			IllegalStateException ex,
@@ -69,7 +61,6 @@ public class GlobalExceptionHandler {
 		redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
 		return "redirect:/users";
 	}
-
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public Object handleUnreadableJson(HttpMessageNotReadableException ex, HttpServletRequest request) {
 		log.warn("JSON 파싱 실패: {}", ex.getMessage());
@@ -78,7 +69,6 @@ public class GlobalExceptionHandler {
 		}
 		return apiError(HttpStatus.BAD_REQUEST, "요청 형식이 올바르지 않습니다.");
 	}
-
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public Object handleDataIntegrity(DataIntegrityViolationException ex, HttpServletRequest request) {
 		log.warn("DB 무결성 오류: {}", ex.getMostSpecificCause().getMessage());
@@ -92,7 +82,6 @@ public class GlobalExceptionHandler {
 		}
 		return apiError(HttpStatus.CONFLICT, message);
 	}
-
 	@ExceptionHandler(DataAccessException.class)
 	public Object handleDataAccess(DataAccessException ex, HttpServletRequest request) {
 		log.error("DB 처리 오류", ex);
@@ -101,7 +90,6 @@ public class GlobalExceptionHandler {
 		}
 		return apiError(HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 처리 중 오류가 발생했습니다.");
 	}
-
 	@ExceptionHandler(Exception.class)
 	public Object handleGeneral(Exception ex, HttpServletRequest request) throws Exception {
 		if (!isApiRequest(request)) {
@@ -111,11 +99,9 @@ public class GlobalExceptionHandler {
 		String message = ex.getMessage() != null ? ex.getMessage() : "요청 처리 중 오류가 발생했습니다.";
 		return apiError(HttpStatus.INTERNAL_SERVER_ERROR, message);
 	}
-
 	private static ResponseEntity<Map<String, Object>> apiError(HttpStatus status, String message) {
 		return ResponseEntity.status(status).body(Map.of("message", message));
 	}
-
 	private static boolean isApiRequest(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 		return uri != null && uri.startsWith("/api/");

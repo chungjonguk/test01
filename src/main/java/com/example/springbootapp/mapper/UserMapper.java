@@ -1,27 +1,60 @@
 package com.example.springbootapp.mapper;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import com.example.springbootapp.domain.User;
-
+/**
+ * 사용자(user) MyBatis Mapper.
+ */
 @Mapper
 public interface UserMapper {
-
+	/**
+	 * 전체 사용자 목록을 조회합니다.
+	 *
+	 * @return 사용자 목록
+	 */
 	List<User> findAll();
-
+	/**
+	 * 로그인 ID로 사용자를 조회합니다.
+	 *
+	 * @param id 로그인 ID
+	 * @return 사용자 Optional
+	 */
 	Optional<User> findById(@Param("id") String id);
-
+	/**
+	 * 로그인 ID 존재 여부를 확인합니다.
+	 *
+	 * @param id 로그인 ID
+	 * @return 존재하면 {@code true}
+	 */
 	boolean existsById(@Param("id") String id);
-
+	/**
+	 * 이메일 중복 여부를 확인합니다.
+	 *
+	 * @param email 이메일
+	 * @return 존재하면 {@code true}
+	 */
 	boolean existsByEmail(@Param("email") String email);
-
+	/**
+	 * 사용자를 등록합니다.
+	 *
+	 * @param user 등록할 사용자
+	 * @return 반영된 행 수
+	 */
 	int insert(User user);
-
+	/**
+	 * 사용자 정보를 수정합니다.
+	 *
+	 * @param user 수정할 사용자
+	 * @return 반영된 행 수
+	 */
 	int update(User user);
-
+	/**
+	 * 로그인 ID로 사용자를 삭제합니다.
+	 *
+	 * @param id 로그인 ID
+	 * @return 삭제된 행 수
+	 */
 	int deleteById(@Param("id") String id);
 }

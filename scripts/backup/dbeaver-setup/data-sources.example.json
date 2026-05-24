@@ -1,0 +1,39 @@
+{
+  "folders": {},
+  "connections": {
+    "spring_boot_app-redcroxx": {
+      "provider": "mysql",
+      "driver": "mysql8",
+      "name": "spring_boot_app (PrintMall)",
+      "save-password": true,
+      "configuration": {
+        "host": "127.0.0.1",
+        "port": "3306",
+        "database": "spring_boot_app",
+        "url": "jdbc:mysql://127.0.0.1:3306/spring_boot_app?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8",
+        "configurationType": "URL",
+        "type": "dev",
+        "properties": {
+          "allowPublicKeyRetrieval": "true",
+          "useSSL": "false"
+        }
+      }
+    }
+  },
+  "connection-types": {
+    "dev": {
+      "name": "Development",
+      "color": "rgb(115,178,62)",
+      "description": "Local dev database",
+      "auto-commit": true,
+      "confirm-execute": false,
+      "confirm-data-change": false,
+      "smart-commit": false,
+      "smart-commit-recover": false,
+      "auto-close-transactions": true,
+      "close-transactions-period": 1800,
+      "auto-close-connections": true,
+      "close-connections-period": 14400
+    }
+  }
+}
