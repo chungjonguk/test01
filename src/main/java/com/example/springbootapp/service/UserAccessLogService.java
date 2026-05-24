@@ -4,6 +4,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.auth.LoginSession;
 import com.example.springbootapp.domain.User;
@@ -35,7 +36,7 @@ public class UserAccessLogService {
 	 * @param success      성공 여부
 	 * @param failReason   실패 사유 (성공 시 null)
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void recordLogin(HttpServletRequest request, User user, String loginTypeCd, boolean success, String failReason) {
 		UserAccessLog row = baseFromRequest(request, ACCESS_LOGIN);
 		row.setLoginTypeCd(loginTypeCd);
@@ -59,7 +60,7 @@ public class UserAccessLogService {
 	 * @param request      HTTP 요청
 	 * @param loginSession 로그인 세션 정보
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void recordLoginSession(HttpServletRequest request, LoginSession loginSession) {
 		if (loginSession == null) {
 			return;
@@ -78,7 +79,7 @@ public class UserAccessLogService {
 	 * @param request      HTTP 요청
 	 * @param loginSession 로그아웃하는 로그인 세션 정보
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void recordLogout(HttpServletRequest request, LoginSession loginSession) {
 		if (loginSession == null) {
 			return;
@@ -97,7 +98,7 @@ public class UserAccessLogService {
 	 * @param request      HTTP 요청
 	 * @param loginSession 로그인 세션 정보
 	 */
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void recordPage(HttpServletRequest request, LoginSession loginSession) {
 		if (loginSession == null) {
 			return;

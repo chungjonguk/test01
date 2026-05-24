@@ -8,7 +8,16 @@
 
   'use strict';
 
-
+  if (!window.PrintMallCommon) {
+    window.UserAccessLogMgmtInit = function () {
+      var tbody = document.getElementById('access-log-grid-body');
+      if (tbody) {
+        tbody.innerHTML =
+          '<tr><td colspan="12" class="text-center text-danger py-4">공통 스크립트(app-common.js)를 불러오지 못했습니다.</td></tr>';
+      }
+    };
+    return;
+  }
 
   var C = window.PrintMallCommon;
 
@@ -334,7 +343,7 @@
 
 
 
-  function getSearchParams() {
+  function getSearchParams(includeDates) {
 
     var params = new URLSearchParams();
 
@@ -382,16 +391,13 @@
 
     }
 
-    if (dateFrom && dateFrom.value) {
-
-      params.set('start', dateFrom.value);
-
-    }
-
-    if (dateTo && dateTo.value) {
-
-      params.set('end', dateTo.value);
-
+    if (includeDates !== false) {
+      if (dateFrom && dateFrom.value) {
+        params.set('start', dateFrom.value);
+      }
+      if (dateTo && dateTo.value) {
+        params.set('end', dateTo.value);
+      }
     }
 
     params.set('limit', '200');
@@ -404,10 +410,13 @@
 
   /**
    * 검색 조건으로 접속 로그를 API에서 조회합니다.
+   * @param {{useDates?: boolean}} [options] useDates=false 이면 서버 기준 최근 30일
    * @returns {void}
    */
-  function loadLogs() {
+  function loadLogs(options) {
 
+    options = options || {};
+    var useDates = options.useDates !== false;
     if (state.loading) {
 
       return;
@@ -426,7 +435,7 @@
 
     }
 
-    fetchJson('/api/admin/user-access-logs?' + getSearchParams().toString())
+    fetchJson('/api/admin/user-access-logs?' + getSearchParams(useDates).toString())
 
       .then(function (result) {
 
@@ -540,7 +549,7 @@
 
         e.preventDefault();
 
-        loadLogs();
+        loadLogs({ useDates: true });
 
       });
 
@@ -554,7 +563,7 @@
 
         resetSearch();
 
-        loadLogs();
+        loadLogs({ useDates: false });
 
       });
 
@@ -574,7 +583,7 @@
 
     bindEvents();
 
-    loadLogs();
+    loadLogs({ useDates: false });
 
   };
 
