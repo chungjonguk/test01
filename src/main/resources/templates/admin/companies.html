@@ -30,7 +30,8 @@
                     </div>
                     <div class="col-12 col-sm-6 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-biz-no">사업자번호</label>
-                      <input class="form-control form-control-sm" id="search-biz-no" type="text" placeholder="000-00-00000" autocomplete="off" />
+                      <input class="form-control form-control-sm" id="search-biz-no" type="text"
+                        inputmode="numeric" placeholder="000-00-00000" maxlength="12" autocomplete="off" />
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-status-cd">상태</label>
@@ -103,7 +104,10 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label" for="form-biz-no">사업자등록번호</label>
-                        <input class="form-control form-control-sm" id="form-biz-no" type="text" maxlength="20" />
+                        <input class="form-control form-control-sm" id="form-biz-no" type="text"
+                          inputmode="numeric" placeholder="000-00-00000" maxlength="12"
+                          autocomplete="off" title="숫자 10자리 (자동 하이픈)" />
+                        <div class="form-text">숫자만 입력하면 000-00-00000 형식으로 맞춰집니다.</div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label" for="form-ceo-nm">대표자명</label>
@@ -118,8 +122,37 @@
                         <input class="form-control form-control-sm" id="form-email" type="email" maxlength="200" />
                       </div>
                       <div class="col-12">
-                        <label class="form-label" for="form-address">주소</label>
-                        <input class="form-control form-control-sm" id="form-address" type="text" maxlength="500" />
+                        <label class="form-label">주소</label>
+                        <div class="mb-2" id="company-address-search-wrap">
+                          <label class="form-label fs--1 mb-1" for="form-address-search-query">주소 검색</label>
+                          <div class="input-group input-group-sm">
+                            <input class="form-control" type="search" id="form-address-search-query"
+                              placeholder="도로명·지번·건물명 (예: 테헤란로 152)" autocomplete="off" />
+                            <button class="btn btn-primary" type="button" id="btn-company-address-search">
+                              <span class="fas fa-search me-1"></span>검색
+                            </button>
+                          </div>
+                          <div class="list-group mt-2 d-none" id="company-address-search-results" role="listbox" aria-label="주소 검색 결과"></div>
+                          <div class="alert alert-warning py-2 px-3 mt-2 mb-0 fs--1 d-none" id="company-address-search-hint" role="alert"></div>
+                        </div>
+                        <div class="row g-2">
+                          <div class="col-md-3">
+                            <label class="form-label fs--1 mb-1" for="form-address-zip">우편번호</label>
+                            <input class="form-control form-control-sm bg-100" id="form-address-zip" type="text"
+                              placeholder="검색 후 자동 입력" maxlength="5" readonly="readonly" tabindex="-1" />
+                          </div>
+                          <div class="col-md-9">
+                            <label class="form-label fs--1 mb-1" for="form-address-base">기본 주소</label>
+                            <input class="form-control form-control-sm bg-100" id="form-address-base" type="text"
+                              placeholder="주소 검색 후 자동 입력" readonly="readonly" tabindex="-1" />
+                          </div>
+                          <div class="col-12">
+                            <label class="form-label fs--1 mb-1" for="form-address-detail">상세 주소</label>
+                            <input class="form-control form-control-sm" id="form-address-detail" type="text"
+                              maxlength="200" placeholder="동·호수 등 상세 주소 (직접 입력)" />
+                          </div>
+                        </div>
+                        <div class="form-text">카카오 로컬 API로 검색합니다. 우편번호·기본 주소는 검색으로만 채워집니다.</div>
                       </div>
                       <div class="col-md-4">
                         <label class="form-label" for="form-status-cd">상태</label>

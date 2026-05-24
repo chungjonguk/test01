@@ -25,9 +25,12 @@ Spring Boot Maven 프로젝트 `spring-boot-app`을 Eclipse·Spring Tools Suite(
 
 저장소에 `.project`, `.classpath`, `.settings`, `.launch`가 포함되어 있으면:
 
-1. **File → Open Projects from File System**
-2. **Directory**에 프로젝트 루트 지정 → **Finish**
-3. **Maven → Update Project** 실행
+1. **`open-sts-workspace.bat`** 실행 → STS 워크스페이스 `new-workspace` 열기
+2. **최초 1회**: `scripts/eclipse/import-maven-project.bat` 안내에 따라 Maven Import
+3. **File → Open Projects from File System** (또는 Maven Import) → 프로젝트 루트 지정 → **Finish**
+4. **Maven → Update Project** 실행
+
+점검: `powershell -File scripts/eclipse/verify-eclipse-setup.ps1`
 
 ## 2. JDK 17 설정
 

@@ -12,8 +12,8 @@
 .metadata/
 .recommenders/
 
-# Eclipse / STS — docs/eclipse-setup.md 참고 (팀 import용으로 커밋 가능)
-# 로컬만 쓰려면 아래 4줄 주석 해제
+# Eclipse / STS — docs/eclipse-setup.md 참고 (팀 import용으로 커밋됨)
+# 로컬만 쓰려면 아래 4줄 주석 해제 후 .project 등을 git에서 제거
 # .classpath
 # .project
 # .settings/

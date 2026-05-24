@@ -92,6 +92,25 @@ public class UserAccessLogService {
 		insertQuietly(row);
 	}
 	/**
+	 * 로그인 사용자의 화면 접속(PAGE) 이력을 기록한다.
+	 *
+	 * @param request      HTTP 요청
+	 * @param loginSession 로그인 세션 정보
+	 */
+	@Transactional
+	public void recordPage(HttpServletRequest request, LoginSession loginSession) {
+		if (loginSession == null) {
+			return;
+		}
+		UserAccessLog row = baseFromRequest(request, ACCESS_PAGE);
+		row.setUserId(loginSession.getUserId());
+		row.setUserNm(loginSession.getUserName());
+		row.setLoginTypeCd(loginSession.getLoginType());
+		row.setSuccessYn("Y");
+		row.setRegId(loginSession.getUserId());
+		insertQuietly(row);
+	}
+	/**
 	 * 사용자 ID별 최근 접속 이력을 조회한다.
 	 *
 	 * @param userId 사용자 ID
@@ -204,7 +223,8 @@ public class UserAccessLogService {
 		try {
 			userAccessLogMapper.insert(row);
 		} catch (Exception ex) {
-			log.warn("접속 이력 저장 실패: userId={}, type={}", row.getUserId(), row.getAccessTypeCd(), ex);
+			log.warn("접속 이력 저장 실패: userId={}, type={}, uri={}, cause={}",
+					row.getUserId(), row.getAccessTypeCd(), row.getRequestUri(), ex.getMessage());
 		}
 	}
 	private static String trim(String value, int maxLen) {

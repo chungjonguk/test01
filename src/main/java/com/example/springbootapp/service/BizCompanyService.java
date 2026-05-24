@@ -102,6 +102,18 @@ public class BizCompanyService {
 		if (isBlank(dto.getUseYn())) {
 			dto.setUseYn("Y");
 		}
+		normalizeBizNo(dto);
+	}
+	private void normalizeBizNo(BizCompanyFormDto dto) {
+		String bizNo = trimToNull(dto.getBizNo());
+		if (bizNo == null) {
+			return;
+		}
+		String digits = bizNo.replaceAll("\\D", "");
+		if (digits.length() != 10) {
+			throw new IllegalArgumentException("사업자등록번호는 10자리 숫자(000-00-00000) 형식이어야 합니다.");
+		}
+		dto.setBizNo(String.format("%s-%s-%s", digits.substring(0, 3), digits.substring(3, 5), digits.substring(5)));
 	}
 	private BizCompany toEntity(BizCompanyFormDto dto) {
 		BizCompany c = new BizCompany();

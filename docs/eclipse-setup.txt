@@ -23,13 +23,17 @@
   4) 프로젝트 우클릭 → Maven → Update Project (단축키 Alt+F5)
      - Force Update of Snapshots/Releases 체크 → OK
 
-■ 방법 B — Eclipse 메타데이터로 열기
+■ 방법 B — Eclipse 메타데이터 + STS 워크스페이스
 
   저장소에 .project, .classpath, .settings, .launch 가 있을 때:
 
-  1) File → Open Projects from File System
-  2) Directory 에 프로젝트 루트 지정 → Finish
-  3) Maven → Update Project 실행
+  1) open-sts-workspace.bat 실행
+     - STS 워크스페이스: new-workspace (프로젝트 상위 폴더)
+  2) 최초 1회: scripts\eclipse\import-maven-project.bat 안내 참고
+  3) File → Open Projects from File System 또는 Maven Import
+  4) Maven → Update Project 실행
+
+  점검: powershell -File scripts\eclipse\verify-eclipse-setup.ps1
 
 ================================================================================
 2. JDK 17 설정
