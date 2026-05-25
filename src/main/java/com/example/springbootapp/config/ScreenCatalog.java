@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 /**
  * screen_list 시드: 사이드바 전체 메뉴 + 사이드바에 없는 보조 화면.
@@ -58,8 +59,9 @@ public final class ScreenCatalog {
 		put(byUri, "SHOP_DASHBOARD", "쇼핑몰 통계", "/dashboard/e-commerce", "dashboard/e-commerce", 26);
 	}
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
-		if (byUri.containsKey(uri)) {
-			ScreenList existing = byUri.get(uri);
+		String normalized = DoPathHelper.normalizeForScreenLookup(uri);
+		if (byUri.containsKey(normalized)) {
+			ScreenList existing = byUri.get(normalized);
 			existing.setScreenNm(nm);
 			existing.setScreenId(id);
 			return;
@@ -67,10 +69,10 @@ public final class ScreenCatalog {
 		ScreenList s = new ScreenList();
 		s.setScreenId(id);
 		s.setScreenNm(nm);
-		s.setUriPath(uri);
+		s.setUriPath(normalized);
 		s.setTemplatePath(template);
 		s.setSortOrd(sort);
 		s.setUseYn("Y");
-		byUri.put(uri, s);
+		byUri.put(normalized, s);
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.springbootapp.config.InicisProperties;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -228,7 +229,7 @@ public class PageViewAdvice {
 			applyKakaoAddressFormFlags(model);
 			setIfAbsent(model, "loadWizardAddressInit", true);
 		}
-		if (uri.equals("/users")) {
+		if ("/users".equals(DoPathHelper.stripDoSuffix(uri))) {
 			applyKakaoAddressFormFlags(model);
 			setIfAbsent(model, "loadUsersAddressInit", true);
 		}

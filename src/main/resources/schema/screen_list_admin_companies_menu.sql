@@ -4,7 +4,7 @@ USE spring_boot_app;
 INSERT INTO screen_list (
   screen_id, screen_nm, uri_path, template_path, sort_ord, use_yn, reg_id, update_id
 ) VALUES (
-  'ADMIN_COMPANIES', '업체관리', '/admin/companies', 'admin/companies', 270, 'Y', 'SYSTEM', 'SYSTEM'
+  'ADMIN_COMPANIES', '업체관리', '/admin/companies.do', 'admin/companies', 270, 'Y', 'SYSTEM', 'SYSTEM'
 )
 ON DUPLICATE KEY UPDATE
   screen_nm = VALUES(screen_nm),
@@ -17,7 +17,7 @@ INSERT INTO screen_table_map (
   uri_path, screen_id, primary_table, related_tables, data_type, table_desc,
   reg_id, update_id
 ) VALUES (
-  '/admin/companies', 'ADMIN_COMPANIES', 'biz_company', NULL, 'D', '업체(거래처) 마스터 관리',
+  '/admin/companies.do', 'ADMIN_COMPANIES', 'biz_company', NULL, 'D', '업체(거래처) 마스터 관리',
   'SYSTEM', 'SYSTEM'
 )
 ON DUPLICATE KEY UPDATE

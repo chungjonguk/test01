@@ -5,11 +5,14 @@
   'use strict';
 
   function normalizePath(path) {
+    if (globalThis.PrintMallDoPath && globalThis.PrintMallDoPath.normalizePath) {
+      return globalThis.PrintMallDoPath.normalizePath(path);
+    }
     if (!path) {
-      return '/';
+      return '/index.do';
     }
     var trimmed = path.replace(/\/+$/, '').replace(/\.html$/, '');
-    return trimmed.length ? trimmed : '/';
+    return trimmed.length ? trimmed : '/index.do';
   }
 
   function isPageLink(link) {

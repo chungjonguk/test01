@@ -2,6 +2,7 @@ package com.example.springbootapp.web;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.service.ScreenListService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 		if (screenListService.isAccessible(uri)) {
 			return true;
 		}
-		response.sendRedirect(request.getContextPath() + "/pages/errors/404");
+		response.sendRedirect(request.getContextPath() + DoPathHelper.toDoPath("/pages/errors/404"));
 		return false;
 	}
 	private boolean shouldSkip(String uri) {
@@ -35,7 +36,7 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 				|| uri.contains("/favicon")
 				|| uri.startsWith("/assets/")
 				|| uri.startsWith("/vendors/")
-				|| "/pages/errors/404".equals(uri)
-				|| "/pages/errors/500".equals(uri);
+				|| uri.endsWith("/pages/errors/404")
+				|| uri.endsWith("/pages/errors/500");
 	}
 }

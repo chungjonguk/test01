@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sys_table_random_id: 테이블별 난수 PK 설정 CRUD -->
+<mapper namespace="com.example.springbootapp.mapper.TableRandomIdMapper">
+
+    <resultMap id="tableRandomIdResultMap" type="TableRandomId">
+        <id property="configName" column="config_name"/>
+        <result property="tableName" column="table_name"/>
+        <result property="columnName" column="column_name"/>
+        <result property="idTypeCd" column="id_type_cd"/>
+        <result property="minVal" column="min_val"/>
+        <result property="maxVal" column="max_val"/>
+        <result property="stringLength" column="string_length"/>
+        <result property="maxRetry" column="max_retry"/>
+        <result property="description" column="description"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <insert id="insertIgnore">
+        INSERT IGNORE INTO sys_table_random_id (
+            config_name, table_name, column_name, id_type_cd,
+            min_val, max_val, string_length, max_retry,
+            description, use_yn, reg_id, update_id
+        ) VALUES (
+            #{configName}, #{tableName}, #{columnName}, #{idTypeCd},
+            #{minVal}, #{maxVal}, #{stringLength}, #{maxRetry},
+            #{description}, #{useYn}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <select id="findByConfigName" resultMap="tableRandomIdResultMap">
+        SELECT config_name, table_name, column_name, id_type_cd,
+               min_val, max_val, string_length, max_retry,
+               description, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM sys_table_random_id
+        WHERE config_name = #{configName}
+    </select>
+
+    <select id="findAllActive" resultMap="tableRandomIdResultMap">
+        SELECT config_name, table_name, column_name, id_type_cd,
+               min_val, max_val, string_length, max_retry,
+               description, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM sys_table_random_id
+        WHERE use_yn = 'Y'
+        ORDER BY table_name
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM sys_table_random_id
+    </select>
+</mapper>

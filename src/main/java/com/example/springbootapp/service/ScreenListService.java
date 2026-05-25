@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.config.ScreenSidebarLoader;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.mapper.ScreenListMapper;
 /**
@@ -122,7 +123,7 @@ public class ScreenListService {
 	 */
 	public String normalizeUriPath(String uri) {
 		if (uri == null || uri.isBlank()) {
-			return "/";
+			return "/index.do";
 		}
 		String path = uri.split("\\?")[0].trim();
 		if (path.endsWith(".html")) {
@@ -131,7 +132,7 @@ public class ScreenListService {
 		if (path.length() > 1 && path.endsWith("/")) {
 			path = path.substring(0, path.length() - 1);
 		}
-		return path.isEmpty() ? "/" : path;
+		return DoPathHelper.normalizeForScreenLookup(path.isEmpty() ? "/" : path);
 	}
 	/**
 	 * 화면 정보를 신규 등록하거나 기존 화면을 수정한다. 동일 URI가 있으면 PK를 유지한다.

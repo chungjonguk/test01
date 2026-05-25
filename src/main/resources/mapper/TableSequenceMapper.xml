@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sys_table_sequence: 테이블별 순차 PK (LAST_INSERT_ID 채번) -->
+<mapper namespace="com.example.springbootapp.mapper.TableSequenceMapper">
+
+    <resultMap id="tableSequenceResultMap" type="TableSequence">
+        <id property="seqName" column="seq_name"/>
+        <result property="tableName" column="table_name"/>
+        <result property="columnName" column="column_name"/>
+        <result property="nextVal" column="next_val"/>
+        <result property="incrementBy" column="increment_by"/>
+        <result property="minVal" column="min_val"/>
+        <result property="maxVal" column="max_val"/>
+        <result property="description" column="description"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <insert id="insertIgnore">
+        INSERT IGNORE INTO sys_table_sequence (
+            seq_name, table_name, column_name, next_val, increment_by, min_val,
+            description, use_yn, reg_id, update_id
+        ) VALUES (
+            #{seqName}, #{tableName}, #{columnName}, #{nextVal}, #{incrementBy}, #{minVal},
+            #{description}, #{useYn}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <select id="findBySeqName" resultMap="tableSequenceResultMap">
+        SELECT seq_name, table_name, column_name, next_val, increment_by, min_val, max_val,
+               description, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM sys_table_sequence
+        WHERE seq_name = #{seqName}
+    </select>
+
+    <select id="findAllActive" resultMap="tableSequenceResultMap">
+        SELECT seq_name, table_name, column_name, next_val, increment_by, min_val, max_val,
+               description, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM sys_table_sequence
+        WHERE use_yn = 'Y'
+        ORDER BY table_name
+    </select>
+
+    <update id="allocateNext">
+        UPDATE sys_table_sequence
+        SET next_val = LAST_INSERT_ID(
+                CASE
+                    WHEN next_val + increment_by &lt; min_val THEN min_val
+                    ELSE next_val + increment_by
+                END
+            ),
+            update_id = #{updateId},
+            update_dt = CURRENT_TIMESTAMP
+        WHERE seq_name = #{seqName}
+          AND use_yn = 'Y'
+          AND (max_val IS NULL OR next_val + increment_by &lt;= max_val)
+    </update>
+
+    <select id="selectLastInsertId" resultType="long" flushCache="true">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <update id="updateNextVal">
+        UPDATE sys_table_sequence
+        SET next_val = #{nextVal},
+            update_id = #{updateId},
+            update_dt = CURRENT_TIMESTAMP
+        WHERE seq_name = #{seqName}
+    </update>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(*) FROM sys_table_sequence
+    </select>
+</mapper>

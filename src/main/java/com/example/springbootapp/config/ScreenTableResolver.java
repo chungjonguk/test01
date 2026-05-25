@@ -1,4 +1,7 @@
 package com.example.springbootapp.config;
+
+import com.example.springbootapp.config.web.DoPathHelper;
+
 /**
  * URL 경로별 연동 테이블·데이터 유형을 결정합니다.
  */
@@ -11,9 +14,10 @@ public final class ScreenTableResolver {
 		if (uriPath == null || uriPath.isBlank()) {
 			return staticUi(null, "경로 없음");
 		}
-		String uri = uriPath.endsWith("/") && uriPath.length() > 1
-				? uriPath.substring(0, uriPath.length() - 1)
-				: uriPath;
+		String uri = DoPathHelper.stripDoSuffix(uriPath);
+		if (uri.endsWith("/") && uri.length() > 1) {
+			uri = uri.substring(0, uri.length() - 1);
+		}
 		if ("/users".equals(uri)) {
 			return db("user", "user_access_log", "회원 목록·등록·접속이력");
 		}

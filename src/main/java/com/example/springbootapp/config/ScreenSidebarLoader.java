@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 /**
  * fragments/sidebar.html 에서 th:href 메뉴 링크를 파싱해 screen_list 항목을 생성합니다.
@@ -119,10 +120,10 @@ public final class ScreenSidebarLoader {
 		if (!path.startsWith("/")) {
 			path = "/" + path;
 		}
-		return path;
+		return DoPathHelper.normalizeForScreenLookup(path);
 	}
 	static String uriToScreenId(String uri) {
-		if ("/".equals(uri)) {
+		if ("/index.do".equals(uri) || "/".equals(uri)) {
 			return "HOME";
 		}
 		String id = uri.substring(1).replace("/", "_").replace("-", "_").toUpperCase();
@@ -132,10 +133,14 @@ public final class ScreenSidebarLoader {
 		return id;
 	}
 	static String templateFromUri(String uri) {
-		if ("/".equals(uri)) {
+		if ("/index.do".equals(uri) || "/".equals(uri)) {
 			return "index";
 		}
-		return uri.startsWith("/") ? uri.substring(1) : uri;
+		String path = uri.startsWith("/") ? uri.substring(1) : uri;
+		if (path.endsWith(".do")) {
+			path = path.substring(0, path.length() - 3);
+		}
+		return path;
 	}
 	static String fallbackLabel(String uri) {
 		if ("/".equals(uri)) {

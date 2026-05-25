@@ -180,7 +180,9 @@ $exclude = @(
     "--exclude=frontend/.vite",
     "--exclude=logs",
     "--exclude=.metadata",
-    "--exclude=.recommenders"
+    "--exclude=.recommenders",
+    "--exclude=.dbeaver",
+    "--exclude=.git"
 )
 
 Write-Host "[3/6] 프로젝트 압축 중..." -ForegroundColor Green
