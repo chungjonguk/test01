@@ -1,5 +1,18 @@
 package com.example.springbootapp.controller.page;
+import com.example.springbootapp.auth.LoginSession;
+import com.example.springbootapp.auth.SessionAuthService;
+import com.example.springbootapp.domain.User;
+import com.example.springbootapp.domain.UserAccessLog;
+import com.example.springbootapp.mapper.UserMapper;
+import com.example.springbootapp.service.UserAccessLogService;
+import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 /**
  * 화면 경로: {@code /app/*}
@@ -7,6 +20,21 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class AppController {
+	private static final DateTimeFormatter CUSTOMER_DT =
+			DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm", Locale.KOREA);
+	private static final DateTimeFormatter CUSTOMER_DT_LONG =
+			DateTimeFormatter.ofPattern("MMM d, h:mm a", Locale.ENGLISH);
+	private final SessionAuthService sessionAuthService;
+	private final UserMapper userMapper;
+	private final UserAccessLogService userAccessLogService;
+	public AppController(
+			SessionAuthService sessionAuthService,
+			UserMapper userMapper,
+			UserAccessLogService userAccessLogService) {
+		this.sessionAuthService = sessionAuthService;
+		this.userMapper = userMapper;
+		this.userAccessLogService = userAccessLogService;
+	}
 	/**
 	 * @return out: Thymeleaf view path {@code app/calendar}
 	 */
@@ -113,11 +141,92 @@ public class AppController {
 		return "app/e-commerce/customers";
 	}
 	/**
+	 * 로그인 세션·DB 사용자 정보로 고객 상세 화면을 채웁니다.
+	 *
+	 * @param session HTTP 세션
+	 * @param model   Thymeleaf 모델 (profileUser, customerAccessLogs 등)
 	 * @return out: Thymeleaf view path {@code app/e-commerce/customer-details}
 	 */
 	@GetMapping({"/app/e-commerce/customer-details", "/app/e-commerce/customer-details.html"})
-	public String appEcommerceCustomerDetails() {
+	public String appEcommerceCustomerDetails(HttpSession session, Model model) {
+		model.addAttribute("title", "고객 상세");
+		LoginSession login = sessionAuthService.getLoginSession(session);
+		if (login == null) {
+			model.addAttribute("customerSessionMissing", true);
+			return "app/e-commerce/customer-details";
+		}
+		Optional<User> profile = userMapper.findById(login.getUserId());
+		profile.ifPresent(user -> model.addAttribute("profileUser", user));
+		model.addAttribute("customerDisplayName", resolveDisplayName(login, profile.orElse(null)));
+		model.addAttribute("customerEmail", resolveEmail(login, profile.orElse(null)));
+		model.addAttribute("customerCreatedText", formatDateTime(resolveCreatedAt(profile.orElse(null))));
+		model.addAttribute("customerLoginAtText", formatDateTimeLong(login.getLoginAt()));
+		model.addAttribute("customerLoginType", login.getLoginType());
+		model.addAttribute("customerAddressLine", formatAddress(profile.orElse(null)));
+		model.addAttribute("customerZipcode", profile.map(User::getZipcode).orElse(null));
+		model.addAttribute("customerSex", formatSex(profile.map(User::getSex).orElse(null)));
+		model.addAttribute("customerInvoicePrefix", invoicePrefix(login.getUserId()));
+		List<UserAccessLog> logs = userAccessLogService.findRecentByUserId(login.getUserId(), 8);
+		model.addAttribute("customerAccessLogs", logs);
 		return "app/e-commerce/customer-details";
+	}
+	private static String resolveDisplayName(LoginSession login, User profile) {
+		if (profile != null && profile.getName() != null && !profile.getName().isBlank()) {
+			return profile.getName();
+		}
+		return login.getUserName() != null ? login.getUserName() : login.getUserId();
+	}
+	private static String resolveEmail(LoginSession login, User profile) {
+		if (profile != null && profile.getEmail() != null && !profile.getEmail().isBlank()) {
+			return profile.getEmail();
+		}
+		return login.getEmail();
+	}
+	private static LocalDateTime resolveCreatedAt(User profile) {
+		return profile != null ? profile.getRegDt() : null;
+	}
+	private static String formatDateTime(LocalDateTime value) {
+		return value != null ? value.format(CUSTOMER_DT) : "-";
+	}
+	private static String formatDateTimeLong(LocalDateTime value) {
+		return value != null ? value.format(CUSTOMER_DT_LONG) : "-";
+	}
+	private static String formatAddress(User profile) {
+		if (profile == null) {
+			return null;
+		}
+		String base = profile.getAddress();
+		String detail = profile.getAddressDetail();
+		if ((base == null || base.isBlank()) && (detail == null || detail.isBlank())) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		if (base != null && !base.isBlank()) {
+			sb.append(base.trim());
+		}
+		if (detail != null && !detail.isBlank()) {
+			if (sb.length() > 0) {
+				sb.append(" ");
+			}
+			sb.append(detail.trim());
+		}
+		return sb.toString();
+	}
+	private static String formatSex(String sex) {
+		if (sex == null || sex.isBlank()) {
+			return null;
+		}
+		return switch (sex.trim().toUpperCase(Locale.ROOT)) {
+			case "M", "MALE", "1" -> "남";
+			case "F", "FEMALE", "2" -> "여";
+			default -> sex;
+		};
+	}
+	private static String invoicePrefix(String userId) {
+		if (userId == null || userId.length() < 4) {
+			return userId != null ? userId.toUpperCase(Locale.ROOT) : "-";
+		}
+		return userId.substring(0, 4).toUpperCase(Locale.ROOT);
 	}
 	/**
 	 * @return out: Thymeleaf view path {@code app/e-commerce/shopping-cart}

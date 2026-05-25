@@ -5,10 +5,16 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
+
+        <th:block th:replace="~{fragments/nas-admin-nav :: tabs('files')}"></th:block>
+
           <div class="card mb-3">
             <div class="card-header">
-              <h5 class="mb-0">NAS 파일 저장</h5>
-              <p class="fs--1 mb-0 text-600">D:\nas-storage\printmall\uploads — 이미지·문서·영상 업로드</p>
+              <h5 class="mb-0">NAS 파일 업로드</h5>
+              <p class="fs--1 mb-0 text-600">
+                <span th:text="${nasUploadRoot}">NAS uploads</span> —
+                <a th:href="@{/admin/nas}">설정·용량</a>에서 경로·할당(<span th:text="${nasQuotaGb}">2</span> GB) 확인
+              </p>
             </div>
             <div class="card-body">
               <div class="row g-3" id="media-upload-panels">
@@ -102,14 +108,8 @@
                 </div>
               </div>
 
-              <div class="mt-3">
-                <h6 class="mb-2">저장 경로 (NAS)</h6>
-                <ul class="fs--1 mb-0">
-                  <li><code>D:\nas-storage\printmall\uploads\images\</code></li>
-                  <li><code>D:\nas-storage\printmall\uploads\documents\</code></li>
-                  <li><code>D:\nas-storage\printmall\uploads\videos\</code></li>
-                  <li><code>D:\nas-storage\printmall\uploads\products\</code></li>
-                </ul>
+              <div class="mt-3 fs--1 text-600">
+                저장 경로·용량은 <a th:href="@{/admin/nas}">NAS 설정</a> 화면에서 확인하세요.
               </div>
             </div>
           </div>

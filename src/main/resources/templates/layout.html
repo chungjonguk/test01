@@ -38,7 +38,7 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=27)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=31)}" rel="stylesheet" id="user-style-default" />
     <link th:if="${loadSwiper}" th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet/leaflet.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.css}" rel="stylesheet" />
@@ -53,7 +53,8 @@
       html[data-navbar-position="top"] #layoutHeaderVertical { display: none !important; }
       html[data-navbar-position="top"] .content { margin-left: 0 !important; }
       body.layout-hide-sidebar #layoutSidebar,
-      body.layout-hide-sidebar #layoutHeaderVertical .navbar-toggler { display: none !important; }
+      body.layout-hide-sidebar #layoutNavbarTop,
+      body.layout-hide-sidebar #layoutHeaderVertical { display: none !important; }
       body.layout-hide-sidebar .main > .container > .content,
       body.layout-hide-sidebar .main > .container-fluid > .content { margin-left: 0 !important; max-width: 100%; }
     </style>
@@ -181,7 +182,7 @@
     </script>
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress and kakaoMapAppKey != null}" th:attr="src=|https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoMapAppKey}&amp;autoload=false|"></script>
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress}" th:src="@{/assets/js/wizard-kakao-address.js(v=10)}"></script>
-    <script th:if="${loadCustomerDetailsActions}" th:src="@{/assets/js/customer-details-actions.js(v=1)}"></script>
+    <script th:if="${loadCustomerDetailsActions}" th:src="@{/assets/js/customer-details-actions.js(v=2)}"></script>
     <script th:if="${loadBillingActions}" th:src="@{/assets/js/billing-actions.js(v=1)}"></script>
     <script th:if="${loadCheckoutActions}" th:src="@{/assets/js/checkout-actions.js(v=3)}"></script>
     <script th:if="${loadCustomersActions}" th:src="@{/assets/js/customers-actions.js(v=1)}"></script>
@@ -189,13 +190,15 @@
     <script th:if="${loadCodeManagementActions}" th:src="@{/assets/js/code-management-actions.js(v=26)}"></script>
     <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=3)}"></script>
     <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=5)}"></script>
-    <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=4)}"></script>
+    <script th:if="${loadNasAdminActions}" th:src="@{/assets/js/nas-settings-actions.js(v=1)}"></script>
+    <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=5)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/kakao-address-search.js(v=1)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=2)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
     <script th:if="${loadEmailInboxActions}" th:src="@{/assets/js/email-inbox-actions.js(v=1)}"></script>
     <script th:if="${loadEmailComposeActions}" th:src="@{/assets/js/email-compose-actions.js(v=4)}"></script>
     <script th:src="@{/assets/js/dashboard-widget-actions.js(v=2)}"></script>
+    <script th:src="@{/assets/js/using-storage-widget.js(v=1)}"></script>
     <script th:src="@{/assets/js/navbar-position-settings.js(v=9)}"></script>
     <th:block th:replace="~{fragments/responsive :: scripts}"></th:block>
     <script th:if="${loadCalendarActions}" th:src="@{/assets/js/app-calendar-actions.js(v=1)}"></script>

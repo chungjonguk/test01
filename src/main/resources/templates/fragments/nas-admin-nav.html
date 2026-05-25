@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="tabs(active)">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" th:classappend="${active == 'settings'} ? 'active' : ''"
+               th:href="@{/admin/nas}"><span class="fas fa-cog me-1"></span>설정·용량</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:classappend="${active == 'files'} ? 'active' : ''"
+               th:href="@{/admin/media-storage}"><span class="fas fa-cloud-upload-alt me-1"></span>파일 업로드·목록</a>
+        </li>
+    </ul>
+</th:block>
+</body>
+</html>

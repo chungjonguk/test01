@@ -29,6 +29,12 @@ public final class ScreenTableResolver {
 		if ("/admin/companies".equals(uri)) {
 			return db("biz_company", null, "업체(거래처) 마스터 관리");
 		}
+		if ("/admin/nas".equals(uri) || "/admin/media-storage".equals(uri)) {
+			return db("nas_file", null, "NAS 설정·파일 저장");
+		}
+		if (uri.startsWith("/api/storage")) {
+			return db("nas_file", null, "NAS 스토리지 API");
+		}
 		if (uri.startsWith("/dashboard")) {
 			return codeOnly("common_code,common_code_value", "대시보드 콤보(공통코드)");
 		}

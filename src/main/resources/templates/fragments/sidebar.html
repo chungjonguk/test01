@@ -619,6 +619,18 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-building"></span></span><span class="nav-link-text ps-1">업체관리</span>
                     </div>
                   </a>
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-nas" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-nas">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-hdd"></span></span><span class="nav-link-text ps-1">NAS 저장소</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="sidebar-admin-nas">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/nas}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">설정·용량</span></div>
+                      </a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/media-storage}" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">파일 업로드</span></div>
+                      </a></li>
+                  </ul>
                   <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-orders" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-orders">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shopping-bag"></span></span><span class="nav-link-text ps-1">주문·판매</span>
                     </div>
@@ -1607,19 +1619,6 @@
                   </a>
                 </li>
               </ul>
-              <div class="settings mb-3">
-                <div class="card shadow-none">
-                  <div class="card-body alert mb-0" role="alert">
-                    <div class="btn-close-falcon-container">
-                      <button class="btn btn-link btn-close-falcon p-0" aria-label="닫기" data-bs-dismiss="alert"></button>
-                    </div>
-                    <div class="text-center"><img th:src="@{/assets/img/icons/spot-illustrations/navbar-vertical.png}" alt="" width="80" />
-                      <p class="fs--2 mt-2">Loving what you see? <br />Get your copy of <a href="#!" th:text="${appBrandName}">PrintMall</a></p>
-                      <div class="d-grid"><a class="btn btn-sm btn-purchase" href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/" target="_blank">Purchase</a></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </nav>

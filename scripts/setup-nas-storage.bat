@@ -2,6 +2,7 @@
 setlocal EnableExtensions
 chcp 65001 >nul
 
+rem application.properties app.storage.nas.base-path + upload-subdir 와 동일하게 유지
 set NAS_ROOT=D:\nas-storage\printmall\uploads
 
 echo.

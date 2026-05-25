@@ -1,10 +1,16 @@
 package com.example.springbootapp.storage;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import com.example.springbootapp.dto.NasStorageUsageDto;
+import com.example.springbootapp.dto.NasStorageUsageDto.CategoryUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -85,6 +91,111 @@ public class NasStorageService {
 	 * @param limit       최대 조회 건수 (1~500)
 	 * @return NAS 파일 메타데이터 목록
 	 */
+	/**
+	 * NAS 업로드 루트 폴더별 사용량을 집계한다 (Using Storage 위젯용).
+	 *
+	 * @return 폴더별·합계 사용량
+	 */
+	public NasStorageUsageDto getUsageSummary() {
+		long quotaBytes = nasStorage.getQuotaBytes();
+		Path uploadRoot = nasStorage.resolveUploadRoot();
+		long imageBytes = folderSizeBytes(nasStorage.resolveMediaDir(NasMediaType.IMAGE));
+		long productBytes = folderSizeBytes(nasStorage.resolveMediaDir(NasMediaType.PRODUCT));
+		long documentBytes = folderSizeBytes(nasStorage.resolveMediaDir(NasMediaType.DOCUMENT));
+		long videoBytes = folderSizeBytes(nasStorage.resolveMediaDir(NasMediaType.VIDEO));
+		List<CategoryUsage> categories = new ArrayList<>();
+		categories.add(category("regular", "이미지·상품", "images+products", imageBytes + productBytes,
+				"bg-progress-gradient border-end border-white border-2", "bg-primary", quotaBytes));
+		categories.add(category("system", "문서", NasMediaType.DOCUMENT.getFolderName(), documentBytes,
+				"bg-info border-end border-white border-2", "bg-info", quotaBytes));
+		categories.add(category("shared", "영상", NasMediaType.VIDEO.getFolderName(), videoBytes,
+				"bg-success border-end border-white border-2", "bg-success", quotaBytes));
+		long usedBytes = imageBytes + productBytes + documentBytes + videoBytes;
+		long freeBytes = Math.max(0, quotaBytes - usedBytes);
+		applyBarPercents(categories, usedBytes, quotaBytes);
+		CategoryUsage free = category("free", "여유", "-", freeBytes,
+				"bg-200", "bg-200", quotaBytes);
+		double usedSum = categories.stream().mapToDouble(CategoryUsage::getPercentOfQuota).sum();
+		free.setPercentOfQuota(Math.round(Math.max(0, 100.0 - usedSum) * 100.0) / 100.0);
+		categories.add(free);
+		NasStorageUsageDto dto = new NasStorageUsageDto();
+		dto.setUploadRoot(uploadRoot.toString());
+		dto.setQuotaBytes(quotaBytes);
+		dto.setUsedBytes(usedBytes);
+		dto.setFreeBytes(freeBytes);
+		dto.setCategories(categories);
+		return dto;
+	}
+	private static void applyBarPercents(List<CategoryUsage> categories, long usedBytes, long quotaBytes) {
+		if (usedBytes <= 0 || quotaBytes <= 0) {
+			return;
+		}
+		double usedBarTotal = Math.min(100.0, usedBytes * 100.0 / quotaBytes);
+		for (CategoryUsage row : categories) {
+			double pct = row.getBytes() * usedBarTotal / usedBytes;
+			row.setPercentOfQuota(Math.round(pct * 100.0) / 100.0);
+		}
+	}
+	private static CategoryUsage category(
+			String code, String label, String folder, long bytes, String barClass, String dotClass, long quotaBytes) {
+		CategoryUsage row = new CategoryUsage();
+		row.setCode(code);
+		row.setLabel(label);
+		row.setFolder(folder);
+		row.setBytes(bytes);
+		row.setBarClass(barClass);
+		row.setDotClass(dotClass);
+		row.setPercentOfQuota(0);
+		return row;
+	}
+	private static long folderSizeBytes(Path dir) {
+		if (dir == null || !Files.isDirectory(dir)) {
+			return 0;
+		}
+		final long[] total = { 0 };
+		try {
+			Files.walkFileTree(dir, new SimpleFileVisitor<>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+					total[0] += attrs.size();
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		} catch (IOException ex) {
+			log.warn("NAS 폴더 용량 집계 실패: {}", dir, ex);
+			return 0;
+		}
+		return total[0];
+	}
+	/**
+	 * NAS 설정 및 폴더별 용량(디스크) 정보.
+	 */
+	public java.util.Map<String, Object> getConfigSummary() {
+		java.util.Map<String, Object> body = new java.util.LinkedHashMap<>();
+		body.put("enabled", nasStorage.isEnabled());
+		body.put("basePath", nasStorage.getBasePath());
+		body.put("uploadSubdir", nasStorage.getUploadSubdir());
+		body.put("urlPrefix", nasStorage.normalizedUrlPrefix());
+		body.put("quotaGb", nasStorage.getQuotaGb());
+		body.put("quotaBytes", nasStorage.getQuotaBytes());
+		body.put("uploadRoot", nasStorage.resolveUploadRoot().toString());
+		List<java.util.Map<String, Object>> folders = new ArrayList<>();
+		for (NasMediaType type : NasMediaType.values()) {
+			long bytes = folderSizeBytes(nasStorage.resolveMediaDir(type));
+			java.util.Map<String, Object> row = new java.util.LinkedHashMap<>();
+			row.put("code", type.name().toLowerCase());
+			row.put("label", type.getLabel());
+			row.put("folder", type.getFolderName());
+			row.put("path", nasStorage.resolveMediaDir(type).toString());
+			row.put("bytes", bytes);
+			row.put("mb", Math.round(bytes / 1024.0 / 1024.0 * 100.0) / 100.0);
+			row.put("maxMb", type.getMaxBytes() / 1024 / 1024);
+			row.put("extensions", type.getAllowedExtensions());
+			folders.add(row);
+		}
+		body.put("folders", folders);
+		return body;
+	}
 	@Transactional(readOnly = true)
 	public List<NasFile> search(String mediaTypeCd, int limit) {
 		String typeFilter = null;

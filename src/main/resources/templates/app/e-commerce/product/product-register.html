@@ -26,21 +26,6 @@
           </div>
 
           <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h5 class="mb-0">상품 이미지 <span class="text-danger">*</span> <span class="fs--1 text-600 fw-normal">(1~5개)</span></h5>
-              <button type="button" class="btn btn-falcon-default btn-sm" id="btn-add-image-slot" disabled>
-                <span class="fas fa-plus me-1"></span>이미지 추가
-              </button>
-            </div>
-            <div class="card-body bg-light">
-              <div id="product-image-slots" class="row g-3"
-                   th:attr="data-max=${maxImages},
-                            data-upload-url=@{/api/ecommerce/products/upload-image}"></div>
-              <p class="fs--2 text-600 mb-0 mt-2" id="product-image-count-hint">0 / 5 등록됨</p>
-            </div>
-          </div>
-
-          <div class="card mb-3">
             <div class="card-header">
               <h5 class="mb-0">상품 정보</h5>
             </div>
@@ -90,6 +75,19 @@
                   <label class="form-label" for="description">상품 설명</label>
                   <textarea class="form-control" id="description" rows="4" maxlength="5000"
                             th:text="${productForm.description}" placeholder="상품 상세 설명"></textarea>
+                </div>
+
+                <div class="col-12 product-register-images-section">
+                  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-top pt-3 mt-1 mb-3">
+                    <h6 class="mb-0">상품 이미지 <span class="text-danger">*</span> <span class="fs--1 text-600 fw-normal">(1~5개)</span></h6>
+                    <button type="button" class="btn btn-falcon-default btn-sm" id="btn-add-image-slot" disabled>
+                      <span class="fas fa-plus me-1"></span>이미지 추가
+                    </button>
+                  </div>
+                  <div id="product-image-slots" class="row g-3 align-items-end"
+                       th:attr="data-max=${maxImages},
+                                data-upload-url=@{/api/ecommerce/products/upload-image}"></div>
+                  <p class="fs--2 text-600 mb-0 mt-2" id="product-image-count-hint">0 / 5 등록됨</p>
                 </div>
 
                 <div class="col-12">

@@ -154,6 +154,10 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/admin/media-storage")) {
 			setIfAbsent(model, "loadMediaStorageActions", true);
+			setIfAbsent(model, "loadNasAdminActions", true);
+		}
+		if (uri.contains("/admin/nas")) {
+			setIfAbsent(model, "loadNasAdminActions", true);
 		}
 		if (uri.contains("/admin/companies")) {
 			setIfAbsent(model, "loadCompanyManageActions", true);
@@ -198,13 +202,6 @@ public class PageViewAdvice {
 		if (uri.contains("/pages/authentication/wizard")) {
 			setIfAbsent(model, "hideSidebar", true);
 			setIfAbsent(model, "loadDropzone", true);
-			setIfAbsent(model, "loadWizardKakaoAddress", true);
-			if (isKakaoMapKeyConfigured()) {
-				setIfAbsent(model, "kakaoMapAppKey", kakaoJavascriptKey.trim());
-			}
-			if (StringUtils.hasText(kakaoClientId)) {
-				setIfAbsent(model, "kakaoRestApiKeyForMapHint", kakaoClientId.trim());
-			}
 		}
 	}
 	private boolean isKakaoMapKeyConfigured() {

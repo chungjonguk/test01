@@ -13,6 +13,8 @@ public class NasStorageProperties {
 	private String basePath = "D:/nas-storage/printmall";
 	private String uploadSubdir = "uploads";
 	private String urlPrefix = "/uploads";
+	/** Using Storage 위젯 표시용 할당 용량(GB) */
+	private int quotaGb = 2;
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -36,6 +38,16 @@ public class NasStorageProperties {
 	}
 	public void setUrlPrefix(String urlPrefix) {
 		this.urlPrefix = urlPrefix;
+	}
+	public int getQuotaGb() {
+		return quotaGb;
+	}
+	public void setQuotaGb(int quotaGb) {
+		this.quotaGb = quotaGb;
+	}
+	public long getQuotaBytes() {
+		int gb = quotaGb < 1 ? 1 : quotaGb;
+		return (long) gb * 1024L * 1024L * 1024L;
 	}
 	public Path resolveUploadRoot() {
 		if (enabled) {

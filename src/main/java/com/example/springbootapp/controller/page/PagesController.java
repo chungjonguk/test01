@@ -204,9 +204,10 @@ public class PagesController {
 	/**
 	 * @return out: Thymeleaf view path {@code pages/authentication/wizard}
 	 */
-	@GetMapping("/pages/authentication/wizard")
+	@GetMapping({"/pages/authentication/wizard", "/pages/authentication/wizard.html"})
 	public String pagesAuthWizard(Model model) {
 		model.addAttribute("title", "마법사");
+		model.addAttribute("hideSidebar", true);
 		return "pages/authentication/wizard";
 	}
 	/**

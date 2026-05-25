@@ -21,26 +21,22 @@
      scripts\mobile-dev\setup-mobile-firewall.bat
      → 우클릭 → 관리자 권한으로 실행
 
-  2) 모바일용 서버 기동
-     PrintMall  : run-server-mobile.bat
-     모의투자   : stock-mock-trading\run-server-mobile.bat
+  2) 서버 기동 (PC + 모바일 동시)
+     PrintMall  : run-server.bat  (또는 run-server-mobile.bat — 동일)
+     모의투자   : stock-mock-trading\run-server.bat
 
   3) 휴대폰 브라우저에서 접속
-     scripts\mobile-dev\get-lan-ip.ps1 실행 → 나온 IP 사용
+     기동 시 콘솔에 표시된 LAN IP 사용
      예) http://192.168.0.15:8081/
 
 ================================================================================
-2. run-server.bat vs run-server-mobile.bat
+2. run-server.bat (PC + 모바일 통합)
 ================================================================================
 
-  run-server.bat
-    - localhost(127.0.0.1)만 접속 가능
-    - 일반 PC 개발용
-
-  run-server-mobile.bat
-    - server.address=0.0.0.0 (모든 네트워크 인터페이스)
-    - profile=mobile (application-mobile.properties)
-    - 같은 Wi-Fi 휴대폰에서 PC IP로 접속 가능
+  run-server.bat / run-server-mobile.bat
+    - server.address=0.0.0.0 (한 번 기동으로 PC·모바일 모두 접속)
+    - PC:     http://localhost:8081/
+    - 모바일: http://<PC-LAN-IP>:8081/  (같은 Wi-Fi)
 
 ================================================================================
 3. PC에서 모바일 화면 미리보기 (실기기 없을 때)
@@ -104,7 +100,7 @@
 
   ■ 휴대폰에서 "연결할 수 없음"
     - PC와 폰 같은 Wi-Fi 확인
-    - run-server-mobile.bat 로 기동했는지 확인 (일반 run-server.bat 아님)
+    - run-server.bat 로 기동했는지 확인 (0.0.0.0 바인딩)
     - setup-mobile-firewall.bat 관리자 실행
     - PC IP 재확인: get-lan-ip.ps1
 

@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head}">
-</head>
-<body>
-    <th:block th:replace="~{layout :: body}">
-    <div th:fragment="page-content">
-        <div class="row justify-content-center pt-6">
-          <div class="col-sm-10 col-lg-7 col-xxl-5"><a class="d-flex flex-center mb-4" th:href="@{/}"><span class="font-sans-serif fw-bolder fs-4 d-inline-block" th:text="${appBrandName}">PrintMall</span></a>
+<head th:replace="~{fragments/auth-simple :: head}"></head>
+<body class="auth-simple-page auth-wizard-page">
+    <th:block th:replace="~{fragments/app-loading :: bar}"></th:block>
+    <main class="main" id="top">
+        <div class="container" data-layout="container">
+            <div class="row justify-content-center py-6">
+                <div class="col-sm-10 col-lg-7 col-xxl-5">
+                    <a class="d-flex flex-center mb-4" th:href="@{/}"><span class="font-sans-serif fw-bolder fs-4 d-inline-block" th:text="${appBrandName}">PrintMall</span></a>
             <div class="card theme-wizard mb-5" id="wizard">
               <div class="card-header bg-light pt-3 pb-2">
                 <ul class="nav justify-content-between nav-wizard">
@@ -143,54 +144,37 @@
                       </div>
 
                       <h6 class="mb-3 text-800 border-bottom pb-2"><span class="fas fa-map-marker-alt me-2 text-primary"></span>주소 정보</h6>
-                      <div class="mb-3" id="wizard-kakao-address-search">
-                        <label class="form-label" for="wizard-address-search-query">주소 검색</label>
-                        <div class="input-group">
-                          <input class="form-control" type="search" id="wizard-address-search-query" placeholder="도로명·지번·건물명 (예: 테헤란로 152)" autocomplete="off" />
-                          <button class="btn btn-primary" type="button" id="wizard-address-search-btn"><span class="fas fa-search me-1"></span>검색</button>
-                        </div>
-                        <div class="form-text">2글자 이상 입력 후 검색하세요. <a href="https://developers.kakao.com/docs/ko/local/dev-guide" target="_blank" rel="noopener">카카오 로컬 API</a></div>
-                        <div class="list-group mt-2 d-none" id="wizard-address-search-results" role="listbox" aria-label="주소 검색 결과"></div>
-                        <div class="alert alert-warning py-2 px-3 mt-2 mb-0 fs--1 d-none" id="wizard-address-search-hint" role="alert"></div>
-                      </div>
                       <input type="hidden" name="country" id="wizard-address-country" value="KR" />
-                      <p class="text-600 fs--1 mb-3">우편번호·기본 주소는 검색으로만 채워지며, 직접 수정할 수 없습니다.</p>
                       <div class="mb-3">
                         <label class="form-label" for="wizard-address-postal">우편번호</label>
-                        <input class="form-control wizard-address-field--locked" type="text" name="postalCode" id="wizard-address-postal" placeholder="주소 검색 후 자동 입력" pattern="[0-9]{5}" maxlength="5" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
-                        <div class="invalid-feedback">주소를 검색해 우편번호를 채워 주세요.</div>
+                        <input class="form-control" type="text" name="postalCode" id="wizard-address-postal" placeholder="12345" pattern="[0-9]{5}" maxlength="5" required="required" autocomplete="postal-code" />
+                        <div class="invalid-feedback">우편번호 5자리를 입력해 주세요.</div>
                       </div>
                       <div class="row g-2">
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label class="form-label" for="wizard-address-state">시/도</label>
-                            <input class="form-control wizard-address-field--locked" type="text" name="state" id="wizard-address-state" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
-                            <div class="invalid-feedback">주소를 검색해 주세요.</div>
+                            <input class="form-control" type="text" name="state" id="wizard-address-state" placeholder="서울특별시" required="required" autocomplete="address-level1" />
+                            <div class="invalid-feedback">시/도를 입력해 주세요.</div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label class="form-label" for="wizard-address-city">시/군/구</label>
-                            <input class="form-control wizard-address-field--locked" type="text" name="city" id="wizard-address-city" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
-                            <div class="invalid-feedback">주소를 검색해 주세요.</div>
+                            <input class="form-control" type="text" name="city" id="wizard-address-city" placeholder="강남구" required="required" autocomplete="address-level2" />
+                            <div class="invalid-feedback">시/군/구를 입력해 주세요.</div>
                           </div>
                         </div>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="wizard-address-line1">기본 주소</label>
-                        <input class="form-control wizard-address-field--locked" type="text" name="addressLine1" id="wizard-address-line1" placeholder="주소 검색 후 자동 입력" required="required" readonly="readonly" tabindex="-1" aria-readonly="true" />
-                        <div class="invalid-feedback">주소 검색 후 기본 주소가 채워집니다.</div>
+                        <input class="form-control" type="text" name="addressLine1" id="wizard-address-line1" placeholder="테헤란로 152" required="required" autocomplete="street-address" />
+                        <div class="invalid-feedback">기본 주소를 입력해 주세요.</div>
                       </div>
                       <div class="mb-3">
-                        <label class="form-label" for="wizard-address-line2">상세 주소 <span class="text-500 fw-normal">(직접 입력)</span></label>
+                        <label class="form-label" for="wizard-address-line2">상세 주소</label>
                         <input class="form-control" type="text" name="addressLine2" id="wizard-address-line2" placeholder="101동 1001호" autocomplete="address-line2" />
-                        <div class="form-text">동·호수 등 상세 주소만 입력할 수 있습니다.</div>
-                      </div>
-                      <div id="wizard-kakao-map-wrap" class="d-none mb-0" aria-hidden="true">
-                        <label class="form-label mb-1" for="wizard-kakao-map">위치 확인 (카카오맵)</label>
-                        <div id="wizard-kakao-map" class="wizard-kakao-map border rounded"></div>
-                        <div id="wizard-kakao-map-status" class="alert alert-warning py-2 px-3 mt-2 mb-0 fs--1 d-none" role="status"></div>
-                        <div class="form-text mb-0">주소 검색 후 목록에서 주소를 선택하면 지도에 표시됩니다.</div>
+                        <div class="form-text">동·호수 등 상세 주소를 입력할 수 있습니다.</div>
                       </div>
                     </form>
                   </div>
@@ -216,21 +200,25 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-              <div class="modal-content position-relative p-5">
-                <div class="d-flex align-items-center">
-                  <div class="lottie me-3" data-options='{"path":"/assets/img/animated-icons/warning-light.json"}'></div>
-                  <div class="flex-1">
-                    <button class="btn btn-link text-danger position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal"><span class="fas fa-times"></span></button>
-                    <p class="mb-0">You don't have access to the link. Please try again.</p>
-                  </div>
+                    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                            <div class="modal-content position-relative p-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="lottie me-3" data-options='{"path":"/assets/img/animated-icons/warning-light.json"}'></div>
+                                    <div class="flex-1">
+                                        <button class="btn btn-link text-danger position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal"><span class="fas fa-times"></span></button>
+                                        <p class="mb-0">You don't have access to the link. Please try again.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         (function initBirthDateSelects() {
@@ -336,7 +324,5 @@
         });
       });
     </script>
-    </div>
-    </th:block>
 </body>
 </html>

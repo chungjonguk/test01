@@ -1,4 +1,11 @@
 package com.example.springbootapp.config;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +33,34 @@ public class ApplicationStartupLogger implements ApplicationListener<Application
 		} catch (Exception ex) {
 			log.warn("[{}] 서비스 준비됨 — DB 재확인 실패(이미 기동 검사 통과 후 연결 끊김 가능)", name, ex);
 		}
-		log.info("[{}] 서버 포트 {} — 예: http://localhost:{}/dashboard", name, port, port);
+		log.info("[{}] PC 접속 — http://localhost:{}/dashboard", name, port);
+		for (String lanIp : resolveLanIpv4Addresses()) {
+			log.info("[{}] 모바일(LAN) 접속 — http://{}:{}/ (같은 Wi-Fi)", name, lanIp, port);
+		}
+	}
+	private static List<String> resolveLanIpv4Addresses() {
+		List<String> ips = new ArrayList<>();
+		try {
+			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			while (interfaces.hasMoreElements()) {
+				NetworkInterface ni = interfaces.nextElement();
+				if (!ni.isUp() || ni.isLoopback() || ni.isVirtual()) {
+					continue;
+				}
+				Enumeration<InetAddress> addresses = ni.getInetAddresses();
+				while (addresses.hasMoreElements()) {
+					InetAddress addr = addresses.nextElement();
+					if (addr instanceof Inet4Address inet4 && !inet4.isLoopbackAddress()) {
+						String host = inet4.getHostAddress();
+						if (host != null && !host.startsWith("169.254.")) {
+							ips.add(host);
+						}
+					}
+				}
+			}
+		} catch (Exception ex) {
+			return Collections.emptyList();
+		}
+		return ips;
 	}
 }

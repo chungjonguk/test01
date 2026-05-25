@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Mobile: PrintMall 서버 (LAN)",
+      "label": "PrintMall 서버 (PC+모바일)",
       "type": "shell",
       "command": "${workspaceFolder}/run-server-mobile.bat",
       "options": {

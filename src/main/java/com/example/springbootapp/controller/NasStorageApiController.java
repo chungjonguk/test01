@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.NasFile;
+import com.example.springbootapp.dto.NasStorageUsageDto;
+import com.example.springbootapp.dto.NasStorageUsageDto.CategoryUsage;
 import com.example.springbootapp.storage.NasMediaType;
 import com.example.springbootapp.storage.NasStorageService;
 import com.example.springbootapp.storage.NasStorageService.NasStoredFile;
@@ -32,10 +34,38 @@ public class NasStorageApiController {
 		this.sessionAuthService = sessionAuthService;
 	}
 	/**
+	 * NAS 설정(application.properties) 및 폴더 경로를 조회합니다.
+	 *
+	 * @return out: enabled, basePath, uploadRoot, folders 등
+	 */
+	@GetMapping("/config")
+	public ResponseEntity<Map<String, Object>> config() {
+		return ResponseEntity.ok(nasStorageService.getConfigSummary());
+	}
+	/**
 	 * 지원하는 미디어 유형 목록을 조회합니다.
 	 *
 	 * @return out: {@code ResponseEntity<Map>} — {@code types} (code, folder, label, maxMb, extensions)
 	 */
+	/**
+	 * NAS 폴더 사용량을 조회합니다 (Using Storage 위젯).
+	 *
+	 * @return out: uploadRoot, quotaBytes, usedBytes, categories 등
+	 */
+	@GetMapping("/usage")
+	public ResponseEntity<Map<String, Object>> usage() {
+		NasStorageUsageDto summary = nasStorageService.getUsageSummary();
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("uploadRoot", summary.getUploadRoot());
+		body.put("quotaBytes", summary.getQuotaBytes());
+		body.put("quotaGb", summary.getQuotaBytes() / 1024 / 1024 / 1024);
+		body.put("usedBytes", summary.getUsedBytes());
+		body.put("freeBytes", summary.getFreeBytes());
+		body.put("usedMb", roundMb(summary.getUsedBytes()));
+		body.put("quotaMb", roundMb(summary.getQuotaBytes()));
+		body.put("categories", summary.getCategories().stream().map(this::toCategoryDto).collect(Collectors.toList()));
+		return ResponseEntity.ok(body);
+	}
 	@GetMapping("/types")
 	public ResponseEntity<Map<String, Object>> types() {
 		List<Map<String, Object>> items = Arrays.stream(NasMediaType.values())
@@ -113,6 +143,21 @@ public class NasStorageApiController {
 		body.put("regId", row.getRegId());
 		body.put("regDt", row.getRegDt());
 		return body;
+	}
+	private Map<String, Object> toCategoryDto(CategoryUsage row) {
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("code", row.getCode());
+		body.put("label", row.getLabel());
+		body.put("folder", row.getFolder());
+		body.put("bytes", row.getBytes());
+		body.put("mb", roundMb(row.getBytes()));
+		body.put("percentOfQuota", row.getPercentOfQuota());
+		body.put("barClass", row.getBarClass());
+		body.put("dotClass", row.getDotClass());
+		return body;
+	}
+	private static double roundMb(long bytes) {
+		return Math.round(bytes / 1024.0 / 1024.0 * 100.0) / 100.0;
 	}
 	private Map<String, Object> toTypeDto(NasMediaType type) {
 		Map<String, Object> row = new LinkedHashMap<>();

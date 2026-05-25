@@ -41,6 +41,7 @@ class UserServicePasswordResetTest {
 		User updated = userMapper.findById("reset_pw_user").orElseThrow();
 		assertThat(updated.getPw()).isEqualTo("reset_pw_user");
 		assertThat(updated.getUpdateId()).isEqualTo("admin");
+		
 	}
 
 	@Test

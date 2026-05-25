@@ -40,7 +40,10 @@
     bindClick('customer-update-details-btn', '상세 정보 수정 (데모)', 'info');
     bindClick('customer-refund-btn', '환불 요청 (데모)', 'warning');
     bindClick('customer-save-btn', '변경 사항 저장 (데모)', 'success');
-    bindClick('customer-more-logs-btn', '추가 로그는 백엔드 연동 시 표시됩니다.', 'info');
+    var moreLogs = document.getElementById('customer-more-logs-btn');
+    if (!moreLogs || !moreLogs.getAttribute('href') || moreLogs.getAttribute('href') === '#!') {
+      bindClick('customer-more-logs-btn', '접속 이력이 없습니다.', 'info');
+    }
 
     document.querySelectorAll('.customer-action-link').forEach(function (link) {
       link.addEventListener('click', function (e) {
