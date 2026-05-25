@@ -39,8 +39,7 @@ public class DashboardPageAdvice {
 		model.addAttribute("dashboardCompanyId", companyId);
 		model.addAttribute("dashboardCompanyName", companySessionService.companyName(companyId));
 
-		String uri = request.getRequestURI();
-		if (uri == null || !isDashboardUri(uri, request)) {
+		if (!isDashboardUri(request)) {
 			return;
 		}
 		model.addAttribute("dashboardWidgetCatalog", DashboardWidgetCatalog.toMaps(DashboardWidgetCatalog.all()));
@@ -52,8 +51,8 @@ public class DashboardPageAdvice {
 		}
 	}
 
-	private boolean isDashboardUri(String uri, HttpServletRequest request) {
-		String path = toLogicalServletPath(uri, request);
+	private boolean isDashboardUri(HttpServletRequest request) {
+		String path = toLogicalServletPath(request);
 		return "/".equals(path)
 				|| "/index".equals(path)
 				|| "/index.do".equals(path)
@@ -62,13 +61,14 @@ public class DashboardPageAdvice {
 				|| path.startsWith("/admin/dashboard-config");
 	}
 
-	private String toLogicalServletPath(String uri, HttpServletRequest request) {
-		String ctx = request.getContextPath();
-		String servletPath = uri.startsWith(ctx) ? uri.substring(ctx.length()) : uri;
+	private String toLogicalServletPath(HttpServletRequest request) {
 		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
 		if (crypto != null && crypto.isEnabled()) {
-			return crypto.toLogicalPath(servletPath);
+			return crypto.resolveLogicalPath(request);
 		}
+		String uri = request.getRequestURI();
+		String ctx = request.getContextPath();
+		String servletPath = uri.startsWith(ctx) ? uri.substring(ctx.length()) : uri;
 		return DoPathHelper.stripDoSuffix(servletPath);
 	}
 }

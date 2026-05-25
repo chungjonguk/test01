@@ -25,7 +25,7 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String uri = request.getRequestURI();
+		String uri = resolveUri(request);
 		if (uri == null || shouldSkip(uri)) {
 			return true;
 		}
@@ -40,6 +40,14 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 		response.sendRedirect(request.getContextPath() + errorPath);
 		return false;
 	}
+	private String resolveUri(HttpServletRequest request) {
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto != null && crypto.isEnabled()) {
+			return crypto.resolveLogicalPath(request);
+		}
+		return request.getRequestURI();
+	}
+
 	private boolean shouldSkip(String uri) {
 		return uri.startsWith("/api/")
 				|| uri.startsWith("/auth/")

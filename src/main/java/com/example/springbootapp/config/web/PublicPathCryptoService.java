@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
@@ -50,6 +51,21 @@ public class PublicPathCryptoService {
 	}
 
 	/** 요청 경로 → 논리 경로 ({@code *.do}) */
+	/** 요청 속성 또는 공개 URL에서 논리 경로({@code *.do})를 얻습니다. */
+	public String resolveLogicalPath(HttpServletRequest request) {
+		if (request == null) {
+			return "/";
+		}
+		Object attr = request.getAttribute(EncryptedPathDecodeFilter.ATTR_LOGICAL_PATH);
+		if (attr instanceof String logical && !logical.isBlank()) {
+			return logical;
+		}
+		String contextPath = request.getContextPath();
+		String uri = request.getRequestURI();
+		String path = uri != null && uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
+		return toLogicalPath(path != null ? path : "/");
+	}
+
 	public String toLogicalPath(String requestPath) {
 		if (requestPath == null || requestPath.isBlank()) {
 			return "/";

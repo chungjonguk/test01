@@ -25,7 +25,8 @@ public final class DoPathHelper {
 			"/assets/",
 			"/vendors/",
 			"/error",
-			"/api/url/");
+			"/api/url/",
+			"/api/kakao/");
 
 	private DoPathHelper() {
 	}
@@ -57,13 +58,13 @@ public final class DoPathHelper {
 		return hasFileExtension(p);
 	}
 
-	/** GET 리다이렉트 필터 제외 (API는 fetch 패치로 .do 처리) */
+	/** GET 리다이렉트 필터 제외 */
 	public static boolean shouldSkipRedirect(String path) {
 		if (shouldSkipSuffix(path)) {
 			return true;
 		}
 		String p = stripQuery(path);
-		return p.startsWith("/api/");
+		return p.startsWith("/api/") && !p.startsWith("/api/kakao/");
 	}
 
 	/** 경로를 .do 형식으로 변환 ({@code /} → {@code /index.do}) */

@@ -25,6 +25,8 @@ echo   Project   : %PROJECT%
 echo   Eclipse명 : spring-boot-app
 echo.
 echo  [최초 1회] scripts\eclipse\import-maven-project.bat 안내 참고
+echo  [JDK]      scripts\eclipse\apply-jdk17.ps1
+echo  [백업]     backup-and-eclipse.bat  또는  scripts\backup\backup-project-quick.ps1
 echo  [Cursor 연동] STS Preferences ^> General ^> Workspace
 echo    - Refresh using native hooks or polling
 echo    - Refresh on access

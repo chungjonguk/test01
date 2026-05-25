@@ -6,18 +6,21 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 
 /**
- * {@code /e/{token}.do} 요청을 복호화한 논리 경로로 MVC가 처리하도록 변환합니다.
+ * 암호화 URL 요청의 논리 경로를 요청 속성에 담습니다.
+ * <p>DispatcherServlet 매칭은 등록된 {@code /e/{token}.do} 그대로 사용해야 합니다.</p>
  */
 @Component
 @Profile("!test")
 @Order(Ordered.HIGHEST_PRECEDENCE + 10)
 public class EncryptedPathDecodeFilter extends OncePerRequestFilter {
+
+	public static final String ATTR_LOGICAL_PATH = "printmall.logicalPath";
 
 	private final PublicPathCryptoService publicPathCryptoService;
 
@@ -30,22 +33,15 @@ public class EncryptedPathDecodeFilter extends OncePerRequestFilter {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
-		if (!publicPathCryptoService.isEnabled()) {
-			filterChain.doFilter(request, response);
-			return;
+		if (publicPathCryptoService.isEnabled()) {
+			String contextPath = request.getContextPath();
+			String uri = request.getRequestURI();
+			String path = uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
+			if (publicPathCryptoService.isPublicPath(path)) {
+				String logical = publicPathCryptoService.toLogicalPath(path);
+				request.setAttribute(ATTR_LOGICAL_PATH, logical);
+			}
 		}
-		String contextPath = request.getContextPath();
-		String uri = request.getRequestURI();
-		String path = uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
-		if (!publicPathCryptoService.isPublicPath(path)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		String logical = publicPathCryptoService.toLogicalPath(path);
-		if (logical.equals(path)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		filterChain.doFilter(new LogicalPathRequestWrapper(request, contextPath, logical), response);
+		filterChain.doFilter(request, response);
 	}
 }

@@ -64,7 +64,7 @@ public class PageViewAdvice {
 		if (request == null) {
 			return;
 		}
-		String uri = request.getRequestURI();
+		String uri = resolveRequestUri(request);
 		if (uri == null || shouldSkip(uri)) {
 			return;
 		}
@@ -298,6 +298,14 @@ public class PageViewAdvice {
 			model.addAttribute(name, value);
 		}
 	}
+	private String resolveRequestUri(HttpServletRequest request) {
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto != null && crypto.isEnabled()) {
+			return crypto.resolveLogicalPath(request);
+		}
+		return request.getRequestURI();
+	}
+
 	private boolean shouldSkip(String uri) {
 		return uri.startsWith("/api/")
 				|| uri.startsWith("/auth/")

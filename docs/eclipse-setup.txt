@@ -32,8 +32,9 @@
   2) 최초 1회: scripts\eclipse\import-maven-project.bat 안내 참고
   3) File → Open Projects from File System 또는 Maven Import
   4) Maven → Update Project 실행
+  5) JDK 경로: powershell -File scripts\eclipse\apply-jdk17.ps1
 
-  점검: powershell -File scripts\eclipse\verify-eclipse-setup.ps1
+  점검: backup-and-eclipse.bat 또는 scripts\eclipse\verify-eclipse-setup.ps1
 
 ================================================================================
 2. JDK 17 설정
@@ -96,6 +97,8 @@
 ================================================================================
 
   메인        : http://localhost:8081/
+  쇼핑몰      : 사이드바 [쇼핑몰] (카탈로그·장바구니·주문)
+  재고관리    : http://localhost:8081/admin/inventory
   업체관리    : http://localhost:8081/admin/companies
   메뉴관리    : http://localhost:8081/admin/menus
   코드관리    : http://localhost:8081/admin/codes

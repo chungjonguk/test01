@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/url/'];
+  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/url/', '/api/kakao/'];
   var ENCRYPT_PREFIX = '/e/';
   var cache = Object.create(null);
   var pending = Object.create(null);

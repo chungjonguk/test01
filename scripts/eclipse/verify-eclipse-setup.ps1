@@ -14,7 +14,10 @@ $required = @(
     ".settings/org.eclipse.m2e.core.prefs",
     ".launch/spring-boot-app-java.launch",
     ".launch/spring-boot-app-maven.launch",
+    ".launch/spring-boot-app-spring-boot.launch",
+    "scripts/eclipse/apply-jdk17.ps1",
     "open-sts-workspace.bat",
+    "backup-and-eclipse.bat",
     "pom.xml"
 )
 
