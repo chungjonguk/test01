@@ -5,6 +5,15 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
+        <div class="mb-2">
+            <p class="fs--1 text-600 mb-0">
+                표시 위젯은 <a th:href="@{/admin/dashboard-config}">대시보드 구성</a>에서 선택합니다.
+                (프로젝트 위젯 카탈로그 · 브라우저 저장)
+            </p>
+        </div>
+        <div id="dashboard-widgets-host" class="dashboard-widgets-host mb-3"></div>
+        <div id="dashboard-widget-templates" class="d-none" aria-hidden="true">
+        <div id="dashboard-widget-staging" data-dashboard-staging="true"></div>
         <div class="row g-3 mb-3">
             <div class="col-md-6 col-xxl-3">
                 <div class="card h-md-100 ecommerce-card-min-width" data-dashboard-widget="weekly-sales">
@@ -612,6 +621,67 @@
                 </div>
             </div>
         </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-6 col-xxl-3">
+                <div class="card h-md-100" data-dashboard-widget="new-users">
+                    <div class="card-header d-flex flex-between-center pb-0">
+                        <h6 class="mb-0 mt-2">신규 사용자</h6>
+                        <div th:replace="~{fragments/widget-actions :: widgetMenu('new-users')}"></div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-end">
+                        <div class="row justify-content-between">
+                            <div class="col-auto align-self-end">
+                                <div class="fs-4 fw-normal font-sans-serif text-700 lh-1 mb-1">12.6K</div>
+                                <span class="badge rounded-pill fs--2 bg-200 text-success"><span class="fas fa-caret-up me-1"></span>18.2%</span>
+                            </div>
+                            <div class="col-auto ps-0 mt-n4">
+                                <div class="echart-new-users" data-echart-responsive="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xxl-4">
+                <div class="card h-100" data-dashboard-widget="admin-quick-links">
+                    <div class="card-header py-2"><h6 class="mb-0">관리 바로가기</h6></div>
+                    <div class="card-body fs--1">
+                        <a class="d-block mb-2" th:href="@{/admin/menus}">메뉴관리</a>
+                        <a class="d-block mb-2" th:href="@{/admin/nas}">NAS 설정</a>
+                        <a class="d-block mb-2" th:href="@{/admin/user-access-logs}">접속 로그</a>
+                        <a class="d-block" th:href="@{/users}">사용자 관리</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xxl-4">
+                <div class="card h-100" data-dashboard-widget="ecm-quick-links">
+                    <div class="card-header py-2"><h6 class="mb-0">이커머스 바로가기</h6></div>
+                    <div class="card-body fs--1">
+                        <a class="d-block mb-2" th:href="@{/app/e-commerce/product/product-manage}">상품 관리</a>
+                        <a class="d-block mb-2" th:href="@{/app/e-commerce/orders/order-list}">주문 목록</a>
+                        <a class="d-block mb-2" th:href="@{/app/e-commerce/customers}">고객 관리</a>
+                        <a class="d-block" th:href="@{/app/e-commerce/product/product-register}">상품 등록</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card" data-dashboard-widget="dashboard-summary">
+                    <div class="card-header d-flex flex-between-center py-2">
+                        <h6 class="mb-0">대시보드 구성 안내</h6>
+                        <div th:replace="~{fragments/widget-actions :: widgetMenu('dashboard-summary')}"></div>
+                    </div>
+                    <div class="card-body fs--1 text-600">
+                        <a th:href="@{/admin/dashboard-config}">대시보드 구성</a>에서 이 프로젝트에서 사용 가능한 위젯을 선택·정렬할 수 있습니다.
+                        저장 후 이 페이지를 새로고침하면 반영됩니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <script th:inline="javascript">
+            window.__DASHBOARD_WIDGET_CATALOG__ = /*[[${dashboardWidgetCatalog}]]*/ [];
+        </script>
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
     </th:block>

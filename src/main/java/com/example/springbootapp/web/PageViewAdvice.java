@@ -149,6 +149,9 @@ public class PageViewAdvice {
 		if (uri.contains("/admin/menus")) {
 			setIfAbsent(model, "loadMenuManagementActions", true);
 		}
+		if (uri.contains("/admin/dashboard-config")) {
+			setIfAbsent(model, "loadDashboardConfigActions", true);
+		}
 		if (uri.contains("/admin/user-access-logs")) {
 			setIfAbsent(model, "loadUserAccessLogActions", true);
 		}

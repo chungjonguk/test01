@@ -20,6 +20,9 @@ public final class ScreenTableResolver {
 		if ("/admin/codes".equals(uri)) {
 			return db("common_code", "common_code_value", "공통코드·상세코드 관리");
 		}
+		if ("/admin/dashboard-config".equals(uri)) {
+			return codeOnly("screen_list", "홈 대시보드 위젯 구성");
+		}
 		if ("/admin/menus".equals(uri)) {
 			return db("screen_list", "screen_table_map", "화면·테이블 매핑 조회");
 		}

@@ -1,4 +1,5 @@
 package com.example.springbootapp.controller.page;
+import com.example.springbootapp.config.DashboardWidgetCatalog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(Model model) {
 		model.addAttribute("title", appBrandName + " | 대시보드 및 웹 앱 템플릿");
+		populateDashboard(model);
 		return "index";
 	}
 	/**
@@ -25,6 +27,11 @@ public class HomeController {
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
 		model.addAttribute("title", "대시보드 - 기본");
+		populateDashboard(model);
 		return "index";
+	}
+
+	private void populateDashboard(Model model) {
+		model.addAttribute("dashboardWidgetCatalog", DashboardWidgetCatalog.toMaps(DashboardWidgetCatalog.all()));
 	}
 }
