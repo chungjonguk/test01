@@ -75,8 +75,9 @@ public class PageViewAdvice {
 		if (uri.contains("/dashboard/crm")) {
 			setIfAbsent(model, "loadDayjs", true);
 			setIfAbsent(model, "loadWorldMap", true);
-			setIfAbsent(model, "loadFlatpickr", true);
 			setIfAbsent(model, "loadCrmDashboardInit", true);
+			model.addAttribute("loadCalendar", false);
+			model.addAttribute("loadFlatpickr", false);
 		}
 		if (uri.contains("/dashboard/lms")) {
 			setIfAbsent(model, "loadChartJs", true);
@@ -226,6 +227,7 @@ public class PageViewAdvice {
 			setIfAbsent(model, "hideSidebar", true);
 			setIfAbsent(model, "loadDropzone", true);
 		}
+		applyScriptFlagDefaults(model);
 	}
 	private boolean isKakaoRestApiConfigured() {
 		if (!StringUtils.hasText(kakaoClientId)) {
@@ -258,6 +260,16 @@ public class PageViewAdvice {
 		// REST API 키를 JavaScript 키 자리에 넣으면 카카오맵 SDK가 로드되지 않음
 		return !StringUtils.hasText(kakaoClientId) || !jsKey.equals(kakaoClientId.trim());
 	}
+	/** layout.html SpEL(or) — null 대신 false 로 통일 */
+	private static void applyScriptFlagDefaults(Model model) {
+		setIfAbsent(model, "loadCalendar", false);
+		setIfAbsent(model, "loadFlatpickr", false);
+		setIfAbsent(model, "loadDayjs", false);
+		setIfAbsent(model, "loadEchartsExamples", false);
+		setIfAbsent(model, "loadWorldMap", false);
+		setIfAbsent(model, "loadCrmDashboardInit", false);
+	}
+
 	private static void setIfAbsent(Model model, String name, Object value) {
 		if (!model.containsAttribute(name)) {
 			model.addAttribute(name, value);

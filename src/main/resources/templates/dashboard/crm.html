@@ -4,7 +4,7 @@
 </head>
 <body>
     <th:block th:replace="~{layout :: body}">
-    <div th:fragment="page-content">
+    <div th:fragment="page-content" id="crm-dashboard-page">
           <div class="row mb-3">
             <div class="col">
               <div class="card bg-100 shadow-none border">
@@ -20,8 +20,8 @@
                       <div class="col-auto">
                         <h6 class="text-700 mb-0">Showing Data For: </h6>
                       </div>
-                      <div class="col-md-auto position-relative">
-                        <input class="form-control form-control-sm datetimepicker ps-4" id="CRMDateRange" type="text" data-options="{&quot;mode&quot;:&quot;range&quot;,&quot;dateFormat&quot;:&quot;M d&quot;,&quot;disableMobile&quot;:true , &quot;defaultDate&quot;: [&quot;Sep 13&quot;, &quot;Sep 20&quot;] }" /><span class="fas fa-calendar-alt text-primary position-absolute top-50 translate-middle-y ms-2"> </span>
+                      <div class="col-md-auto crm-date-range-wrap position-relative">
+                        <input class="form-control form-control-sm crm-date-range-input ps-4" id="CRMDateRange" type="text" placeholder="Sep 13 — Sep 20" /><span class="fas fa-calendar-alt text-primary position-absolute top-50 translate-middle-y ms-2"> </span>
                       </div>
                     </form>
                   </div>
@@ -42,8 +42,8 @@
                         </div>
                         <div class="dropdown font-sans-serif btn-reveal-trigger">
                           <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-new-contact" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-contact"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-contact"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                           </div>
                         </div>
                       </div>
@@ -65,8 +65,8 @@
                         </div>
                         <div class="dropdown font-sans-serif btn-reveal-trigger">
                           <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-new-users" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-users"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-users"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                           </div>
                         </div>
                       </div>
@@ -88,8 +88,8 @@
                         </div>
                         <div class="dropdown font-sans-serif btn-reveal-trigger">
                           <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-new-leads" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-leads"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                          <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-new-leads"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                           </div>
                         </div>
                       </div>
@@ -116,8 +116,8 @@
                   </ul>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">
                     <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-session-by-country" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-session-by-country"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-session-by-country"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -190,8 +190,8 @@
                   <h6 class="mb-0">Most Leads</h6>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">
                     <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="dropdown-most-leads" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-most-leads"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-most-leads"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -211,28 +211,28 @@
                     <div class="col-xxl-12 col-md-7">
                       <hr class="mx-ncard mb-0 d-md-none d-xxl-block" />
                       <div class="d-flex flex-between-center border-bottom py-3 pt-md-0 pt-xxl-3">
-                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/email.svg }" width="16" height="16" alt="..." />
+                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/email.svg}" width="16" height="16" alt="" />
                           <h6 class="text-700 mb-0">Email </h6>
                         </div>
                         <p class="fs--1 text-500 mb-0 fw-semi-bold">5200 vs 1052</p>
                         <h6 class="text-700 mb-0">54%</h6>
                       </div>
                       <div class="d-flex flex-between-center border-bottom py-3">
-                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/social.svg }" width="16" height="16" alt="..." />
+                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/social.svg}" width="16" height="16" alt="" />
                           <h6 class="text-700 mb-0">Social </h6>
                         </div>
                         <p class="fs--1 text-500 mb-0 fw-semi-bold">5623 vs 4929</p>
                         <h6 class="text-700 mb-0">27%</h6>
                       </div>
                       <div class="d-flex flex-between-center border-bottom py-3">
-                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/call.svg }" width="16" height="16" alt="..." />
+                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/call.svg}" width="16" height="16" alt="" />
                           <h6 class="text-700 mb-0">Call </h6>
                         </div>
                         <p class="fs--1 text-500 mb-0 fw-semi-bold">2535 vs 1486</p>
                         <h6 class="text-700 mb-0">4%</h6>
                       </div>
                       <div class="d-flex flex-between-center border-bottom py-3 border-bottom-0 pb-0">
-                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/other.svg }" width="16" height="16" alt="..." />
+                        <div class="d-flex"><img class="me-2" th:src="@{/assets/img/crm/other.svg}" width="16" height="16" alt="" />
                           <h6 class="text-700 mb-0">Other </h6>
                         </div>
                         <p class="fs--1 text-500 mb-0 fw-semi-bold">256 vs 189</p>
@@ -250,8 +250,8 @@
                   <h6 class="mb-0">Deal Forecast</h6>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">
                     <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="crm-deal-forecast-bar" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-deal-forecast-bar"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-deal-forecast-bar"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -303,8 +303,8 @@
                   <h6 class="mb-0">Deal Closed vs Goal</h6>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">
                     <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="crm-closed-vs-goal" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-closed-vs-goal"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-closed-vs-goal"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -388,16 +388,18 @@
                     </div>
                     <div class="dropdown font-sans-serif btn-reveal-trigger">
                       <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="crm-location-by-session" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                      <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-location-by-session"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-location-by-session"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="card-body pb-0 position-relative">
+                <div class="card-body pb-0 position-relative overflow-hidden">
                   <!-- Find the JS file for the following chart at: src/js/charts/echarts/location-by-session-crm.js-->
                   <!-- If you are not using gulp based workflow, you can find the transpiled code at: public/assets/js/theme.js-->
-                  <div class="echart-location-by-session-map" data-echart-responsive="true" style="height:302px;"></div>
+                  <div class="crm-map-chart-shell">
+                    <div class="echart-location-by-session-map crm-map-chart" data-echart-responsive="true" style="height:302px;min-height:302px;"></div>
+                  </div>
                   <div class="position-absolute top-0 border mt-3 border-200 rounded-3 bg-light">
                     <button class="btn btn-link btn-sm bg-100 rounded-bottom-0 px-2 location-by-session-map-zoom text-700" type="button"><span class="fas fa-plus fs--1"></span></button>
                     <hr class="text-200 m-0" />
@@ -501,8 +503,8 @@
                       <h6 class="mb-0">Lead Conversion</h6>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="crm-lead-conversion" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-lead-conversion"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-lead-conversion"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -550,8 +552,8 @@
                       </div>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-to-do-list-0" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-0"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-0"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -568,8 +570,8 @@
                       </div>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-to-do-list-1" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-1"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-1"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -586,8 +588,8 @@
                       </div>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-to-do-list-2" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-2"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -604,8 +606,8 @@
                       </div>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-to-do-list-3" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-3"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-3"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -622,8 +624,8 @@
                       </div>
                       <div class="dropdown font-sans-serif btn-reveal-trigger">
                         <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-to-do-list-4" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-4"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                        <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-to-do-list-4"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                          <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -638,8 +640,8 @@
                   <h6 class="mb-0">Recent Leads</h6>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">
                     <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" id="recent-leads-header-dropdown" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="recent-leads-header-dropdown"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                    <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="recent-leads-header-dropdown"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                      <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -684,8 +686,8 @@
                             </div>
                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                               <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-recent-leads-0" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-0"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-0"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                               </div>
                             </div>
                           </td>
@@ -714,8 +716,8 @@
                             </div>
                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                               <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-recent-leads-1" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-1"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-1"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                               </div>
                             </div>
                           </td>
@@ -744,8 +746,8 @@
                             </div>
                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                               <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-recent-leads-2" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-2"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                               </div>
                             </div>
                           </td>
@@ -774,8 +776,8 @@
                             </div>
                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                               <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-recent-leads-3" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-3"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-3"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                               </div>
                             </div>
                           </td>
@@ -804,8 +806,8 @@
                             </div>
                             <div class="dropdown font-sans-serif btn-reveal-trigger">
                               <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal-sm transition-none" type="button" id="crm-recent-leads-4" data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--2"></span></button>
-                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-4"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                              <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-recent-leads-4"><a class="dropdown-item" href="#" role="button" data-crm-action="view">View</a><a class="dropdown-item" href="#" role="button" data-crm-action="export">Export</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#" role="button" data-crm-action="remove">Remove</a>
                               </div>
                             </div>
                           </td>
@@ -820,8 +822,22 @@
               </div>
             </div>
           </div>
-        <div th:replace="~{fragments/footer :: footer}"></div>
+        <div class="modal fade" id="crmDetailModal" tabindex="-1" aria-labelledby="crmDetailModalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="crmDetailModalTitle">상세</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+              </div>
+              <div class="modal-body" id="crmDetailModalBody"></div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </th:block>
 </body>
 </html>

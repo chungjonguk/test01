@@ -38,7 +38,8 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=36)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=39)}" rel="stylesheet" id="user-style-default" />
+    <link th:if="${loadCalendar == true or loadFlatpickr == true or loadCrmDashboardInit == true}" th:href="@{/vendors/flatpickr/flatpickr.min.css}" rel="stylesheet" />
     <link th:if="${loadSwiper}" th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet/leaflet.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.css}" rel="stylesheet" />
@@ -146,11 +147,11 @@
         dayjs.extend(window.dayjs_plugin_customParseFormat);
       }
     </script>
-    <script th:if="${loadCalendar}" th:src="@{/vendors/fullcalendar/main.min.js}"></script>
-    <script th:if="${loadCalendar or loadFlatpickr}" th:src="@{/assets/js/flatpickr.js}"></script>
+    <script th:if="${loadCalendar == true}" th:src="@{/vendors/fullcalendar/main.min.js}"></script>
     <script th:if="${loadChartJs}" th:src="@{/vendors/chart/chart.min.js}"></script>
     <script th:if="${loadCountUp}" th:src="@{/vendors/countup/countUp.umd.js}"></script>
-    <script th:if="${loadWorldMap}" th:src="@{/assets/data/world.js}"></script>
+    <script th:if="${loadWorldMap == true}" th:src="@{/assets/data/world.js}"></script>
+    <script th:if="${loadCalendar == true or loadFlatpickr == true or loadCrmDashboardInit == true}" th:src="@{/assets/js/flatpickr.js}"></script>
     <script th:if="${loadD3}" th:src="@{/vendors/d3/d3.min.js}"></script>
     <script th:if="${loadLeaflet}" th:src="@{/vendors/leaflet/leaflet.js}"></script>
     <script th:if="${loadLeaflet}" th:src="@{/vendors/leaflet.markercluster/leaflet.markercluster.js}"></script>
@@ -195,7 +196,8 @@
     <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-map.js(v=5)}"></script>
     <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=2)}"></script>
     <script th:if="${loadUsersAddressInit != null and loadUsersAddressInit}" th:src="@{/assets/js/users-address-init.js(v=1)}"></script>
-    <script th:if="${loadCrmDashboardInit != null and loadCrmDashboardInit}" th:src="@{/assets/js/crm-dashboard-init.js(v=1)}"></script>
+    <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-dashboard-init.js(v=7)}"></script>
+    <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-card-actions.js(v=1)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=10)}"></script>
     <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=2)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
