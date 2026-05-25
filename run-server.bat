@@ -24,6 +24,22 @@ if errorlevel 1 (
 echo [1/5] DB OK
 
 echo.
+echo [1.5/5] Kakao REST API key...
+if defined KAKAO_REST_API_KEY (
+  echo   OK: KAKAO_REST_API_KEY is set
+) else (
+  findstr /C:"YOUR_KAKAO_REST_API_KEY" "%~dp0src\main\resources\application-local.properties" >nul 2>&1
+  if not errorlevel 1 (
+    echo   [WARN] Kakao key not configured - address search uses DEMO addresses
+    echo          1^) developers.kakao.com -^> REST API key copy
+    echo          2^) powershell -File scripts\setup-kakao-rest-key.ps1
+    echo          3^) restart run-server.bat
+  ) else (
+    echo   OK: application-local.properties has kakao.client-id
+  )
+)
+
+echo.
 echo [2/5] Free port 8081...
 for /f "tokens=5" %%P in ('netstat -ano 2^>nul ^| findstr ":8081" ^| findstr "LISTENING"') do (
   echo   kill PID %%P

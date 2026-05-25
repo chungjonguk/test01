@@ -41,6 +41,7 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_NAS", "NAS 설정", "/admin/nas", "admin/nas-settings", 28);
 		put(byUri, "ADMIN_NAS_FILES", "NAS 파일", "/admin/media-storage", "admin/media-storage", 29);
 		put(byUri, "ADMIN_DASHBOARD_CONFIG", "대시보드 구성", "/admin/dashboard-config", "admin/dashboard-config", 30);
+		put(byUri, "ADMIN_COMPANY_PAGE_IMAGES", "페이지 이미지", "/admin/company-page-images", "admin/company-page-images", 31);
 	}
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
 		if (byUri.containsKey(uri)) {

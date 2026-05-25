@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+
+          <div class="card mb-3" id="company-page-images-panel">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col">
+                  <h5 class="mb-1">업체 페이지 이미지</h5>
+                  <p class="fs--1 mb-0 text-600">업체별 홈·로그인·로고 등 페이지 슬롯에 이미지를 등록합니다. NAS <code>company-pages</code> 폴더에 저장됩니다.</p>
+                </div>
+                <div class="col-auto">
+                  <a class="btn btn-falcon-default btn-sm" th:href="@{/admin/companies}">
+                    <span class="fas fa-building me-1"></span>업체관리
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <div th:replace="~{fragments/dashboard-company-select :: companySelect}"></div>
+              </div>
+
+              <div id="company-page-image-message" class="mb-3" aria-live="polite"></div>
+
+              <div class="row g-3" id="company-page-image-slots"
+                   th:attr="data-initial-company-id=${dashboardCompanyId}">
+                <div class="col-12 col-md-6 col-xl-4" th:each="slot : ${companyPageImageSlots}"
+                     th:attr="data-page-cd=${slot.pageCd}">
+                  <div class="card border h-100 company-page-image-slot-card">
+                    <div class="card-header py-2 bg-light">
+                      <h6 class="mb-0" th:text="${slot.label}">슬롯</h6>
+                      <p class="fs--2 mb-0 text-600" th:text="${slot.description}"></p>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                      <p class="fs--2 text-600 mb-2" th:text="${slot.hint}"></p>
+                      <div class="position-relative mb-2">
+                        <span class="badge badge-soft-secondary fs--2 company-page-image-preview-badge d-none position-absolute top-0 end-0 m-1">미리보기</span>
+                        <div class="company-page-image-preview border rounded bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                             style="min-height:160px">
+                          <span class="text-600 fs--1 company-page-image-empty">미등록</span>
+                          <img class="company-page-image-preview-img d-none img-fluid rounded"
+                               alt="이미지 미리보기"
+                               style="max-height:200px;max-width:100%;object-fit:contain" />
+                        </div>
+                      </div>
+                      <label class="form-label fs--2 mb-1">대체 텍스트</label>
+                      <input class="form-control form-control-sm mb-2 company-page-image-alt" type="text"
+                             maxlength="200" placeholder="접근성용 설명 (선택)" />
+                      <input class="form-control form-control-sm mb-2 company-page-image-file" type="file" accept="image/*" />
+                      <div class="d-flex flex-wrap gap-2 mt-auto">
+                        <button type="button" class="btn btn-falcon-default btn-sm btn-company-page-preview" disabled title="크게 보기">
+                          <span class="fas fa-eye me-1"></span>미리보기
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm btn-company-page-upload">
+                          <span class="fas fa-upload me-1"></span>등록
+                        </button>
+                        <button type="button" class="btn btn-falcon-default btn-sm btn-company-page-delete" disabled>
+                          <span class="fas fa-trash-alt me-1"></span>삭제
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="company-page-image-preview-modal" tabindex="-1"
+               aria-labelledby="company-page-image-preview-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header py-2">
+                  <h6 class="modal-title" id="company-page-image-preview-modal-label">이미지 미리보기</h6>
+                  <p class="fs--1 mb-0 ms-2 text-600" id="company-page-image-preview-modal-caption"></p>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <div class="modal-body text-center bg-light">
+                  <img id="company-page-image-preview-modal-img" class="img-fluid rounded" alt="확대 미리보기"
+                       style="max-height:70vh;object-fit:contain" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+    <script>
+      (function () {
+        function boot() {
+          if (typeof window.CompanyPageImageInit === 'function') {
+            window.CompanyPageImageInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', boot);
+        } else {
+          boot();
+        }
+      })();
+    </script>
+</body>
+</html>

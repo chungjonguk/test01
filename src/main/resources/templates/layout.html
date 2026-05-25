@@ -38,7 +38,7 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=33)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=36)}" rel="stylesheet" id="user-style-default" />
     <link th:if="${loadSwiper}" th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet/leaflet.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.css}" rel="stylesheet" />
@@ -176,11 +176,11 @@
     <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
     <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=6)}"></script>
     <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
-    <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress and kakaoMapAppKey != null}" th:inline="javascript">
+    <script th:if="${kakaoMapAppKey != null and ((loadWizardKakaoAddress != null and loadWizardKakaoAddress) or (loadKakaoAddressForm != null and loadKakaoAddressForm))}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
       window.__KAKAO_REST_API_KEY__ = /*[[${kakaoRestApiKeyForMapHint}]]*/ '';
     </script>
-    <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress and kakaoMapAppKey != null}" th:attr="src=|https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoMapAppKey}&amp;autoload=false|"></script>
+    <script th:if="${kakaoMapAppKey != null and ((loadWizardKakaoAddress != null and loadWizardKakaoAddress) or (loadKakaoAddressForm != null and loadKakaoAddressForm))}" th:src="@{/api/kakao/local/maps-sdk.js}"></script>
     <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress}" th:src="@{/assets/js/wizard-kakao-address.js(v=10)}"></script>
     <script th:if="${loadCustomerDetailsActions}" th:src="@{/assets/js/customer-details-actions.js(v=2)}"></script>
     <script th:if="${loadBillingActions}" th:src="@{/assets/js/billing-actions.js(v=1)}"></script>
@@ -192,8 +192,11 @@
     <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=5)}"></script>
     <script th:if="${loadNasAdminActions}" th:src="@{/assets/js/nas-settings-actions.js(v=1)}"></script>
     <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=5)}"></script>
-    <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/kakao-address-search.js(v=1)}"></script>
-    <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=2)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-search.js(v=3)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-map.js(v=5)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=1)}"></script>
+    <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=10)}"></script>
+    <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=2)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
     <script th:if="${loadEmailInboxActions}" th:src="@{/assets/js/email-inbox-actions.js(v=1)}"></script>
     <script th:if="${loadEmailComposeActions}" th:src="@{/assets/js/email-compose-actions.js(v=4)}"></script>

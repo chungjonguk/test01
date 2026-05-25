@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
- * 대시보드 화면에 업체 목록·선택 업체·구성 데이터를 노출한다.
+ * 사이드바·대시보드 화면에 업체 목록·선택 업체·구성 데이터를 노출한다.
  */
 @ControllerAdvice
 public class DashboardPageAdvice {
@@ -27,17 +27,18 @@ public class DashboardPageAdvice {
 
 	@ModelAttribute
 	public void dashboardCompanyContext(Model model, HttpSession session, HttpServletRequest request) {
+		var companies = companySessionService.listActiveCompanies();
+		model.addAttribute("dashboardCompanies", companies);
+		Long companyId = companySessionService.resolveSelectedCompanyId(session);
+		model.addAttribute("dashboardCompanyId", companyId);
+		model.addAttribute("dashboardCompanyName", companySessionService.companyName(companyId));
+
 		String uri = request.getRequestURI();
 		if (uri == null || !isDashboardUri(uri)) {
 			return;
 		}
-		var companies = companySessionService.listActiveCompanies();
-		model.addAttribute("dashboardCompanies", companies);
 		model.addAttribute("dashboardWidgetCatalog", DashboardWidgetCatalog.toMaps(DashboardWidgetCatalog.all()));
 		model.addAttribute("dashboardDefaultIds", DashboardWidgetCatalog.defaultEnabledIds());
-		Long companyId = companySessionService.resolveSelectedCompanyId(session);
-		model.addAttribute("dashboardCompanyId", companyId);
-		model.addAttribute("dashboardCompanyName", companySessionService.companyName(companyId));
 		if (companyId != null) {
 			model.addAttribute("dashboardLayoutConfig", configService.getConfig(companyId));
 		}

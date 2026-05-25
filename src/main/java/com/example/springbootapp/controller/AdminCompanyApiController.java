@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.springbootapp.dto.BizCompanyBulkDeleteDto;
 import com.example.springbootapp.dto.BizCompanyFormDto;
 import com.example.springbootapp.service.BizCompanyService;
 import jakarta.servlet.http.HttpSession;
@@ -105,6 +106,26 @@ public class AdminCompanyApiController {
 			Map<String, Object> body = new HashMap<>();
 			body.put("success", true);
 			body.put("message", "업체가 삭제되었습니다.");
+			return ResponseEntity.ok(body);
+		} catch (IllegalArgumentException ex) {
+			return badRequest(ex.getMessage());
+		}
+	}
+
+	/**
+	 * 체크박스로 선택한 업체를 일괄 삭제합니다.
+	 *
+	 * @param dto in: {@code companyIds} 목록
+	 * @return out: {@code success}, {@code deleted}, {@code message}
+	 */
+	@PostMapping("/batch-delete")
+	public ResponseEntity<Map<String, Object>> deleteBatch(@RequestBody BizCompanyBulkDeleteDto dto) {
+		try {
+			int deleted = bizCompanyService.deleteMany(dto != null ? dto.getCompanyIds() : null);
+			Map<String, Object> body = new LinkedHashMap<>();
+			body.put("success", true);
+			body.put("deleted", deleted);
+			body.put("message", deleted + "건의 업체가 삭제되었습니다.");
 			return ResponseEntity.ok(body);
 		} catch (IllegalArgumentException ex) {
 			return badRequest(ex.getMessage());

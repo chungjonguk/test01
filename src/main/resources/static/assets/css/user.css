@@ -8,6 +8,31 @@ body {
   font-family: var(--falcon-body-font-family);
 }
 
+/* 사이드바 > 관리자 > 업체: 선택 업체 배지 */
+.navbar-vertical .sidebar-selected-company {
+  max-width: 100%;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.company-page-image-preview-img {
+  cursor: zoom-in;
+}
+
+.company-page-image-preview:hover {
+  border-color: var(--falcon-primary, #2c7be5) !important;
+}
+
+.kakao-address-search-panel .list-group-item-action {
+  cursor: pointer;
+}
+
+.kakao-address-map-wrap .kakao-address-map {
+  width: 100%;
+  height: 220px;
+  min-height: 180px;
+}
+
 .font-sans-serif {
   font-family: var(--falcon-font-sans-serif);
 }

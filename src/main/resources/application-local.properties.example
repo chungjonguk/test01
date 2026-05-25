@@ -1,10 +1,17 @@
 # 이 파일을 application-local.properties 로 복사한 뒤 REST API 키를 입력하세요.
-# developers.kakao.com > 내 애플리케이션 > 앱 키 > REST API 키
-kakao.client-id=여기에_REST_API_키_입력
-# 카카오맵 JS — REST API 키와 다른 JavaScript 키 (필수, 별도 발급)
-kakao.javascript-key=여기에_JavaScript_키_입력
+# (또는 기존 application-local.properties 맨 아래에 아래 블록만 추가)
+#
+# developers.kakao.com → 내 애플리케이션 → 앱 키 → REST API 키
+# 플랫폼 → Web → 사이트 도메인에 http://localhost:8081 등록
+kakao.client-id=발급받은_REST_API_키
+# 카카오맵 JS — REST API 키와 다른 JavaScript 키 (맵 화면용)
+# kakao.javascript-key=발급받은_JavaScript_키
 kakao.local.mock-enabled=false
-# developers.kakao.com → 카카오맵 ON, 플랫폼 Web → http://localhost:8081 등록
+# developers.kakao.com → 제품 설정 → 지도(OPEN_MAP_AND_LOCAL) ON
+# → 플랫폼 키 → JavaScript 키 → JavaScript SDK 도메인 (줄바꿈으로 각각 등록):
+#   http://localhost:8081
+#   http://127.0.0.1:8081
+# 브라우저 주소창이 127.0.0.1 이면 localhost만 등록해도 맵이 안 뜹니다.
 # kakao.local.fallback-mock-on-local-disabled=false
 
 # --- KG이니시스 테스트 결제창 (가맹점 계약 후 sign-key 교체) ---

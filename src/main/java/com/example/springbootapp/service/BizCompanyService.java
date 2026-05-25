@@ -84,13 +84,35 @@ public class BizCompanyService {
 	 */
 	@Transactional
 	public void delete(Long companyId) {
-		if (companyId == null) {
-			throw new IllegalArgumentException("업체 ID가 필요합니다.");
+		deleteMany(List.of(companyId));
+	}
+
+	/**
+	 * 선택한 업체를 일괄 삭제한다.
+	 *
+	 * @param companyIds 삭제할 업체 ID 목록
+	 * @return 실제 삭제된 건수
+	 */
+	@Transactional
+	public int deleteMany(List<Long> companyIds) {
+		if (companyIds == null || companyIds.isEmpty()) {
+			throw new IllegalArgumentException("삭제할 업체를 선택하세요.");
 		}
-		if (bizCompanyMapper.findById(companyId) == null) {
-			throw new IllegalArgumentException("업체를 찾을 수 없습니다. ID=" + companyId);
+		int deleted = 0;
+		for (Long companyId : companyIds) {
+			if (companyId == null) {
+				continue;
+			}
+			if (bizCompanyMapper.findById(companyId) == null) {
+				continue;
+			}
+			bizCompanyMapper.deleteById(companyId);
+			deleted++;
 		}
-		bizCompanyMapper.deleteById(companyId);
+		if (deleted == 0) {
+			throw new IllegalArgumentException("삭제할 업체를 찾을 수 없습니다.");
+		}
+		return deleted;
 	}
 	private void validate(BizCompanyFormDto dto) {
 		if (dto == null || isBlank(dto.getCompanyNm())) {

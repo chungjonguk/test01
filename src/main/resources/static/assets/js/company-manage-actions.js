@@ -7,7 +7,18 @@
   'use strict';
 
   var API_BASE = '/api/admin/companies';
-  var KakaoAddress = window.PrintMallKakaoAddress;
+  var companyAddressForm = null;
+
+  function getAddressForm() {
+    if (!companyAddressForm && window.PrintMallKakaoAddressForm) {
+      companyAddressForm = window.PrintMallKakaoAddressForm.create({
+        idPrefix: 'company',
+        modalId: 'company-form-modal',
+        onNotify: notify
+      });
+    }
+    return companyAddressForm;
+  }
 
   function notify(message, icon) {
     if (window.Swal) {
@@ -68,91 +79,6 @@
     });
   }
 
-  /** DB 저장 형식: [우편번호] 기본주소 / 상세주소 */
-  function formatStoredAddress(postal, base, detail) {
-    var b = (base || '').trim();
-    var p = digitsOnly(postal).slice(0, 5);
-    var d = (detail || '').trim();
-    if (!b && !p && !d) {
-      return '';
-    }
-    var line = p ? '[' + p + '] ' + b : b;
-    if (d) {
-      line += (line ? ' / ' : '') + d;
-    }
-    return line.trim();
-  }
-
-  function parseStoredAddress(value) {
-    var raw = (value || '').trim();
-    if (!raw) {
-      return { postal: '', base: '', detail: '' };
-    }
-    var bracket = raw.match(/^\[(\d{5})\]\s*(.*)$/);
-    if (bracket) {
-      var rest = bracket[2];
-      var slashIdx = rest.indexOf(' / ');
-      if (slashIdx >= 0) {
-        return {
-          postal: bracket[1],
-          base: rest.slice(0, slashIdx).trim(),
-          detail: rest.slice(slashIdx + 3).trim()
-        };
-      }
-      return { postal: bracket[1], base: rest.trim(), detail: '' };
-    }
-    return { postal: '', base: raw, detail: '' };
-  }
-
-  function clearAddressFields() {
-    var ids = [
-      'form-address-search-query',
-      'form-address-zip',
-      'form-address-base',
-      'form-address-detail'
-    ];
-    ids.forEach(function (id) {
-      var el = $(id);
-      if (el) {
-        el.value = '';
-      }
-    });
-    var results = $('company-address-search-results');
-    if (results) {
-      results.innerHTML = '';
-      results.classList.add('d-none');
-    }
-    var hint = $('company-address-search-hint');
-    if (hint) {
-      hint.classList.add('d-none');
-      hint.textContent = '';
-    }
-  }
-
-  function fillAddressFields(postal, base, detail) {
-    if ($('form-address-zip')) {
-      $('form-address-zip').value = postal || '';
-    }
-    if ($('form-address-base')) {
-      $('form-address-base').value = base || '';
-    }
-    if ($('form-address-detail')) {
-      $('form-address-detail').value = detail || '';
-    }
-  }
-
-  function applyKakaoAddressItem(item) {
-    if (!item || !KakaoAddress) {
-      return;
-    }
-    fillAddressFields(item.postalCode || '', KakaoAddress.buildFormLine1(item), '');
-    var detailEl = $('form-address-detail');
-    if (detailEl) {
-      detailEl.focus();
-    }
-    notify('주소가 입력되었습니다.', 'success');
-  }
-
   function getModal() {
     var el = $('company-form-modal');
     if (!el || !window.bootstrap) {
@@ -193,18 +119,50 @@
       .replace(/"/g, '&quot;');
   }
 
+  function updateBulkDeleteButton() {
+    var btn = $('btn-company-delete-selected');
+    var checkAll = $('company-check-all');
+    if (!btn) {
+      return;
+    }
+    var checked = document.querySelectorAll('.company-row-check:checked');
+    btn.disabled = !checked.length;
+    if (checkAll) {
+      var all = document.querySelectorAll('.company-row-check');
+      checkAll.checked = all.length > 0 && checked.length === all.length;
+      checkAll.indeterminate = checked.length > 0 && checked.length < all.length;
+    }
+  }
+
+  function getSelectedCompanyIds() {
+    var ids = [];
+    document.querySelectorAll('.company-row-check:checked').forEach(function (el) {
+      var id = parseInt(el.value, 10);
+      if (!isNaN(id)) {
+        ids.push(id);
+      }
+    });
+    return ids;
+  }
+
   function renderRows(companies) {
     var tbody = $('company-grid-body');
     var countEl = $('company-result-count');
+    var checkAll = $('company-check-all');
     if (!tbody) {
       return;
     }
+    if (checkAll) {
+      checkAll.checked = false;
+      checkAll.indeterminate = false;
+    }
+    updateBulkDeleteButton();
     if (countEl) {
       countEl.textContent = (companies ? companies.length : 0) + '건';
     }
     if (!companies || !companies.length) {
       tbody.innerHTML =
-        '<tr><td colspan="8" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
+        '<tr><td colspan="9" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
       return;
     }
     tbody.innerHTML = companies
@@ -213,6 +171,13 @@
           '<tr data-company-id="' +
           escapeHtml(row.companyId) +
           '">' +
+          '<td class="text-center">' +
+          '<input class="form-check-input company-row-check" type="checkbox" value="' +
+          escapeHtml(row.companyId) +
+          '" aria-label="업체 ' +
+          escapeHtml(row.companyNm) +
+          ' 선택" />' +
+          '</td>' +
           '<td class="ps-3 text-center">' +
           escapeHtml(row.companyId) +
           '</td>' +
@@ -246,6 +211,7 @@
         );
       })
       .join('');
+    updateBulkDeleteButton();
   }
 
   function loadList() {
@@ -275,7 +241,10 @@
     $('form-ceo-nm').value = '';
     $('form-tel').value = '';
     $('form-email').value = '';
-    clearAddressFields();
+    var af = getAddressForm();
+    if (af) {
+      af.clear();
+    }
     $('form-status-cd').value = 'ACTIVE';
     $('form-use-yn').value = 'Y';
     $('form-memo').value = '';
@@ -291,8 +260,10 @@
       $('form-ceo-nm').value = company.ceoNm || '';
       $('form-tel').value = company.tel || '';
       $('form-email').value = company.email || '';
-      var parsed = parseStoredAddress(company.address || '');
-      fillAddressFields(parsed.postal, parsed.base, parsed.detail);
+      var af = getAddressForm();
+      if (af) {
+        af.fillFromStored(company.address || '');
+      }
       $('form-status-cd').value = company.statusCd || 'ACTIVE';
       $('form-use-yn').value = company.useYn || 'Y';
       $('form-memo').value = company.memo || '';
@@ -338,11 +309,7 @@
       ceoNm: $('form-ceo-nm').value.trim(),
       tel: $('form-tel').value.trim(),
       email: $('form-email').value.trim(),
-      address: formatStoredAddress(
-        $('form-address-zip').value,
-        $('form-address-base').value,
-        $('form-address-detail').value
-      ),
+      address: getAddressForm() ? getAddressForm().getStored() : '',
       statusCd: $('form-status-cd').value,
       useYn: $('form-use-yn').value,
       memo: $('form-memo').value.trim()
@@ -379,8 +346,29 @@
       });
   }
 
+  function confirmDelete(title, onConfirm) {
+    if (window.Swal) {
+      window.Swal.fire({
+        title: title,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#e63757'
+      }).then(function (r) {
+        if (r.isConfirmed) {
+          onConfirm();
+        }
+      });
+      return;
+    }
+    if (window.confirm(title)) {
+      onConfirm();
+    }
+  }
+
   function deleteCompany(id) {
-    var doDelete = function () {
+    confirmDelete('업체를 삭제할까요?', function () {
       fetch(API_BASE + '/' + encodeURIComponent(id), {
         method: 'DELETE',
         credentials: 'same-origin'
@@ -401,46 +389,48 @@
         .catch(function () {
           notify('서버 연결에 실패했습니다.', 'error');
         });
-    };
-    if (window.Swal) {
-      window.Swal.fire({
-        title: '업체를 삭제할까요?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '삭제',
-        cancelButtonText: '취소'
-      }).then(function (r) {
-        if (r.isConfirmed) {
-          doDelete();
-        }
-      });
-      return;
-    }
-    if (window.confirm('업체를 삭제할까요?')) {
-      doDelete();
-    }
+    });
   }
 
-  function bindAddressSearch() {
-    if (!KakaoAddress || typeof KakaoAddress.bindSearch !== 'function') {
+  function deleteSelectedCompanies() {
+    var ids = getSelectedCompanyIds();
+    if (!ids.length) {
+      notify('삭제할 업체를 선택하세요.', 'warning');
       return;
     }
-    KakaoAddress.bindSearch({
-      queryId: 'form-address-search-query',
-      btnId: 'btn-company-address-search',
-      resultsId: 'company-address-search-results',
-      hintId: 'company-address-search-hint',
-      onSelect: applyKakaoAddressItem,
-      onError: function (msg) {
-        notify(msg, 'warning');
-      }
+    confirmDelete('선택한 ' + ids.length + '건의 업체를 삭제할까요?', function () {
+      fetch(API_BASE + '/batch-delete', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ companyIds: ids })
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { ok: res.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok) {
+            notify((result.data && result.data.message) || '삭제에 실패했습니다.', 'error');
+            return;
+          }
+          notify(result.data.message || '삭제되었습니다.', 'success');
+          loadList();
+        })
+        .catch(function () {
+          notify('서버 연결에 실패했습니다.', 'error');
+        });
     });
   }
 
   function bind() {
     bindBizNoInput('form-biz-no');
     bindBizNoInput('search-biz-no');
-    bindAddressSearch();
+    var af = getAddressForm();
+    if (af) {
+      af.bind();
+    }
 
     var searchForm = $('company-search-form');
     if (searchForm) {
@@ -469,9 +459,31 @@
     if (form) {
       form.addEventListener('submit', saveCompany);
     }
+    var checkAll = $('company-check-all');
+    if (checkAll) {
+      checkAll.addEventListener('change', function () {
+        var checked = checkAll.checked;
+        document.querySelectorAll('.company-row-check').forEach(function (el) {
+          el.checked = checked;
+        });
+        updateBulkDeleteButton();
+      });
+    }
+    var bulkDeleteBtn = $('btn-company-delete-selected');
+    if (bulkDeleteBtn) {
+      bulkDeleteBtn.addEventListener('click', deleteSelectedCompanies);
+    }
     var tbody = $('company-grid-body');
     if (tbody) {
+      tbody.addEventListener('change', function (e) {
+        if (e.target.classList.contains('company-row-check')) {
+          updateBulkDeleteButton();
+        }
+      });
       tbody.addEventListener('click', function (e) {
+        if (e.target.classList.contains('company-row-check')) {
+          return;
+        }
         var editBtn = e.target.closest('.company-edit-btn');
         if (editBtn) {
           loadCompanyForEdit(editBtn.getAttribute('data-id'));
@@ -487,4 +499,12 @@
   }
 
   window.CompanyMgmtInit = bind;
+
+  if (document.getElementById('company-management-panel')) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bind);
+    } else {
+      bind();
+    }
+  }
 })();

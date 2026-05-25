@@ -32,6 +32,9 @@ public final class ScreenTableResolver {
 		if ("/admin/companies".equals(uri)) {
 			return db("biz_company", null, "업체(거래처) 마스터 관리");
 		}
+		if ("/admin/company-page-images".equals(uri)) {
+			return db("biz_company_page_image", "biz_company,nas_file", "업체별 페이지 이미지 등록");
+		}
 		if ("/admin/nas".equals(uri) || "/admin/media-storage".equals(uri)) {
 			return db("nas_file", null, "NAS 설정·파일 저장");
 		}

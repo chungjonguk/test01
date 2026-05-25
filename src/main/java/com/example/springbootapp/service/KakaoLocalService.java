@@ -34,6 +34,10 @@ public class KakaoLocalService {
 	private final RestTemplate restTemplate = new RestTemplate();
 	@Value("${kakao.rest-api-key:${kakao.client-id:}}")
 	private String restApiKey;
+	@Value("${kakao.javascript-key:}")
+	private String javascriptKey;
+	@Value("${kakao.client-id:}")
+	private String clientId;
 	@Value("${kakao.local.address-search-url:https://dapi.kakao.com/v2/local/search/address.json}")
 	private String addressSearchUrl;
 	@Value("${kakao.local.keyword-search-url:https://dapi.kakao.com/v2/local/search/keyword.json}")
@@ -117,6 +121,23 @@ public class KakaoLocalService {
 	 */
 	public boolean usesMock() {
 		return mockEnabled && !isConfigured();
+	}
+
+	/** 카카오맵 JavaScript SDK용 키가 설정되었는지 (REST 키와 별도). */
+	public boolean isMapKeyConfigured() {
+		if (!StringUtils.hasText(javascriptKey)) {
+			return false;
+		}
+		String jsKey = javascriptKey.trim();
+		if (PLACEHOLDER_KEY.equals(jsKey)) {
+			return false;
+		}
+		return !StringUtils.hasText(clientId) || !jsKey.equals(clientId.trim());
+	}
+
+	/** 카카오맵 SDK appkey (미설정 시 빈 문자열). */
+	public String getMapAppKey() {
+		return isMapKeyConfigured() ? javascriptKey.trim() : "";
 	}
 	/**
 	 * 주소·키워드로 카카오 로컬 API를 호출하여 주소 검색 결과를 반환한다.

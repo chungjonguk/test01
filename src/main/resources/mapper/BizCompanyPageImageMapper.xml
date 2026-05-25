@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.BizCompanyPageImageMapper">
+
+    <resultMap id="pageImageResultMap" type="BizCompanyPageImage">
+        <id property="imageId" column="image_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="pageCd" column="page_cd"/>
+        <result property="nasFileId" column="nas_file_id"/>
+        <result property="urlPath" column="url_path"/>
+        <result property="altText" column="alt_text"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <sql id="pageImageColumns">
+        image_id, company_id, page_cd, nas_file_id, url_path, alt_text, use_yn,
+        reg_id, reg_dt, update_id, update_dt
+    </sql>
+
+    <select id="listByCompanyId" resultMap="pageImageResultMap">
+        SELECT <include refid="pageImageColumns"/>
+        FROM biz_company_page_image
+        WHERE company_id = #{companyId}
+        ORDER BY page_cd
+    </select>
+
+    <select id="findByCompanyAndPageCd" resultMap="pageImageResultMap">
+        SELECT <include refid="pageImageColumns"/>
+        FROM biz_company_page_image
+        WHERE company_id = #{companyId}
+          AND page_cd = #{pageCd}
+        LIMIT 1
+    </select>
+
+    <select id="findById" resultMap="pageImageResultMap">
+        SELECT <include refid="pageImageColumns"/>
+        FROM biz_company_page_image
+        WHERE image_id = #{imageId}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId">
+        INSERT INTO biz_company_page_image (
+            company_id, page_cd, nas_file_id, url_path, alt_text, use_yn, reg_id, update_id
+        ) VALUES (
+            #{companyId}, #{pageCd}, #{nasFileId}, #{urlPath}, #{altText}, #{useYn}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE biz_company_page_image
+        SET nas_file_id = #{nasFileId},
+            url_path = #{urlPath},
+            alt_text = #{altText},
+            use_yn = #{useYn},
+            update_id = #{updateId}
+        WHERE image_id = #{imageId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM biz_company_page_image WHERE image_id = #{imageId}
+    </delete>
+</mapper>

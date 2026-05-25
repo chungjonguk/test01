@@ -23,6 +23,8 @@ public class PageViewAdvice {
 	private String kakaoJavascriptKey;
 	@Value("${kakao.client-id:}")
 	private String kakaoClientId;
+	@Value("${kakao.local.mock-enabled:true}")
+	private boolean kakaoLocalMockEnabled;
 	@Value("${app.brand-name:PrintMall}")
 	private String appBrandName;
 	public PageViewAdvice(ScreenListService screenListService, InicisProperties inicisProperties) {
@@ -164,6 +166,10 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/admin/companies")) {
 			setIfAbsent(model, "loadCompanyManageActions", true);
+			applyKakaoAddressFormFlags(model);
+		}
+		if (uri.contains("/admin/company-page-images")) {
+			setIfAbsent(model, "loadCompanyPageImageActions", true);
 		}
 		if (uri.contains("/app/email/email-detail")) {
 			setIfAbsent(model, "loadEmailDetailActions", true);
@@ -202,11 +208,40 @@ public class PageViewAdvice {
 		if (uri.contains("/modules/forms/wizard")) {
 			setIfAbsent(model, "loadLottie", true);
 		}
+		if (uri.contains("/pages/authentication/wizard") || uri.contains("/modules/forms/wizard")) {
+			setIfAbsent(model, "loadWizardKakaoAddress", true);
+			if (isKakaoMapKeyConfigured()) {
+				setIfAbsent(model, "kakaoMapAppKey", kakaoJavascriptKey.trim());
+			}
+			if (isKakaoRestApiConfigured()) {
+				setIfAbsent(model, "kakaoRestApiKeyForMapHint", kakaoClientId.trim());
+			}
+		}
 		if (uri.contains("/pages/authentication/wizard")) {
 			setIfAbsent(model, "hideSidebar", true);
 			setIfAbsent(model, "loadDropzone", true);
 		}
 	}
+	private boolean isKakaoRestApiConfigured() {
+		if (!StringUtils.hasText(kakaoClientId)) {
+			return false;
+		}
+		String key = kakaoClientId.trim();
+		return !KAKAO_KEY_PLACEHOLDER.equals(key) && !key.startsWith("여기에_");
+	}
+
+	private void applyKakaoAddressFormFlags(Model model) {
+		setIfAbsent(model, "loadKakaoAddressForm", true);
+		setIfAbsent(model, "kakaoAddressConfigured", isKakaoRestApiConfigured());
+		setIfAbsent(model, "kakaoAddressUsesMock", kakaoLocalMockEnabled && !isKakaoRestApiConfigured());
+		if (isKakaoMapKeyConfigured()) {
+			setIfAbsent(model, "kakaoMapAppKey", kakaoJavascriptKey.trim());
+		}
+		if (isKakaoRestApiConfigured()) {
+			setIfAbsent(model, "kakaoRestApiKeyForMapHint", kakaoClientId.trim());
+		}
+	}
+
 	private boolean isKakaoMapKeyConfigured() {
 		if (!StringUtils.hasText(kakaoJavascriptKey)) {
 			return false;
