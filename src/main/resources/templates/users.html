@@ -136,16 +136,22 @@
 
                             <div class="col-12">
                                 <label class="form-label">주소 <span class="text-danger">*</span></label>
-                                <div class="input-group mb-2">
-                                    <input class="form-control" id="zipcode" type="text" th:field="*{zipcode}"
-                                           placeholder="우편번호" readonly required />
-                                    <button class="btn btn-outline-secondary" type="button" id="btnSearchAddress">주소 검색</button>
+                                <div class="mb-2" th:replace="~{fragments/kakao-address-search :: addressSearchMap('user')}"></div>
+                                <div class="row g-2">
+                                    <div class="col-md-3">
+                                        <input class="form-control" id="zipcode" type="text" th:field="*{zipcode}"
+                                               placeholder="우편번호" readonly required autocomplete="postal-code" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input class="form-control" id="address" type="text" th:field="*{address}"
+                                               placeholder="기본주소" readonly required autocomplete="street-address" />
+                                    </div>
+                                    <div class="col-12">
+                                        <input class="form-control" id="addressDetail" type="text" th:field="*{addressDetail}"
+                                               placeholder="상세주소를 입력하세요" required autocomplete="address-line2" />
+                                    </div>
                                 </div>
-                                <input class="form-control mb-2" id="address" type="text" th:field="*{address}"
-                                       placeholder="기본주소" readonly required />
-                                <input class="form-control" id="addressDetail" type="text" th:field="*{addressDetail}"
-                                       placeholder="상세주소를 입력하세요" required />
-                                <div class="form-text text-muted">카카오(다음) 우편번호 서비스로 주소를 검색합니다.</div>
+                                <div class="form-text text-muted">카카오 주소 검색 후 우편번호·기본 주소가 자동 입력됩니다.</div>
                             </div>
 
                             <div class="col-12">
@@ -257,23 +263,8 @@
 
 
 
-        <div class="modal fade" id="postcodeModal" tabindex="-1" aria-labelledby="postcodeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="postcodeModalLabel">주소 검색</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-                    </div>
-                    <div class="modal-body p-0">
-                        <div id="postcodeEmbed" style="width:100%;height:480px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script th:src="@{/assets/js/users-postcode.js(v=2)}"></script>
         <script th:src="@{/assets/js/user-form-validation.js(v=1)}"></script>
-        <script th:src="@{/assets/js/users-register.js(v=4)}"></script>
+        <script th:src="@{/assets/js/users-register.js(v=5)}"></script>
         <script th:src="@{/assets/js/users-manage.js(v=1)}"></script>
 
     </div>

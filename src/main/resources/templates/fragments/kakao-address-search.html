@@ -15,21 +15,8 @@
   </div>
 </th:block>
 
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="mapPanel(wrapId, mapId, statusId, infoId)">
-  <div class="kakao-address-map-wrap d-none mb-2" th:id="${wrapId}" aria-hidden="true">
-    <label class="form-label fs--1 mb-1">카카오맵</label>
-    <div class="kakao-address-map rounded border bg-100" th:id="${mapId}" role="img" aria-label="선택 주소 지도"></div>
-    <div class="fs--2 text-600 mt-1" th:id="${infoId}" aria-live="polite"></div>
-    <div class="alert alert-secondary py-2 px-3 mt-2 mb-0 fs--1 d-none" th:id="${statusId}" role="status"></div>
-  </div>
-</th:block>
-
-<!--
-  통합 주소 폼 — idPrefix 기준으로 element id 자동 생성
-  예: idPrefix=company → company-address-search-query, company-address-zip …
-  JS: PrintMallKakaoAddressForm.create({ idPrefix: 'company' })
--->
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="addressFields(idPrefix)">
+<!-- 검색 + 지도만 (필드는 화면별 기존 input 유지) -->
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="addressSearchMap(idPrefix)">
   <div class="alert alert-info py-2 fs--1 mb-2" th:if="${kakaoAddressUsesMock}" role="status">
     <strong>데모 주소 모드</strong> — 실제 카카오 검색을 쓰려면
     <code>application-local.properties</code>의 <code>kakao.client-id</code>(REST API 키) 설정 후 서버 재시작.
@@ -45,6 +32,24 @@
     |${idPrefix}-kakao-map|,
     |${idPrefix}-kakao-map-status|,
     |${idPrefix}-kakao-map-info|)}"></div>
+</th:block>
+
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="mapPanel(wrapId, mapId, statusId, infoId)">
+  <div class="kakao-address-map-wrap d-none mb-2" th:id="${wrapId}" aria-hidden="true">
+    <label class="form-label fs--1 mb-1">카카오맵</label>
+    <div class="kakao-address-map rounded border bg-100" th:id="${mapId}" role="img" aria-label="선택 주소 지도"></div>
+    <div class="fs--2 text-600 mt-1" th:id="${infoId}" aria-live="polite"></div>
+    <div class="alert alert-secondary py-2 px-3 mt-2 mb-0 fs--1 d-none" th:id="${statusId}" role="status"></div>
+  </div>
+</th:block>
+
+<!--
+  통합 주소 폼 — idPrefix 기준으로 element id 자동 생성
+  예: idPrefix=company → company-address-search-query, company-address-zip …
+  JS: PrintMallKakaoAddressForm.create({ idPrefix: 'company' })
+-->
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="addressFields(idPrefix)">
+  <div th:replace="~{fragments/kakao-address-search :: addressSearchMap(${idPrefix})}"></div>
   <div class="row g-2">
     <div class="col-md-3">
       <label class="form-label fs--1 mb-1" th:for="|${idPrefix}-address-zip|">우편번호</label>

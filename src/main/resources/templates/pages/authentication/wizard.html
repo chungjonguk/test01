@@ -145,6 +145,7 @@
 
                       <h6 class="mb-3 text-800 border-bottom pb-2"><span class="fas fa-map-marker-alt me-2 text-primary"></span>주소 정보</h6>
                       <input type="hidden" name="country" id="wizard-address-country" value="KR" />
+                      <div class="mb-3" th:replace="~{fragments/kakao-address-search :: addressSearchMap('wizard')}"></div>
                       <div class="mb-3">
                         <label class="form-label" for="wizard-address-postal">우편번호</label>
                         <input class="form-control" type="text" name="postalCode" id="wizard-address-postal" placeholder="12345" pattern="[0-9]{5}" maxlength="5" required="required" autocomplete="postal-code" />
@@ -219,6 +220,15 @@
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
+    <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:inline="javascript">
+      window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
+      window.__KAKAO_REST_API_KEY__ = /*[[${kakaoRestApiKeyForMapHint}]]*/ '';
+    </script>
+    <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/api/kakao/local/maps-sdk.js}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-search.js(v=3)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-map.js(v=5)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=2)}"></script>
+    <script th:if="${loadWizardAddressInit != null and loadWizardAddressInit}" th:src="@{/assets/js/wizard-address-init.js(v=1)}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         (function initBirthDateSelects() {

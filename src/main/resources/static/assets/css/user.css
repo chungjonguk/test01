@@ -474,16 +474,6 @@ body[data-screen-id="APP_ORDER_LIST"] #ordersTable td.address {
   margin-top: auto;
 }
 
-/* 마법사 — 주소 검색 UI 비사용 (구 템플릿·캐시 대비 숨김) */
-#wizard-kakao-address-search,
-#wizard-address-search-query,
-#wizard-address-search-btn,
-#wizard-address-search-results,
-#wizard-address-search-hint,
-#wizard-kakao-map-wrap {
-  display: none !important;
-}
-
 /* 반응형 레이아웃 (전역 — 모든 user.css 로드 페이지) */
 @import url("responsive-layout.css");
 

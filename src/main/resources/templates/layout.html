@@ -147,7 +147,7 @@
       }
     </script>
     <script th:if="${loadCalendar}" th:src="@{/vendors/fullcalendar/main.min.js}"></script>
-    <script th:if="${loadCalendar}" th:src="@{/assets/js/flatpickr.js}"></script>
+    <script th:if="${loadCalendar or loadFlatpickr}" th:src="@{/assets/js/flatpickr.js}"></script>
     <script th:if="${loadChartJs}" th:src="@{/vendors/chart/chart.min.js}"></script>
     <script th:if="${loadCountUp}" th:src="@{/vendors/countup/countUp.umd.js}"></script>
     <script th:if="${loadWorldMap}" th:src="@{/assets/data/world.js}"></script>
@@ -176,12 +176,11 @@
     <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
     <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=6)}"></script>
     <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
-    <script th:if="${kakaoMapAppKey != null and ((loadWizardKakaoAddress != null and loadWizardKakaoAddress) or (loadKakaoAddressForm != null and loadKakaoAddressForm))}" th:inline="javascript">
+    <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
       window.__KAKAO_REST_API_KEY__ = /*[[${kakaoRestApiKeyForMapHint}]]*/ '';
     </script>
-    <script th:if="${kakaoMapAppKey != null and ((loadWizardKakaoAddress != null and loadWizardKakaoAddress) or (loadKakaoAddressForm != null and loadKakaoAddressForm))}" th:src="@{/api/kakao/local/maps-sdk.js}"></script>
-    <script th:if="${loadWizardKakaoAddress != null and loadWizardKakaoAddress}" th:src="@{/assets/js/wizard-kakao-address.js(v=10)}"></script>
+    <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/api/kakao/local/maps-sdk.js}"></script>
     <script th:if="${loadCustomerDetailsActions}" th:src="@{/assets/js/customer-details-actions.js(v=2)}"></script>
     <script th:if="${loadBillingActions}" th:src="@{/assets/js/billing-actions.js(v=1)}"></script>
     <script th:if="${loadCheckoutActions}" th:src="@{/assets/js/checkout-actions.js(v=3)}"></script>
@@ -194,7 +193,9 @@
     <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=5)}"></script>
     <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-search.js(v=3)}"></script>
     <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-map.js(v=5)}"></script>
-    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=1)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=2)}"></script>
+    <script th:if="${loadUsersAddressInit != null and loadUsersAddressInit}" th:src="@{/assets/js/users-address-init.js(v=1)}"></script>
+    <script th:if="${loadCrmDashboardInit != null and loadCrmDashboardInit}" th:src="@{/assets/js/crm-dashboard-init.js(v=1)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=10)}"></script>
     <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=2)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>

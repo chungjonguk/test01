@@ -1,9 +1,15 @@
 /**
- * 카카오 주소 검색 + 지도 + 우편번호/기본/상세 주소 — 화면 공통 폼
+ * 카카오 주소 검색 + 지도 + 주소 필드 — 화면 공통 폼
  * @module kakao-address-form
  *
+ * layout:
+ *   simple   — zip/base/detail (idPrefix-address-zip …) — 업체관리
+ *   extended — postal/state/city/line1/line2 — 마법사
+ *   split    — zipcode/address/addressDetail — 사용자 등록
+ *
  * HTML: th:replace="~{fragments/kakao-address-search :: addressFields('company')}"
- * JS:   var form = PrintMallKakaoAddressForm.create({ idPrefix: 'company', onNotify: fn });
+ *       th:replace="~{fragments/kakao-address-search :: addressSearchMap('wizard')}"
+ * JS:   PrintMallKakaoAddressForm.create({ idPrefix: 'company', layout: 'simple' });
  */
 (function () {
   'use strict';
@@ -20,8 +26,10 @@
 
   function resolveIds(options) {
     var p = options.idPrefix || 'address';
-    return {
+    var layout = options.layout || 'simple';
+    var common = {
       idPrefix: p,
+      layout: layout,
       queryId: options.queryId || p + '-address-search-query',
       btnId: options.btnId || p + '-address-search-btn',
       resultsId: options.resultsId || p + '-address-search-results',
@@ -29,11 +37,42 @@
       mapWrapId: options.mapWrapId || p + '-kakao-map-wrap',
       mapId: options.mapId || p + '-kakao-map',
       mapStatusId: options.mapStatusId || p + '-kakao-map-status',
-      mapInfoId: options.mapInfoId || p + '-kakao-map-info',
+      mapInfoId: options.mapInfoId || p + '-kakao-map-info'
+    };
+    if (layout === 'extended') {
+      return Object.assign(common, {
+        zipId: options.zipId || p + '-address-postal',
+        stateId: options.stateId || p + '-address-state',
+        cityId: options.cityId || p + '-address-city',
+        line1Id: options.line1Id || p + '-address-line1',
+        line2Id: options.line2Id || p + '-address-line2'
+      });
+    }
+    if (layout === 'split') {
+      return Object.assign(common, {
+        zipId: options.zipId || 'zipcode',
+        baseId: options.baseId || 'address',
+        detailId: options.detailId || 'addressDetail'
+      });
+    }
+    return Object.assign(common, {
       zipId: options.zipId || p + '-address-zip',
       baseId: options.baseId || p + '-address-base',
       detailId: options.detailId || p + '-address-detail'
-    };
+    });
+  }
+
+  function fieldIds(ids) {
+    if (ids.layout === 'extended') {
+      return [ids.queryId, ids.zipId, ids.stateId, ids.cityId, ids.line1Id, ids.line2Id];
+    }
+    return [ids.queryId, ids.zipId, ids.baseId, ids.detailId];
+  }
+
+  function dispatchChange(node) {
+    if (node) {
+      node.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   }
 
   function formatStoredAddress(postal, base, detail) {
@@ -98,7 +137,7 @@
     }
 
     function clear() {
-      [ids.queryId, ids.zipId, ids.baseId, ids.detailId].forEach(function (id) {
+      fieldIds(ids).forEach(function (id) {
         var node = el(id);
         if (node) {
           node.value = '';
@@ -119,7 +158,7 @@
       }
     }
 
-    function fill(postal, base, detail) {
+    function fillSimple(postal, base, detail) {
       if (el(ids.zipId)) {
         el(ids.zipId).value = postal || '';
       }
@@ -131,12 +170,49 @@
       }
     }
 
+    function fillExtended(postal, state, city, line1, line2) {
+      if (el(ids.zipId)) {
+        el(ids.zipId).value = postal || '';
+      }
+      if (el(ids.stateId)) {
+        el(ids.stateId).value = state || '';
+      }
+      if (el(ids.cityId)) {
+        el(ids.cityId).value = city || '';
+      }
+      if (el(ids.line1Id)) {
+        el(ids.line1Id).value = line1 || '';
+      }
+      if (el(ids.line2Id)) {
+        el(ids.line2Id).value = line2 || '';
+      }
+      [ids.zipId, ids.stateId, ids.cityId, ids.line1Id, ids.line2Id].forEach(function (id) {
+        dispatchChange(el(id));
+      });
+    }
+
+    function fill(postal, base, detail) {
+      if (ids.layout === 'extended') {
+        return;
+      }
+      fillSimple(postal, base, detail);
+    }
+
     function fillFromStored(stored) {
       var parsed = parseStoredAddress(stored);
       fill(parsed.postal, parsed.base, parsed.detail);
     }
 
     function getValues() {
+      if (ids.layout === 'extended') {
+        return {
+          postal: (el(ids.zipId) || {}).value || '',
+          state: (el(ids.stateId) || {}).value || '',
+          city: (el(ids.cityId) || {}).value || '',
+          line1: (el(ids.line1Id) || {}).value || '',
+          line2: (el(ids.line2Id) || {}).value || ''
+        };
+      }
       return {
         postal: (el(ids.zipId) || {}).value || '',
         base: (el(ids.baseId) || {}).value || '',
@@ -146,23 +222,48 @@
 
     function getStored() {
       var v = getValues();
+      if (ids.layout === 'extended') {
+        var parts = [v.state, v.city, v.line1].filter(Boolean);
+        return formatStoredAddress(v.postal, parts.join(' '), v.line2);
+      }
       return formatStoredAddress(v.postal, v.base, v.detail);
+    }
+
+    function focusAfterSelect(item) {
+      if (ids.layout === 'extended') {
+        var line2 = el(ids.line2Id);
+        if (line2) {
+          line2.focus();
+        }
+        return;
+      }
+      var detailEl = el(ids.detailId);
+      if (detailEl) {
+        detailEl.focus();
+      }
     }
 
     function applyItem(item) {
       if (!item || !KakaoAddress) {
         return;
       }
-      var detail = (item.buildingName || '').trim();
-      fill(item.postalCode || '', KakaoAddress.buildFormLine1(item), detail);
+      if (ids.layout === 'extended') {
+        fillExtended(
+          item.postalCode || '',
+          item.state || '',
+          item.city || '',
+          KakaoAddress.buildFormLine1(item),
+          ''
+        );
+      } else {
+        var detail = (item.buildingName || '').trim();
+        fillSimple(item.postalCode || '', KakaoAddress.buildFormLine1(item), detail);
+      }
       var map = initMap();
       if (map) {
         map.show(item);
       }
-      var detailEl = el(ids.detailId);
-      if (detailEl) {
-        detailEl.focus();
-      }
+      focusAfterSelect(item);
       if (options.notifyOnSelect !== false) {
         notify('주소가 입력되었습니다.', 'success');
       }
@@ -253,6 +354,14 @@
       modalEl.addEventListener('shown.bs.modal', onContainerShown);
     }
 
+    function attachTabShown(tabSelector) {
+      var tabLink = document.querySelector(tabSelector);
+      if (!tabLink) {
+        return;
+      }
+      tabLink.addEventListener('shown.bs.tab', onContainerShown);
+    }
+
     return {
       ids: ids,
       clear: clear,
@@ -264,6 +373,7 @@
       bind: bind,
       onContainerShown: onContainerShown,
       attachModalShown: attachModalShown,
+      attachTabShown: attachTabShown,
       relayoutMap: function () {
         if (mapApi) {
           mapApi.relayout();
@@ -277,7 +387,7 @@
     parseStoredAddress: parseStoredAddress,
     resolveIds: resolveIds,
     /**
-     * @param {object} options idPrefix, onNotify(msg, icon), onSelect(item, values), notifyOnSelect, modalId
+     * @param {object} options idPrefix, layout, onNotify, onSelect, notifyOnSelect, modalId
      */
     create: function (options) {
       var key = (options && options.idPrefix) || 'address';

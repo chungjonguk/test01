@@ -72,6 +72,12 @@ public class PageViewAdvice {
 			setIfAbsent(model, "loadCountUp", true);
 			setIfAbsent(model, "loadWorldMap", true);
 		}
+		if (uri.contains("/dashboard/crm")) {
+			setIfAbsent(model, "loadDayjs", true);
+			setIfAbsent(model, "loadWorldMap", true);
+			setIfAbsent(model, "loadFlatpickr", true);
+			setIfAbsent(model, "loadCrmDashboardInit", true);
+		}
 		if (uri.contains("/dashboard/lms")) {
 			setIfAbsent(model, "loadChartJs", true);
 			setIfAbsent(model, "loadCountUp", true);
@@ -208,14 +214,13 @@ public class PageViewAdvice {
 		if (uri.contains("/modules/forms/wizard")) {
 			setIfAbsent(model, "loadLottie", true);
 		}
-		if (uri.contains("/pages/authentication/wizard") || uri.contains("/modules/forms/wizard")) {
-			setIfAbsent(model, "loadWizardKakaoAddress", true);
-			if (isKakaoMapKeyConfigured()) {
-				setIfAbsent(model, "kakaoMapAppKey", kakaoJavascriptKey.trim());
-			}
-			if (isKakaoRestApiConfigured()) {
-				setIfAbsent(model, "kakaoRestApiKeyForMapHint", kakaoClientId.trim());
-			}
+		if (uri.contains("/pages/authentication/wizard")) {
+			applyKakaoAddressFormFlags(model);
+			setIfAbsent(model, "loadWizardAddressInit", true);
+		}
+		if (uri.equals("/users")) {
+			applyKakaoAddressFormFlags(model);
+			setIfAbsent(model, "loadUsersAddressInit", true);
 		}
 		if (uri.contains("/pages/authentication/wizard")) {
 			setIfAbsent(model, "hideSidebar", true);

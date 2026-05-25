@@ -72,7 +72,7 @@
         var addressDetail = document.getElementById('addressDetail').value.trim();
         if (!zipcode || !address) {
             e.preventDefault();
-            validation.showAlert('warning', '주소 검색', '주소 검색 버튼으로 기본 주소를 입력해 주세요.');
+            validation.showAlert('warning', '주소 검색', '카카오 주소 검색으로 기본 주소를 입력해 주세요.');
             return;
         }
         if (!addressDetail) {
