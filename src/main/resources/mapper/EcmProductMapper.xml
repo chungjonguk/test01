@@ -41,6 +41,39 @@
         ORDER BY reg_dt DESC, product_id DESC
     </select>
 
+    <select id="findForInventory" resultMap="ecmProductResultMap">
+        SELECT <include refid="ecmProductColumns"/>
+        FROM ecm_product
+        <where>
+            <if test="productNm != null and productNm != ''">
+                AND product_nm LIKE CONCAT('%', #{productNm}, '%')
+            </if>
+            <if test="categoryCd != null and categoryCd != ''">
+                AND category_cd = #{categoryCd}
+            </if>
+            <if test="statusCd != null and statusCd != ''">
+                AND status_cd = #{statusCd}
+            </if>
+            <if test="stockFilter == 'ZERO'">
+                AND stock_qty &lt;= 0
+            </if>
+            <if test="stockFilter == 'LOW'">
+                AND stock_qty &gt; 0 AND stock_qty &lt;= #{lowThreshold}
+            </if>
+            <if test="stockFilter == 'OK'">
+                AND stock_qty &gt; #{lowThreshold}
+            </if>
+        </where>
+        ORDER BY stock_qty ASC, product_nm ASC, product_id DESC
+    </select>
+
+    <update id="updateStockQty">
+        UPDATE ecm_product
+        SET stock_qty = #{stockQty},
+            update_id = #{updateId}
+        WHERE product_id = #{productId}
+    </update>
+
     <select id="findById" resultMap="ecmProductResultMap">
         SELECT <include refid="ecmProductColumns"/>
         FROM ecm_product

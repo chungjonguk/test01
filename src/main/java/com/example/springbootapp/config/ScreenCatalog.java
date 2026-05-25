@@ -42,6 +42,20 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_NAS_FILES", "NAS 파일", "/admin/media-storage", "admin/media-storage", 29);
 		put(byUri, "ADMIN_DASHBOARD_CONFIG", "대시보드 구성", "/admin/dashboard-config", "admin/dashboard-config", 30);
 		put(byUri, "ADMIN_COMPANY_PAGE_IMAGES", "페이지 이미지", "/admin/company-page-images", "admin/company-page-images", 31);
+		put(byUri, "ADMIN_INVENTORY", "재고관리", "/admin/inventory", "admin/inventory", 32);
+		put(byUri, "SHOP_HOME", "쇼핑몰 홈", "/", "index", 15);
+		put(byUri, "SHOP_PRODUCT_GRID", "상품 카탈로그", "/app/e-commerce/product/product-grid",
+				"app/e-commerce/product/product-grid", 16);
+		put(byUri, "SHOP_PRODUCT_LIST", "상품 목록", "/app/e-commerce/product/product-list",
+				"app/e-commerce/product/product-list", 17);
+		put(byUri, "SHOP_CART", "장바구니", "/app/e-commerce/shopping-cart", "app/e-commerce/shopping-cart", 18);
+		put(byUri, "SHOP_CHECKOUT", "주문·결제", "/app/e-commerce/checkout", "app/e-commerce/checkout", 19);
+		put(byUri, "SHOP_ORDER_LIST", "주문 내역", "/app/e-commerce/orders/order-list",
+				"app/e-commerce/orders/order-list", 20);
+		put(byUri, "SHOP_ORDER_DETAIL", "주문·배송 상세", "/app/e-commerce/orders/order-details",
+				"app/e-commerce/orders/order-details", 21);
+		put(byUri, "SHOP_FAQ", "자주 묻는 질문", "/pages/faq/faq-basic", "pages/faq/faq-basic", 25);
+		put(byUri, "SHOP_DASHBOARD", "쇼핑몰 통계", "/dashboard/e-commerce", "dashboard/e-commerce", 26);
 	}
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
 		if (byUri.containsKey(uri)) {

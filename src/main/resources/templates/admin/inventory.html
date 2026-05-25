@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3" id="inventory-management-panel">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
+                  <h5 class="mb-0">재고관리</h5>
+                  <p class="fs--1 mb-0 text-600">ecm_product · 상품별 재고 수량 조회·입출고 조정 (부족: 1~10개, 품절: 0개)</p>
+                </div>
+                <div class="col-12 col-lg-auto">
+                  <a class="btn btn-falcon-default btn-sm" th:href="@{/app/e-commerce/product/product-manage}">
+                    <span class="fas fa-box-open me-1"></span>상품 관리
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>조회 조건</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="inventory-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-product-nm">상품명</label>
+                      <input class="form-control form-control-sm" id="search-product-nm" type="text" placeholder="상품명" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-category-cd">카테고리</label>
+                      <select class="form-select form-select-sm" id="search-category-cd">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-status-cd">판매상태</label>
+                      <select class="form-select form-select-sm" id="search-status-cd">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-stock-filter">재고상태</label>
+                      <select class="form-select form-select-sm" id="search-stock-filter">
+                        <option value="">전체</option>
+                        <option value="ZERO">품절(0)</option>
+                        <option value="LOW">부족</option>
+                        <option value="OK">정상</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-inventory"><span class="fas fa-search me-1"></span>조회</button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-inventory-search"><span class="fas fa-redo me-1"></span>초기화</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="inventory-result-count">0건</span>
+              </div>
+
+              <div class="table-responsive scrollbar">
+                <table class="table table-sm table-striped table-hover fs--1 mb-0">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="ps-3 text-center">No</th>
+                      <th class="text-center">ID</th>
+                      <th>상품명</th>
+                      <th class="d-none d-md-table-cell">카테고리</th>
+                      <th class="text-end d-none d-lg-table-cell">가격</th>
+                      <th class="text-center">재고</th>
+                      <th class="text-center">재고상태</th>
+                      <th class="text-center d-none d-xl-table-cell">판매</th>
+                      <th class="text-end pe-3">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inventory-grid-body">
+                    <tr>
+                      <td colspan="9" class="text-center text-600 py-4">조회 버튼을 눌러 재고 목록을 불러오세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav th:replace="~{fragments/grid-pager :: pager('inventory-grid-pager')}"></nav>
+            </div>
+          </div>
+
+          <div class="modal fade" id="inventory-adjust-modal" tabindex="-1" aria-labelledby="inventory-adjust-modal-label" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="inventory-adjust-modal-label">재고 조정</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="inventory-adjust-form">
+                  <div class="modal-body">
+                    <input type="hidden" id="adjust-product-id" />
+                    <p class="fs--1 mb-2 text-600" id="adjust-product-label">—</p>
+                    <p class="mb-3">현재 재고: <strong id="adjust-current-stock">0</strong>개</p>
+                    <div class="mb-3">
+                      <label class="form-label" for="adjust-type">조정 유형</label>
+                      <select class="form-select form-select-sm" id="adjust-type" required="required">
+                        <option value="SET">직접 설정</option>
+                        <option value="ADD">입고 (+)</option>
+                        <option value="SUB">출고 (−)</option>
+                      </select>
+                    </div>
+                    <div class="mb-0">
+                      <label class="form-label" for="adjust-quantity">수량</label>
+                      <input class="form-control form-control-sm" id="adjust-quantity" type="number" min="0" step="1" required="required" value="0" />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit" id="btn-inventory-adjust-save">반영</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

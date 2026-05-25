@@ -10,6 +10,7 @@ import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.domain.EcmProductImage;
 import com.example.springbootapp.dto.EcmProductFormDto;
+import com.example.springbootapp.dto.InventoryStockAdjustDto;
 import com.example.springbootapp.mapper.EcmProductImageMapper;
 import com.example.springbootapp.mapper.EcmProductMapper;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,10 @@ import jakarta.servlet.http.HttpSession;
 @Service
 @Transactional(readOnly = true)
 public class EcmProductService {
+
+	/** 재고 부족(LOW) 판정 상한 — 이하이면서 1 이상 */
+	public static final int INVENTORY_LOW_THRESHOLD = 10;
+
 	private final EcmProductMapper ecmProductMapper;
 	private final EcmProductImageMapper ecmProductImageMapper;
 	private final SessionAuthService sessionAuthService;
@@ -40,6 +45,63 @@ public class EcmProductService {
 	 */
 	public List<EcmProduct> search(String productNm, String categoryCd, String statusCd) {
 		return ecmProductMapper.findAll(trimToNull(productNm), trimToNull(categoryCd), trimToNull(statusCd));
+	}
+
+	/**
+	 * 재고 관리 화면용 상품 목록.
+	 *
+	 * @param stockFilter ALL|ZERO|LOW|OK (null/blank → ALL)
+	 */
+	public List<EcmProduct> searchInventory(
+			String productNm, String categoryCd, String statusCd, String stockFilter) {
+		String filter = trimToNull(stockFilter);
+		if (filter == null) {
+			filter = "ALL";
+		}
+		return ecmProductMapper.findForInventory(
+				trimToNull(productNm),
+				trimToNull(categoryCd),
+				trimToNull(statusCd),
+				filter,
+				INVENTORY_LOW_THRESHOLD);
+	}
+
+	/**
+	 * 재고 수량을 조정합니다.
+	 */
+	@Transactional
+	public EcmProduct adjustStock(Long productId, InventoryStockAdjustDto dto, HttpSession session) {
+		if (productId == null) {
+			throw new IllegalArgumentException("상품 ID가 필요합니다.");
+		}
+		if (dto == null || isBlank(dto.getAdjustType())) {
+			throw new IllegalArgumentException("조정 유형을 선택해 주세요.");
+		}
+		if (dto.getQuantity() == null || dto.getQuantity() < 0) {
+			throw new IllegalArgumentException("수량을 올바르게 입력해 주세요.");
+		}
+		EcmProduct existing = ecmProductMapper.findById(productId);
+		if (existing == null) {
+			throw new IllegalArgumentException("상품을 찾을 수 없습니다.");
+		}
+		int current = existing.getStockQty() != null ? existing.getStockQty() : 0;
+		int next;
+		String type = dto.getAdjustType().trim().toUpperCase();
+		switch (type) {
+			case "SET" -> next = dto.getQuantity();
+			case "ADD" -> next = current + dto.getQuantity();
+			case "SUB" -> next = current - dto.getQuantity();
+			default -> throw new IllegalArgumentException("조정 유형은 SET, ADD, SUB 중 하나여야 합니다.");
+		}
+		if (next < 0) {
+			throw new IllegalArgumentException("재고는 0 미만이 될 수 없습니다.");
+		}
+		String actor = resolveActor(session);
+		int updated = ecmProductMapper.updateStockQty(productId, next, actor);
+		if (updated == 0) {
+			throw new IllegalArgumentException("재고 반영에 실패했습니다.");
+		}
+		return ecmProductMapper.findById(productId);
 	}
 	/**
 	 * 상품 ID로 단건을 조회한다.

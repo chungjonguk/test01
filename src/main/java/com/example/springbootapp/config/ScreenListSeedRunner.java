@@ -43,6 +43,8 @@ public class ScreenListSeedRunner implements ApplicationRunner {
 			populator.addScript(new ClassPathResource("schema/screen_list_admin_companies_menu.sql"));
 			populator.addScript(new ClassPathResource("schema/screen_list_admin_company_section.sql"));
 			populator.addScript(new ClassPathResource("schema/screen_list_admin_company_page_images.sql"));
+			populator.addScript(new ClassPathResource("schema/screen_list_admin_inventory_menu.sql"));
+			populator.addScript(new ClassPathResource("schema/screen_list_shopping_mall_menu.sql"));
 			populator.execute(dataSource);
 			var catalog = ScreenCatalog.all();
 			int saved = 0;

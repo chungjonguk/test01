@@ -18,6 +18,27 @@ public interface EcmProductMapper {
 	 */
 	List<EcmProduct> findAll(@Param("productNm") String productNm, @Param("categoryCd") String categoryCd,
 			@Param("statusCd") String statusCd);
+
+	/**
+	 * 재고 관리 화면용 상품 목록 (재고 필터 포함).
+	 *
+	 * @param stockFilter ALL|ZERO|LOW|OK (nullable)
+	 * @param lowThreshold 부족 재고 상한 (LOW 필터용)
+	 */
+	List<EcmProduct> findForInventory(
+			@Param("productNm") String productNm,
+			@Param("categoryCd") String categoryCd,
+			@Param("statusCd") String statusCd,
+			@Param("stockFilter") String stockFilter,
+			@Param("lowThreshold") int lowThreshold);
+
+	/**
+	 * 재고 수량만 갱신합니다.
+	 */
+	int updateStockQty(
+			@Param("productId") Long productId,
+			@Param("stockQty") int stockQty,
+			@Param("updateId") String updateId);
 	/**
 	 * 상품 ID로 단건 조회합니다.
 	 *
