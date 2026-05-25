@@ -533,3 +533,31 @@ img.brand-logo-falcon {
     visibility: visible !important;
   }
 }
+
+/* 홈 대시보드 — 구성 위젯 (크기별 밴드 row, 동일 col만 한 줄에 배치) */
+.dashboard-widgets-host {
+  width: 100%;
+}
+
+.dashboard-widgets-host > .dashboard-widget-band {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.dashboard-widgets-host > .dashboard-widget-band > .dashboard-widget-cell {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-widgets-host > .dashboard-widget-band > .dashboard-widget-cell > .card {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+.dashboard-widgets-host .ecommerce-card-min-width {
+  min-width: 0 !important;
+  width: 100%;
+}

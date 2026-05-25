@@ -5,11 +5,13 @@
 <body>
     <th:block th:replace="~{layout :: body}">
     <div th:fragment="page-content">
-        <div class="mb-2">
+        <div class="mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
             <p class="fs--1 text-600 mb-0">
-                표시 위젯은 <a th:href="@{/admin/dashboard-config}">대시보드 구성</a>에서 선택합니다.
-                (프로젝트 위젯 카탈로그 · 브라우저 저장)
+                <span th:if="${dashboardCompanyName != null}" th:text="|${dashboardCompanyName} 업체 대시보드|">업체 대시보드</span>
+                <span th:if="${dashboardCompanyName == null}">업체 대시보드</span>
+                — <a th:href="@{/admin/dashboard-config}">구성</a>에서 업체별 위젯을 설정합니다.
             </p>
+            <div th:replace="~{fragments/dashboard-company-select :: companySelect}"></div>
         </div>
         <div id="dashboard-widgets-host" class="dashboard-widgets-host mb-3"></div>
         <div id="dashboard-widget-templates" class="d-none" aria-hidden="true">
@@ -681,6 +683,8 @@
         </div>
         <script th:inline="javascript">
             window.__DASHBOARD_WIDGET_CATALOG__ = /*[[${dashboardWidgetCatalog}]]*/ [];
+            window.__DASHBOARD_COMPANY_ID__ = /*[[${dashboardCompanyId}]]*/ null;
+            window.__DASHBOARD_LAYOUT_CONFIG__ = /*[[${dashboardLayoutConfig}]]*/ null;
         </script>
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>

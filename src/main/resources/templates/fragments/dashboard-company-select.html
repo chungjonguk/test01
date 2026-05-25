@@ -1,0 +1,15 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="companySelect">
+  <div class="d-flex flex-wrap align-items-center gap-2" th:if="${dashboardCompanies != null and !dashboardCompanies.isEmpty()}">
+    <label class="fs--1 text-600 mb-0" for="dashboard-company-select">업체</label>
+    <select class="form-select form-select-sm" id="dashboard-company-select" style="max-width:280px" aria-label="대시보드 업체 선택">
+      <option th:each="c : ${dashboardCompanies}"
+              th:value="${c.companyId}"
+              th:text="${c.companyNm}"
+              th:selected="${dashboardCompanyId != null and dashboardCompanyId == c.companyId}"></option>
+    </select>
+    <span class="badge badge-soft-secondary fs--2" th:if="${dashboardCompanyName != null}" th:text="${dashboardCompanyName}"></span>
+  </div>
+  <p class="fs--2 text-warning mb-0" th:if="${dashboardCompanies == null or dashboardCompanies.isEmpty()}">
+    등록된 업체가 없습니다. <a th:href="@{/admin/companies}">업체관리</a>에서 업체를 먼저 등록하세요.
+  </p>
+</th:block>

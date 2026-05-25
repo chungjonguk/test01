@@ -4,6 +4,7 @@
 (function () {
   var store = window.DashboardConfigStore;
   var renderer = window.DashboardWidgetRenderer;
+  var Rules = window.DashboardLayoutRules;
 
   function readConfig() {
     if (store) {
@@ -19,7 +20,16 @@
     var cfg = readConfig();
     if (cfg.hidden.indexOf(widgetId) === -1) {
       cfg.hidden.push(widgetId);
-      if (store) {
+      if (store && Rules) {
+        var catalog = window.__DASHBOARD_WIDGET_CATALOG__ || [];
+        cfg.order = Rules.autoArrangeOrder(catalog, cfg.hidden);
+        store.write(cfg).then(function () {
+          if (renderer) {
+            renderer.apply();
+          }
+        });
+        return;
+      } else if (store) {
         store.write(cfg);
       }
     }

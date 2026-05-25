@@ -35,6 +35,7 @@ public class ScreenTableSchemaRunner implements ApplicationRunner {
 			populator.addScript(new ClassPathResource("schema/nas_file.sql"));
 			populator.addScript(new ClassPathResource("schema/biz_company.sql"));
 			populator.addScript(new ClassPathResource("schema/biz_company_seed.sql"));
+			populator.addScript(new ClassPathResource("schema/dashboard_company_config.sql"));
 			populator.addScript(new ClassPathResource("schema/ecm_payment.sql"));
 			populator.addScript(new ClassPathResource("schema/tables/biz_schema.sql"));
 			populator.addScript(new ClassPathResource("schema/tables/ecm_product_image.sql"));

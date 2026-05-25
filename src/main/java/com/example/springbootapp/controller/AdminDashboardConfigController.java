@@ -1,6 +1,5 @@
 package com.example.springbootapp.controller;
 
-import com.example.springbootapp.config.DashboardWidgetCatalog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,6 @@ public class AdminDashboardConfigController {
 	@GetMapping({"/dashboard-config", "/dashboard-config.html"})
 	public String dashboardConfig(Model model) {
 		model.addAttribute("title", "대시보드 구성");
-		model.addAttribute("dashboardWidgetCatalog", DashboardWidgetCatalog.toMaps(DashboardWidgetCatalog.all()));
-		model.addAttribute("dashboardDefaultIds", DashboardWidgetCatalog.defaultEnabledIds());
 		return "admin/dashboard-config";
 	}
 }

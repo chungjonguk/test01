@@ -11,7 +11,7 @@
               <div class="row flex-between-center g-2">
                 <div class="col">
                   <h5 class="mb-1">대시보드 구성</h5>
-                  <p class="fs--1 mb-0 text-600">홈(<a th:href="@{/}">/</a>)에 배치할 프로젝트 위젯을 선택합니다. 카탈로그는 서버·표시 설정은 브라우저(localStorage)에 저장됩니다.</p>
+                  <p class="fs--1 mb-0 text-600">업체별로 홈(<a th:href="@{/}">/</a>) 위젯 표시를 설정합니다. 설정은 DB에 저장되며 선택 업체는 세션에 유지됩니다.</p>
                 </div>
                 <div class="col-auto d-flex flex-wrap gap-1">
                   <a class="btn btn-falcon-default btn-sm" th:href="@{/}">
@@ -21,6 +21,9 @@
               </div>
             </div>
             <div class="card-body">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <div th:replace="~{fragments/dashboard-company-select :: companySelect}"></div>
+              </div>
               <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                 <div class="d-flex flex-wrap align-items-center gap-2">
                   <span class="badge badge-soft-primary fs--1" id="dashboard-config-summary">-</span>
@@ -40,30 +43,37 @@
                 </div>
               </div>
 
+              <div id="dashboard-config-layout-message" class="mb-3" aria-live="polite"></div>
+
+              <div class="alert alert-info py-2 fs--1 mb-3" role="note">
+                <strong>업체별 자동 배치</strong> — 선택한 업체에 대해 표시(ON) 위젯만 저장되며,
+                작은 카드 → 중간 → 넓은 → 전체 순으로 자동 정렬됩니다.
+              </div>
+
               <div class="table-responsive scrollbar">
                 <table class="table table-sm table-hover fs--1 mb-0">
                   <thead class="bg-200 text-900">
                     <tr>
-                      <th class="text-center ps-3" style="width:56px">순서</th>
+                      <th class="text-center ps-3" style="width:56px">배치</th>
                       <th style="width:100px">카테고리</th>
                       <th style="width:140px">위젯 ID</th>
                       <th>표시명</th>
                       <th class="d-none d-lg-table-cell">설명</th>
-                      <th class="text-center" style="width:88px">표시</th>
-                      <th class="text-end pe-3" style="width:88px">이동</th>
+                      <th class="text-center pe-3" style="width:88px">표시</th>
                     </tr>
                   </thead>
                   <tbody id="dashboard-config-body">
                     <tr>
-                      <td colspan="7" class="text-center text-600 py-4">위젯 목록을 불러오는 중...</td>
+                      <td colspan="6" class="text-center text-600 py-4">위젯 목록을 불러오는 중...</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
               <p class="fs--2 text-600 mb-0 mt-3">
-                <strong>순서</strong>는 저장 후 <a th:href="@{/}">홈 대시보드</a>를 새로고침(Ctrl+F5)하면 위에서부터 차례로 배치됩니다.
-                카드 메뉴 <strong>Remove</strong>로 숨긴 위젯도 이 설정과 동일하게 반영됩니다.
+                <strong>배치</strong> 열 번호는 표시된 위젯의 자동 배치 순서입니다. 저장 후
+                <a th:href="@{/}">홈 대시보드</a>를 Ctrl+F5로 새로고침하세요.
+                카드 <strong>Remove</strong>로 숨긴 위젯도 이 설정과 동일합니다.
               </p>
             </div>
           </div>
@@ -74,6 +84,8 @@
     <script th:inline="javascript">
       window.__DASHBOARD_WIDGET_CATALOG__ = /*[[${dashboardWidgetCatalog}]]*/ [];
       window.__DASHBOARD_DEFAULT_IDS__ = /*[[${dashboardDefaultIds}]]*/ [];
+      window.__DASHBOARD_COMPANY_ID__ = /*[[${dashboardCompanyId}]]*/ null;
+      window.__DASHBOARD_LAYOUT_CONFIG__ = /*[[${dashboardLayoutConfig}]]*/ null;
     </script>
 </body>
 </html>
