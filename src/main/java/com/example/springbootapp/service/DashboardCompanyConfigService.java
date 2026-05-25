@@ -34,7 +34,18 @@ public class DashboardCompanyConfigService {
 
 	public Map<String, Object> getConfig(Long companyId) {
 		ensureCompanyExists(companyId);
-		List<String> hidden = loadHidden(companyId);
+		return buildConfigBody(companyId, loadHidden(companyId));
+	}
+
+	/**
+	 * 업체·세션 없을 때 홈 대시보드에 쓸 기본 위젯 구성.
+	 */
+	public Map<String, Object> getDefaultConfig() {
+		List<String> hidden = defaultHidden();
+		return buildConfigBody(null, hidden);
+	}
+
+	private Map<String, Object> buildConfigBody(Long companyId, List<String> hidden) {
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("companyId", companyId);
 		body.put("hidden", hidden);

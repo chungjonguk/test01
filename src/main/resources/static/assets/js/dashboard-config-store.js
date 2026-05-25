@@ -19,6 +19,17 @@
   }
 
   function defaultConfig() {
+    var defaults = global.__DASHBOARD_DEFAULT_IDS__;
+    var catalog = global.__DASHBOARD_WIDGET_CATALOG__;
+    if (Array.isArray(defaults) && defaults.length && Array.isArray(catalog) && catalog.length) {
+      var hidden = [];
+      catalog.forEach(function (w) {
+        if (w && w.id && defaults.indexOf(w.id) < 0) {
+          hidden.push(w.id);
+        }
+      });
+      return { version: VERSION, hidden: hidden, order: defaults.slice() };
+    }
     return { version: VERSION, hidden: [], order: [] };
   }
 
@@ -135,6 +146,19 @@
   }
 
   function loadFromServer(id) {
+    if (id == null || id === '') {
+      return fetch('/api/dashboard/config/default')
+        .then(function (res) {
+          if (!res.ok) {
+            throw new Error('HTTP ' + res.status);
+          }
+          return res.json();
+        })
+        .then(function (body) {
+          applyServerSnapshot(body);
+          return read();
+        });
+    }
     setCompanyId(id);
     return fetch('/api/dashboard/config?companyId=' + encodeURIComponent(id))
       .then(function (res) {
@@ -183,8 +207,11 @@
   function initFromPage() {
     if (global.__DASHBOARD_LAYOUT_CONFIG__) {
       applyServerSnapshot(global.__DASHBOARD_LAYOUT_CONFIG__);
-    } else if (global.__DASHBOARD_COMPANY_ID__ != null) {
+    } else if (global.__DASHBOARD_COMPANY_ID__ != null && global.__DASHBOARD_COMPANY_ID__ !== '') {
       setCompanyId(global.__DASHBOARD_COMPANY_ID__);
+      serverSnapshot = defaultConfig();
+    } else {
+      serverSnapshot = defaultConfig();
     }
   }
 

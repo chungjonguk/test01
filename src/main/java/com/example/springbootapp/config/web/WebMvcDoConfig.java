@@ -12,8 +12,16 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @Profile("!test")
 public class WebMvcDoConfig implements WebMvcRegistrations {
 
+	private final PublicPathCryptoService publicPathCryptoService;
+
+	public WebMvcDoConfig(PublicPathCryptoService publicPathCryptoService) {
+		this.publicPathCryptoService = publicPathCryptoService;
+	}
+
 	@Override
 	public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-		return new DoSuffixRequestMappingHandlerMapping();
+		DoSuffixRequestMappingHandlerMapping mapping = new DoSuffixRequestMappingHandlerMapping();
+		mapping.setPublicPathCryptoService(publicPathCryptoService);
+		return mapping;
 	}
 }

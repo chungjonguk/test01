@@ -5,14 +5,14 @@
   'use strict';
 
   function normalizePath(path) {
-    if (globalThis.PrintMallDoPath && globalThis.PrintMallDoPath.normalizePath) {
-      return globalThis.PrintMallDoPath.normalizePath(path);
-    }
     if (!path) {
-      return '/index.do';
+      return '';
     }
-    var trimmed = path.replace(/\/+$/, '').replace(/\.html$/, '');
-    return trimmed.length ? trimmed : '/index.do';
+    try {
+      return new URL(path, window.location.origin).pathname;
+    } catch (e) {
+      return path;
+    }
   }
 
   function isPageLink(link) {
@@ -91,8 +91,12 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runFilter);
+    document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('printmall-paths-ready', runFilter);
+      setTimeout(runFilter, 800);
+    });
   } else {
+    document.addEventListener('printmall-paths-ready', runFilter);
     runFilter();
   }
 })();

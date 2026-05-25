@@ -24,7 +24,8 @@ public final class DoPathHelper {
 			"/auth/",
 			"/assets/",
 			"/vendors/",
-			"/error");
+			"/error",
+			"/api/url/");
 
 	private DoPathHelper() {
 	}

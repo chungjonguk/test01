@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.config.ScreenSidebarLoader;
 import com.example.springbootapp.config.web.DoPathHelper;
+import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.mapper.ScreenListMapper;
+import org.springframework.beans.factory.ObjectProvider;
 /**
  * 화면(screen_list) 목록 조회·접근 제어·URI 정규화·저장을 처리하는 서비스.
  */
@@ -15,8 +17,13 @@ import com.example.springbootapp.mapper.ScreenListMapper;
 public class ScreenListService {
 	private static final String DEFAULT_ACTOR = "SYSTEM";
 	private final ScreenListMapper screenListMapper;
-	public ScreenListService(ScreenListMapper screenListMapper) {
+	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
+
+	public ScreenListService(
+			ScreenListMapper screenListMapper,
+			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.screenListMapper = screenListMapper;
+		this.publicPathCrypto = publicPathCrypto;
 	}
 	/**
 	 * 사용 중인 활성 화면 목록을 조회한다.
@@ -126,6 +133,10 @@ public class ScreenListService {
 			return "/index.do";
 		}
 		String path = uri.split("\\?")[0].trim();
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto != null && crypto.isEnabled()) {
+			path = crypto.toLogicalPath(path);
+		}
 		if (path.endsWith(".html")) {
 			path = path.substring(0, path.length() - 5);
 		}

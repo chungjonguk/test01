@@ -12,16 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * 평문·{@code .do} URL을 암호화 공개 URL({@code /e/.../*.do})로 리다이렉트합니다.
+ * {@code /e/{token}.do} 요청을 복호화한 논리 경로로 MVC가 처리하도록 변환합니다.
  */
 @Component
 @Profile("!test")
-@Order(Ordered.HIGHEST_PRECEDENCE + 20)
-public class DoPathRedirectFilter extends OncePerRequestFilter {
+@Order(Ordered.HIGHEST_PRECEDENCE + 10)
+public class EncryptedPathDecodeFilter extends OncePerRequestFilter {
 
 	private final PublicPathCryptoService publicPathCryptoService;
 
-	public DoPathRedirectFilter(PublicPathCryptoService publicPathCryptoService) {
+	public EncryptedPathDecodeFilter(PublicPathCryptoService publicPathCryptoService) {
 		this.publicPathCryptoService = publicPathCryptoService;
 	}
 
@@ -30,33 +30,22 @@ public class DoPathRedirectFilter extends OncePerRequestFilter {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
-		if (!"GET".equalsIgnoreCase(request.getMethod())) {
+		if (!publicPathCryptoService.isEnabled()) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		String contextPath = request.getContextPath();
 		String uri = request.getRequestURI();
 		String path = uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
-		if (path.isEmpty()) {
-			path = "/";
-		}
-		if (DoPathHelper.shouldSkipRedirect(path)) {
+		if (!publicPathCryptoService.isPublicPath(path)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		if (publicPathCryptoService.isEnabled() && publicPathCryptoService.isPublicPath(path)) {
+		String logical = publicPathCryptoService.toLogicalPath(path);
+		if (logical.equals(path)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		String target = publicPathCryptoService.isEnabled()
-				? publicPathCryptoService.toPublicPath(path)
-				: DoPathHelper.toDoPath(path);
-		if (target.equals(path)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		String query = request.getQueryString();
-		String location = contextPath + target + (query != null ? "?" + query : "");
-		response.sendRedirect(location);
+		filterChain.doFilter(new LogicalPathRequestWrapper(request, contextPath, logical), response);
 	}
 }

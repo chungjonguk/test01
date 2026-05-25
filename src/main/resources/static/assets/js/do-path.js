@@ -1,13 +1,15 @@
 /**
- * PrintMall — .do URL 규칙 (클라이언트)
- * - same-origin fetch('/api/...') 경로에 .do 자동 부여
- * - screen-menu-filter 와 경로 정규화 공유 (PrintMallDoPath)
- * - 제외: /auth/, /assets/, /vendors/, 확장자 있는 정적 리소스
+ * PrintMall — 암호화 공개 URL (/e/{token}.do)
+ * - fetch·링크 경로를 서버 API로 암호화
+ * - 메뉴 필터용 경로 정규화
  */
 (function (global) {
   'use strict';
 
-  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error'];
+  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/url/'];
+  var ENCRYPT_PREFIX = '/e/';
+  var cache = Object.create(null);
+  var pending = Object.create(null);
 
   function stripQuery(path) {
     var q = path.indexOf('?');
@@ -32,15 +34,48 @@
         return true;
       }
     }
-    if (p.slice(-3) === '.do') {
+    if (p.indexOf(ENCRYPT_PREFIX) === 0 && p.slice(-3) === '.do') {
       return true;
     }
     return hasFileExtension(p);
   }
 
-  function toDo(path) {
+  function isEncrypted(path) {
+    var p = stripQuery(path);
+    return p.indexOf(ENCRYPT_PREFIX) === 0 && p.slice(-3) === '.do';
+  }
+
+  function fetchPublic(path) {
+    var key = stripQuery(path);
+    if (cache[key]) {
+      return Promise.resolve(cache[key]);
+    }
+    if (pending[key]) {
+      return pending[key];
+    }
+    pending[key] = fetch('/api/url/public?path=' + encodeURIComponent(key), { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function (body) {
+        var pub = body && body.path ? body.path : key;
+        cache[key] = pub;
+        delete pending[key];
+        return pub;
+      })
+      .catch(function () {
+        delete pending[key];
+        return key;
+      });
+    return pending[key];
+  }
+
+  function toPublic(path) {
     if (!path) {
-      return '/index.do';
+      return fetchPublic('/');
     }
     var full = path;
     var query = '';
@@ -51,56 +86,86 @@
     }
     var p = full.trim();
     if (!p.length) {
-      return '/index.do' + query;
+      return fetchPublic('/').then(function (enc) {
+        return enc + query;
+      });
     }
-    if (shouldSkip(p)) {
-      return path;
+    if (shouldSkip(p) || isEncrypted(p)) {
+      return Promise.resolve(path);
     }
-    if (p.slice(-3) === '.do') {
-      return path;
-    }
-    if (p === '/') {
-      return '/index.do' + query;
-    }
-    if (p.length > 1 && p.charAt(p.length - 1) === '/') {
-      p = p.slice(0, -1);
-    }
-    return p + '.do' + query;
+    return fetchPublic(p).then(function (enc) {
+      return enc + query;
+    });
   }
 
   function normalizePath(path) {
     if (!path) {
-      return '/index.do';
+      return Promise.resolve(null);
     }
-    var trimmed = stripQuery(path).replace(/\/+$/, '').replace(/\.html$/, '');
-    if (!trimmed.length) {
-      return '/index.do';
-    }
-    return toDo(trimmed);
+    return toPublic(path);
   }
 
   function patchFetch() {
-    if (!global.fetch || global.__PRINTMALL_FETCH_DO_PATCHED__) {
+    if (!global.fetch || global.__PRINTMALL_FETCH_ENCRYPT_PATCHED__) {
       return;
     }
     var original = global.fetch.bind(global);
     global.fetch = function (input, init) {
-      if (typeof input === 'string' && input.charAt(0) === '/') {
-        input = toDo(input);
-      } else if (input && typeof input === 'object' && typeof input.url === 'string'
-          && input.url.charAt(0) === '/') {
-        input = new Request(toDo(input.url), input);
+      if (typeof input === 'string' && input.charAt(0) === '/' && !shouldSkip(input)) {
+        return toPublic(input).then(function (url) {
+          return original(url, init);
+        });
+      }
+      if (input && typeof input === 'object' && typeof input.url === 'string'
+          && input.url.charAt(0) === '/' && !shouldSkip(input.url)) {
+        return toPublic(input.url).then(function (url) {
+          return original(new Request(url, input), init);
+        });
       }
       return original(input, init);
     };
-    global.__PRINTMALL_FETCH_DO_PATCHED__ = true;
+    global.__PRINTMALL_FETCH_ENCRYPT_PATCHED__ = true;
   }
 
-  global.PrintMallDoPath = {
+  function rewritePageLinks() {
+    var links = document.querySelectorAll('a[href^="/"]');
+    var tasks = [];
+    links.forEach(function (link) {
+      var href = link.getAttribute('href');
+      if (!href || shouldSkip(href)) {
+        return;
+      }
+      tasks.push(
+        toPublic(href).then(function (enc) {
+          if (enc && enc !== href) {
+            link.setAttribute('href', enc);
+          }
+        })
+      );
+    });
+    return Promise.all(tasks);
+  }
+
+  global.PrintMallPath = {
     shouldSkip: shouldSkip,
-    toDo: toDo,
-    normalizePath: normalizePath
+    isEncrypted: isEncrypted,
+    toPublic: toPublic,
+    normalizePath: normalizePath,
+    rewritePageLinks: rewritePageLinks
   };
+  global.PrintMallDoPath = global.PrintMallPath;
 
   patchFetch();
+
+  function notifyPathsReady() {
+    global.dispatchEvent(new Event('printmall-paths-ready'));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      rewritePageLinks().then(notifyPathsReady);
+    });
+  } else {
+    rewritePageLinks().then(notifyPathsReady);
+  }
 })(typeof window !== 'undefined' ? window : globalThis);

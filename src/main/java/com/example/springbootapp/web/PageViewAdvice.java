@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.springbootapp.config.InicisProperties;
 import com.example.springbootapp.config.web.DoPathHelper;
+import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
+import org.springframework.beans.factory.ObjectProvider;
 import jakarta.servlet.http.HttpServletRequest;
 /**
  * MVC 페이지 공통 Model 주입: 화면ID, 제목, 메뉴 URL, 스크립트 플래그.
@@ -20,6 +22,7 @@ public class PageViewAdvice {
 	private static final String KAKAO_KEY_PLACEHOLDER = "YOUR_KAKAO_REST_API_KEY";
 	private final ScreenListService screenListService;
 	private final InicisProperties inicisProperties;
+	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
 	@Value("${kakao.javascript-key:}")
 	private String kakaoJavascriptKey;
 	@Value("${kakao.client-id:}")
@@ -30,13 +33,23 @@ public class PageViewAdvice {
 	private String appBrandName;
 	@Value("${app.grid.page-size:30}")
 	private int gridPageSize;
-	public PageViewAdvice(ScreenListService screenListService, InicisProperties inicisProperties) {
+	public PageViewAdvice(
+			ScreenListService screenListService,
+			InicisProperties inicisProperties,
+			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.screenListService = screenListService;
 		this.inicisProperties = inicisProperties;
+		this.publicPathCrypto = publicPathCrypto;
 	}
+
 	@ModelAttribute("activeScreenUris")
 	public List<String> activeScreenUris() {
-		return screenListService.findActiveUriPaths();
+		List<String> paths = screenListService.findActiveUriPaths();
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto == null || !crypto.isEnabled()) {
+			return paths;
+		}
+		return paths.stream().map(crypto::toPublicPath).toList();
 	}
 	@ModelAttribute("appBrandName")
 	public String appBrandName() {

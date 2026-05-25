@@ -2,8 +2,9 @@ package com.example.springbootapp.web;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.example.springbootapp.config.web.DoPathHelper;
+import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.service.ScreenListService;
+import org.springframework.beans.factory.ObjectProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 /**
@@ -13,8 +14,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class ScreenAccessInterceptor implements HandlerInterceptor {
 	private final ScreenListService screenListService;
-	public ScreenAccessInterceptor(ScreenListService screenListService) {
+	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
+
+	public ScreenAccessInterceptor(
+			ScreenListService screenListService,
+			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.screenListService = screenListService;
+		this.publicPathCrypto = publicPathCrypto;
 	}
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -26,7 +32,12 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 		if (screenListService.isAccessible(uri)) {
 			return true;
 		}
-		response.sendRedirect(request.getContextPath() + DoPathHelper.toDoPath("/pages/errors/404"));
+		String errorPath = "/pages/errors/404";
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto != null && crypto.isEnabled()) {
+			errorPath = crypto.toPublicPath(errorPath);
+		}
+		response.sendRedirect(request.getContextPath() + errorPath);
 		return false;
 	}
 	private boolean shouldSkip(String uri) {

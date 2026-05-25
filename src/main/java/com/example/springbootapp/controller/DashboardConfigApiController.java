@@ -40,10 +40,16 @@ public class DashboardConfigApiController {
 
 	@GetMapping("/config")
 	public ResponseEntity<Map<String, Object>> getConfig(
-			@RequestParam Long companyId,
+			@RequestParam(required = false) Long companyId,
 			HttpSession session) {
-		companySessionService.setSelectedCompanyId(session, companyId);
-		return ResponseEntity.ok(configService.getConfig(companyId));
+		Long resolved = companyId != null
+				? companyId
+				: companySessionService.resolveSelectedCompanyId(session);
+		if (resolved == null) {
+			return ResponseEntity.ok(configService.getDefaultConfig());
+		}
+		companySessionService.setSelectedCompanyId(session, resolved);
+		return ResponseEntity.ok(configService.getConfig(resolved));
 	}
 
 	@PutMapping("/config")
@@ -62,6 +68,11 @@ public class DashboardConfigApiController {
 		res.put("success", true);
 		res.put("config", configService.getConfig(companyId));
 		return ResponseEntity.ok(res);
+	}
+
+	@GetMapping("/config/default")
+	public ResponseEntity<Map<String, Object>> getDefaultConfig() {
+		return ResponseEntity.ok(configService.getDefaultConfig());
 	}
 
 	@PutMapping("/selected-company")
