@@ -36,10 +36,24 @@
         WHERE order_no = #{orderNo}
     </select>
 
+    <select id="findById" resultMap="ecmOrderResultMap">
+        SELECT order_id, order_no, customer_id, order_dt, ship_to, shipping_method,
+               status_cd, amount, reg_id, reg_dt, update_id, update_dt
+        FROM ecm_order
+        WHERE order_id = #{orderId}
+    </select>
+
     <update id="updateStatusByOrderNo">
         UPDATE ecm_order
         SET status_cd = #{statusCd},
             update_id = #{updateId}
         WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="updateStatusByOrderId">
+        UPDATE ecm_order
+        SET status_cd = #{statusCd},
+            update_id = #{updateId}
+        WHERE order_id = #{orderId}
     </update>
 </mapper>

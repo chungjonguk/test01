@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+        <div class="card mb-3" id="shipping-waybill-panel">
+          <div class="card-header">
+            <div class="row flex-between-center">
+              <div class="col-auto">
+                <h5 class="mb-0">운송장 발급</h5>
+                <p class="fs--1 mb-0 text-600">CJ대한통운 · 우체국 · 롯데택배 (목 API 기본, 계약 후 실연동)</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form id="shipping-waybill-form" class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label class="form-label" for="ship-order-id">주문 ID</label>
+                <input class="form-control form-control-sm" id="ship-order-id" type="number" min="1" required="required" placeholder="ecm_order.order_id" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label" for="ship-carrier">택배사</label>
+                <select class="form-select form-select-sm" id="ship-carrier" required="required">
+                  <option value="CJ">CJ대한통운</option>
+                  <option value="EPOST">우체국</option>
+                  <option value="LOTTE">롯데택배</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label" for="ship-box-cnt">박스 수</label>
+                <input class="form-control form-control-sm" id="ship-box-cnt" type="number" min="1" value="1" />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label" for="ship-weight">무게(kg)</label>
+                <input class="form-control form-control-sm" id="ship-weight" type="number" min="0.1" step="0.1" value="1" />
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-primary btn-sm w-100" type="submit" id="btn-issue-waybill">
+                  <span class="fas fa-truck me-1"></span>운송장 발급
+                </button>
+              </div>
+            </form>
+            <p class="fs--2 text-600 mt-2 mb-0" id="shipping-status-hint">연동 상태 확인 중…</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header border-bottom">
+            <h6 class="mb-0">발급 이력</h6>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-sm table-striped mb-0 fs--1">
+                <thead class="bg-200">
+                  <tr>
+                    <th>배송ID</th>
+                    <th>택배사</th>
+                    <th>운송장</th>
+                    <th>상태</th>
+                    <th>수령인</th>
+                    <th>발급일시</th>
+                  </tr>
+                </thead>
+                <tbody id="shipping-history-body">
+                  <tr>
+                    <td colspan="6" class="text-center text-600 py-3">주문 ID 입력 후 조회하거나 운송장을 발급하세요.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    </th:block>
+</body>
+</html>

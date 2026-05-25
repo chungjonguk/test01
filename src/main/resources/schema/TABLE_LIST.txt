@@ -40,7 +40,7 @@ spring_boot_app 테이블 목록 (생성 스크립트)
   ecm_payment
   common_code, common_code_value
   screen_list, screen_table_map
-  ecm_product, ecm_customer, ecm_order, ecm_order_item, ecm_cart_item, ecm_invoice, ecm_billing
+  ecm_product, ecm_customer, ecm_order, ecm_order_item, ecm_cart_item, ecm_invoice, ecm_billing, ecm_shipment
   lms_course, lms_enrollment, lms_trainer
   email_message
   calendar_event

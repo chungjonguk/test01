@@ -198,6 +198,9 @@ public class PageViewAdvice {
 		if (uri.contains("/admin/inventory")) {
 			setIfAbsent(model, "loadInventoryManageActions", true);
 		}
+		if (uri.contains("/admin/shipping")) {
+			setIfAbsent(model, "loadShippingWaybillActions", true);
+		}
 		if (uri.contains("/admin/company-page-images")) {
 			setIfAbsent(model, "loadCompanyPageImageActions", true);
 		}

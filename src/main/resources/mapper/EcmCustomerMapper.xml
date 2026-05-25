@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmCustomerMapper">
+
+    <resultMap id="ecmCustomerResultMap" type="EcmCustomer">
+        <id property="customerId" column="customer_id"/>
+        <result property="customerNm" column="customer_nm"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="zipcode" column="zipcode"/>
+        <result property="address" column="address"/>
+        <result property="addressDetail" column="address_detail"/>
+    </resultMap>
+
+    <select id="findById" resultMap="ecmCustomerResultMap">
+        SELECT customer_id, customer_nm, email, phone, zipcode, address, address_detail
+        FROM ecm_customer
+        WHERE customer_id = #{customerId}
+    </select>
+</mapper>

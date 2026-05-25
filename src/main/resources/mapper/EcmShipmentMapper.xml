@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.EcmShipmentMapper">
+
+    <resultMap id="ecmShipmentResultMap" type="EcmShipment">
+        <id property="shipmentId" column="shipment_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="carrierCd" column="carrier_cd"/>
+        <result property="invoiceNo" column="invoice_no"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="recipientNm" column="recipient_nm"/>
+        <result property="recipientPhone" column="recipient_phone"/>
+        <result property="zipcode" column="zipcode"/>
+        <result property="address" column="address"/>
+        <result property="addressDetail" column="address_detail"/>
+        <result property="boxCnt" column="box_cnt"/>
+        <result property="weightKg" column="weight_kg"/>
+        <result property="requestPayload" column="request_payload"/>
+        <result property="responsePayload" column="response_payload"/>
+        <result property="issuedDt" column="issued_dt"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="shipmentId">
+        INSERT INTO ecm_shipment (
+            order_id, carrier_cd, invoice_no, status_cd,
+            recipient_nm, recipient_phone, zipcode, address, address_detail,
+            box_cnt, weight_kg, request_payload, response_payload, issued_dt,
+            reg_id, update_id
+        ) VALUES (
+            #{orderId}, #{carrierCd}, #{invoiceNo}, #{statusCd},
+            #{recipientNm}, #{recipientPhone}, #{zipcode}, #{address}, #{addressDetail},
+            #{boxCnt}, #{weightKg}, #{requestPayload}, #{responsePayload}, #{issuedDt},
+            #{regId}, #{updateId}
+        )
+    </insert>
+
+    <select id="findById" resultMap="ecmShipmentResultMap">
+        SELECT shipment_id, order_id, carrier_cd, invoice_no, status_cd,
+               recipient_nm, recipient_phone, zipcode, address, address_detail,
+               box_cnt, weight_kg, request_payload, response_payload, issued_dt,
+               reg_id, reg_dt, update_id, update_dt
+        FROM ecm_shipment
+        WHERE shipment_id = #{shipmentId}
+    </select>
+
+    <select id="findByOrderId" resultMap="ecmShipmentResultMap">
+        SELECT shipment_id, order_id, carrier_cd, invoice_no, status_cd,
+               recipient_nm, recipient_phone, zipcode, address, address_detail,
+               box_cnt, weight_kg, request_payload, response_payload, issued_dt,
+               reg_id, reg_dt, update_id, update_dt
+        FROM ecm_shipment
+        WHERE order_id = #{orderId}
+        ORDER BY shipment_id DESC
+    </select>
+
+    <select id="countIssuedByOrderId" resultType="int">
+        SELECT COUNT(*)
+        FROM ecm_shipment
+        WHERE order_id = #{orderId}
+          AND status_cd = 'ISSUED'
+          AND invoice_no IS NOT NULL
+    </select>
+</mapper>

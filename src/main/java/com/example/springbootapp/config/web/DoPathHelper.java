@@ -26,7 +26,8 @@ public final class DoPathHelper {
 			"/vendors/",
 			"/error",
 			"/api/url/",
-			"/api/kakao/");
+			"/api/kakao/",
+			"/api/shipping/");
 
 	private DoPathHelper() {
 	}
@@ -64,7 +65,7 @@ public final class DoPathHelper {
 			return true;
 		}
 		String p = stripQuery(path);
-		return p.startsWith("/api/") && !p.startsWith("/api/kakao/");
+		return p.startsWith("/api/") && !p.startsWith("/api/kakao/") && !p.startsWith("/api/shipping/");
 	}
 
 	/** 경로를 .do 형식으로 변환 ({@code /} → {@code /index.do}) */

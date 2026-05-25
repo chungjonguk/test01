@@ -44,6 +44,7 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_DASHBOARD_CONFIG", "대시보드 구성", "/admin/dashboard-config", "admin/dashboard-config", 30);
 		put(byUri, "ADMIN_COMPANY_PAGE_IMAGES", "페이지 이미지", "/admin/company-page-images", "admin/company-page-images", 31);
 		put(byUri, "ADMIN_INVENTORY", "재고관리", "/admin/inventory", "admin/inventory", 32);
+		put(byUri, "ADMIN_SHIPPING", "운송장발급", "/admin/shipping", "admin/shipping", 33);
 		put(byUri, "SHOP_HOME", "쇼핑몰 홈", "/", "index", 15);
 		put(byUri, "SHOP_PRODUCT_GRID", "상품 카탈로그", "/app/e-commerce/product/product-grid",
 				"app/e-commerce/product/product-grid", 16);

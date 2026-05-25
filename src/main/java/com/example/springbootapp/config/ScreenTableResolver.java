@@ -39,6 +39,9 @@ public final class ScreenTableResolver {
 		if ("/admin/inventory".equals(uri)) {
 			return db("ecm_product", null, "상품 재고 수량 조회·조정");
 		}
+		if ("/admin/shipping".equals(uri)) {
+			return db("ecm_shipment", "ecm_order,ecm_customer", "CJ·우체국·롯데 운송장");
+		}
 		if ("/admin/company-page-images".equals(uri)) {
 			return db("biz_company_page_image", "biz_company,nas_file", "업체별 페이지 이미지 등록");
 		}

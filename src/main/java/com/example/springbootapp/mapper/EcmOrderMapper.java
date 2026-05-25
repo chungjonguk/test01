@@ -21,6 +21,8 @@ public interface EcmOrderMapper {
 	 * @return 주문, 없으면 {@code null}
 	 */
 	EcmOrder findByOrderNo(@Param("orderNo") String orderNo);
+
+	EcmOrder findById(@Param("orderId") Long orderId);
 	/**
 	 * 주문번호 기준으로 주문 상태를 갱신합니다.
 	 *
@@ -31,6 +33,11 @@ public interface EcmOrderMapper {
 	 */
 	int updateStatusByOrderNo(
 			@Param("orderNo") String orderNo,
+			@Param("statusCd") String statusCd,
+			@Param("updateId") String updateId);
+
+	int updateStatusByOrderId(
+			@Param("orderId") Long orderId,
 			@Param("statusCd") String statusCd,
 			@Param("updateId") String updateId);
 	/**

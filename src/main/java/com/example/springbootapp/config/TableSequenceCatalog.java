@@ -27,6 +27,7 @@ public final class TableSequenceCatalog {
 		add(list, "ecm_product_image", "image_id", "상품 이미지");
 		add(list, "ecm_customer", "customer_id", "고객");
 		add(list, "ecm_order", "order_id", "주문");
+		add(list, "ecm_shipment", "shipment_id", "배송·운송장");
 		add(list, "ecm_cart_item", "cart_item_id", "장바구니");
 		add(list, "ecm_invoice", "invoice_id", "인보이스");
 		add(list, "ecm_billing", "billing_id", "청구");

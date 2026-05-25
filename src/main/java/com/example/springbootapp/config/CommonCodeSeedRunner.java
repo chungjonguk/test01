@@ -31,6 +31,7 @@ public class CommonCodeSeedRunner implements ApplicationRunner {
 			populator.addScript(new ClassPathResource("schema/common_code_charset.sql"));
 			populator.addScript(new ClassPathResource("schema/common_code_seed.sql"));
 			populator.addScript(new ClassPathResource("schema/common_code_combo_seed.sql"));
+			populator.addScript(new ClassPathResource("schema/shipping_common_code_seed.sql"));
 			populator.execute(dataSource);
 			log.info("공통코드 시드·한글(utf8mb4) 갱신 완료");
 		} catch (Exception ex) {
