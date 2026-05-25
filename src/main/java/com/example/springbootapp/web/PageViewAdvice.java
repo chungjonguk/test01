@@ -27,6 +27,8 @@ public class PageViewAdvice {
 	private boolean kakaoLocalMockEnabled;
 	@Value("${app.brand-name:PrintMall}")
 	private String appBrandName;
+	@Value("${app.grid.page-size:30}")
+	private int gridPageSize;
 	public PageViewAdvice(ScreenListService screenListService, InicisProperties inicisProperties) {
 		this.screenListService = screenListService;
 		this.inicisProperties = inicisProperties;
@@ -38,6 +40,10 @@ public class PageViewAdvice {
 	@ModelAttribute("appBrandName")
 	public String appBrandName() {
 		return appBrandName;
+	}
+	@ModelAttribute("gridPageSize")
+	public int gridPageSize() {
+		return gridPageSize > 0 ? gridPageSize : 30;
 	}
 	@ModelAttribute
 	public void applyPageViewAttributes(HttpServletRequest request, Model model) {

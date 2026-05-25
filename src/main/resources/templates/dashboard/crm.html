@@ -379,7 +379,7 @@
           </div>
           <div class="row mb-3 g-3">
             <div class="col-lg-7">
-              <div class="card" id="CrmLocationBySessionTable" data-list='{"valueNames":["country","sessions","users"],"page":3,"pagination":true}'>
+              <div class="card" id="CrmLocationBySessionTable" th:attr="data-list=|{&quot;valueNames&quot;:[&quot;country&quot;,&quot;sessions&quot;,&quot;users&quot;],&quot;page&quot;:${gridPageSize},&quot;pagination&quot;:true}|">
                 <div class="card-header d-flex flex-between-center bg-light py-2">
                   <h6 class="mb-0">Location By Session</h6>
                   <div class="d-flex">
@@ -635,7 +635,7 @@
               </div>
             </div>
             <div class="col-lg-7">
-              <div class="card" id="TableCrmRecentLeads" data-list='{"valueNames":["name","email","status"],"page":8,"pagination":true}'>
+              <div class="card" id="TableCrmRecentLeads" th:attr="data-list=|{&quot;valueNames&quot;:[&quot;name&quot;,&quot;email&quot;,&quot;status&quot;],&quot;page&quot;:${gridPageSize},&quot;pagination&quot;:true}|">
                 <div class="card-header d-flex flex-between-center py-2">
                   <h6 class="mb-0">Recent Leads</h6>
                   <div class="dropdown font-sans-serif btn-reveal-trigger">

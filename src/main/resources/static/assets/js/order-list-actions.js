@@ -34,18 +34,36 @@
   }
 
   function currentPage(list) {
-    var pageSize = list.page || 10;
+    var pageSize =
+      list.page ||
+      (window.PrintMallCommon && window.PrintMallCommon.gridPageSize
+        ? window.PrintMallCommon.gridPageSize()
+        : window.PrintMallGridPager && window.PrintMallGridPager.getPageSize
+          ? window.PrintMallGridPager.getPageSize()
+          : 30);
     return Math.max(1, Math.ceil(list.i / pageSize));
   }
 
   function totalPages(list) {
-    var pageSize = list.page || 10;
+    var pageSize =
+      list.page ||
+      (window.PrintMallCommon && window.PrintMallCommon.gridPageSize
+        ? window.PrintMallCommon.gridPageSize()
+        : window.PrintMallGridPager && window.PrintMallGridPager.getPageSize
+          ? window.PrintMallGridPager.getPageSize()
+          : 30);
     var total = list.matchingItems ? list.matchingItems.length : list.items.length;
     return Math.max(1, Math.ceil(total / pageSize));
   }
 
   function goToPage(list, page) {
-    var pageSize = list.page || 10;
+    var pageSize =
+      list.page ||
+      (window.PrintMallCommon && window.PrintMallCommon.gridPageSize
+        ? window.PrintMallCommon.gridPageSize()
+        : window.PrintMallGridPager && window.PrintMallGridPager.getPageSize
+          ? window.PrintMallGridPager.getPageSize()
+          : 30);
     var maxPage = totalPages(list);
     var target = Math.min(Math.max(1, page), maxPage);
     list.show((target - 1) * pageSize + 1, pageSize);

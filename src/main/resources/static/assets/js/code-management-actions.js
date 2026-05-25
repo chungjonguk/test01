@@ -3,7 +3,7 @@
  * 상단 조회그리드 + 코드그룹/상세코드 그리드
  * API: /api/admin/codes
  * @module code-management-actions
- * @version 26
+ * @version 28
  */
 (function () {
   'use strict';
@@ -11,6 +11,10 @@
   var COL_SEARCH = 8;
   var COL_GROUP = 10;
   var COL_DETAIL = 9;
+
+  var searchPager = null;
+  var groupPager = null;
+  var detailPager = null;
 
   var state = {
     groups: {},
@@ -700,34 +704,32 @@
     });
   }
 
-  function renderSearchGrid() {
+  function ensureSearchPager() {
+    if (searchPager || !(window.PrintMallCommon && window.PrintMallCommon.createGridPager)) {
+      return;
+    }
+    searchPager = window.PrintMallCommon.createGridPager({
+      rootId: 'code-group-search-grid-pager',
+      onPageChange: function (pageKeys, meta) {
+        paintSearchGridRows(pageKeys, meta);
+      }
+    });
+  }
+
+  function paintSearchGridRows(pageKeys, meta) {
     var tbody = document.getElementById('code-group-search-grid-body');
-    var countEl = document.getElementById('code-search-result-count');
     if (!tbody) {
       return;
     }
-    if (!state.searched) {
-      tbody.innerHTML =
-        '<tr><td colspan="' +
-        COL_SEARCH +
-        '" class="text-center text-600 py-4">조회 버튼을 눌러 그룹 정보를 불러오세요.</td></tr>';
-      if (countEl) {
-        countEl.textContent = '—';
-      }
-      return;
-    }
-    var keys = state.filteredKeys || [];
-    if (countEl) {
-      countEl.textContent = keys.length + '건';
-    }
-    if (!keys.length) {
+    var rowOffset = meta && meta.start ? meta.start - 1 : 0;
+    if (!pageKeys.length) {
       tbody.innerHTML =
         '<tr><td colspan="' +
         COL_SEARCH +
         '" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
       return;
     }
-    tbody.innerHTML = keys
+    tbody.innerHTML = pageKeys
       .map(function (key, index) {
         var g = state.groups[key];
         var active = key === state.selectedGroup ? ' table-active' : '';
@@ -737,7 +739,7 @@
           '" data-group="' +
           key +
           '" role="button" tabindex="0">' +
-          noCell(index) +
+          noCell(rowOffset + index) +
           codeIdCell(g.codeId, key, 'code-group-edit-btn', 'col-code') +
           '<td class="align-middle py-2 col-code-nm">' +
           truncateCell(g.codeNm) +
@@ -763,32 +765,66 @@
     });
   }
 
-  function renderGroups() {
+  function renderSearchGrid() {
+    var tbody = document.getElementById('code-group-search-grid-body');
+    var countEl = document.getElementById('code-search-result-count');
+    if (!tbody) {
+      return;
+    }
+    if (!state.searched) {
+      if (searchPager) {
+        searchPager.setItems([]);
+      }
+      tbody.innerHTML =
+        '<tr><td colspan="' +
+        COL_SEARCH +
+        '" class="text-center text-600 py-4">조회 버튼을 눌러 그룹 정보를 불러오세요.</td></tr>';
+      if (countEl) {
+        countEl.textContent = '—';
+      }
+      return;
+    }
+    var keys = state.filteredKeys || [];
+    if (countEl) {
+      countEl.textContent = keys.length + '건';
+    }
+    if (!keys.length) {
+      if (searchPager) {
+        searchPager.setItems([]);
+      }
+      tbody.innerHTML =
+        '<tr><td colspan="' +
+        COL_SEARCH +
+        '" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
+      return;
+    }
+    ensureSearchPager();
+    if (searchPager) {
+      searchPager.setItems(keys);
+      return;
+    }
+    paintSearchGridRows(keys, { start: 1, totalItems: keys.length });
+  }
+
+  function ensureGroupPager() {
+    if (groupPager || !(window.PrintMallCommon && window.PrintMallCommon.createGridPager)) {
+      return;
+    }
+    groupPager = window.PrintMallCommon.createGridPager({
+      rootId: 'code-group-grid-pager',
+      onPageChange: function (pageKeys, meta) {
+        paintGroupRows(pageKeys, meta);
+      }
+    });
+  }
+
+  function paintGroupRows(pageKeys, meta) {
     var tbody = document.getElementById('code-group-grid-body');
     if (!tbody) {
       return;
     }
-    var keys = getFilteredKeys();
-    if (!keys.length) {
-      tbody.innerHTML =
-        '<tr><td colspan="' +
-        COL_GROUP +
-        '" class="text-center text-600 py-4">' +
-        (state.searched ? '조회된 코드그룹이 없습니다.' : '등록된 코드그룹이 없습니다.') +
-        '</td></tr>';
-      if (!state.searched) {
-        state.selectedGroup = null;
-      }
-      state.checkedGroups = [];
-      updateGroupCheckAll();
-      renderDetails();
-      return;
-    }
-    pruneCheckedGroups();
-    if (!state.selectedGroup || !state.groups[state.selectedGroup]) {
-      state.selectedGroup = keys[0];
-    }
-    tbody.innerHTML = keys
+    var rowOffset = meta && meta.start ? meta.start - 1 : 0;
+    tbody.innerHTML = pageKeys
       .map(function (key, index) {
         var g = state.groups[key];
         var active = key === state.selectedGroup ? ' table-active' : '';
@@ -800,7 +836,7 @@
           key +
           '" role="button" tabindex="0">' +
           groupCheckCell(key) +
-          noCell(index) +
+          noCell(rowOffset + index) +
           codeIdCell(g.codeId, key, 'code-group-edit-btn', 'col-code-id') +
           '<td class="align-middle py-2 col-code-nm">' +
           truncateCell(g.codeNm) +
@@ -837,35 +873,62 @@
     renderDetails();
   }
 
-  function renderDetails() {
-    var tbody = document.getElementById('code-detail-grid-body');
-    var empty = document.getElementById('code-detail-empty');
-    var badge = document.getElementById('selected-group-badge');
+  function renderGroups() {
+    var tbody = document.getElementById('code-group-grid-body');
     if (!tbody) {
       return;
     }
-    var groupKey = state.selectedGroup;
-    if (badge) {
-      var g0 = groupKey && state.groups[groupKey] ? state.groups[groupKey] : null;
-      badge.textContent = g0
-        ? (g0.codeId || groupKey) + (g0.codeNm ? ' · ' + g0.codeNm : '')
-        : '그룹 선택';
-    }
-    if (!groupKey || !state.groups[groupKey]) {
-      tbody.innerHTML = '';
-      state.checkedCodes = [];
-      updateDetailCheckAll();
-      if (empty) {
-        empty.classList.remove('d-none');
+    var keys = getFilteredKeys();
+    if (!keys.length) {
+      if (groupPager) {
+        groupPager.setItems([]);
       }
+      tbody.innerHTML =
+        '<tr><td colspan="' +
+        COL_GROUP +
+        '" class="text-center text-600 py-4">' +
+        (state.searched ? '조회된 코드그룹이 없습니다.' : '등록된 코드그룹이 없습니다.') +
+        '</td></tr>';
+      if (!state.searched) {
+        state.selectedGroup = null;
+      }
+      state.checkedGroups = [];
+      updateGroupCheckAll();
+      renderDetails();
       return;
     }
-    pruneCheckedCodes();
-    if (empty) {
-      empty.classList.add('d-none');
+    pruneCheckedGroups();
+    if (!state.selectedGroup || !state.groups[state.selectedGroup]) {
+      state.selectedGroup = keys[0];
     }
-    var codes = state.groups[groupKey].codes || [];
-    if (!codes.length) {
+    ensureGroupPager();
+    if (groupPager) {
+      groupPager.setItems(keys);
+      return;
+    }
+    paintGroupRows(keys, { start: 1, totalItems: keys.length });
+  }
+
+  function ensureDetailPager() {
+    if (detailPager || !(window.PrintMallCommon && window.PrintMallCommon.createGridPager)) {
+      return;
+    }
+    detailPager = window.PrintMallCommon.createGridPager({
+      rootId: 'code-detail-grid-pager',
+      onPageChange: function (pageCodes, meta) {
+        paintDetailRows(pageCodes, meta);
+      }
+    });
+  }
+
+  function paintDetailRows(pageCodes, meta) {
+    var tbody = document.getElementById('code-detail-grid-body');
+    var empty = document.getElementById('code-detail-empty');
+    if (!tbody) {
+      return;
+    }
+    var rowOffset = meta && meta.start ? meta.start - 1 : 0;
+    if (!pageCodes.length) {
       tbody.innerHTML =
         '<tr><td colspan="' +
         COL_DETAIL +
@@ -873,19 +936,23 @@
       updateDetailCheckAll();
       return;
     }
-    tbody.innerHTML = codes
+    if (empty) {
+      empty.classList.add('d-none');
+    }
+    tbody.innerHTML = pageCodes
       .map(function (item, idx) {
         var active = state.selectedCode === item.codeVal ? ' table-active' : '';
+        var globalIdx = rowOffset + idx;
         return (
           '<tr class="code-detail-row' +
           active +
           '" data-code-val="' +
           item.codeVal +
           '" data-index="' +
-          idx +
+          globalIdx +
           '" role="button" tabindex="0">' +
           detailCheckCell(item.codeVal) +
-          noCell(idx) +
+          noCell(globalIdx) +
           codeValCell(item.codeVal) +
           '<td class="align-middle text-center py-2 col-sort">' +
           item.sort +
@@ -916,6 +983,56 @@
       });
     });
     bindDetailCheckboxes();
+  }
+
+  function renderDetails() {
+    var tbody = document.getElementById('code-detail-grid-body');
+    var empty = document.getElementById('code-detail-empty');
+    var badge = document.getElementById('selected-group-badge');
+    if (!tbody) {
+      return;
+    }
+    var groupKey = state.selectedGroup;
+    if (badge) {
+      var g0 = groupKey && state.groups[groupKey] ? state.groups[groupKey] : null;
+      badge.textContent = g0
+        ? (g0.codeId || groupKey) + (g0.codeNm ? ' · ' + g0.codeNm : '')
+        : '그룹 선택';
+    }
+    if (!groupKey || !state.groups[groupKey]) {
+      if (detailPager) {
+        detailPager.setItems([]);
+      }
+      tbody.innerHTML = '';
+      state.checkedCodes = [];
+      updateDetailCheckAll();
+      if (empty) {
+        empty.classList.remove('d-none');
+      }
+      return;
+    }
+    pruneCheckedCodes();
+    if (empty) {
+      empty.classList.add('d-none');
+    }
+    var codes = state.groups[groupKey].codes || [];
+    if (!codes.length) {
+      if (detailPager) {
+        detailPager.setItems([]);
+      }
+      tbody.innerHTML =
+        '<tr><td colspan="' +
+        COL_DETAIL +
+        '" class="text-center text-600 py-4">상세코드가 없습니다. 상단 <strong>추가</strong>로 등록하세요.</td></tr>';
+      updateDetailCheckAll();
+      return;
+    }
+    ensureDetailPager();
+    if (detailPager) {
+      detailPager.setItems(codes);
+      return;
+    }
+    paintDetailRows(codes, { start: 1, totalItems: codes.length });
   }
 
   function triggerGroupEdit(groupKey) {

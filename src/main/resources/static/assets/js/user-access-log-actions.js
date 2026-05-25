@@ -29,6 +29,8 @@
 
   var formatDt = C.formatDt;
 
+  var accessLogGridView = null;
+
   var fetchJson = C.fetchJson;
 
 
@@ -171,53 +173,30 @@
 
 
 
-  function renderGrid(logs) {
+  function getAccessLogGridView() {
+    if (!accessLogGridView && C.createGridViewPager) {
+      accessLogGridView = C.createGridViewPager({
+        pagerRootId: 'access-log-grid-pager',
+        containerId: 'access-log-grid-body',
+        countElId: 'access-log-result-count',
+        emptyColspan: 12,
+        renderPage: paintAccessLogRows
+      });
+    }
+    return accessLogGridView;
+  }
 
+  function paintAccessLogRows(rows, meta) {
     var tbody = $('access-log-grid-body');
-
-    var countEl = $('access-log-result-count');
-
-    if (!tbody) {
-
+    if (!tbody || !rows.length) {
       return;
-
     }
-
-    var rows = logs || [];
-
-    if (!rows.length) {
-
-      tbody.innerHTML =
-
-        '<tr><td colspan="12" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
-
-      if (countEl) {
-
-        countEl.textContent = '0건';
-
-      }
-
-      return;
-
-    }
-
-    if (countEl) {
-
-      countEl.textContent = rows.length + '건';
-
-    }
-
     tbody.innerHTML = rows
-
       .map(function (row, index) {
-
         return (
-
           '<tr>' +
-
           '<td class="ps-3 align-middle text-center col-no">' +
-
-          (index + 1) +
+          (C.gridRowNo ? C.gridRowNo(meta, index) : index + 1) +
 
           '</td>' +
 
@@ -292,10 +271,14 @@
       })
 
       .join('');
-
   }
 
-
+  function renderGrid(logs) {
+    var view = getAccessLogGridView();
+    if (view) {
+      view.setData(logs || []);
+    }
+  }
 
   // --- 검색·조회 ---
 

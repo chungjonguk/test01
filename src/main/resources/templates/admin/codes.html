@@ -78,6 +78,7 @@
                       </tbody>
                     </table>
                   </div>
+                  <nav th:replace="~{fragments/grid-pager :: pager('code-group-search-grid-pager')}"></nav>
                 </div>
               </div>
 
@@ -117,6 +118,7 @@
                           <tbody id="code-group-grid-body"></tbody>
                         </table>
                       </div>
+                      <nav th:replace="~{fragments/grid-pager :: pager('code-group-grid-pager')}"></nav>
                     </div>
                   </div>
                 </div>
@@ -158,6 +160,7 @@
                           <tbody id="code-detail-grid-body"></tbody>
                         </table>
                       </div>
+                      <nav th:replace="~{fragments/grid-pager :: pager('code-detail-grid-pager')}"></nav>
                       <div class="text-center text-600 fs--1 py-5 d-none" id="code-detail-empty">위 코드그룹 그리드에서 그룹을 선택하세요.</div>
                     </div>
                   </div>

@@ -7,6 +7,7 @@
   var state = {
     loading: false
   };
+  var menuGridView = null;
 
   function $(id) {
     return document.getElementById(id);
@@ -105,33 +106,34 @@
     return params;
   }
 
-  function renderGrid(screens) {
-    var tbody = $('menu-grid-body');
-    var countEl = $('menu-search-result-count');
-    if (!tbody) {
-      return;
+  function rowNo(meta, index) {
+    if (window.PrintMallCommon && window.PrintMallCommon.gridRowNo) {
+      return window.PrintMallCommon.gridRowNo(meta, index);
     }
-    var rows = screens || [];
-    if (!rows.length) {
-      tbody.innerHTML =
-        '<tr><td colspan="11" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
-      if (countEl) {
-        countEl.textContent = '0건';
-      }
-      return;
-    }
-    if (countEl) {
-      countEl.textContent = rows.length + '건';
-    }
-    tbody.innerHTML = rows
-      .map(function (row, index) {
-        var screenId = row.screenId || '';
-        var screenNm = displayName(row);
-        var uriPath = row.uriPath || '';
-        return (
-          '<tr>' +
-          '<td class="ps-3 align-middle text-center col-no">' +
-          (index + 1) +
+    return (meta && meta.start ? meta.start - 1 : 0) + index + 1;
+  }
+
+  function getMenuGridView() {
+    if (!menuGridView && window.PrintMallCommon && window.PrintMallCommon.createGridViewPager) {
+      menuGridView = window.PrintMallCommon.createGridViewPager({
+        pagerRootId: 'menu-grid-pager',
+        containerId: 'menu-grid-body',
+        countElId: 'menu-search-result-count',
+        emptyColspan: 11,
+        renderPage: function (rows, meta) {
+          var tbody = $('menu-grid-body');
+          if (!tbody || !rows.length) {
+            return;
+          }
+          tbody.innerHTML = rows
+            .map(function (row, index) {
+              var screenId = row.screenId || '';
+              var screenNm = displayName(row);
+              var uriPath = row.uriPath || '';
+              return (
+                '<tr>' +
+                '<td class="ps-3 align-middle text-center col-no">' +
+                rowNo(meta, index) +
           '</td>' +
           '<td class="align-middle col-screen-id"><code class="fs--2 menu-mgmt-truncate d-block">' +
           escapeHtml(screenId) +
@@ -163,10 +165,21 @@
           '<td class="align-middle fs--2 col-update-dt d-none d-xl-table-cell">' +
           truncateCell(formatDt(row.updateDt)) +
           '</td>' +
-          '</tr>'
-        );
-      })
-      .join('');
+                '</tr>'
+              );
+            })
+            .join('');
+        }
+      });
+    }
+    return menuGridView;
+  }
+
+  function renderGrid(screens) {
+    var view = getMenuGridView();
+    if (view) {
+      view.setData(screens || []);
+    }
   }
 
   function loadMenus() {

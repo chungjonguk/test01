@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <!--
+    공통 그리드 페이저 (page-size: app.grid.page-size / ${gridPageSize})
+    JS: PrintMallCommon.createGridViewPager({ pagerRootId: '...', containerId: '...-body', renderPage: fn })
+  -->
+  <nav th:fragment="pager(rootId)"
+       th:id="${rootId}"
+       class="printmall-grid-pager d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2 mb-0 d-none"
+       th:attr="aria-label=${rootId + ' pagination'}">
+    <span class="fs--1 text-600" data-grid-pager-info></span>
+    <ul class="pagination pagination-sm mb-0" data-grid-pager-pages></ul>
+  </nav>
+</body>
+</html>

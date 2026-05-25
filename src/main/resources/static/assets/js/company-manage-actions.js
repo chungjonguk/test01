@@ -8,6 +8,7 @@
 
   var API_BASE = '/api/admin/companies';
   var companyAddressForm = null;
+  var companyGridView = null;
 
   function getAddressForm() {
     if (!companyAddressForm && window.PrintMallKakaoAddressForm) {
@@ -145,73 +146,83 @@
     return ids;
   }
 
+  function getCompanyGridView() {
+    if (!companyGridView && window.PrintMallCommon && window.PrintMallCommon.createGridViewPager) {
+      companyGridView = window.PrintMallCommon.createGridViewPager({
+        pagerRootId: 'company-grid-pager',
+        containerId: 'company-grid-body',
+        countElId: 'company-result-count',
+        emptyColspan: 9,
+        onBeforeRender: function () {
+          var checkAll = $('company-check-all');
+          if (checkAll) {
+            checkAll.checked = false;
+            checkAll.indeterminate = false;
+          }
+        },
+        renderPage: function (companies) {
+          var tbody = $('company-grid-body');
+          if (!tbody || !companies.length) {
+            return;
+          }
+          tbody.innerHTML = companies
+            .map(function (row) {
+              return (
+                '<tr data-company-id="' +
+                escapeHtml(row.companyId) +
+                '">' +
+                '<td class="text-center">' +
+                '<input class="form-check-input company-row-check" type="checkbox" value="' +
+                escapeHtml(row.companyId) +
+                '" aria-label="업체 ' +
+                escapeHtml(row.companyNm) +
+                ' 선택" />' +
+                '</td>' +
+                '<td class="ps-3 text-center">' +
+                escapeHtml(row.companyId) +
+                '</td>' +
+                '<td class="fw-semi-bold">' +
+                escapeHtml(row.companyNm) +
+                '</td>' +
+                '<td class="d-none d-md-table-cell">' +
+                escapeHtml(row.bizNo || '—') +
+                '</td>' +
+                '<td class="d-none d-lg-table-cell">' +
+                escapeHtml(row.ceoNm || '—') +
+                '</td>' +
+                '<td class="d-none d-xl-table-cell">' +
+                escapeHtml(row.tel || '—') +
+                '</td>' +
+                '<td class="text-center"><span class="badge badge-soft-primary">' +
+                escapeHtml(row.statusCd) +
+                '</span></td>' +
+                '<td class="text-center">' +
+                escapeHtml(row.useYn) +
+                '</td>' +
+                '<td class="text-end pe-3 text-nowrap">' +
+                '<button type="button" class="btn btn-link btn-sm p-0 me-2 company-edit-btn" data-id="' +
+                escapeHtml(row.companyId) +
+                '">수정</button>' +
+                '<button type="button" class="btn btn-link btn-sm p-0 text-danger company-delete-btn" data-id="' +
+                escapeHtml(row.companyId) +
+                '">삭제</button>' +
+                '</td>' +
+                '</tr>'
+              );
+            })
+            .join('');
+          updateBulkDeleteButton();
+        }
+      });
+    }
+    return companyGridView;
+  }
+
   function renderRows(companies) {
-    var tbody = $('company-grid-body');
-    var countEl = $('company-result-count');
-    var checkAll = $('company-check-all');
-    if (!tbody) {
-      return;
+    var view = getCompanyGridView();
+    if (view) {
+      view.setData(companies || []);
     }
-    if (checkAll) {
-      checkAll.checked = false;
-      checkAll.indeterminate = false;
-    }
-    updateBulkDeleteButton();
-    if (countEl) {
-      countEl.textContent = (companies ? companies.length : 0) + '건';
-    }
-    if (!companies || !companies.length) {
-      tbody.innerHTML =
-        '<tr><td colspan="9" class="text-center text-600 py-4">조회 결과가 없습니다.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = companies
-      .map(function (row) {
-        return (
-          '<tr data-company-id="' +
-          escapeHtml(row.companyId) +
-          '">' +
-          '<td class="text-center">' +
-          '<input class="form-check-input company-row-check" type="checkbox" value="' +
-          escapeHtml(row.companyId) +
-          '" aria-label="업체 ' +
-          escapeHtml(row.companyNm) +
-          ' 선택" />' +
-          '</td>' +
-          '<td class="ps-3 text-center">' +
-          escapeHtml(row.companyId) +
-          '</td>' +
-          '<td class="fw-semi-bold">' +
-          escapeHtml(row.companyNm) +
-          '</td>' +
-          '<td class="d-none d-md-table-cell">' +
-          escapeHtml(row.bizNo || '—') +
-          '</td>' +
-          '<td class="d-none d-lg-table-cell">' +
-          escapeHtml(row.ceoNm || '—') +
-          '</td>' +
-          '<td class="d-none d-xl-table-cell">' +
-          escapeHtml(row.tel || '—') +
-          '</td>' +
-          '<td class="text-center"><span class="badge badge-soft-primary">' +
-          escapeHtml(row.statusCd) +
-          '</span></td>' +
-          '<td class="text-center">' +
-          escapeHtml(row.useYn) +
-          '</td>' +
-          '<td class="text-end pe-3 text-nowrap">' +
-          '<button type="button" class="btn btn-link btn-sm p-0 me-2 company-edit-btn" data-id="' +
-          escapeHtml(row.companyId) +
-          '">수정</button>' +
-          '<button type="button" class="btn btn-link btn-sm p-0 text-danger company-delete-btn" data-id="' +
-          escapeHtml(row.companyId) +
-          '">삭제</button>' +
-          '</td>' +
-          '</tr>'
-        );
-      })
-      .join('');
-    updateBulkDeleteButton();
   }
 
   function loadList() {

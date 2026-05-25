@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <!-- 공통 List.js page 값: ${gridPageSize} (application.properties app.grid.page-size) -->
+  <th:block th:fragment="pageSize" th:text="${gridPageSize}">30</th:block>
+</body>
+</html>

@@ -5,7 +5,7 @@
 <body th:replace="~{layout :: body}">
     <div th:fragment="page-content">
 
-          <div class="card mb-3" id="ordersTable" data-list='{"valueNames":["order","date","address","status","amount"],"page":10,"pagination":{"innerWindow":2,"left":1,"right":1}}'>
+          <div class="card mb-3" id="ordersTable" th:attr="data-list=|{&quot;valueNames&quot;:[&quot;order&quot;,&quot;date&quot;,&quot;address&quot;,&quot;status&quot;,&quot;amount&quot;],&quot;page&quot;:${gridPageSize},&quot;pagination&quot;:{&quot;innerWindow&quot;:2,&quot;left&quot;:1,&quot;right&quot;:1}}|">
             <div class="card-header">
               <div class="row flex-between-center">
                 <div class="col-4 col-sm-auto d-flex align-items-center pe-0">

@@ -101,6 +101,7 @@
               <div class="row" id="product-manage-grid">
                 <div class="col-12 text-center text-600 py-5">조회 중...</div>
               </div>
+              <nav th:replace="~{fragments/grid-pager :: pager('product-manage-grid-pager')}"></nav>
             </div>
             <div class="card-footer bg-light d-flex justify-content-center">
               <span class="fs--1 text-600">DB 등록 상품 · 카드 클릭 시 상세</span>

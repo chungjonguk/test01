@@ -25,6 +25,7 @@
 
 
   var state = { loading: false, products: [] };
+  var productGridView = null;
 
 
 
@@ -488,135 +489,102 @@
 
 
 
+  function bindProductDeleteButtons(grid) {
+    if (!grid) {
+      return;
+    }
+    grid.querySelectorAll('.btn-delete-product').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var pid = btn.getAttribute('data-id');
+        if (!pid || !window.confirm('이 상품을 삭제하시겠습니까?')) {
+          return;
+        }
+        fetchJson('/api/ecommerce/products/' + encodeURIComponent(pid), {
+          method: 'DELETE'
+        })
+          .then(function (r) {
+            if (!r.ok || !r.data.success) {
+              throw new Error((r.data && r.data.message) || '삭제 실패');
+            }
+            loadProducts();
+          })
+          .catch(function (err) {
+            window.alert(err.message || '삭제 중 오류');
+          });
+      });
+    });
+  }
+
+  function initProductCardWidgets(grid) {
+    if (!grid) {
+      return;
+    }
+    if (typeof window.bootstrap !== 'undefined') {
+      grid.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        new bootstrap.Tooltip(el);
+      });
+    }
+    if (typeof window.Swiper !== 'undefined') {
+      grid.querySelectorAll('.product-manage-swiper').forEach(function (el) {
+        try {
+          var cfg = el.getAttribute('data-swiper');
+          var options = cfg ? JSON.parse(cfg) : {};
+          if (el.swiper) {
+            el.swiper.destroy(true, true);
+          }
+          new window.Swiper(el, options);
+        } catch (ignore) {
+          /* theme global init */
+        }
+      });
+    }
+  }
+
+  var PRODUCT_EMPTY_HTML =
+    '<div class="col-12 text-center text-600 py-5">조회 결과가 없습니다.<br/><a href="/app/e-commerce/product/product-register" class="btn btn-sm btn-primary mt-2">상품 등록</a></div>';
+
+  function getProductGridView() {
+    if (!productGridView && C.createGridViewPager) {
+      productGridView = C.createGridViewPager({
+        pagerRootId: 'product-manage-grid-pager',
+        containerId: 'product-manage-grid',
+        emptyHtml: PRODUCT_EMPTY_HTML,
+        renderPage: paintProductCards
+      });
+    }
+    return productGridView;
+  }
+
+  function paintProductCards(items, meta) {
+    var grid = $('product-manage-grid');
+    if (!grid || !items.length) {
+      return;
+    }
+    var rowOffset = meta && meta.start ? meta.start - 1 : 0;
+    grid.innerHTML = items
+      .map(function (row, i) {
+        return renderCard(row, rowOffset + i);
+      })
+      .join('');
+    bindProductDeleteButtons(grid);
+    initProductCardWidgets(grid);
+  }
+
   /**
    * API 조회 결과로 상품 카드 그리드를 렌더링합니다.
    * @param {Array<Object>} products 상품 목록
    * @returns {void}
    */
   function renderGrid(products) {
-
-    var grid = $('product-manage-grid');
-
-    if (!grid) {
-
-      return;
-
-    }
-
     state.products = products;
-
     var sorted = sortProducts(products);
-
     updateCountLabel(sorted.length);
-
-
-
-    if (!sorted.length) {
-
-      grid.innerHTML =
-
-        '<div class="col-12 text-center text-600 py-5">조회 결과가 없습니다.<br/><a href="/app/e-commerce/product/product-register" class="btn btn-sm btn-primary mt-2">상품 등록</a></div>';
-
-      return;
-
+    var view = getProductGridView();
+    if (view) {
+      view.setData(sorted);
     }
-
-
-
-    grid.innerHTML = sorted.map(function (row, i) {
-
-      return renderCard(row, i);
-
-    }).join('');
-
-
-
-    grid.querySelectorAll('.btn-delete-product').forEach(function (btn) {
-
-      btn.addEventListener('click', function (e) {
-
-        e.preventDefault();
-
-        e.stopPropagation();
-
-        var pid = btn.getAttribute('data-id');
-
-        if (!pid || !window.confirm('이 상품을 삭제하시겠습니까?')) {
-
-          return;
-
-        }
-
-        fetchJson('/api/ecommerce/products/' + encodeURIComponent(pid), {
-
-          method: 'DELETE'
-
-        })
-
-          .then(function (r) {
-
-            if (!r.ok || !r.data.success) {
-
-              throw new Error((r.data && r.data.message) || '삭제 실패');
-
-            }
-
-            loadProducts();
-
-          })
-
-          .catch(function (err) {
-
-            window.alert(err.message || '삭제 중 오류');
-
-          });
-
-      });
-
-    });
-
-
-
-    if (typeof window.bootstrap !== 'undefined') {
-
-      grid.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-
-        new bootstrap.Tooltip(el);
-
-      });
-
-    }
-
-
-
-    if (typeof window.Swiper !== 'undefined') {
-
-      grid.querySelectorAll('.product-manage-swiper').forEach(function (el) {
-
-        try {
-
-          var cfg = el.getAttribute('data-swiper');
-
-          var options = cfg ? JSON.parse(cfg) : {};
-
-          if (el.swiper) {
-
-            el.swiper.destroy(true, true);
-
-          }
-
-          new window.Swiper(el, options);
-
-        } catch (ignore) {
-
-          /* theme global init */
-
-        }
-
-      });
-
-    }
-
   }
 
 
