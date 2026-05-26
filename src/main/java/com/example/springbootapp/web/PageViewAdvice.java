@@ -259,6 +259,28 @@ import jakarta.servlet.http.HttpServletRequest;
 		}
 		return pathKey;
 	}
+	/** 암호화 URL·.do 경로와 무관하게 결제 화면 스크립트 로드 */
+	private void applyCheckoutScriptFlag(String uri, Model model) {
+		if (uri != null && uri.contains("/app/e-commerce/checkout") && !uri.contains("/inicis/")) {
+			setIfAbsent(model, "loadCheckoutActions", true);
+			setIfAbsent(model, "inicisMockEnabled", inicisProperties.isMockEnabled());
+			setIfAbsent(model, "inicisUseRealGateway", inicisProperties.useRealGateway());
+			setIfAbsent(model, "inicisMid", inicisProperties.getMid());
+			return;
+		}
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		if (screen == null || screen.getTemplatePath() == null) {
+			return;
+		}
+		String tpl = screen.getTemplatePath().toLowerCase();
+		if (tpl.contains("checkout") && !tpl.contains("inicis")) {
+			setIfAbsent(model, "loadCheckoutActions", true);
+			setIfAbsent(model, "inicisMockEnabled", inicisProperties.isMockEnabled());
+			setIfAbsent(model, "inicisUseRealGateway", inicisProperties.useRealGateway());
+			setIfAbsent(model, "inicisMid", inicisProperties.getMid());
+		}
+	}
+
 	/** 암호화 URL·.do 경로와 무관하게 화면 템플릿 기준으로 장바구니 목록 스크립트 로드 */
 	private void applyShoppingCartScriptFlag(String uri, Model model) {
 		if (uri != null && uri.contains("/app/e-commerce/shopping-cart")) {
@@ -371,12 +393,7 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (uri.contains("/app/e-commerce/billing")) {
 			setIfAbsent(model, "loadBillingActions", true);
 		}
-		if (uri.contains("/app/e-commerce/checkout") && !uri.contains("/inicis/")) {
-			setIfAbsent(model, "loadCheckoutActions", true);
-			setIfAbsent(model, "inicisMockEnabled", inicisProperties.isMockEnabled());
-			setIfAbsent(model, "inicisUseRealGateway", inicisProperties.useRealGateway());
-			setIfAbsent(model, "inicisMid", inicisProperties.getMid());
-		}
+		applyCheckoutScriptFlag(uri, model);
 		if (uri.contains("/app/e-commerce/customers")) {
 			setIfAbsent(model, "loadCustomersActions", true);
 		}

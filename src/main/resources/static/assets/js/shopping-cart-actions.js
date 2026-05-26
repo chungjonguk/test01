@@ -293,7 +293,6 @@
     var countEl = document.getElementById('cart-total-count');
     var priceEl = document.getElementById('cart-total-price');
     var titleEl = document.getElementById('cart-title-count');
-    var checkoutBtn = document.getElementById('cart-checkout-btn');
     var clearBtn = document.getElementById('btn-cart-clear-all');
     var selectAll = document.getElementById('cart-select-all');
     var lineCount = items.length;
@@ -318,10 +317,10 @@
         ? '장바구니 (' + lineCount + '종, ' + unitCount + '개)'
         : '장바구니';
     }
-    if (checkoutBtn) {
-      checkoutBtn.classList.toggle('disabled', lineCount === 0);
-      checkoutBtn.setAttribute('aria-disabled', lineCount === 0 ? 'true' : 'false');
-    }
+    document.querySelectorAll('#shoppingCartCard a[href*="checkout"]').forEach(function (link) {
+      link.classList.toggle('disabled', lineCount === 0);
+      link.setAttribute('aria-disabled', lineCount === 0 ? 'true' : 'false');
+    });
     if (clearBtn) {
       clearBtn.disabled = lineCount === 0;
     }
@@ -601,15 +600,14 @@
       });
     }
 
-    var checkoutBtn = document.getElementById('cart-checkout-btn');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', function (e) {
+    document.querySelectorAll('#shoppingCartCard a[href*="checkout"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
         if (!ensureItems().length) {
           e.preventDefault();
           notify('장바구니가 비어 있습니다.', 'warning');
         }
       });
-    }
+    });
 
     var promoForm = document.getElementById('cart-promo-form');
     if (promoForm) {
