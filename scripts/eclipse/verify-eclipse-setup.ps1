@@ -37,14 +37,21 @@ foreach ($rel in $required) {
     }
 }
 
-$workspace = Split-Path $ProjectRoot -Parent
+$paths = & (Join-Path $PSScriptRoot "Resolve-EclipsePaths.ps1") -ProjectRoot $ProjectRoot
+$workspace = $paths.WorkspaceRoot
+$meta = Join-Path $workspace ".metadata"
 Write-Host ""
 Write-Host "  STS 워크스페이스(상위): $workspace" -ForegroundColor Gray
-Write-Host "  Import 안내: scripts\eclipse\import-maven-project.bat" -ForegroundColor Gray
+if (Test-Path $meta) {
+    Write-Host "  [OK] .metadata (프로젝트 spring-boot-app 등록됨)" -ForegroundColor Green
+} else {
+    Write-Host "  [누락] .metadata — sync-eclipse-workspace.bat 실행" -ForegroundColor Yellow
+}
+Write-Host "  STS 열기: open-sts-workspace.bat" -ForegroundColor Gray
 Write-Host ""
 
 if (-not $ok) {
     exit 1
 }
-Write-Host "점검 완료 — STS에서 Maven Import 후 Update Project 하세요." -ForegroundColor Green
+Write-Host "점검 완료 — STS에서 프로젝트가 보이면 Maven > Update Project(Alt+F5)만 확인하세요." -ForegroundColor Green
 Write-Host ""

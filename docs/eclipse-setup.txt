@@ -11,6 +11,31 @@
   - DB    : MySQL 8.x, 데이터베이스명 spring_boot_app
 
 ================================================================================
+0. 워크스페이스 연동 (D:\sts-workspace ↔ spring-boot-app-fixed)
+================================================================================
+
+  폴더 구조:
+    D:\sts-workspace\           ← STS 워크스페이스 (-data)
+    ...\new-workspace\spring-boot-app-fixed\  ← 소스 (외부 경로 Import/등록)
+
+  STS: C:\Users\chung\.local\dev\sts-5.1.1\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe
+  설정 파일: scripts/eclipse/sts-path.local.txt, sts-workspace.local.txt
+
+  한 번에 연동 (권장):
+    프로젝트 루트에서  sync-eclipse-workspace.bat  실행
+    → JDK 17, Maven compile, .metadata 생성, spring-boot-app 등록,
+      UTF-8·자동 빌드·새로고침 prefs
+
+  STS 설치 경로가 다른 PC 경로면:
+    scripts/eclipse/sts-path.local.txt  — SpringToolsForEclipse.exe 경로
+    scripts/eclipse/sts-workspace.local.txt  — D:\sts-workspace
+
+  STS 열기 후 Package Explorer에 spring-boot-app 이 보이면 Import 생략.
+  보이지 않으면 File → Import → Maven → Existing Maven Projects.
+
+  Cursor 와 동일 소스: 두 IDE 모두 spring-boot-app-fixed 폴더만 엽니다.
+
+================================================================================
 1. 프로젝트 가져오기
 ================================================================================
 
@@ -28,7 +53,7 @@
   저장소에 .project, .classpath, .settings, .launch 가 있을 때:
 
   1) open-sts-workspace.bat 실행
-     - STS 워크스페이스: new-workspace (프로젝트 상위 폴더)
+     - STS 워크스페이스: D:\sts-workspace
   2) 최초 1회: scripts\eclipse\import-maven-project.bat 안내 참고
   3) File → Open Projects from File System 또는 Maven Import
   4) Maven → Update Project 실행
@@ -53,11 +78,26 @@
 3. UTF-8 설정 (한글 깨짐 방지)
 ================================================================================
 
+  자동 (권장):
+    fix-eclipse-utf8.bat  — STS ini + D:\sts-workspace + 프로젝트 .settings
+    적용 후 STS 완전 종료 → 다시 실행
+
+  에디터에서만 깨질 때 (.properties 등):
+    · 원인: Java Properties 기본 인코딩이 ISO-8859-1 (Eclipse 잠금)
+    · fix-eclipse-utf8.bat 가 content-type UTF-8 오버라이드 적용
+    · 파일 우클릭 → Open With → Generic Text Editor (또는 Text Editor)
+    · Window → Preferences → General → Editors → File Associations
+      *.properties → Generic Text Editor 를 Default 로 지정
+    · 파일 우클릭 → Properties → Resource → Text file encoding → UTF-8
+
+  수동 확인:
   1) Window → Preferences → General → Workspace
      - Text file encoding: UTF-8
 
-  2) (선택) Java → Installed JREs → JDK 17 → Edit → Default VM arguments:
+  2) Window → Preferences → Run/Debug → Console
+     - Default console encoding: UTF-8
 
+  3) Java → Installed JREs → JDK 17 → Default VM arguments:
      -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
 
 ================================================================================

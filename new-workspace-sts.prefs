@@ -1,0 +1,29 @@
+# STS/Eclipse 워크스페이스 권장 설정 요약
+# 자동 적용: sync-eclipse-workspace.bat
+
+[경로]
+STS       = C:\Users\chung\.local\dev\sts-5.1.1\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe
+워크스페이스 = D:\sts-workspace  (scripts\eclipse\sts-workspace.local.txt)
+프로젝트   = D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
+Eclipse명  = spring-boot-app
+
+[한글 깨짐]
+- fix-eclipse-utf8.bat 실행 후 STS 재시작
+
+[Workspace > General]
+- Text file encoding: UTF-8
+- Refresh using native hooks or polling: ON
+- Refresh on access: ON
+- Build automatically: ON
+
+[Run/Debug > Console]
+- Default console encoding: UTF-8
+
+[Java]
+- JDK 17: C:\Users\chung\.local\dev\jdk-17
+- Compiler compliance: 17
+
+[실행]
+- 메인: com.example.springbootapp.SpringBootAppApplication
+- 포트: 8081
+- MySQL: spring_boot_app @ localhost:3306

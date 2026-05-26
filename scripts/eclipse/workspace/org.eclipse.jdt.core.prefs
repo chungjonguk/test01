@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+instance/org.eclipse.jdt.core.autobuild=true
+instance/org.eclipse.jdt.core.compiler.codegen.targetPlatform=17
+instance/org.eclipse.jdt.core.compiler.compliance=17
+instance/org.eclipse.jdt.core.compiler.encoding=UTF-8
+instance/org.eclipse.jdt.core.compiler.source=17

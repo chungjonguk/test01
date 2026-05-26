@@ -19,14 +19,15 @@ java -jar target/spring-boot-app-0.0.1-SNAPSHOT.jar
 
 | 항목 | 경로 |
 |------|------|
-| **워크스페이스** | `new-workspace` (이 프로젝트의 상위 폴더) |
+| **STS 워크스페이스** | `D:\sts-workspace` (`scripts/eclipse/sts-workspace.local.txt`) |
+| **소스 폴더** | `spring-boot-app-fixed` (Cursor·STS 동일) |
 | **프로젝트** | `spring-boot-app-fixed` → Eclipse 이름 `spring-boot-app` |
 | **JDK** | Java 17 (`C:\Users\chung\.local\dev\jdk-17` 권장) |
 | **포트** | 8081 (`application.properties`) |
 
 ### STS에서 열기
 
-1. **File → Switch Workspace → Other…** → `new-workspace` 선택
+1. **`open-sts-workspace.bat`** 또는 **File → Switch Workspace** → `D:\sts-workspace`
 2. **File → Import → Maven → Existing Maven Projects**
 3. **Root Directory** → `spring-boot-app-fixed` 선택 후 Finish
 4. **Window → Preferences → Java → Installed JREs** 에 JDK 17 등록
@@ -38,7 +39,9 @@ java -jar target/spring-boot-app-0.0.1-SNAPSHOT.jar
 - `spring-boot-app-java.launch` — Java Application
 - `spring-boot-app-maven.launch` — `spring-boot:run` (Maven)
 
-`open-sts-workspace.bat` 으로 STS를 `new-workspace` 워크스페이스로 열 수 있습니다. (STS 설치 경로는 배치 파일에서 수정)
+`open-sts-workspace.bat` — STS 5.1.1 + `D:\sts-workspace` (경로는 `scripts/eclipse/sts-path.local.txt` 등)
+
+**워크스페이스 연동 1회:** `sync-eclipse-workspace.bat` (JDK·UTF-8·자동 새로고침·점검)
 
 > MySQL(`localhost:3306`, DB `spring_boot_app`)이 실행 중이어야 앱이 기동됩니다.
 
@@ -49,7 +52,7 @@ java -jar target/spring-boot-app-0.0.1-SNAPSHOT.jar
 | 도구 | 열 경로 |
 |------|---------|
 | **Cursor** | `...\new-workspace\spring-boot-app-fixed` |
-| **STS** | 워크스페이스 `new-workspace` + Import `spring-boot-app-fixed` |
+| **STS** | 워크스페이스 `D:\sts-workspace` + 프로젝트 `spring-boot-app-fixed` |
 
 **STS 워크스페이스 1회 설정** (`new-workspace-sts.prefs` 참고)
 
