@@ -1,24 +1,19 @@
 package com.example.springbootapp.config;
 
-import java.nio.charset.StandardCharsets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
 
 import com.example.springbootapp.service.TableRandomIdService;
 import com.example.springbootapp.service.TableSequenceService;
 
-import javax.sql.DataSource;
-
 /**
- * 테이블별 시퀀스·난수 ID 마스터 DDL 적용 및 초기 등록.
+ * DDL 적용 후 시퀀스·난수 ID 마스터를 Java 카탈로그 기준으로 등록·동기화합니다.
+ * <p>SQL은 {@link DatabaseSchemaBootstrapRunner}에서 실행합니다.</p>
  */
 @Profile("!test")
 @Component
@@ -27,15 +22,12 @@ public class TableSequenceSeedRunner implements ApplicationRunner {
 
 	private static final Logger log = LoggerFactory.getLogger(TableSequenceSeedRunner.class);
 
-	private final DataSource dataSource;
 	private final TableSequenceService tableSequenceService;
 	private final TableRandomIdService tableRandomIdService;
 
 	public TableSequenceSeedRunner(
-			DataSource dataSource,
 			TableSequenceService tableSequenceService,
 			TableRandomIdService tableRandomIdService) {
-		this.dataSource = dataSource;
 		this.tableSequenceService = tableSequenceService;
 		this.tableRandomIdService = tableRandomIdService;
 	}
@@ -43,13 +35,6 @@ public class TableSequenceSeedRunner implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) {
 		try {
-			var populator = new ResourceDatabasePopulator();
-			populator.setContinueOnError(true);
-			populator.setSqlScriptEncoding(StandardCharsets.UTF_8.name());
-			populator.addScript(new ClassPathResource("schema/sys_table_sequence.sql"));
-			populator.addScript(new ClassPathResource("schema/sys_table_random_id.sql"));
-			populator.execute(dataSource);
-
 			int seqRegistered = tableSequenceService.registerAllFromCatalog();
 			int seqSynced = tableSequenceService.syncNextValuesFromTables();
 			int seqTotal = tableSequenceService.countAll();

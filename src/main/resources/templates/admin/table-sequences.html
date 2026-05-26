@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+          <div class="card mb-3" id="table-sequence-panel">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
+                  <h5 class="mb-0">테이블 시퀀스</h5>
+                  <p class="fs--1 mb-0 text-600">sys_table_sequence — DB에 등록된 PK 채번 시퀀스 목록 · 카탈로그·MAX 동기화</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>시퀀스 조회</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="seq-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-seq-name">시퀀스명</label>
+                      <input class="form-control form-control-sm" id="search-seq-name" type="text" placeholder="seq_biz_company" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-table-name">테이블명</label>
+                      <input class="form-control form-control-sm" id="search-table-name" type="text" placeholder="biz_company" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-seq-use-yn">사용여부</label>
+                      <select class="form-select form-select-sm" id="search-seq-use-yn">
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_FILTER', '')}"></th:block>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-sequences"><span class="fas fa-search me-1"></span>조회</button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-seq-search"><span class="fas fa-redo me-1"></span>초기화</button>
+                        <button class="btn btn-outline-info btn-sm" type="button" id="btn-sync-sequences" title="카탈로그 등록 + 테이블 MAX(next_val) 동기화"><span class="fas fa-sync me-1"></span>카탈로그 동기화</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="seq-search-result-count">0건</span>
+                <span class="fs--1 text-600">조회 전용 · next_val은 다음 INSERT 시 할당될 값</span>
+              </div>
+
+              <div class="table-responsive scrollbar">
+                <table class="table table-sm table-striped table-hover fs--1 mb-0">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="ps-3 text-center">No</th>
+                      <th>시퀀스명</th>
+                      <th>테이블</th>
+                      <th>컬럼</th>
+                      <th class="text-end">next_val</th>
+                      <th class="text-center d-none d-md-table-cell">증가</th>
+                      <th class="d-none d-lg-table-cell">설명</th>
+                      <th class="text-center">사용</th>
+                      <th class="d-none d-xl-table-cell">수정일시</th>
+                    </tr>
+                  </thead>
+                  <tbody id="seq-grid-body">
+                    <tr>
+                      <td colspan="9" class="text-center text-600 py-4">조회 버튼을 눌러 시퀀스 목록을 불러오세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav th:replace="~{fragments/grid-pager :: pager('seq-grid-pager')}"></nav>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+    <script>
+      (function () {
+        function bootSeqMgmt() {
+          if (typeof window.TableSequenceMgmtInit === 'function') {
+            window.TableSequenceMgmtInit();
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootSeqMgmt);
+        } else {
+          bootSeqMgmt();
+        }
+      })();
+    </script>
+</body>
+</html>

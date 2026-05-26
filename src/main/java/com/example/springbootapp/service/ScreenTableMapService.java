@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.config.ScreenTableResolver;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.domain.ScreenTableMap;
 import com.example.springbootapp.mapper.ScreenTableMapMapper;
@@ -27,7 +28,29 @@ public class ScreenTableMapService {
 	public Map<String, ScreenTableMap> findAllByUri() {
 		return screenTableMapMapper.findAll().stream()
 				.filter(m -> m.getUriPath() != null && !m.getUriPath().isBlank())
-				.collect(Collectors.toMap(ScreenTableMap::getUriPath, m -> m, (a, b) -> a, LinkedHashMap::new));
+				.collect(Collectors.toMap(
+						m -> DoPathHelper.normalizeForScreenLookup(m.getUriPath()),
+						m -> m,
+						ScreenTableMapService::preferMapRow,
+						LinkedHashMap::new));
+	}
+
+	private static ScreenTableMap preferMapRow(ScreenTableMap candidate, ScreenTableMap incumbent) {
+		int candidateScore = mapPreferenceScore(candidate);
+		int incumbentScore = mapPreferenceScore(incumbent);
+		return candidateScore >= incumbentScore ? candidate : incumbent;
+	}
+
+	private static int mapPreferenceScore(ScreenTableMap map) {
+		int score = 0;
+		String uri = map.getUriPath();
+		if (uri != null && uri.endsWith(".do")) {
+			score += 100;
+		}
+		if (map.getPrimaryTable() != null && !map.getPrimaryTable().isBlank()) {
+			score += 10;
+		}
+		return score;
 	}
 	/**
 	 * URI 경로로 화면-테이블 매핑을 조회한다.

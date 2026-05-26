@@ -1,7 +1,10 @@
 package com.example.springbootapp.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.config.TableSequenceCatalog;
 import com.example.springbootapp.domain.TableSequence;
 import com.example.springbootapp.mapper.TableSequenceMapper;
+import com.example.springbootapp.util.AppDateTimeFormats;
 
 /**
  * 테이블별 시퀀스 등록·동기화·다음 PK 채번.
@@ -102,6 +106,46 @@ public class TableSequenceService {
 		return tableSequenceMapper.countAll();
 	}
 
+	@Transactional(readOnly = true)
+	public List<Map<String, Object>> searchForAdmin(String seqName, String tableName, String useYn) {
+		return tableSequenceMapper
+				.search(trimToNull(seqName), trimToNull(tableName), trimToNull(useYn))
+				.stream()
+				.map(this::toAdminDto)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public Map<String, Object> refreshFromCatalog() {
+		int registered = registerAllFromCatalog();
+		int synced = syncNextValuesFromTables();
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("success", true);
+		body.put("registered", registered);
+		body.put("synced", synced);
+		body.put("total", countAll());
+		body.put("message", "카탈로그 등록 " + registered + "건, MAX 동기화 " + synced + "건");
+		return body;
+	}
+
+	private Map<String, Object> toAdminDto(TableSequence row) {
+		Map<String, Object> map = new LinkedHashMap<>();
+		map.put("seqName", row.getSeqName());
+		map.put("tableName", row.getTableName());
+		map.put("columnName", row.getColumnName());
+		map.put("nextVal", row.getNextVal());
+		map.put("incrementBy", row.getIncrementBy());
+		map.put("minVal", row.getMinVal());
+		map.put("maxVal", row.getMaxVal());
+		map.put("description", row.getDescription());
+		map.put("useYn", row.getUseYn());
+		map.put("regId", row.getRegId());
+		map.put("regDt", AppDateTimeFormats.formatDateTime(row.getRegDt()));
+		map.put("updateId", row.getUpdateId());
+		map.put("updateDt", AppDateTimeFormats.formatDateTime(row.getUpdateDt()));
+		return map;
+	}
+
 	private int registerIfAbsent(String tableName, String columnName, String description) {
 		validateIdentifier(tableName);
 		validateIdentifier(columnName);
@@ -136,6 +180,14 @@ public class TableSequenceService {
 				"SELECT COALESCE(MAX(" + columnName + "), 0) FROM " + tableName,
 				Long.class);
 		return max != null ? max : 0L;
+	}
+
+	private static String trimToNull(String value) {
+		if (value == null) {
+			return null;
+		}
+		String trimmed = value.trim();
+		return trimmed.isEmpty() ? null : trimmed;
 	}
 
 	private static String normalizeSeqName(String seqName) {

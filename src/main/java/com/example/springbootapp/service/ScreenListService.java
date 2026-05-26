@@ -1,6 +1,9 @@
 package com.example.springbootapp.service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +49,11 @@ public class ScreenListService {
 	@Transactional(readOnly = true)
 	public List<ScreenList> searchForAdmin(String screenId, String screenNm, String uriPath, String useYn) {
 		String nmFilter = trimToNull(screenNm);
-		List<ScreenList> rows = screenListMapper.findForAdmin(
+		List<ScreenList> rows = dedupeByCanonicalUri(screenListMapper.findForAdmin(
 				trimToNull(screenId),
 				null,
 				trimToNull(uriPath),
-				trimToNull(useYn));
+				trimToNull(useYn)));
 		if (nmFilter == null) {
 			return rows;
 		}
@@ -206,6 +209,48 @@ public class ScreenListService {
 			screenListMapper.update(screen);
 		}
 	}
+	/**
+	 * 동일 논리 URI(.do 정규화 기준) 중복 행을 하나로 합친다.
+	 */
+	static List<ScreenList> dedupeByCanonicalUri(List<ScreenList> rows) {
+		if (rows == null || rows.isEmpty()) {
+			return List.of();
+		}
+		Map<String, ScreenList> byUri = new LinkedHashMap<>();
+		for (ScreenList screen : rows) {
+			String key = DoPathHelper.normalizeForScreenLookup(screen.getUriPath());
+			ScreenList existing = byUri.get(key);
+			if (existing == null || preferScreenRow(screen, existing)) {
+				byUri.put(key, screen);
+			}
+		}
+		return new ArrayList<>(byUri.values());
+	}
+
+	private static boolean preferScreenRow(ScreenList candidate, ScreenList incumbent) {
+		return screenPreferenceScore(candidate) > screenPreferenceScore(incumbent);
+	}
+
+	private static int screenPreferenceScore(ScreenList screen) {
+		int score = 0;
+		String uri = screen.getUriPath();
+		String id = screen.getScreenId();
+		if (uri != null && uri.endsWith(".do")) {
+			score += 100;
+		}
+		if (id != null && !id.endsWith(".DO")) {
+			score += 50;
+		}
+		if (id != null && !id.startsWith("SHOP_")) {
+			score += 30;
+		}
+		if (id != null && (id.startsWith("ADMIN_") || id.startsWith("APP_") || id.startsWith("ECM_")
+				|| id.startsWith("DASHBOARD_") || "HOME".equals(id))) {
+			score += 20;
+		}
+		return score;
+	}
+
 	private static boolean shouldReplaceShopRow(String existingId, String incomingId) {
 		if (existingId == null || incomingId == null) {
 			return false;

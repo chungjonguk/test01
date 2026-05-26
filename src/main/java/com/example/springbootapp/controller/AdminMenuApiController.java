@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.springbootapp.config.ScreenSidebarLoader;
 import com.example.springbootapp.config.ScreenTableResolver;
+import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.domain.ScreenTableMap;
 import com.example.springbootapp.service.ScreenListService;
@@ -48,13 +49,24 @@ public class AdminMenuApiController {
 		Map<String, ScreenTableMap> tableByUri = screenTableMapService.findAllByUri();
 		List<Map<String, Object>> screens = screenListService.searchForAdmin(screenId, screenNm, uriPath, useYn)
 				.stream()
-				.map(screen -> toDto(screen, tableByUri.get(screen.getUriPath())))
+				.map(screen -> toDto(screen, resolveTableMap(tableByUri, screen.getUriPath())))
 				.collect(Collectors.toList());
 		Map<String, Object> body = new HashMap<>();
 		body.put("screens", screens);
 		body.put("count", screens.size());
 		return ResponseEntity.ok(body);
 	}
+	private static ScreenTableMap resolveTableMap(Map<String, ScreenTableMap> tableByUri, String uriPath) {
+		if (uriPath == null || uriPath.isBlank()) {
+			return null;
+		}
+		ScreenTableMap mapped = tableByUri.get(DoPathHelper.normalizeForScreenLookup(uriPath));
+		if (mapped != null) {
+			return mapped;
+		}
+		return tableByUri.get(uriPath);
+	}
+
 	private Map<String, Object> toDto(ScreenList screen, ScreenTableMap mapped) {
 		ScreenTableResolver.Mapping fallback = ScreenTableResolver.resolve(screen.getUriPath());
 		Map<String, Object> row = new LinkedHashMap<>();

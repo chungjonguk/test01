@@ -90,6 +90,8 @@
 
     '/admin/menus',
 
+    '/admin/table-sequences',
+
     '/admin/codes',
 
     '/admin/companies',

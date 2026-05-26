@@ -354,6 +354,9 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (uri.contains("/admin/codes")) {
 			setIfAbsent(model, "loadCodeManagementActions", true);
 		}
+		if (uri.contains("/admin/table-sequences")) {
+			setIfAbsent(model, "loadTableSequenceActions", true);
+		}
 		if (uri.contains("/admin/menus")) {
 			setIfAbsent(model, "loadMenuManagementActions", true);
 		}

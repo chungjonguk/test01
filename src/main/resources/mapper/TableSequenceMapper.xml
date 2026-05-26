@@ -46,6 +46,24 @@
         ORDER BY table_name
     </select>
 
+    <select id="search" resultMap="tableSequenceResultMap">
+        SELECT seq_name, table_name, column_name, next_val, increment_by, min_val, max_val,
+               description, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM sys_table_sequence
+        <where>
+            <if test="seqName != null and seqName != ''">
+                AND seq_name LIKE CONCAT('%', #{seqName}, '%')
+            </if>
+            <if test="tableName != null and tableName != ''">
+                AND table_name LIKE CONCAT('%', #{tableName}, '%')
+            </if>
+            <if test="useYn != null and useYn != ''">
+                AND use_yn = #{useYn}
+            </if>
+        </where>
+        ORDER BY table_name, column_name
+    </select>
+
     <update id="allocateNext">
         UPDATE sys_table_sequence
         SET next_val = LAST_INSERT_ID(

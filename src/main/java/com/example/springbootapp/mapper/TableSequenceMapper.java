@@ -20,6 +20,11 @@ public interface TableSequenceMapper {
 
 	List<TableSequence> findAllActive();
 
+	List<TableSequence> search(
+			@Param("seqName") String seqName,
+			@Param("tableName") String tableName,
+			@Param("useYn") String useYn);
+
 	/** {@code LAST_INSERT_ID}로 다음 값 할당 (원자적 UPDATE) */
 	int allocateNext(@Param("seqName") String seqName, @Param("updateId") String updateId);
 

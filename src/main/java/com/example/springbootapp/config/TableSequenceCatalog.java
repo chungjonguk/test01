@@ -21,6 +21,7 @@ public final class TableSequenceCatalog {
 		add(list, "user_access_log", "access_id", "접속 이력");
 		add(list, "biz_company", "company_id", "업체");
 		add(list, "biz_company_page_image", "image_id", "업체 페이지 이미지");
+		add(list, "biz_company_domain", "domain_id", "업체 도메인");
 		add(list, "ecm_payment", "payment_id", "결제");
 		add(list, "nas_file", "file_id", "NAS 파일");
 		add(list, "ecm_product", "product_id", "상품");
