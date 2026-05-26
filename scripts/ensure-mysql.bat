@@ -39,7 +39,7 @@ if not errorlevel 1 goto :connected
 
 if %ELAPSED% GEQ %MAX_WAIT_SEC% (
   echo [DB] 접속 실패 — %MAX_WAIT_SEC%초 대기 후에도 %MYSQL_HOST%:%MYSQL_PORT%/%MYSQL_DB% 연결 불가
-  echo [DB] 계정(%MYSQL_USER%)·비밀번호·DB 생성 여부를 확인하세요. setup-mysql-redcroxx.bat 참고
+  echo [DB] 계정 %MYSQL_USER% / 비밀번호 / DB 생성 여부를 확인하세요. setup-mysql-redcroxx.bat 참고
   exit /b 1
 )
 

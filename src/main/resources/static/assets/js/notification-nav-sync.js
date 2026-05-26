@@ -4,9 +4,22 @@
 (function (global) {
   'use strict';
 
-  var NOTIFICATION_PATH_KEY = '/app/social/notifications';
+  var NOTIFICATION_PATH_KEYS = ['/app/social/notifications', '/app/social/notification-list'];
   var STORAGE_KEY = 'printmall.notifications.items';
+  var API_URL = '/api/social/notifications';
   var DROPDOWN_LIMIT = 8;
+  var PAGE_LIST_LIMIT = 100;
+  var SIDEBAR_PREVIEW_LIMIT = 5;
+  var useApi = true;
+  var apiLoaded = false;
+
+  var SECTION_LABELS = {
+    NEW: '새 알림',
+    EARLIER: '이전 알림'
+  };
+
+  /** Activity log 화면과 동일한 아이콘(이모지) 목록 */
+  var ACTIVITY_LOG_ICONS = ['🔍', '📌', '🏷️', '💬', '😂', '🎁', '📋️', '📅️', '📢'];
 
   var DEMO_ITEMS = [
     {
@@ -16,8 +29,7 @@
       body: '<strong>Emma Watson</strong> replied to your comment : "Hello world 😍"',
       timeLabel: 'Just now',
       timeIcon: '💬',
-      avatarSrc: '/assets/img/team/1-thumb.png',
-      avatarType: 'img'
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n2',
@@ -25,10 +37,8 @@
       unread: true,
       body: '<strong>Albert Brooks</strong> reacted to <strong>Mia Khalifa\'s</strong> status',
       timeLabel: '9hr',
-      timeIcon: '',
-      timeIconClass: 'fab fa-gratipay text-danger',
-      avatarType: 'initials',
-      avatarInitials: 'AB'
+      timeIcon: '😂',
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n3',
@@ -36,9 +46,8 @@
       unread: false,
       body: 'The forecast today shows a low of 20℃ in California. See today\'s weather.',
       timeLabel: '1d',
-      timeIcon: '🌤️',
-      avatarSrc: '/assets/img/icons/weather-sm.jpg',
-      avatarType: 'img'
+      timeIcon: '🔍',
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n4',
@@ -46,9 +55,8 @@
       unread: true,
       body: '<strong>University of Oxford</strong> created an event : "Causal Inference Hilary 2019"',
       timeLabel: '1w',
-      timeIcon: '✌️',
-      avatarSrc: '/assets/img/logos/oxford.png',
-      avatarType: 'img'
+      timeIcon: '📅️',
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n5',
@@ -56,9 +64,8 @@
       unread: false,
       body: '<strong>James Cameron</strong> invited to join the group: United Nations International Children\'s Fund',
       timeLabel: '2d',
-      timeIcon: '🙋‍',
-      avatarSrc: '/assets/img/team/10.jpg',
-      avatarType: 'img'
+      timeIcon: '📋️',
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n6',
@@ -67,8 +74,7 @@
       body: 'Announcing the winners of the <strong>The only book awards</strong> decided by you, the readers.',
       timeLabel: 'Just Now',
       timeIcon: '📢',
-      avatarSrc: '/assets/img/team/1.jpg',
-      avatarType: 'img'
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n7',
@@ -76,9 +82,8 @@
       unread: true,
       body: 'Last chance to vote in <strong>The 2018 PrintMall Choice Awards</strong>!',
       timeLabel: '15m',
-      timeIcon: '🏆',
-      avatarSrc: '/assets/img/team/2.jpg',
-      avatarType: 'img'
+      timeIcon: '🎁',
+      avatarType: 'emoji'
     },
     {
       id: 'demo-n8',
@@ -86,9 +91,8 @@
       unread: false,
       body: '<strong>Jennifer Kent</strong> declared you as a <strong>President</strong> of Computer Science and Engineering Society',
       timeLabel: '1h',
-      timeIcon: '📢',
-      avatarSrc: '/assets/img/team/3.jpg',
-      avatarType: 'img'
+      timeIcon: '📌',
+      avatarType: 'emoji'
     }
   ];
 
@@ -121,6 +125,22 @@
       .replace(/>/g, '&gt;');
   }
 
+  function migrateNotificationItem(item) {
+    if (!item) {
+      return null;
+    }
+    var migrated = Object.assign({}, item);
+    migrated.avatarType = 'emoji';
+    migrated.timeIcon = normalizeActivityIcon(migrated.timeIcon, migrated.timeIconClass);
+    delete migrated.avatarInitials;
+    delete migrated.avatarSrc;
+    return migrated;
+  }
+
+  function migrateNotificationItems(items) {
+    return (items || []).map(migrateNotificationItem).filter(Boolean);
+  }
+
   function loadItems() {
     try {
       var raw = global.localStorage.getItem(STORAGE_KEY);
@@ -128,14 +148,14 @@
         return [];
       }
       var parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
+      return migrateNotificationItems(Array.isArray(parsed) ? parsed : []);
     } catch (e) {
       return [];
     }
   }
 
   function saveItems(items) {
-    var list = Array.isArray(items) ? items : [];
+    var list = migrateNotificationItems(Array.isArray(items) ? items : []);
     global.localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
     var unread = getUnreadCount(list);
     refreshBadges(unread);
@@ -154,8 +174,34 @@
     }).length;
   }
 
+  function mapApiRow(row) {
+    if (!row) return null;
+    return {
+      id: row.id || (row.notificationId != null ? 'db-' + row.notificationId : ''),
+      notificationId: row.notificationId,
+      section: row.section || row.sectionCd || 'NEW',
+      unread: row.unread !== false && row.readYn !== 'Y',
+      body: row.body || row.message || '',
+      timeLabel: row.timeLabel || '',
+      timeIcon: normalizeActivityIcon(row.timeIcon, row.timeIconClass),
+      timeIconClass: row.timeIconClass || '',
+      avatarType: 'emoji'
+    };
+  }
+
+  function normalizeActivityIcon(icon, timeIconClass) {
+    if (timeIconClass) {
+      return '📢';
+    }
+    var trimmed = String(icon == null ? '' : icon).trim();
+    return trimmed || '📢';
+  }
+
   function ensureItems() {
     var items = loadItems();
+    if (useApi) {
+      return items;
+    }
     if (!items.length) {
       items = DEMO_ITEMS.map(function (item) {
         return Object.assign({}, item);
@@ -163,6 +209,52 @@
       saveItems(items);
     }
     return items;
+  }
+
+  function sectionLabel(section) {
+    var key = section || 'EARLIER';
+    return SECTION_LABELS[key] || key;
+  }
+
+  function refreshFromApi() {
+    if (!useApi || !global.fetch) {
+      return Promise.resolve(ensureItems());
+    }
+    var limit = global.document.getElementById('notification-icon-page-list') ? PAGE_LIST_LIMIT : DROPDOWN_LIMIT;
+    var url = API_URL + '?limit=' + limit;
+    return global
+      .fetch(url, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin'
+      })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || !data.success || !Array.isArray(data.items)) {
+          apiLoaded = false;
+          return ensureItems();
+        }
+        var items = data.items.map(mapApiRow).filter(Boolean);
+        apiLoaded = true;
+        if (items.length) {
+          saveItems(items);
+        } else {
+          saveItems([]);
+        }
+        refresh();
+        return items;
+      })
+      .catch(function () {
+        var cached = loadItems();
+        apiLoaded = true;
+        if (!cached.length) {
+          saveItems([]);
+        }
+        refresh();
+        return cached;
+      });
   }
 
   function formatBadge(n) {
@@ -195,31 +287,20 @@
     });
   }
 
-  function renderAvatar(item) {
-    if (item.avatarType === 'initials') {
-      var initials = escapeHtml(item.avatarInitials || '?');
-      return (
-        '<div class="avatar avatar-2xl me-3"><div class="avatar-name rounded-circle"><span>' +
-        initials +
-        '</span></div></div>'
-      );
-    }
-    var src = escapeHtml(item.avatarSrc || '/assets/img/team/1-thumb.png');
-    return (
-      '<div class="avatar avatar-2xl me-3"><img class="rounded-circle" src="' +
-      src +
-      '" alt="" onerror="this.src=\'/assets/img/team/1-thumb.png\'"/></div>'
-    );
+  function activityLogEmoji(item) {
+    return normalizeActivityIcon(item.timeIcon, item.timeIconClass);
   }
 
-  function renderTimeIcon(item) {
-    if (item.timeIconClass) {
-      return '<span class="me-2 ' + escapeHtml(item.timeIconClass) + '"></span>';
-    }
-    if (item.timeIcon) {
-      return '<span class="me-2" role="img" aria-label="">' + item.timeIcon + '</span>';
-    }
-    return '';
+  /** Activity log — avatar-emoji rounded-circle */
+  function renderActivityAvatar(item, sizeClass) {
+    var emoji = activityLogEmoji(item);
+    return (
+      '<div class="avatar ' +
+      (sizeClass || 'avatar-xl') +
+      ' me-3"><div class="avatar-emoji rounded-circle "><span role="img" aria-label="Emoji">' +
+      emoji +
+      '</span></div></div>'
+    );
   }
 
   function renderHeaderRow(item) {
@@ -232,56 +313,47 @@
       escapeHtml(item.id) +
       '" data-notification-mark-read="true">' +
       '<div class="notification-avatar">' +
-      renderAvatar(item) +
+      renderActivityAvatar(item, 'avatar-2xl') +
       '</div>' +
       '<div class="notification-body">' +
       '<p class="mb-1">' +
       item.body +
       '</p>' +
       '<span class="notification-time">' +
-      renderTimeIcon(item) +
       escapeHtml(item.timeLabel || '') +
       '</span></div></a></div>'
     );
   }
 
-  function renderPageRow(item) {
+  function renderActivityLogRow(item, opts) {
+    opts = opts || {};
     var unreadClass = item.unread !== false ? ' notification-unread' : '';
-    var avatarSize = item.avatarType === 'initials' ? 'avatar-2xl' : 'avatar-xl';
-    var avatarHtml =
-      item.avatarType === 'initials'
-        ? '<div class="avatar ' +
-          avatarSize +
-          ' me-3"><div class="avatar-name rounded-circle"><span>' +
-          escapeHtml(item.avatarInitials || '?') +
-          '</span></div></div>'
-        : '<div class="avatar ' +
-          avatarSize +
-          ' me-3"><img class="rounded-circle" src="' +
-          escapeHtml(item.avatarSrc || '/assets/img/team/1.jpg') +
-          '" alt="" onerror="this.src=\'/assets/img/team/1.jpg\'"/></div>';
+    var rowClass = opts.isLast
+      ? 'notification border-x-0 border-bottom-0 border-300 rounded-top-0'
+      : 'border-bottom-0 notification rounded-0 border-x-0 border border-300';
     return (
-      '<a class="border-bottom-0 notification rounded-0 border-x-0 border-300' +
+      '<a class="' +
+      rowClass +
       unreadClass +
       '" href="#!" data-notification-id="' +
       escapeHtml(item.id) +
       '" data-notification-mark-read="true">' +
       '<div class="notification-avatar">' +
-      avatarHtml +
+      renderActivityAvatar(item, 'avatar-xl') +
       '</div>' +
       '<div class="notification-body">' +
       '<p class="mb-1">' +
       item.body +
       '</p>' +
       '<span class="notification-time">' +
-      renderTimeIcon(item) +
       escapeHtml(item.timeLabel || '') +
       '</span></div></a>'
     );
   }
 
-  function groupForDropdown(items) {
-    var list = items.slice(0, DROPDOWN_LIMIT);
+  function groupForList(items, max) {
+    var cap = max > 0 ? max : items.length;
+    var list = items.slice(0, cap);
     var sections = [];
     var seen = {};
     list.forEach(function (item) {
@@ -297,35 +369,142 @@
     return { list: list, sections: sections };
   }
 
-  function renderHeaderDropdown() {
-    var container = global.document.getElementById('header-notification-dropdown-list');
-    if (!container) {
+  function groupForDropdown(items) {
+    return groupForList(items, DROPDOWN_LIMIT);
+  }
+
+  function renderIconPageListInto(container, items) {
+    if (!container) return;
+    if (!items.length) {
+      container.innerHTML = '<div class="text-center text-600 py-4">알림이 없습니다.</div>';
       return;
     }
-    var items = ensureItems();
+    container.innerHTML = items
+      .map(function (item, index) {
+        return renderActivityLogRow(item, { isLast: index === items.length - 1 });
+      })
+      .join('');
+  }
+
+  function renderGroupedIconList(container, items, maxItems) {
+    if (!container) return;
+    if (container.getAttribute('data-notification-icon-list') === 'page') {
+      renderIconPageListInto(container, items);
+      return;
+    }
     if (!items.length) {
       container.innerHTML =
         '<div class="list-group-item text-center text-600 py-4">알림이 없습니다.</div>';
       return;
     }
-    var grouped = groupForDropdown(items);
+    var grouped = groupForList(items, maxItems);
     var html = '';
     grouped.sections.forEach(function (section) {
       var sectionItems = grouped.list.filter(function (item) {
         var s = item.section || 'EARLIER';
         return s === section;
       });
-      if (!sectionItems.length) {
-        return;
-      }
-      if (section === 'NEW' || section === 'EARLIER') {
-        html += '<div class="list-group-title border-bottom">' + escapeHtml(section) + '</div>';
+      if (!sectionItems.length) return;
+      if (section === 'NEW' || section === 'EARLIER' || section) {
+        html += '<div class="list-group-title border-bottom">' + escapeHtml(sectionLabel(section)) + '</div>';
       }
       sectionItems.forEach(function (item) {
         html += renderHeaderRow(item);
       });
     });
     container.innerHTML = html;
+  }
+
+  function renderIconPageList() {
+    var container = global.document.getElementById('notification-icon-page-list');
+    if (!container) return;
+    var items = migrateNotificationItems(ensureItems());
+    renderIconPageListInto(container, items);
+    var countEl = global.document.getElementById('notification-search-result-count');
+    if (countEl) countEl.textContent = items.length + '건';
+    var title = global.document.getElementById('notification-page-title');
+    if (title) {
+      var unread = getUnreadCount(items);
+      title.textContent = unread ? '알림 목록 (' + unread + '건 미읽음)' : '알림 목록';
+    }
+  }
+
+  function mapGridRow(row) {
+    if (!row) return null;
+    return {
+      id: row.notificationId != null ? 'db-' + row.notificationId : row.id,
+      notificationId: row.notificationId,
+      section: row.sectionCd || row.section || 'NEW',
+      unread: row.unread !== false && row.readYn !== 'Y',
+      body: row.message || row.body || '',
+      timeLabel: row.notifiedDtLabel || row.timeLabel || '',
+      timeIcon: normalizeActivityIcon(row.timeIcon, row.timeIconClass),
+      avatarType: 'emoji'
+    };
+  }
+
+  function applyExternalItems(rows) {
+    var items = (rows || []).map(mapGridRow).filter(Boolean);
+    apiLoaded = true;
+    saveItems(items);
+    return items;
+  }
+
+  function renderHeaderDropdown() {
+    var container = global.document.getElementById('header-notification-dropdown-list');
+    if (!container) {
+      return;
+    }
+    var items = ensureItems();
+    renderGroupedIconList(container, items, DROPDOWN_LIMIT);
+    updateDropdownTitle(items);
+  }
+
+  function updateDropdownTitle(items) {
+    var title = global.document.getElementById('header-notification-dropdown-title');
+    if (!title) return;
+    var list = items || loadItems();
+    var unread = getUnreadCount(list);
+    title.textContent = unread ? '알림 (' + unread + '건 미읽음)' : '알림';
+  }
+
+  function renderSidebarIconList() {
+    var container = global.document.getElementById('sidebar-notification-icon-list');
+    if (!container) return;
+    var items = ensureItems().slice(0, SIDEBAR_PREVIEW_LIMIT);
+    if (!items.length) {
+      container.innerHTML =
+        '<li class="nav-item"><span class="nav-link text-600 py-1">알림이 없습니다.</span></li>';
+      return;
+    }
+    container.innerHTML = items
+      .map(function (item) {
+        var unreadClass = item.unread !== false ? ' fw-semi-bold' : ' text-600';
+        var dot = item.unread !== false ? '<span class="fas fa-circle text-warning fs-11 me-1"></span>' : '';
+        return (
+          '<li class="nav-item">' +
+          '<a class="nav-link py-1' +
+          unreadClass +
+          '" href="#!" data-notification-id="' +
+          escapeHtml(item.id) +
+          '" data-notification-mark-read="true" title="클릭 시 읽음">' +
+          dot +
+          '<span class="text-truncate d-inline-block" style="max-width:11rem">' +
+          stripTags(item.body) +
+          '</span>' +
+          '<span class="ms-1 text-500">' +
+          escapeHtml(item.timeLabel || '') +
+          '</span></a></li>'
+        );
+      })
+      .join('');
+  }
+
+  function stripTags(html) {
+    var div = global.document.createElement('div');
+    div.innerHTML = html || '';
+    var text = (div.textContent || div.innerText || '').trim();
+    return escapeHtml(text.length > 48 ? text.substring(0, 48) + '…' : text);
   }
 
   function renderPageList() {
@@ -338,7 +517,11 @@
       container.innerHTML = '<div class="text-center text-600 py-5">알림이 없습니다.</div>';
       return;
     }
-    container.innerHTML = items.map(renderPageRow).join('');
+    container.innerHTML = items
+      .map(function (item, index) {
+        return renderActivityLogRow(item, { isLast: index === items.length - 1 });
+      })
+      .join('');
     var title = global.document.getElementById('notification-page-title');
     if (title) {
       var unread = getUnreadCount(items);
@@ -348,7 +531,32 @@
     }
   }
 
+  function parseDbId(id) {
+    if (!id || String(id).indexOf('db-') !== 0) return null;
+    var n = parseInt(String(id).slice(3), 10);
+    return isNaN(n) ? null : n;
+  }
+
   function markRead(id) {
+    var dbId = parseDbId(id);
+    if (useApi && dbId != null && global.fetch) {
+      return global
+        .fetch(API_URL + '/' + dbId + '/read', {
+          method: 'PATCH',
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin'
+        })
+        .then(function () {
+          return refreshFromApi();
+        })
+        .catch(function () {
+          return markReadLocal(id);
+        });
+    }
+    return Promise.resolve(markReadLocal(id));
+  }
+
+  function markReadLocal(id) {
     var items = loadItems();
     var changed = false;
     items.forEach(function (item) {
@@ -364,6 +572,25 @@
   }
 
   function markAllRead() {
+    if (useApi && global.fetch) {
+      return global
+        .fetch(API_URL + '/read-all', {
+          method: 'PATCH',
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin'
+        })
+        .then(function () {
+          return refreshFromApi();
+        })
+        .catch(function () {
+          markAllReadLocal();
+        });
+    }
+    markAllReadLocal();
+    return Promise.resolve();
+  }
+
+  function markAllReadLocal() {
     var items = loadItems();
     var changed = false;
     items.forEach(function (item) {
@@ -375,9 +602,7 @@
     if (changed) {
       saveItems(items);
     }
-    renderHeaderDropdown();
-    renderPageList();
-    return changed;
+    refresh();
   }
 
   function syncHeaderActive() {
@@ -386,7 +611,7 @@
       return;
     }
     var ctx = global.__PAGE_MENU_CONTEXT__;
-    var onPage = ctx && pathKey(ctx.pathKey) === NOTIFICATION_PATH_KEY;
+    var onPage = ctx && isNotificationPage(ctx.pathKey);
     link.classList.toggle('active', !!onPage);
     if (onPage) {
       link.setAttribute('aria-current', 'page');
@@ -405,8 +630,6 @@
         if (id) {
           e.preventDefault();
           markRead(id);
-          renderHeaderDropdown();
-          renderPageList();
         }
         return;
       }
@@ -421,23 +644,50 @@
   function refresh() {
     refreshBadges(getUnreadCount());
     renderHeaderDropdown();
+    renderSidebarIconList();
+    renderIconPageList();
     renderPageList();
     syncHeaderActive();
   }
 
+  function isNotificationPage(path) {
+    var key = pathKey(path);
+    return NOTIFICATION_PATH_KEYS.indexOf(key) >= 0;
+  }
+
+  function bindDropdownRefresh() {
+    var link = global.document.getElementById('header-notification-link');
+    if (!link) return;
+    link.addEventListener('show.bs.dropdown', function () {
+      refreshFromApi();
+    });
+  }
+
   function init() {
     bind();
-    refresh();
+    bindDropdownRefresh();
+    var cached = loadItems();
+    if (cached.length) {
+      saveItems(cached);
+    }
+    refreshFromApi().finally(function () {
+      if (!apiLoaded) {
+        refresh();
+      }
+    });
   }
 
   global.PrintMallNotificationNav = {
-    NOTIFICATION_PATH_KEY: NOTIFICATION_PATH_KEY,
+    ACTIVITY_LOG_ICONS: ACTIVITY_LOG_ICONS,
+    NOTIFICATION_PATH_KEYS: NOTIFICATION_PATH_KEYS,
     loadItems: loadItems,
     saveItems: saveItems,
     getUnreadCount: getUnreadCount,
     markRead: markRead,
     markAllRead: markAllRead,
     refresh: refresh,
+    refreshFromApi: refreshFromApi,
+    applyExternalItems: applyExternalItems,
     pathKey: pathKey
   };
 

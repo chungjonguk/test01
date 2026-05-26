@@ -301,7 +301,12 @@
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">알림</span><span class="badge rounded-pill ms-2 badge-soft-warning notification-indicator-number d-none" data-notification-badge>0</span>
                         </div>
                       </a>
-                      <!-- more inner pages-->
+                      <th:block th:replace="~{fragments/notification-icon-list :: sidebar-preview}"></th:block>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/notification-list}" data-menu-path="/app/social/notification-list" data-notification-nav="sidebar" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">알림 목록</span>
+                        </div>
+                      </a>
                     </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/app/social/followers}" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">팔로워</span>

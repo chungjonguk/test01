@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <!-- 상단 벨 아이콘 드롭다운 알림 리스트 -->
+  <th:block th:fragment="dropdown">
+    <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end dropdown-menu-card dropdown-menu-notification dropdown-caret-bg"
+         aria-labelledby="header-notification-link">
+      <div class="card card-notification shadow-none">
+        <div class="card-header">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-auto">
+              <h6 class="card-header-title mb-0" id="header-notification-dropdown-title">알림</h6>
+            </div>
+            <div class="col-auto ps-0 ps-sm-3">
+              <a class="card-link fw-normal" href="#!" data-notification-mark-all="true">모두 읽음</a>
+            </div>
+          </div>
+        </div>
+        <div class="scrollbar-overlay" style="max-height:19rem">
+          <div class="list-group list-group-flush fw-normal fs--1" id="header-notification-dropdown-list"
+               data-notification-icon-list="header">
+            <div class="list-group-item text-center text-600 py-4">알림을 불러오는 중…</div>
+          </div>
+        </div>
+        <div class="card-footer text-center border-top">
+          <a class="card-link d-block" th:href="@{/app/social/notifications}" data-menu-path="/app/social/notifications">알림 피드</a>
+          <a class="card-link d-block mt-1" th:href="@{/app/social/notification-list}" data-menu-path="/app/social/notification-list">알림 목록 관리</a>
+        </div>
+      </div>
+    </div>
+  </th:block>
+
+  <!-- 사이드바 알림 미리보기 (최대 5건) -->
+  <th:block th:fragment="sidebar-preview">
+    <ul class="nav flex-column ms-3 my-1 fs--2" id="sidebar-notification-icon-list" data-notification-icon-list="sidebar">
+      <li class="nav-item">
+        <span class="nav-link text-600 py-1">알림을 불러오는 중…</span>
+      </li>
+    </ul>
+  </th:block>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+
+          <div class="card mb-3" id="notification-list-panel">
+            <div class="card-header bg-light">
+              <div class="row flex-between-center g-2">
+                <div class="col-12 col-lg">
+                  <h5 class="mb-0" id="notification-page-title">알림 목록</h5>
+                  <p class="fs--1 mb-0 text-600">Activity log와 동일한 이모지 아이콘 · DB 연동</p>
+                </div>
+                <div class="col-auto fs--1">
+                  <a class="font-sans-serif ms-2" href="#!" data-notification-mark-all="true">모두 읽음</a>
+                  <a class="btn btn-falcon-default btn-sm ms-2" th:href="@{/app/social/notifications}">
+                    <span class="fas fa-bell me-1"></span>알림 피드
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>알림 조회</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="notification-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-notification-user">수신자 ID</label>
+                      <input class="form-control form-control-sm" id="search-notification-user" type="text" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-notification-sender">발신 표시명</label>
+                      <input class="form-control form-control-sm" id="search-notification-sender" type="text" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-notification-read">읽음</label>
+                      <select class="form-select form-select-sm" id="search-notification-read">
+                        <option value="">전체</option>
+                        <option value="N">미읽음</option>
+                        <option value="Y">읽음</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                      <label class="form-label fs--1 mb-1" for="search-notification-keyword">내용 검색</label>
+                      <input class="form-control form-control-sm" id="search-notification-keyword" type="text" placeholder="메시지 키워드" autocomplete="off" />
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-notifications"><span class="fas fa-search me-1"></span>조회</button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-notification-search"><span class="fas fa-redo me-1"></span>초기화</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="notification-search-result-count">0건</span>
+                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#notification-register-collapse" aria-expanded="false">
+                  <span class="fas fa-plus me-1"></span>알림 등록
+                </button>
+              </div>
+
+              <div class="collapse mb-3" id="notification-register-collapse">
+                <div class="card border">
+                  <div class="card-body">
+                    <form id="notification-register-form" class="row g-3" novalidate>
+                      <div class="col-md-3">
+                        <label class="form-label" for="notification-sender-nm">발신 표시명</label>
+                        <input class="form-control form-control-sm" type="text" id="notification-sender-nm" maxlength="100" />
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label" for="notification-user-nm">수신자 ID</label>
+                        <input class="form-control form-control-sm" type="text" id="notification-user-nm" maxlength="100" placeholder="비우면 로그인 사용자" />
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label" for="notification-section">구분</label>
+                        <select class="form-select form-select-sm" id="notification-section">
+                          <option value="NEW" selected>NEW</option>
+                          <option value="EARLIER">EARLIER</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label" for="notification-time-icon">아이콘</label>
+                        <select class="form-select form-select-sm" id="notification-time-icon">
+                          <option value="🔍">🔍 조회/팔로우</option>
+                          <option value="📌">📌 저장</option>
+                          <option value="🏷️">🏷️ 태그</option>
+                          <option value="💬">💬 댓글/멘션</option>
+                          <option value="😂">😂 반응</option>
+                          <option value="🎁">🎁 축하</option>
+                          <option value="📋️">📋️ 참여</option>
+                          <option value="📅️">📅️ 일정</option>
+                          <option value="📢" selected>📢 공지</option>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label" for="notification-message">알림 내용 <span class="text-danger">*</span></label>
+                        <textarea class="form-control form-control-sm" id="notification-message" rows="2" maxlength="500" required></textarea>
+                      </div>
+                      <div class="col-12">
+                        <button class="btn btn-primary btn-sm" type="submit" id="notification-register-submit">등록</button>
+                        <span class="ms-2 text-600 fs--1" id="notification-register-status"></span>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card card-notification shadow-none border">
+                <div class="card-body fs--1 p-0" id="notification-icon-page-list" data-notification-icon-list="page">
+                  <div class="text-center text-600 py-4">알림을 불러오는 중…</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

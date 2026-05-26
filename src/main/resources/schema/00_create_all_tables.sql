@@ -389,10 +389,14 @@ CREATE TABLE IF NOT EXISTS social_activity (
 CREATE TABLE IF NOT EXISTS social_notification (
   notification_id BIGINT       NOT NULL AUTO_INCREMENT,
   user_nm        VARCHAR(100)  NOT NULL,
+  sender_nm      VARCHAR(100)  NULL COMMENT '발신 표시명',
   message        VARCHAR(500)  NOT NULL,
+  section_cd     VARCHAR(20)   NULL DEFAULT 'NEW' COMMENT 'NEW, EARLIER',
+  time_icon      VARCHAR(30)   NULL COMMENT '시간 아이콘',
   read_yn        CHAR(1)       NOT NULL DEFAULT 'N',
   notified_dt    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (notification_id)
+  PRIMARY KEY (notification_id),
+  KEY idx_social_notification_user (user_nm, notified_dt)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS social_follower (

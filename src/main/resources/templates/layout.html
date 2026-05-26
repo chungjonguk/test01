@@ -198,7 +198,9 @@
       };
     </script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/cart-nav-sync.js(v=6)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/notification-nav-sync.js(v=1)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/notification-nav-sync.js(v=6)}"></script>
+    <script th:if="${loadNotificationListActions}" th:src="@{/assets/js/notification-list-actions.js(v=2)}"></script>
+    <script th:if="${loadNotificationActions}" th:src="@{/assets/js/notification-actions.js(v=2)}"></script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=4)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>

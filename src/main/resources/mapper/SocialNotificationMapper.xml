@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.SocialNotificationMapper">
+
+    <resultMap id="socialNotificationMap" type="SocialNotification">
+        <id property="notificationId" column="notification_id"/>
+        <result property="userNm" column="user_nm"/>
+        <result property="senderNm" column="sender_nm"/>
+        <result property="message" column="message"/>
+        <result property="sectionCd" column="section_cd"/>
+        <result property="timeIcon" column="time_icon"/>
+        <result property="readYn" column="read_yn"/>
+        <result property="notifiedDt" column="notified_dt"/>
+    </resultMap>
+
+    <sql id="columns">
+        notification_id, user_nm, sender_nm, message, section_cd, time_icon, read_yn, notified_dt
+    </sql>
+
+    <sql id="searchWhere">
+        <where>
+            <if test="userNm != null and userNm != ''">
+                AND user_nm LIKE CONCAT('%', #{userNm}, '%')
+            </if>
+            <if test="senderNm != null and senderNm != ''">
+                AND sender_nm LIKE CONCAT('%', #{senderNm}, '%')
+            </if>
+            <if test="readYn != null and readYn != ''">
+                AND read_yn = #{readYn}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND message LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="findByUserNm" resultMap="socialNotificationMap">
+        SELECT <include refid="columns"/>
+        FROM social_notification
+        <where>
+            <if test="userNm != null and userNm != ''">
+                AND user_nm = #{userNm}
+            </if>
+        </where>
+        ORDER BY notified_dt DESC, notification_id DESC
+        <if test="limit > 0">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="search" resultMap="socialNotificationMap">
+        SELECT <include refid="columns"/>
+        FROM social_notification
+        <include refid="searchWhere"/>
+        ORDER BY notified_dt DESC, notification_id DESC
+        <if test="limit > 0">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="findById" resultMap="socialNotificationMap">
+        SELECT <include refid="columns"/>
+        FROM social_notification
+        WHERE notification_id = #{notificationId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="notificationId">
+        INSERT INTO social_notification (
+            user_nm, sender_nm, message, section_cd, time_icon, read_yn, notified_dt
+        ) VALUES (
+            #{userNm}, #{senderNm}, #{message}, #{sectionCd}, #{timeIcon}, #{readYn}, #{notifiedDt}
+        )
+    </insert>
+
+    <update id="updateReadYn">
+        UPDATE social_notification
+        SET read_yn = #{readYn}
+        WHERE notification_id = #{notificationId}
+    </update>
+
+    <update id="markAllRead">
+        UPDATE social_notification
+        SET read_yn = 'Y'
+        <where>
+            read_yn = 'N'
+            <if test="userNm != null and userNm != ''">
+                AND user_nm = #{userNm}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM social_notification
+        WHERE notification_id = #{notificationId}
+    </delete>
+</mapper>

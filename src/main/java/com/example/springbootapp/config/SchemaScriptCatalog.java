@@ -29,6 +29,7 @@ public final class SchemaScriptCatalog {
 			"schema/biz_company_domain_ssl_alter.sql",
 			"schema/ecm_payment.sql",
 			"schema/tables/biz_schema.sql",
+			"schema/social_notification_alter.sql",
 			"schema/ecm_shipment.sql",
 			"schema/tables/ecm_product_image.sql",
 			// 샘플·시드 데이터
@@ -45,6 +46,7 @@ public final class SchemaScriptCatalog {
 			"schema/screen_list_shopping_mall_menu.sql",
 			"schema/screen_list_admin_company_domains.sql",
 			"schema/screen_list_admin_table_sequences.sql",
+			"schema/screen_list_social_notification_list.sql",
 			"schema/sys_table_sequence_seed.sql");
 
 	private SchemaScriptCatalog() {

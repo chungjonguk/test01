@@ -281,6 +281,31 @@ import jakarta.servlet.http.HttpServletRequest;
 		}
 	}
 
+	/** 암호화 URL(/e/{token}.do) 포함 — 알림 목록·피드·아이콘 리스트 스크립트 */
+	private void applyNotificationScriptFlags(String uri, Model model) {
+		String logical = DoPathHelper.stripDoSuffix(uri != null ? uri : "");
+		if (logical.contains("/app/social/notification-list")) {
+			setIfAbsent(model, "loadNotificationListActions", true);
+			setIfAbsent(model, "loadNotificationActions", true);
+			return;
+		}
+		if (logical.contains("/app/social/notifications")) {
+			setIfAbsent(model, "loadNotificationActions", true);
+			return;
+		}
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		if (screen == null || screen.getTemplatePath() == null) {
+			return;
+		}
+		String tpl = screen.getTemplatePath().toLowerCase();
+		if (tpl.contains("notification-list")) {
+			setIfAbsent(model, "loadNotificationListActions", true);
+			setIfAbsent(model, "loadNotificationActions", true);
+		} else if (tpl.contains("notifications")) {
+			setIfAbsent(model, "loadNotificationActions", true);
+		}
+	}
+
 	/** 암호화 URL·.do 경로와 무관하게 화면 템플릿 기준으로 장바구니 목록 스크립트 로드 */
 	private void applyShoppingCartScriptFlag(String uri, Model model) {
 		if (uri != null && uri.contains("/app/e-commerce/shopping-cart")) {
@@ -399,6 +424,7 @@ import jakarta.servlet.http.HttpServletRequest;
 		}
 		applyProductCartScriptFlag(uri, model);
 		applyShoppingCartScriptFlag(uri, model);
+		applyNotificationScriptFlags(uri, model);
 		if (uri.contains("/app/e-commerce/invoice")) {
 			setIfAbsent(model, "loadInvoicePdf", true);
 		}

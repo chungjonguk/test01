@@ -324,6 +324,13 @@ public class AppController {
 		return "app/social/notifications";
 	}
 	/**
+	 * @return out: Thymeleaf view path {@code app/social/notification-list}
+	 */
+	@GetMapping("/app/social/notification-list")
+	public String appSocialNotificationList() {
+		return "app/social/notification-list";
+	}
+	/**
 	 * @return out: Thymeleaf view path {@code app/social/followers}
 	 */
 	@GetMapping("/app/social/followers")

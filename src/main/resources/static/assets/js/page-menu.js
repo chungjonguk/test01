@@ -198,7 +198,7 @@
   }
 
   var CART_PATH_KEY = '/app/e-commerce/shopping-cart';
-  var NOTIFICATION_PATH_KEY = '/app/social/notifications';
+  var NOTIFICATION_PATH_KEYS = ['/app/social/notifications', '/app/social/notification-list'];
 
   function markActiveLink(link, nav) {
     link.classList.add('active', 'menu-current');
@@ -241,13 +241,13 @@
       }
       return;
     }
-    if (want === NOTIFICATION_PATH_KEY) {
+    if (NOTIFICATION_PATH_KEYS.indexOf(want) >= 0) {
       var notificationLinks = [];
       nav.querySelectorAll('a.nav-link[href]').forEach(function (link) {
         if (link.classList.contains('dropdown-indicator')) {
           return;
         }
-        if (linkKey(link) !== NOTIFICATION_PATH_KEY) {
+        if (NOTIFICATION_PATH_KEYS.indexOf(linkKey(link)) < 0) {
           return;
         }
         notificationLinks.push(link);

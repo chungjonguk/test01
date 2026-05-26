@@ -139,7 +139,7 @@ public final class ScreenTableResolver {
 		if (uri.contains("/app/social/activity-log")) {
 			return db("social_activity", null, "활동 로그");
 		}
-		if (uri.contains("/app/social/notifications")) {
+		if (uri.contains("/app/social/notification-list") || uri.contains("/app/social/notifications")) {
 			return db("social_notification", null, "알림");
 		}
 		if (uri.contains("/app/social/followers")) {
