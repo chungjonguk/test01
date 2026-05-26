@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.BizCompanyDomainMapper">
+
+    <resultMap id="bizCompanyDomainResultMap" type="BizCompanyDomain">
+        <id property="domainId" column="domain_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="hostName" column="host_name"/>
+        <result property="primaryYn" column="primary_yn"/>
+        <result property="sslYn" column="ssl_yn"/>
+        <result property="sslCertNotBefore" column="ssl_cert_not_before"/>
+        <result property="sslCertNotAfter" column="ssl_cert_not_after"/>
+        <result property="sslCertSubject" column="ssl_cert_subject"/>
+        <result property="sslCertIssuer" column="ssl_cert_issuer"/>
+        <result property="sslCertFileId" column="ssl_cert_file_id"/>
+        <result property="verifyStatusCd" column="verify_status_cd"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="memo" column="memo"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+        <result property="companyNm" column="company_nm"/>
+    </resultMap>
+
+    <sql id="domainColumns">
+        d.domain_id, d.company_id, d.host_name, d.primary_yn, d.ssl_yn,
+        d.ssl_cert_not_before, d.ssl_cert_not_after, d.ssl_cert_subject, d.ssl_cert_issuer, d.ssl_cert_file_id,
+        d.verify_status_cd,
+        d.use_yn, d.memo, d.reg_id, d.reg_dt, d.update_id, d.update_dt,
+        c.company_nm
+    </sql>
+
+    <select id="search" resultMap="bizCompanyDomainResultMap">
+        SELECT <include refid="domainColumns"/>
+        FROM biz_company_domain d
+        INNER JOIN biz_company c ON c.company_id = d.company_id
+        <where>
+            <if test="companyId != null">
+                AND d.company_id = #{companyId}
+            </if>
+            <if test="hostName != null and hostName != ''">
+                AND d.host_name LIKE CONCAT('%', #{hostName}, '%')
+            </if>
+            <if test="useYn != null and useYn != ''">
+                AND d.use_yn = #{useYn}
+            </if>
+        </where>
+        ORDER BY d.primary_yn DESC, d.domain_id DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findById" resultMap="bizCompanyDomainResultMap">
+        SELECT <include refid="domainColumns"/>
+        FROM biz_company_domain d
+        INNER JOIN biz_company c ON c.company_id = d.company_id
+        WHERE d.domain_id = #{domainId}
+    </select>
+
+    <select id="findByHostName" resultMap="bizCompanyDomainResultMap">
+        SELECT <include refid="domainColumns"/>
+        FROM biz_company_domain d
+        INNER JOIN biz_company c ON c.company_id = d.company_id
+        WHERE d.host_name = #{hostName}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="domainId">
+        INSERT INTO biz_company_domain (
+            company_id, host_name, primary_yn, ssl_yn,
+            ssl_cert_not_before, ssl_cert_not_after, ssl_cert_subject, ssl_cert_issuer, ssl_cert_file_id,
+            verify_status_cd, use_yn, memo, reg_id, update_id
+        ) VALUES (
+            #{companyId}, #{hostName}, #{primaryYn}, #{sslYn},
+            #{sslCertNotBefore}, #{sslCertNotAfter}, #{sslCertSubject}, #{sslCertIssuer}, #{sslCertFileId},
+            #{verifyStatusCd}, #{useYn}, #{memo}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE biz_company_domain
+        SET company_id = #{companyId},
+            host_name = #{hostName},
+            primary_yn = #{primaryYn},
+            ssl_yn = #{sslYn},
+            ssl_cert_not_before = #{sslCertNotBefore},
+            ssl_cert_not_after = #{sslCertNotAfter},
+            ssl_cert_subject = #{sslCertSubject},
+            ssl_cert_issuer = #{sslCertIssuer},
+            ssl_cert_file_id = #{sslCertFileId},
+            verify_status_cd = #{verifyStatusCd},
+            use_yn = #{useYn},
+            memo = #{memo},
+            update_id = #{updateId}
+        WHERE domain_id = #{domainId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM biz_company_domain WHERE domain_id = #{domainId}
+    </delete>
+
+    <update id="clearPrimaryForCompany">
+        UPDATE biz_company_domain
+        SET primary_yn = 'N', update_id = 'SYSTEM'
+        WHERE company_id = #{companyId} AND primary_yn = 'Y'
+    </update>
+</mapper>

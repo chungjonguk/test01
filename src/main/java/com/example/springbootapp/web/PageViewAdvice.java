@@ -383,6 +383,9 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (uri.contains("/admin/company-page-images")) {
 			setIfAbsent(model, "loadCompanyPageImageActions", true);
 		}
+		if (uri.contains("/admin/company-domains")) {
+			setIfAbsent(model, "loadCompanyDomainActions", true);
+		}
 		if (uri.contains("/app/email/email-detail")) {
 			setIfAbsent(model, "loadEmailDetailActions", true);
 		}

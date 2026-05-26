@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+</head>
+<body>
+    <th:block th:replace="~{layout :: body}">
+    <div th:fragment="page-content">
+
+          <div class="card mb-3" id="company-domain-panel"
+               th:attr="data-initial-company-id=${dashboardCompanyId}">
+            <div class="card-header">
+              <div class="row flex-between-center g-2">
+                <div class="col">
+                  <h5 class="mb-1">업체별 도메인 등록</h5>
+                  <p class="fs--1 mb-0 text-600">업체마다 쇼핑몰·관리자 접속용 호스트명을 등록합니다. (프로토콜·경로 없이 도메인만 입력)</p>
+                </div>
+                <div class="col-auto d-flex flex-wrap gap-2">
+                  <a class="btn btn-falcon-default btn-sm" th:href="@{/admin/companies}">
+                    <span class="fas fa-building me-1"></span>업체관리
+                  </a>
+                  <button class="btn btn-primary btn-sm" type="button" id="btn-domain-add" disabled>
+                    <span class="fas fa-plus me-1"></span>도메인 등록
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <div th:replace="~{fragments/dashboard-company-select :: companySelect}"></div>
+              </div>
+              <div id="company-domain-info" class="alert alert-secondary py-2 fs--1 mb-3 d-none" role="status" aria-live="polite"></div>
+
+              <div class="card border mb-3">
+                <div class="card-header py-2 bg-light">
+                  <h6 class="mb-0"><span class="fas fa-search me-2"></span>조회 조건</h6>
+                </div>
+                <div class="card-body pb-2">
+                  <form id="domain-search-form" class="row g-2 align-items-end">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                      <label class="form-label fs--1 mb-1" for="search-host-name">도메인</label>
+                      <input class="form-control form-control-sm" id="search-host-name" type="text"
+                        placeholder="shop.example.com" autocomplete="off" />
+                    </div>
+                    <div class="col-6 col-sm-4 col-lg-2">
+                      <label class="form-label fs--1 mb-1" for="search-use-yn">사용</label>
+                      <select class="form-select form-select-sm" id="search-use-yn">
+                        <option value="">전체</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-lg-auto">
+                      <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-primary btn-sm" type="submit" id="btn-search-domains">
+                          <span class="fas fa-search me-1"></span>조회
+                        </button>
+                        <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reset-domain-search">
+                          <span class="fas fa-redo me-1"></span>초기화
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <span class="badge badge-soft-info" id="domain-result-count">0건</span>
+                <button type="button" class="btn btn-danger btn-sm" id="btn-domain-delete-selected" disabled>
+                  <span class="fas fa-trash-alt me-1"></span>선택 삭제
+                </button>
+              </div>
+
+              <div class="table-responsive scrollbar">
+                <table class="table table-sm table-striped table-hover fs--1 mb-0">
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="text-center" style="width:2.5rem">
+                        <input class="form-check-input" type="checkbox" id="domain-check-all" title="전체 선택" />
+                      </th>
+                      <th class="ps-3 text-center">ID</th>
+                      <th>도메인</th>
+                      <th class="d-none d-md-table-cell">접속 URL</th>
+                      <th class="text-center">대표</th>
+                      <th class="text-center d-none d-lg-table-cell">SSL</th>
+                      <th class="d-none d-xl-table-cell">인증서 유효기간</th>
+                      <th class="text-center">검증</th>
+                      <th class="text-center">사용</th>
+                      <th class="text-end pe-3">관리</th>
+                    </tr>
+                  </thead>
+                  <tbody id="domain-grid-body">
+                    <tr>
+                      <td colspan="10" class="text-center text-600 py-4">업체를 선택한 뒤 조회하세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav th:replace="~{fragments/grid-pager :: pager('domain-grid-pager')}"></nav>
+            </div>
+          </div>
+
+          <div class="modal fade" id="domain-form-modal" tabindex="-1" aria-labelledby="domain-form-modal-label" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="domain-form-modal-label">도메인 등록</h5>
+                  <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <form id="domain-form">
+                  <div class="modal-body">
+                    <input type="hidden" id="form-domain-id" />
+                    <div class="mb-2">
+                      <label class="form-label" for="form-host-name">도메인(호스트) <span class="text-danger">*</span></label>
+                      <input class="form-control form-control-sm" id="form-host-name" type="text" required="required"
+                        maxlength="253" placeholder="shop.example.com" autocomplete="off" />
+                      <div class="form-text">https:// 는 입력하지 않아도 됩니다.</div>
+                    </div>
+                    <div class="row g-2">
+                      <div class="col-6">
+                        <label class="form-label" for="form-primary-yn">대표 도메인</label>
+                        <select class="form-select form-select-sm" id="form-primary-yn">
+                          <option value="Y">Y</option>
+                          <option value="N" selected="selected">N</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label" for="form-ssl-yn">HTTPS(SSL)</label>
+                        <select class="form-select form-select-sm" id="form-ssl-yn">
+                          <option value="Y" selected="selected">Y</option>
+                          <option value="N">N</option>
+                        </select>
+                      </div>
+                      <div class="col-12" id="ssl-cert-section">
+                        <label class="form-label" for="form-ssl-cert-file">SSL 인증서 파일</label>
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                          <input class="form-control form-control-sm" id="form-ssl-cert-file" type="file"
+                            accept=".pem,.crt,.cer,.der" />
+                          <button class="btn btn-falcon-default btn-sm" type="button" id="btn-ssl-cert-upload">
+                            <span class="fas fa-certificate me-1"></span>인증서 등록
+                          </button>
+                        </div>
+                        <div class="form-text">PEM/CRT/CER 형식. 등록 시 유효기간이 자동으로 표시됩니다.</div>
+                        <input type="hidden" id="form-ssl-cert-file-id" />
+                        <input type="hidden" id="form-ssl-cert-not-before" />
+                        <input type="hidden" id="form-ssl-cert-not-after" />
+                        <input type="hidden" id="form-ssl-cert-subject" />
+                        <input type="hidden" id="form-ssl-cert-issuer" />
+                        <div id="ssl-cert-validity-panel" class="alert alert-light border mt-2 mb-0 py-2 fs--1 d-none" role="status">
+                          <div class="fw-semi-bold mb-1">인증서 유효기간</div>
+                          <div id="ssl-cert-validity-range" class="text-800"></div>
+                          <div id="ssl-cert-validity-subject" class="text-600 mt-1"></div>
+                          <div id="ssl-cert-validity-issuer" class="text-600"></div>
+                          <div id="ssl-cert-validity-status" class="mt-1"></div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label" for="form-verify-status-cd">검증 상태</label>
+                        <select class="form-select form-select-sm" id="form-verify-status-cd">
+                          <option value="PENDING">PENDING</option>
+                          <option value="VERIFIED">VERIFIED</option>
+                          <option value="FAILED">FAILED</option>
+                        </select>
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label" for="form-use-yn">사용</label>
+                        <select class="form-select form-select-sm" id="form-use-yn">
+                          <option value="Y">Y</option>
+                          <option value="N">N</option>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label" for="form-memo">비고</label>
+                        <textarea class="form-control form-control-sm" id="form-memo" rows="2" maxlength="500"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-falcon-default btn-sm" type="button" data-bs-dismiss="modal">취소</button>
+                    <button class="btn btn-primary btn-sm" type="submit" id="btn-domain-save">저장</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </th:block>
+</body>
+</html>

@@ -5,6 +5,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 chcp 65001 | Out-Null
+. (Join-Path $PSScriptRoot "BackupTextEncoding.ps1")
 
 $ts = Get-Date -Format "yyyyMMdd_HHmmss"
 $installDir = Join-Path $BackupRoot "install"
@@ -157,7 +158,10 @@ if (Test-Path $mysqlBin) {
         )
         $prevEap = $ErrorActionPreference
         $ErrorActionPreference = "Continue"
-        & $mysqlBin @dumpArgs 2>$null | Out-File -FilePath $dumpFile -Encoding utf8
+        $dumpSql = & $mysqlBin @dumpArgs 2>$null
+        if ($dumpSql) {
+            Write-BackupUtf8Text -Path $dumpFile -Content (($dumpSql | Out-String).TrimEnd())
+        }
         $ErrorActionPreference = $prevEap
         if (Test-Path $dumpFile) {
             $dumpSize = [math]::Round((Get-Item $dumpFile).Length / 1KB, 1)
@@ -218,50 +222,20 @@ $guideSources = @(
     @{ Src = Join-Path $projectRoot "docs\mobile-dev-setup.txt"; Dst = "mobile-dev-setup.txt" }
 )
 foreach ($g in $guideSources) {
-    if (Test-Path $g.Src) {
-        Copy-Item $g.Src (Join-Path $docsDir $g.Dst) -Force
+    $dest = Join-Path $docsDir $g.Dst
+    if (Copy-BackupUtf8Text -SourcePath $g.Src -DestPath $dest) {
         Write-Host "  -> docs\$($g.Dst)" -ForegroundColor Gray
     }
 }
 $readmeMain = Join-Path $projectRoot "scripts\backup\guides\README.txt"
 if (Test-Path $readmeMain) {
-    Copy-Item $readmeMain (Join-Path $BackupRoot "README.txt") -Force
+    Copy-BackupUtf8Text -SourcePath $readmeMain -DestPath (Join-Path $BackupRoot "README.txt") | Out-Null
 }
 
 # --- README (백업 시점) ---
-$readme = @"
-백업 일시: $ts
-생성: scripts/backup/create-backup.ps1
-
-[install/]
-  dev-tools_$ts.zip
-    - jdk-17, apache-maven-3.9.15, node-22
-    - maven.zip, temurin17.zip, node-v22.15.1-win-x64.zip
-  mysql-8.4.9-winx64.msi / .zip  — MySQL Server 8.4 공식 설치파일 (있을 때)
-  mysql-server-8.4-installed_*.zip — PC에 설치된 MySQL 8.4 폴더 백업 (MSI 없을 때)
-  mysql-setup_$ts.zip            — DB 초기화 SQL·my.ini·설치 배치
-  dbeaver-ce-25.3.1-x86_64-setup.exe / .zip — DBeaver Community 설치파일
-  dbeaver-setup_$ts.zip          — MySQL 연결 설정·가이드
-
-[projects/]
-  spring-boot-app-fixed_$ts.zip  — PrintMall (target/node_modules 제외)
-  stock-mock-trading_$ts.zip     — 모의투자
-  kotlin-hello_$ts.zip           — Kotlin 샘플
-
-[database/]
-  spring_boot_app_$ts.sql        — MySQL 덤프 (기동 시에만 생성)
-
-[docs/]
-  01-설치방법.txt, 02-셋팅방법.txt, 03~05, project-accounts.txt 등
-
-복원:
-  가이드   -> D:\backup\docs\01-설치방법.txt, 03-mysql-설치방법.txt
-  MySQL    -> install\mysql-8.4.9-winx64.msi 설치 후 mysql-setup zip 실행
-  설치파일 -> %USERPROFILE%\.local\dev\ 에 압축 해제
-  프로젝트 -> workspace 폴더에 압축 해제
-  DB       -> mysql -u redcroxx -p spring_boot_app < spring_boot_app_*.sql
-"@
-$readme | Out-File -FilePath (Join-Path $BackupRoot "README_$ts.txt") -Encoding utf8
+$readmeTemplate = Join-Path $projectRoot "scripts\backup\guides\README_backup.template.txt"
+$readme = Read-BackupUtf8Template -TemplatePath $readmeTemplate -Replacements @{ TS = $ts }
+Write-BackupUtf8Text -Path (Join-Path $BackupRoot "README_$ts.txt") -Content $readme
 
 Write-Host ""
 Write-Host "=== 백업 완료 ===" -ForegroundColor Cyan

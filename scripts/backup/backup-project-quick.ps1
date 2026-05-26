@@ -6,6 +6,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 chcp 65001 | Out-Null
+. (Join-Path $PSScriptRoot "BackupTextEncoding.ps1")
 
 if (-not $ProjectRoot) {
     $ProjectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
@@ -47,20 +48,13 @@ try {
 }
 
 $readme = Join-Path $projectDir "${projName}_$ts.txt"
-@"
-백업 일시: $ts
-원본 경로: $ProjectRoot
-압축 파일: $projZip
-
-포함: 소스, pom.xml, Eclipse(.project/.classpath/.settings/.launch), scripts
-제외: target, node_modules, logs, .git, .dbeaver
-
-Eclipse 복원:
-  1) 압축 해제 후 STS 워크스페이스(new-workspace)에 폴더 배치
-  2) open-sts-workspace.bat 또는 Import Maven Project
-  3) scripts\eclipse\apply-jdk17.ps1 실행 (JDK 경로)
-  4) Maven Update Project (Alt+F5)
-"@ | Out-File -FilePath $readme -Encoding utf8
+$readmeTemplate = Join-Path $PSScriptRoot "guides\project-backup-readme.template.txt"
+$readmeContent = Read-BackupUtf8Template -TemplatePath $readmeTemplate -Replacements @{
+    TS           = $ts
+    PROJECT_ROOT = $ProjectRoot
+    ZIP          = $projZip
+}
+Write-BackupUtf8Text -Path $readme -Content $readmeContent
 
 Write-Host "  안내: $readme" -ForegroundColor Gray
 Write-Host ""

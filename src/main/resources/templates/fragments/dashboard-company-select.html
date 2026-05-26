@@ -4,8 +4,8 @@
     <select class="form-select form-select-sm" id="dashboard-company-select" style="max-width:280px" aria-label="대시보드 업체 선택">
       <option th:each="c : ${dashboardCompanies}"
               th:value="${c.companyId}"
-              th:text="${c.companyNm}"
-              th:selected="${dashboardCompanyId != null and dashboardCompanyId == c.companyId}"></option>
+              th:text="${c.statusCd != null and c.statusCd != 'ACTIVE' ? c.companyNm + ' (' + c.statusCd + ')' : c.companyNm}"
+              th:selected="${dashboardCompanyId != null and c.companyId != null and dashboardCompanyId == c.companyId}"></option>
     </select>
     <span class="badge badge-soft-secondary fs--2" th:if="${dashboardCompanyName != null}" th:text="${dashboardCompanyName}"></span>
   </div>

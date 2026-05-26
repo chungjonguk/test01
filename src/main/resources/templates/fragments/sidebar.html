@@ -635,6 +635,10 @@
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-images"></span></span><span class="nav-link-text ps-1">페이지 이미지</span>
                     </div>
                   </a>
+                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/company-domains}" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-globe"></span></span><span class="nav-link-text ps-1">업체 도메인</span>
+                    </div>
+                  </a>
                   <div class="px-3 mb-2" th:if="${dashboardCompanyName != null}">
                     <span class="badge badge-soft-primary text-truncate d-inline-block w-100 text-start sidebar-selected-company"
                           th:text="${dashboardCompanyName}"

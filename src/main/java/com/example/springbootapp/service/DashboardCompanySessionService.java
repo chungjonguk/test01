@@ -23,13 +23,16 @@ public class DashboardCompanySessionService {
 		this.bizCompanyMapper = bizCompanyMapper;
 	}
 
+	/** 사용 중(use_yn=Y)인 전체 업체 — 상태(ACTIVE/INACTIVE) 무관 */
 	public List<Map<String, Object>> listActiveCompanies() {
-		List<BizCompany> rows = bizCompanyMapper.search(null, null, "ACTIVE", "Y", 500);
+		List<BizCompany> rows = bizCompanyMapper.search(null, null, null, "Y", 500);
 		List<Map<String, Object>> list = new ArrayList<>();
 		for (BizCompany c : rows) {
 			Map<String, Object> row = new LinkedHashMap<>();
 			row.put("companyId", c.getCompanyId());
 			row.put("companyNm", c.getCompanyNm());
+			row.put("statusCd", c.getStatusCd());
+			row.put("bizNo", c.getBizNo());
 			list.add(row);
 		}
 		return list;
