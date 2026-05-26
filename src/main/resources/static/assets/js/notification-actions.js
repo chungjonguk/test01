@@ -62,8 +62,7 @@
         if (section) section.value = 'NEW';
         if (global.PrintMallNotificationList && global.PrintMallNotificationList.reload) {
           global.PrintMallNotificationList.reload();
-        }
-        if (global.PrintMallNotificationNav && global.PrintMallNotificationNav.refreshFromApi) {
+        } else if (global.PrintMallNotificationNav && global.PrintMallNotificationNav.refreshFromApi) {
           return global.PrintMallNotificationNav.refreshFromApi();
         }
       })

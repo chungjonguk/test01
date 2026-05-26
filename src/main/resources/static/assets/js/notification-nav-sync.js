@@ -12,6 +12,8 @@
   var SIDEBAR_PREVIEW_LIMIT = 5;
   var useApi = true;
   var apiLoaded = false;
+  /** 알림 목록 화면 조회 결과(검색란) — 전역 벨 캐시와 분리 */
+  var pageListCache = null;
 
   var SECTION_LABELS = {
     NEW: '새 알림',
@@ -216,12 +218,15 @@
     return SECTION_LABELS[key] || key;
   }
 
-  function refreshFromApi() {
+  function isNotificationListPage() {
+    return !!global.document.getElementById('notification-icon-page-list');
+  }
+
+  function refreshNavFromApi() {
     if (!useApi || !global.fetch) {
       return Promise.resolve(ensureItems());
     }
-    var limit = global.document.getElementById('notification-icon-page-list') ? PAGE_LIST_LIMIT : DROPDOWN_LIMIT;
-    var url = API_URL + '?limit=' + limit;
+    var url = API_URL + '?limit=' + DROPDOWN_LIMIT;
     return global
       .fetch(url, {
         method: 'GET',
@@ -243,7 +248,7 @@
         } else {
           saveItems([]);
         }
-        refresh();
+        refreshNavOnly();
         return items;
       })
       .catch(function () {
@@ -252,9 +257,24 @@
         if (!cached.length) {
           saveItems([]);
         }
-        refresh();
+        refreshNavOnly();
         return cached;
       });
+  }
+
+  function refreshFromApi() {
+    return refreshNavFromApi();
+  }
+
+  function refreshNavOnly() {
+    refreshBadges(getUnreadCount());
+    renderHeaderDropdown();
+    renderSidebarIconList();
+    syncHeaderActive();
+    if (!isNotificationListPage()) {
+      renderIconPageList();
+      renderPageList();
+    }
   }
 
   function formatBadge(n) {
@@ -418,7 +438,10 @@
   function renderIconPageList() {
     var container = global.document.getElementById('notification-icon-page-list');
     if (!container) return;
-    var items = migrateNotificationItems(ensureItems());
+    var items =
+      pageListCache !== null
+        ? pageListCache
+        : migrateNotificationItems(ensureItems());
     renderIconPageListInto(container, items);
     var countEl = global.document.getElementById('notification-search-result-count');
     if (countEl) countEl.textContent = items.length + '건';
@@ -443,7 +466,21 @@
     };
   }
 
+  function applySearchResults(rows) {
+    var items = migrateNotificationItems((rows || []).map(mapGridRow).filter(Boolean));
+    pageListCache = items;
+    renderIconPageList();
+    return items;
+  }
+
+  function clearPageListCache() {
+    pageListCache = null;
+  }
+
   function applyExternalItems(rows) {
+    if (isNotificationListPage()) {
+      return applySearchResults(rows);
+    }
     var items = (rows || []).map(mapGridRow).filter(Boolean);
     apiLoaded = true;
     saveItems(items);
@@ -537,6 +574,23 @@
     return isNaN(n) ? null : n;
   }
 
+  function markReadInPageCache(id) {
+    if (!pageListCache) {
+      return false;
+    }
+    var changed = false;
+    pageListCache.forEach(function (item) {
+      if (item.id === id && item.unread !== false) {
+        item.unread = false;
+        changed = true;
+      }
+    });
+    if (changed) {
+      renderIconPageList();
+    }
+    return changed;
+  }
+
   function markRead(id) {
     var dbId = parseDbId(id);
     if (useApi && dbId != null && global.fetch) {
@@ -547,11 +601,24 @@
           credentials: 'same-origin'
         })
         .then(function () {
+          if (isNotificationListPage()) {
+            markReadInPageCache(id);
+            return refreshNavFromApi();
+          }
           return refreshFromApi();
         })
         .catch(function () {
+          if (isNotificationListPage()) {
+            markReadInPageCache(id);
+            refreshNavOnly();
+            return true;
+          }
           return markReadLocal(id);
         });
+    }
+    if (isNotificationListPage()) {
+      markReadInPageCache(id);
+      return Promise.resolve(true);
     }
     return Promise.resolve(markReadLocal(id));
   }
@@ -580,6 +647,19 @@
           credentials: 'same-origin'
         })
         .then(function () {
+          if (isNotificationListPage() && global.PrintMallNotificationList) {
+            if (pageListCache) {
+              pageListCache.forEach(function (item) {
+                item.unread = false;
+              });
+              renderIconPageList();
+            }
+            return refreshNavFromApi().then(function () {
+              if (global.PrintMallNotificationList.reload) {
+                return global.PrintMallNotificationList.reload();
+              }
+            });
+          }
           return refreshFromApi();
         })
         .catch(function () {
@@ -591,6 +671,14 @@
   }
 
   function markAllReadLocal() {
+    if (isNotificationListPage() && pageListCache) {
+      pageListCache.forEach(function (item) {
+        item.unread = false;
+      });
+      renderIconPageList();
+      refreshNavOnly();
+      return;
+    }
     var items = loadItems();
     var changed = false;
     items.forEach(function (item) {
@@ -670,7 +758,11 @@
     if (cached.length) {
       saveItems(cached);
     }
-    refreshFromApi().finally(function () {
+    if (isNotificationListPage()) {
+      refreshNavFromApi();
+      return;
+    }
+    refreshNavFromApi().finally(function () {
       if (!apiLoaded) {
         refresh();
       }
@@ -687,11 +779,18 @@
     markAllRead: markAllRead,
     refresh: refresh,
     refreshFromApi: refreshFromApi,
+    applySearchResults: applySearchResults,
+    clearPageListCache: clearPageListCache,
     applyExternalItems: applyExternalItems,
     pathKey: pathKey
   };
 
   global.addEventListener('printmall-notification-updated', function () {
+    if (isNotificationListPage() && pageListCache !== null) {
+      refreshNavOnly();
+      renderIconPageList();
+      return;
+    }
     refresh();
   });
 

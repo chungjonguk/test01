@@ -11,6 +11,10 @@
     return global.document.getElementById(id);
   }
 
+  function getNav() {
+    return global.PrintMallNotificationNav;
+  }
+
   function getSearchParams() {
     var params = new URLSearchParams();
     params.set('grid', 'true');
@@ -31,8 +35,20 @@
     if (btn) btn.disabled = loading;
   }
 
+  function applyRows(rows) {
+    var nav = getNav();
+    if (nav && nav.applySearchResults) {
+      nav.applySearchResults(rows || []);
+    } else if (nav && nav.applyExternalItems) {
+      nav.applyExternalItems(rows || []);
+    } else if (nav && nav.refresh) {
+      nav.refresh();
+    }
+  }
+
   function loadList() {
     if (state.loading) return Promise.resolve();
+    if (!$('notification-icon-page-list')) return Promise.resolve();
     setLoading(true);
     var url = API + '?' + getSearchParams().toString();
     return global
@@ -44,12 +60,7 @@
         if (!data || !data.success) {
           throw new Error((data && data.message) || '조회에 실패했습니다.');
         }
-        var nav = global.PrintMallNotificationNav;
-        if (nav && nav.applyExternalItems) {
-          nav.applyExternalItems(data.items || []);
-        } else if (nav && nav.refresh) {
-          nav.refresh();
-        }
+        applyRows(data.items || []);
       })
       .catch(function (err) {
         alert(err.message || '조회에 실패했습니다.');
@@ -62,11 +73,11 @@
   function resetSearch() {
     var form = $('notification-search-form');
     if (form) form.reset();
-    if (global.PrintMallNotificationNav && global.PrintMallNotificationNav.refreshFromApi) {
-      global.PrintMallNotificationNav.refreshFromApi();
-    } else {
-      loadList();
+    var nav = getNav();
+    if (nav && nav.clearPageListCache) {
+      nav.clearPageListCache();
     }
+    loadList();
   }
 
   function bind() {
@@ -83,6 +94,9 @@
 
   function init() {
     bind();
+    if ($('notification-icon-page-list')) {
+      loadList();
+    }
   }
 
   global.PrintMallNotificationList = {
