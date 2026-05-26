@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
   <!-- 쇼핑몰(B2C) 대표 메뉴 — sidebar.html 상단(대시보드 다음)에 포함 -->
-  <li class="nav-item" th:fragment="shoppingMallNav">
+  <li class="nav-item" data-menu-zone="shopping-mall" th:fragment="shoppingMallNav">
     <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
       <div class="col-auto navbar-vertical-label">쇼핑몰</div>
       <div class="col ps-0">
         <hr class="mb-0 navbar-vertical-divider" />
       </div>
     </div>
-    <a class="nav-link" th:href="@{/}" role="button" data-bs-toggle="" aria-expanded="false">
+    <a class="nav-link" th:href="@{/shop-home}" data-menu-path="/shop-home" data-menu-persist="true" title="쇼핑몰 홈" role="button" data-bs-toggle="" aria-expanded="false">
       <div class="d-flex align-items-center">
         <span class="nav-link-icon"><span class="fas fa-store"></span></span>
         <span class="nav-link-text ps-1">쇼핑몰 홈</span>
@@ -111,7 +111,7 @@
         </a>
       </li>
     </ul>
-    <a class="nav-link" th:href="@{/dashboard/e-commerce}" data-bs-toggle="" aria-expanded="false">
+    <a class="nav-link" th:href="@{/shop-dashboard}" data-menu-path="/shop-dashboard" data-bs-toggle="" aria-expanded="false">
       <div class="d-flex align-items-center">
         <span class="nav-link-icon"><span class="fas fa-chart-line"></span></span>
         <span class="nav-link-text ps-1">쇼핑몰 통계</span>

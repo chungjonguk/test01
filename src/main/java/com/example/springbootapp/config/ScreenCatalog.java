@@ -45,24 +45,16 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_COMPANY_PAGE_IMAGES", "페이지 이미지", "/admin/company-page-images", "admin/company-page-images", 31);
 		put(byUri, "ADMIN_INVENTORY", "재고관리", "/admin/inventory", "admin/inventory", 32);
 		put(byUri, "ADMIN_SHIPPING", "운송장발급", "/admin/shipping", "admin/shipping", 33);
-		put(byUri, "SHOP_HOME", "쇼핑몰 홈", "/", "index", 15);
-		put(byUri, "SHOP_PRODUCT_GRID", "상품 카탈로그", "/app/e-commerce/product/product-grid",
-				"app/e-commerce/product/product-grid", 16);
-		put(byUri, "SHOP_PRODUCT_LIST", "상품 목록", "/app/e-commerce/product/product-list",
-				"app/e-commerce/product/product-list", 17);
-		put(byUri, "SHOP_CART", "장바구니", "/app/e-commerce/shopping-cart", "app/e-commerce/shopping-cart", 18);
-		put(byUri, "SHOP_CHECKOUT", "주문·결제", "/app/e-commerce/checkout", "app/e-commerce/checkout", 19);
-		put(byUri, "SHOP_ORDER_LIST", "주문 내역", "/app/e-commerce/orders/order-list",
-				"app/e-commerce/orders/order-list", 20);
-		put(byUri, "SHOP_ORDER_DETAIL", "주문·배송 상세", "/app/e-commerce/orders/order-details",
-				"app/e-commerce/orders/order-details", 21);
-		put(byUri, "SHOP_FAQ", "자주 묻는 질문", "/pages/faq/faq-basic", "pages/faq/faq-basic", 25);
-		put(byUri, "SHOP_DASHBOARD", "쇼핑몰 통계", "/dashboard/e-commerce", "dashboard/e-commerce", 26);
+		put(byUri, "SHOP_HOME", "쇼핑몰 홈", "/shop-home", "app/e-commerce/product/product-grid", 15);
+		put(byUri, "SHOP_DASHBOARD", "쇼핑몰 통계", "/shop-dashboard", "dashboard/e-commerce", 26);
 	}
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
 		String normalized = DoPathHelper.normalizeForScreenLookup(uri);
 		if (byUri.containsKey(normalized)) {
 			ScreenList existing = byUri.get(normalized);
+			if (shouldKeepExistingScreen(existing.getScreenId(), id)) {
+				return;
+			}
 			existing.setScreenNm(nm);
 			existing.setScreenId(id);
 			return;
@@ -75,5 +67,20 @@ public final class ScreenCatalog {
 		s.setSortOrd(sort);
 		s.setUseYn("Y");
 		byUri.put(normalized, s);
+	}
+
+	/** 사이드바·앱·대시보드 화면을 쇼핑몰 보조 ID가 같은 URI로 덮어쓰지 않음 */
+	private static boolean shouldKeepExistingScreen(String existingId, String newId) {
+		if (newId == null || !newId.startsWith("SHOP_")) {
+			return false;
+		}
+		if (existingId == null || existingId.isBlank()) {
+			return false;
+		}
+		return existingId.startsWith("APP_")
+				|| existingId.startsWith("DASHBOARD_")
+				|| existingId.startsWith("ECM_")
+				|| existingId.startsWith("ADMIN_")
+				|| "HOME".equals(existingId);
 	}
 }

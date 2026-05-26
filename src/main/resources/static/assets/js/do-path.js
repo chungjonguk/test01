@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/url/', '/api/kakao/', '/api/shipping/'];
+  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/'];
   var ENCRYPT_PREFIX = '/e/';
   var cache = Object.create(null);
   var pending = Object.create(null);
@@ -14,6 +14,21 @@
   function stripQuery(path) {
     var q = path.indexOf('?');
     return q >= 0 ? path.substring(0, q) : path;
+  }
+
+  /** 사이드바 메뉴 필터용 논리 경로 키 (암호화 전 href 보존) */
+  function toMenuPathKey(path) {
+    if (!path) {
+      return '';
+    }
+    var p = stripQuery(path);
+    if (p.length > 3 && p.slice(-3) === '.do') {
+      p = p.slice(0, -3);
+    }
+    if (p === '/index') {
+      return '/';
+    }
+    return p;
   }
 
   function hasFileExtension(path) {
@@ -134,6 +149,9 @@
       var href = link.getAttribute('href');
       if (!href || shouldSkip(href)) {
         return;
+      }
+      if (!link.getAttribute('data-menu-path')) {
+        link.setAttribute('data-menu-path', toMenuPathKey(href));
       }
       tasks.push(
         toPublic(href).then(function (enc) {

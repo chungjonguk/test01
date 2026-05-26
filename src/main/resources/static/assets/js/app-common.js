@@ -72,6 +72,47 @@
     window.alert(message);
   }
 
+  var DATE_PATTERN = 'yyyy-MM-dd';
+  var DATETIME_PATTERN = 'yyyy-MM-dd HH:mm:ss';
+
+  function pad2(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  /**
+   * @param {*} value in: ISO 문자열·배열·Date
+   * @returns {string} out: {@code yyyy-MM-dd} 또는 {@code —}
+   */
+  function formatDate(value) {
+    if (value == null || value === '') {
+      return '—';
+    }
+    if (value instanceof Date && !isNaN(value.getTime())) {
+      return (
+        value.getFullYear() +
+        '-' +
+        pad2(value.getMonth() + 1) +
+        '-' +
+        pad2(value.getDate())
+      );
+    }
+    var s = String(value).trim();
+    if (Array.isArray(value) && value.length >= 3) {
+      return value[0] + '-' + pad2(value[1]) + '-' + pad2(value[2]);
+    }
+    var slash = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (slash) {
+      return slash[3] + '-' + pad2(slash[2]) + '-' + pad2(slash[1]);
+    }
+    if (s.length >= 10 && s.charAt(4) === '-') {
+      return s.slice(0, 10);
+    }
+    if (s.length >= 10) {
+      return s.slice(0, 10);
+    }
+    return s;
+  }
+
   /**
    * @param {*} value in: ISO 문자열·배열·Date 표현
    * @returns {string} out: {@code yyyy-MM-dd HH:mm:ss} 또는 {@code —}
@@ -80,27 +121,42 @@
     if (value == null || value === '') {
       return '—';
     }
+    if (value instanceof Date && !isNaN(value.getTime())) {
+      return (
+        value.getFullYear() +
+        '-' +
+        pad2(value.getMonth() + 1) +
+        '-' +
+        pad2(value.getDate()) +
+        ' ' +
+        pad2(value.getHours()) +
+        ':' +
+        pad2(value.getMinutes()) +
+        ':' +
+        pad2(value.getSeconds())
+      );
+    }
     var s = String(value);
     if (Array.isArray(value) && value.length >= 3) {
-      var pad = function (n) {
-        return n < 10 ? '0' + n : String(n);
-      };
       return (
         value[0] +
         '-' +
-        pad(value[1]) +
+        pad2(value[1]) +
         '-' +
-        pad(value[2]) +
+        pad2(value[2]) +
         ' ' +
-        pad(value[3] || 0) +
+        pad2(value[3] || 0) +
         ':' +
-        pad(value[4] || 0) +
+        pad2(value[4] || 0) +
         ':' +
-        pad(value[5] || 0)
+        pad2(value[5] || 0)
       );
     }
     if (s.indexOf('T') !== -1) {
-      return s.replace('T', ' ').slice(0, 19);
+      s = s.replace('T', ' ');
+    }
+    if (s.length === 16) {
+      return s + ':00';
     }
     return s.length > 19 ? s.slice(0, 19) : s;
   }
@@ -166,6 +222,9 @@
     escapeAttr: escapeAttr,
     fetchJson: fetchJson,
     notify: notify,
+    DATE_PATTERN: DATE_PATTERN,
+    DATETIME_PATTERN: DATETIME_PATTERN,
+    formatDate: formatDate,
     formatDt: formatDt,
     codeLabel: codeLabel,
     toQuerySuffix: toQuerySuffix

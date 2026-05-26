@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <div th:fragment="menuLocation" class="menu-location-bar card border-0 shadow-none mb-3" id="menu-location-bar">
+    <div class="card-body py-2 px-3">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <nav class="flex-grow-1" aria-label="메뉴 위치">
+          <ol class="breadcrumb mb-0 flex-wrap align-items-center" id="menu-location-breadcrumb">
+            <li class="breadcrumb-item">
+              <a th:href="@{/}"><span class="fas fa-home me-1"></span>홈</a>
+            </li>
+            <li th:each="crumb, stat : ${menuBreadcrumb}"
+                class="breadcrumb-item"
+                th:classappend="${stat.last} ? 'active' : ''"
+                th:attr="aria-current=${stat.last} ? 'page' : null">
+              <span th:text="${crumb.label()}">구역</span>
+            </li>
+          </ol>
+        </nav>
+        <h5 class="mb-0 text-nowrap d-none d-md-block" th:if="${screenNm != null}" th:text="${screenNm}">화면</h5>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2 gap-md-3 mt-2 fs--2 text-600" id="menu-location-meta">
+        <span class="badge badge-soft-secondary" th:if="${screenId != null}">
+          <span class="text-500 me-1">화면ID</span><span th:text="${screenId}">—</span>
+        </span>
+        <span class="badge badge-soft-secondary" th:if="${screenUriPath != null}">
+          <span class="text-500 me-1">URL</span><code class="text-800" th:text="${screenUriPath}">/</code>
+        </span>
+        <span class="badge badge-soft-info" th:if="${currentScreenPathKey != null}">
+          <span class="text-500 me-1">메뉴</span><code class="text-800" th:text="${currentScreenPathKey}">/</code>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

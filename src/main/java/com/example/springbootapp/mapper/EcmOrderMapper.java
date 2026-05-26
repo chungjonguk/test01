@@ -1,7 +1,9 @@
 package com.example.springbootapp.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import java.util.List;
 import com.example.springbootapp.domain.EcmOrder;
+import com.example.springbootapp.dto.EcmOrderListItem;
 /**
  * EC 주문(ecm_order) MyBatis Mapper.
  */
@@ -50,4 +52,8 @@ public interface EcmOrderMapper {
 	int updateOrderIdOnPayment(
 			@Param("orderNo") String orderNo,
 			@Param("orderId") Long orderId);
+
+	List<EcmOrderListItem> searchOrders(
+			@Param("keyword") String keyword,
+			@Param("statusCd") String statusCd);
 }

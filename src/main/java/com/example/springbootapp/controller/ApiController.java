@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.springbootapp.auth.SessionAuthService;
+import com.example.springbootapp.util.AppDateTimeFormats;
 import com.example.springbootapp.storage.NasMediaType;
 import com.example.springbootapp.storage.NasStorageService;
 import com.example.springbootapp.storage.NasStorageService.NasStoredFile;
@@ -36,7 +37,7 @@ public class ApiController {
 	public ResponseEntity<Map<String, Object>> status() {
 		Map<String, Object> response = new HashMap<>();
 		response.put("status", "running");
-		response.put("timestamp", LocalDateTime.now());
+		response.put("timestamp", AppDateTimeFormats.formatDateTime(LocalDateTime.now()));
 		response.put("message", "서버가 정상적으로 실행 중입니다.");
 		return ResponseEntity.ok(response);
 	}

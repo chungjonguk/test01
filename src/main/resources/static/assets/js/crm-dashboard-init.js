@@ -40,7 +40,7 @@
 
     var options = {
       mode: 'range',
-      dateFormat: 'M d',
+      dateFormat: 'Y-m-d',
       disableMobile: true,
       defaultDate: [new Date(2024, 8, 13), new Date(2024, 8, 20)],
       appendTo: document.body,

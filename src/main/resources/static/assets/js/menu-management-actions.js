@@ -8,6 +8,7 @@
     loading: false
   };
   var menuGridView = null;
+  var C = window.PrintMallCommon || {};
 
   function $(id) {
     return document.getElementById(id);
@@ -36,16 +37,7 @@
     );
   }
 
-  function formatDt(value) {
-    if (value == null || value === '') {
-      return '—';
-    }
-    var s = String(value);
-    if (s.indexOf('T') !== -1) {
-      return s.replace('T', ' ').slice(0, 19);
-    }
-    return s.length > 19 ? s.slice(0, 19) : s;
-  }
+  var formatDt = C.formatDt;
 
   function displayName(row) {
     if (row.screenNm != null && String(row.screenNm).trim() !== '') {

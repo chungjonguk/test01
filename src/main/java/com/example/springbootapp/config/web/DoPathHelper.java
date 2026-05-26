@@ -25,9 +25,7 @@ public final class DoPathHelper {
 			"/assets/",
 			"/vendors/",
 			"/error",
-			"/api/url/",
-			"/api/kakao/",
-			"/api/shipping/");
+			"/api/");
 
 	private DoPathHelper() {
 	}
@@ -61,11 +59,7 @@ public final class DoPathHelper {
 
 	/** GET 리다이렉트 필터 제외 */
 	public static boolean shouldSkipRedirect(String path) {
-		if (shouldSkipSuffix(path)) {
-			return true;
-		}
-		String p = stripQuery(path);
-		return p.startsWith("/api/") && !p.startsWith("/api/kakao/") && !p.startsWith("/api/shipping/");
+		return shouldSkipSuffix(path);
 	}
 
 	/** 경로를 .do 형식으로 변환 ({@code /} → {@code /index.do}) */
@@ -160,7 +154,10 @@ public final class DoPathHelper {
 		if (handlerType == null || isExcludedHandler(handlerType)) {
 			return false;
 		}
-		return handlerType.isAnnotationPresent(org.springframework.stereotype.Controller.class)
-				|| handlerType.isAnnotationPresent(RestController.class);
+		// REST API는 경로 암호화·.do 접미사 미적용 (fetch가 /api/... 그대로 호출)
+		if (handlerType.isAnnotationPresent(RestController.class)) {
+			return false;
+		}
+		return handlerType.isAnnotationPresent(org.springframework.stereotype.Controller.class);
 	}
 }

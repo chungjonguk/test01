@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}">
 </head>
@@ -6268,13 +6268,13 @@
                             <label class="form-label" for="experience-form2">From </label>
                           </div>
                           <div class="col-9 col-sm-7 mb-3">
-                            <input class="form-control form-control-sm text-500 datetimepicker" id="experience-form2" type="text" placeholder="d/m/y" data-options='{"dateFormat":"d/m/y","disableMobile":true}' />
+                            <input class="form-control form-control-sm text-500 datetimepicker" id="experience-form2" type="text" placeholder="yyyy-MM-dd" data-options='{"dateFormat":"Y-m-d","disableMobile":true}' />
                           </div>
                           <div class="col-3 text-lg-end">
                             <label class="form-label" for="experience-to">To </label>
                           </div>
                           <div class="col-9 col-sm-7 mb-3">
-                            <input class="form-control form-control-sm text-500 datetimepicker" id="experience-to" type="text" placeholder="d/m/y" data-options='{"dateFormat":"d/m/y","disableMobile":true}' />
+                            <input class="form-control form-control-sm text-500 datetimepicker" id="experience-to" type="text" placeholder="yyyy-MM-dd" data-options='{"dateFormat":"Y-m-d","disableMobile":true}' />
                           </div>
                           <div class="col-9 col-sm-7 offset-3">
                             <button class="btn btn-primary" type="button">Save</button>
@@ -6329,7 +6329,7 @@
                         </div>
                         <div class="mb-3">
                           <label class="form-label" for="form-example-wizard-datepicker">Date of Birth</label>
-                          <input class="form-control datetimepicker" type="text" placeholder="d/m/y" data-options='{"dateFormat":"d/m/y","disableMobile":true}' id="form-example-wizard-datepicker" />
+                          <input class="form-control datetimepicker" type="text" placeholder="yyyy-MM-dd" data-options='{"dateFormat":"Y-m-d","disableMobile":true}' id="form-example-wizard-datepicker" />
                         </div>
                         <div class="mb-3">
                           <label class="form-label" for="form-example-wizard-address">Address</label>
@@ -6959,11 +6959,11 @@
                   </div>
                   <div class="mb-3">
                     <label class="fs-0" for="eventStartDate">Start Date</label>
-                    <input class="form-control datetimepicker" id="eventStartDate" type="text" required="required" name="startDate" placeholder="yyyy/mm/dd hh:mm" data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i"}' />
+                    <input class="form-control datetimepicker" id="eventStartDate" type="text" required="required" name="startDate" placeholder="yyyy-MM-dd HH:mm:ss" data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i:S"}' />
                   </div>
                   <div class="mb-3">
                     <label class="fs-0" for="eventEndDate">End Date</label>
-                    <input class="form-control datetimepicker" id="eventEndDate" type="text" name="endDate" placeholder="yyyy/mm/dd hh:mm" data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i"}' />
+                    <input class="form-control datetimepicker" id="eventEndDate" type="text" name="endDate" placeholder="yyyy-MM-dd HH:mm:ss" data-options='{"static":"true","enableTime":"true","dateFormat":"Y-m-d H:i:S"}' />
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="eventAllDay" name="allDay" />

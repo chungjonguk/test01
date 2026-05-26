@@ -26,6 +26,7 @@ public class ScreenTableMapService {
 	 */
 	public Map<String, ScreenTableMap> findAllByUri() {
 		return screenTableMapMapper.findAll().stream()
+				.filter(m -> m.getUriPath() != null && !m.getUriPath().isBlank())
 				.collect(Collectors.toMap(ScreenTableMap::getUriPath, m -> m, (a, b) -> a, LinkedHashMap::new));
 	}
 	/**

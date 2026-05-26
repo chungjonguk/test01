@@ -84,7 +84,27 @@ public class ScreenListService {
 	@Transactional(readOnly = true)
 	public ScreenList findByUriPath(String uriPath) {
 		String normalized = normalizeUriPath(uriPath);
-		return screenListMapper.findByUriPath(normalized);
+		ScreenList screen = screenListMapper.findByUriPath(normalized);
+		if (screen != null) {
+			return screen;
+		}
+		if ("/index.do".equals(normalized)) {
+			screen = screenListMapper.findByUriPath("/");
+			if (screen != null) {
+				return screen;
+			}
+		}
+		if ("/shop-dashboard.do".equals(normalized)) {
+			screen = screenListMapper.findByUriPath("/shop-dashboard");
+			if (screen != null) {
+				return screen;
+			}
+		}
+		String stripped = DoPathHelper.stripDoSuffix(normalized);
+		if (!stripped.equals(normalized)) {
+			return screenListMapper.findByUriPath(stripped);
+		}
+		return null;
 	}
 	/**
 	 * HTTP 요청 URI에 해당하는 화면 정보를 조회한다.
@@ -167,6 +187,10 @@ public class ScreenListService {
 		if (existing == null) {
 			existing = screenListMapper.findByScreenId(screen.getScreenId());
 		}
+		if (existing != null && shouldReplaceShopRow(existing.getScreenId(), screen.getScreenId())) {
+			screenListMapper.deleteByScreenId(existing.getScreenId());
+			existing = null;
+		}
 		if (existing == null) {
 			screen.setRegId(actor);
 			screen.setRegDt(now);
@@ -182,6 +206,13 @@ public class ScreenListService {
 			screenListMapper.update(screen);
 		}
 	}
+	private static boolean shouldReplaceShopRow(String existingId, String incomingId) {
+		if (existingId == null || incomingId == null) {
+			return false;
+		}
+		return existingId.startsWith("SHOP_") && !incomingId.startsWith("SHOP_");
+	}
+
 	private static String trimToNull(String value) {
 		if (value == null) {
 			return null;

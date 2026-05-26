@@ -53,6 +53,11 @@ public class ScreenListSeedRunner implements ApplicationRunner {
 				screenListService.save(screen, "SYSTEM");
 				saved++;
 			}
+			populator = new ResourceDatabasePopulator();
+			populator.setContinueOnError(true);
+			populator.setSqlScriptEncoding(StandardCharsets.UTF_8.name());
+			populator.addScript(new ClassPathResource("schema/screen_list_menu_dedup.sql"));
+			populator.execute(dataSource);
 			log.info("화면 목록(screen_list) 시드·한글 복구 완료 — catalog {}건, 저장 {}건, DB {}건",
 					catalog.size(), saved, screenListMapper.countAll());
 		} catch (Exception ex) {

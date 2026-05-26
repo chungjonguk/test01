@@ -9,6 +9,7 @@ import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.domain.CalendarEvent;
 import com.example.springbootapp.dto.CalendarEventFormDto;
 import com.example.springbootapp.mapper.CalendarEventMapper;
+import com.example.springbootapp.util.AppDateTimeFormats;
 import jakarta.servlet.http.HttpSession;
 /**
  * 캘린더 일정 조회·등록·수정·삭제 및 날짜 문자열 파싱을 처리하는 서비스.
@@ -17,6 +18,8 @@ import jakarta.servlet.http.HttpSession;
 @Transactional(readOnly = true)
 public class CalendarEventService {
 	private static final DateTimeFormatter[] PARSE_FORMATS = {
+			AppDateTimeFormats.DATETIME_FORMATTER,
+			AppDateTimeFormats.DATE_FORMATTER,
 			DateTimeFormatter.ISO_LOCAL_DATE_TIME,
 			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
 			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
@@ -132,21 +135,18 @@ public class CalendarEventService {
 	 * @return 파싱된 일시, 빈 값이면 null
 	 */
 	public static LocalDateTime parseDateTime(String value) {
-		if (value == null || value.isBlank()) {
-			return null;
-		}
-		String normalized = value.trim().replace(' ', 'T');
-		for (DateTimeFormatter formatter : PARSE_FORMATS) {
-			try {
-				return LocalDateTime.parse(normalized, formatter);
-			} catch (DateTimeParseException ignored) {
-				// try next
-			}
-		}
 		try {
-			return LocalDateTime.parse(normalized);
-		} catch (DateTimeParseException ex) {
-			throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다: " + value);
+			return AppDateTimeFormats.parseDateTime(value);
+		} catch (Exception ex) {
+			String normalized = value != null ? value.trim().replace(' ', 'T') : "";
+			for (DateTimeFormatter formatter : PARSE_FORMATS) {
+				try {
+					return LocalDateTime.parse(normalized, formatter);
+				} catch (DateTimeParseException ignored) {
+					// try next
+				}
+			}
+			throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다 (yyyy-MM-dd HH:mm:ss): " + value);
 		}
 	}
 	private String resolveActor(HttpSession session) {

@@ -28,6 +28,12 @@ public class DashboardController {
 	public String dashboardEcommerce() {
 		return "dashboard/e-commerce";
 	}
+
+	/** 쇼핑몰 통계 — 대시보드 이커머스(/dashboard/e-commerce)와 화면·메뉴 분리 */
+	@GetMapping("/shop-dashboard")
+	public String shopDashboard() {
+		return "dashboard/e-commerce";
+	}
 	/**
 	 * @return out: Thymeleaf view path {@code dashboard/lms}
 	 */

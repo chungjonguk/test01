@@ -55,6 +55,8 @@ public interface ScreenListMapper {
 	 * @return 반영된 행 수
 	 */
 	int insert(ScreenList screen);
+
+	int deleteByScreenId(String screenId);
 	/**
 	 * 화면 메뉴를 수정합니다.
 	 *

@@ -177,17 +177,10 @@ public class UserAccessLogService {
 	 * @return 파싱된 일시, 빈 값이면 null
 	 */
 	public static LocalDateTime parseDateTime(String value) {
-		if (value == null || value.isBlank()) {
-			return null;
-		}
-		String normalized = value.trim().replace(' ', 'T');
-		if (normalized.length() == 10) {
-			normalized += "T00:00:00";
-		}
 		try {
-			return LocalDateTime.parse(normalized);
+			return com.example.springbootapp.util.AppDateTimeFormats.parseDateTime(value);
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다: " + value);
+			throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다 (yyyy-MM-dd 또는 yyyy-MM-dd HH:mm:ss): " + value);
 		}
 	}
 	private static String trimToNull(String value) {

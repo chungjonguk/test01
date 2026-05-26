@@ -19,4 +19,32 @@
         FROM ecm_customer
         WHERE customer_id = #{customerId}
     </select>
+
+    <resultMap id="ecmCustomerListItemMap" type="com.example.springbootapp.dto.EcmCustomerListItem">
+        <result property="customerId" column="customer_id"/>
+        <result property="customerNm" column="customer_nm"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="regDt" column="reg_dt"/>
+    </resultMap>
+
+    <select id="searchCustomers" resultMap="ecmCustomerListItemMap">
+        SELECT customer_id, customer_nm, email, phone,
+               TRIM(CONCAT_WS(' ', address, address_detail)) AS address,
+               reg_dt
+        FROM ecm_customer
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    customer_nm LIKE CONCAT('%', #{keyword}, '%')
+                    OR email LIKE CONCAT('%', #{keyword}, '%')
+                    OR phone LIKE CONCAT('%', #{keyword}, '%')
+                    OR address LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        ORDER BY reg_dt DESC, customer_id DESC
+        LIMIT 500
+    </select>
 </mapper>

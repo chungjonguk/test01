@@ -1,12 +1,15 @@
 /**
  * 주문 목록 — /app/e-commerce/orders/order-list
- * Filter / Export / Bulk / 페이지네이션 / 행 메뉴 (List.js 기반 데모)
+ * API: GET /api/e-commerce/orders
  * @module order-list-actions
  */
 (function () {
   'use strict';
 
+  var API_BASE = '/api/e-commerce/orders';
   var ROOT_ID = 'ordersTable';
+  var DETAIL_PATH = '/app/e-commerce/orders/order-details';
+  var lastItems = [];
 
   function getRoot() {
     return document.getElementById(ROOT_ID);
@@ -31,6 +34,241 @@
       return;
     }
     window.alert(message);
+  }
+
+  function escapeHtml(text) {
+    if (text == null) {
+      return '';
+    }
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatOrderDate(value) {
+    if (window.PrintMallCommon && window.PrintMallCommon.formatDate) {
+      return window.PrintMallCommon.formatDate(value);
+    }
+    return value == null ? '' : String(value);
+  }
+
+  function formatAmount(amount) {
+    if (amount == null) {
+      return '—';
+    }
+    var n = Number(amount);
+    if (isNaN(n)) {
+      return escapeHtml(amount);
+    }
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+
+  function collectFilterParams() {
+    var keywordEl = document.getElementById('order-filter-keyword');
+    var statusEl = document.getElementById('order-filter-status');
+    return {
+      keyword: keywordEl ? keywordEl.value.trim() : '',
+      statusCd: statusEl ? statusEl.value.trim() : ''
+    };
+  }
+
+  function buildApiQuery(params) {
+    var parts = [];
+    if (params.keyword) {
+      parts.push('keyword=' + encodeURIComponent(params.keyword));
+    }
+    if (params.statusCd) {
+      parts.push('statusCd=' + encodeURIComponent(params.statusCd));
+    }
+    return parts.length ? '?' + parts.join('&') : '';
+  }
+
+  function parseListOptions(root) {
+    var raw = root.getAttribute('data-list');
+    if (!raw) {
+      return {
+        valueNames: ['order', 'date', 'address', 'status', 'amount'],
+        page: 30,
+        pagination: { innerWindow: 2, left: 1, right: 1 }
+      };
+    }
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return {
+        valueNames: ['order', 'date', 'address', 'status', 'amount'],
+        page: 30,
+        pagination: { innerWindow: 2, left: 1, right: 1 }
+      };
+    }
+  }
+
+  function createListInstance() {
+    var root = getRoot();
+    if (!root || !window.List) {
+      return null;
+    }
+    var options = parseListOptions(root);
+    if (options.pagination) {
+      options.pagination = Object.assign(
+        { item: "<li><button class='page' type='button'></button></li>" },
+        options.pagination
+      );
+    }
+    var list = new window.List(root, options);
+    root._falconList = list;
+    return list;
+  }
+
+  function statusBadgeClass(label) {
+    var key = (label || '').toLowerCase();
+    if (key.indexOf('completed') !== -1) {
+      return 'badge-soft-success';
+    }
+    if (key.indexOf('processing') !== -1) {
+      return 'badge-soft-primary';
+    }
+    if (key.indexOf('hold') !== -1) {
+      return 'badge-soft-secondary';
+    }
+    if (key.indexOf('pending') !== -1) {
+      return 'badge-soft-warning';
+    }
+    return 'badge-soft-info';
+  }
+
+  function statusBadgeHtml(label) {
+    var cls = statusBadgeClass(label);
+    var icon =
+      label.toLowerCase().indexOf('completed') !== -1
+        ? '<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>'
+        : label.toLowerCase().indexOf('hold') !== -1
+          ? '<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>'
+          : label.toLowerCase().indexOf('pending') !== -1
+            ? '<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>'
+            : label.toLowerCase().indexOf('processing') !== -1
+              ? '<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>'
+              : '';
+    return (
+      '<span class="badge badge rounded-pill d-block ' +
+      cls +
+      '">' +
+      escapeHtml(label) +
+      icon +
+      '</span>'
+    );
+  }
+
+  function buildOrderRowHtml(item, index) {
+    var orderNo = escapeHtml(item.orderNo || '');
+    var customerNm = escapeHtml(item.customerNm || '');
+    var email = escapeHtml(item.customerEmail || '');
+    var orderDt = escapeHtml(formatOrderDate(item.orderDt));
+    var shipTo = escapeHtml(item.shipTo || '');
+    var statusLabel = item.statusLabel || item.statusCd || '';
+    var amount = formatAmount(item.amount);
+    var cbId = 'order-cb-' + index;
+
+    return (
+      '<tr class="btn-reveal-trigger">' +
+      '<td class="align-middle" style="width: 28px;">' +
+      '<div class="form-check fs-0 mb-0 d-flex align-items-center">' +
+      '<input class="form-check-input" type="checkbox" id="' +
+      cbId +
+      '" data-bulk-select-row="data-bulk-select-row" />' +
+      '</div></td>' +
+      '<td class="order py-2 align-middle white-space-nowrap">' +
+      '<a href="' +
+      DETAIL_PATH +
+      '"><strong>' +
+      orderNo +
+      '</strong></a> by <strong>' +
+      customerNm +
+      '</strong><br />' +
+      '<a href="mailto:' +
+      email +
+      '">' +
+      email +
+      '</a></td>' +
+      '<td class="date py-2 align-middle">' +
+      orderDt +
+      '</td>' +
+      '<td class="address py-2 align-middle white-space-nowrap">' +
+      shipTo +
+      '</td>' +
+      '<td class="status py-2 align-middle text-center fs-0 white-space-nowrap">' +
+      statusBadgeHtml(statusLabel) +
+      '</td>' +
+      '<td class="amount py-2 align-middle text-end fs-0 fw-medium">' +
+      amount +
+      '</td>' +
+      '<td class="py-2 align-middle white-space-nowrap text-end">' +
+      '<div class="dropdown font-sans-serif position-static">' +
+      '<button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="order-dropdown-' +
+      index +
+      '" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">' +
+      '<span class="fas fa-ellipsis-h fs--1"></span></button>' +
+      '<div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="order-dropdown-' +
+      index +
+      '">' +
+      '<div class="py-2">' +
+      '<a class="dropdown-item" href="#!">Completed</a>' +
+      '<a class="dropdown-item" href="#!">Processing</a>' +
+      '<a class="dropdown-item" href="#!">On Hold</a>' +
+      '<a class="dropdown-item" href="#!">Pending</a>' +
+      '<div class="dropdown-divider"></div>' +
+      '<a class="dropdown-item text-danger" href="#!">Delete</a>' +
+      '</div></div></div></td></tr>'
+    );
+  }
+
+  function renderRows(items) {
+    var tbody = document.getElementById('table-orders-body');
+    if (!tbody) {
+      return;
+    }
+    if (!items || !items.length) {
+      tbody.innerHTML =
+        '<tr><td colspan="7" class="text-center py-4 text-500">표시할 주문이 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = items.map(buildOrderRowHtml).join('');
+  }
+
+  function loadOrders(params) {
+    var queryParams = params || collectFilterParams();
+    var url = API_BASE + buildApiQuery(queryParams);
+    return fetch(url, { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function (body) {
+        if (!body || !body.success) {
+          throw new Error((body && body.message) || '목록 조회 실패');
+        }
+        lastItems = body.items || [];
+        renderRows(lastItems);
+        var root = getRoot();
+        if (root) {
+          root._falconList = null;
+        }
+        createListInstance();
+        bindListHooks();
+        renderPaginationControls();
+      })
+      .catch(function (err) {
+        var tbody = document.getElementById('table-orders-body');
+        if (tbody) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center py-4 text-danger">주문 목록을 불러오지 못했습니다.</td></tr>';
+        }
+        notify((err && err.message) || '주문 목록 조회 오류', 'error');
+      });
   }
 
   function currentPage(list) {
@@ -115,37 +353,15 @@
     }
   }
 
-  /**
-   * 키워드·상태 필터를 List.js 목록에 적용합니다.
-   * @returns {void}
-   */
   function applyFilters() {
-    var list = getList();
-    if (!list) {
-      return;
-    }
-    var keywordEl = document.getElementById('order-filter-keyword');
-    var statusEl = document.getElementById('order-filter-status');
-    var keyword = keywordEl ? keywordEl.value.trim().toLowerCase() : '';
-    var status = statusEl ? statusEl.value.trim() : '';
-
-    list.filter(function (item) {
-      var values = item.values();
-      var statusText = (values.status || '').toLowerCase();
-      var matchStatus = !status || statusText.indexOf(status.toLowerCase()) !== -1;
-      if (!keyword) {
-        return matchStatus;
+    loadOrders(collectFilterParams());
+    var offcanvas = document.getElementById('ordersFilterOffcanvas');
+    if (offcanvas && window.bootstrap) {
+      var instance = window.bootstrap.Offcanvas.getInstance(offcanvas);
+      if (instance) {
+        instance.hide();
       }
-      var rowText = Object.keys(values)
-        .map(function (k) {
-          return values[k];
-        })
-        .join(' ')
-        .toLowerCase();
-      return matchStatus && rowText.indexOf(keyword) !== -1;
-    });
-    goToPage(list, 1);
-    renderPaginationControls();
+    }
   }
 
   function resetFilters() {
@@ -157,29 +373,18 @@
     if (statusEl) {
       statusEl.value = '';
     }
-    var list = getList();
-    if (list) {
-      list.filter();
-      list.search();
-      goToPage(list, 1);
-      renderPaginationControls();
-    }
+    loadOrders({ keyword: '', statusCd: '' });
   }
 
-  /**
-   * 현재 목록(필터 적용 결과)을 CSV 파일로 내보냅니다.
-   * @returns {void}
-   */
   function exportCsv() {
     var list = getList();
     var items = list && list.matchingItems && list.matchingItems.length ? list.matchingItems : null;
     if (!items || !items.length) {
-      var rows = document.querySelectorAll('#table-orders-body tr');
-      if (!rows.length) {
+      if (!lastItems.length) {
         notify('보낼 주문이 없습니다.', 'warning');
         return;
       }
-      items = Array.prototype.slice.call(rows).map(function (tr) {
+      items = Array.prototype.slice.call(document.querySelectorAll('#table-orders-body tr')).map(function (tr) {
         return {
           values: function () {
             return {
@@ -232,45 +437,6 @@
       return;
     }
     notify(checked.length + '건에 "' + action + '" 적용 (데모)', 'success');
-  }
-
-  function statusBadgeClass(label) {
-    var key = label.toLowerCase();
-    if (key.indexOf('completed') !== -1) {
-      return 'badge-soft-success';
-    }
-    if (key.indexOf('processing') !== -1) {
-      return 'badge-soft-primary';
-    }
-    if (key.indexOf('hold') !== -1) {
-      return 'badge-soft-secondary';
-    }
-    if (key.indexOf('pending') !== -1) {
-      return 'badge-soft-warning';
-    }
-    return 'badge-soft-info';
-  }
-
-  function statusBadgeHtml(label) {
-    var cls = statusBadgeClass(label);
-    var icon =
-      label.toLowerCase().indexOf('completed') !== -1
-        ? '<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span>'
-        : label.toLowerCase().indexOf('hold') !== -1
-          ? '<span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span>'
-          : label.toLowerCase().indexOf('pending') !== -1
-            ? '<span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span>'
-            : label.toLowerCase().indexOf('processing') !== -1
-              ? '<span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span>'
-              : '';
-    return (
-      '<span class="badge badge rounded-pill d-block ' +
-      cls +
-      '">' +
-      label +
-      icon +
-      '</span>'
-    );
   }
 
   function applyRowStatus(row, label) {
@@ -337,16 +503,7 @@
     var applyFilterBtn = document.getElementById('order-filter-apply');
     if (applyFilterBtn && !applyFilterBtn.dataset.orderListBound) {
       applyFilterBtn.dataset.orderListBound = '1';
-      applyFilterBtn.addEventListener('click', function () {
-        applyFilters();
-        var offcanvas = document.getElementById('ordersFilterOffcanvas');
-        if (offcanvas && window.bootstrap) {
-          var instance = window.bootstrap.Offcanvas.getInstance(offcanvas);
-          if (instance) {
-            instance.hide();
-          }
-        }
-      });
+      applyFilterBtn.addEventListener('click', applyFilters);
     }
 
     var resetFilterBtn = document.getElementById('order-filter-reset');
@@ -383,33 +540,15 @@
     });
   }
 
-  /**
-   * List.js 인스턴스 준비 후 필터·페이지네이션·행 메뉴를 바인딩합니다.
-   * @param {number} attempt List.js 대기 재시도 횟수
-   * @returns {void}
-   */
-  function init(attempt) {
+  function init() {
     bindStaticControls();
     bindRowDropdowns();
-    var list = getList();
-    if (list) {
-      bindListHooks();
-      renderPaginationControls();
-      return;
-    }
-    if (attempt > 50) {
-      return;
-    }
-    window.setTimeout(function () {
-      init(attempt + 1);
-    }, 100);
+    loadOrders({ keyword: '', statusCd: '' });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      init(0);
-    });
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    init(0);
+    init();
   }
 })();

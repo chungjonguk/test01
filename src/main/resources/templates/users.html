@@ -232,9 +232,9 @@
                                 <td th:text="|(${user.zipcode}) ${user.address} ${user.addressDetail ?: ''}|">(12345) 서울시 강남구</td>
                                 <td th:text="${user.updateId}">admin</td>
 
-                                <td th:text="${#temporals.format(user.regDt, 'yyyy-MM-dd HH:mm:ss')}">2026-05-14</td>
+                                <td th:text="${appDates.dateTime(user.regDt)}">2026-05-14</td>
 
-                                <td th:text="${#temporals.format(user.updDt, 'yyyy-MM-dd HH:mm:ss')}">2026-05-14</td>
+                                <td th:text="${appDates.dateTime(user.updDt)}">2026-05-14</td>
 
                                 <td class="text-end">
                                     <form class="d-inline user-reset-password-form" th:action="@{/users/{id}/reset-password(id=${user.id})}" method="post">

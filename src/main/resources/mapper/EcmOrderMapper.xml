@@ -56,4 +56,37 @@
             update_id = #{updateId}
         WHERE order_id = #{orderId}
     </update>
+
+    <resultMap id="ecmOrderListItemMap" type="com.example.springbootapp.dto.EcmOrderListItem">
+        <result property="orderId" column="order_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="customerNm" column="customer_nm"/>
+        <result property="customerEmail" column="customer_email"/>
+        <result property="orderDt" column="order_dt"/>
+        <result property="shipTo" column="ship_to"/>
+        <result property="statusCd" column="status_cd"/>
+        <result property="amount" column="amount"/>
+    </resultMap>
+
+    <select id="searchOrders" resultMap="ecmOrderListItemMap">
+        SELECT o.order_id, o.order_no, c.customer_nm, c.email AS customer_email,
+               o.order_dt, o.ship_to, o.status_cd, o.amount
+        FROM ecm_order o
+        INNER JOIN ecm_customer c ON c.customer_id = o.customer_id
+        <where>
+            <if test="statusCd != null and statusCd != ''">
+                AND o.status_cd = #{statusCd}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    o.order_no LIKE CONCAT('%', #{keyword}, '%')
+                    OR c.customer_nm LIKE CONCAT('%', #{keyword}, '%')
+                    OR c.email LIKE CONCAT('%', #{keyword}, '%')
+                    OR o.ship_to LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        ORDER BY o.order_dt DESC, o.order_id DESC
+        LIMIT 500
+    </select>
 </mapper>

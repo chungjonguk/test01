@@ -174,5 +174,11 @@
 
     </update>
 
+    <delete id="deleteByScreenId">
+
+        DELETE FROM screen_list WHERE screen_id = #{screenId}
+
+    </delete>
+
 </mapper>
 

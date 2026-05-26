@@ -7,10 +7,10 @@ import com.example.springbootapp.mapper.UserMapper;
 import com.example.springbootapp.service.UserAccessLogService;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import com.example.springbootapp.util.AppDateTimeFormats;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class AppController {
-	private static final DateTimeFormatter CUSTOMER_DT =
-			DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm", Locale.KOREA);
-	private static final DateTimeFormatter CUSTOMER_DT_LONG =
-			DateTimeFormatter.ofPattern("MMM d, h:mm a", Locale.ENGLISH);
 	private final SessionAuthService sessionAuthService;
 	private final UserMapper userMapper;
 	private final UserAccessLogService userAccessLogService;
@@ -186,10 +182,11 @@ public class AppController {
 		return profile != null ? profile.getRegDt() : null;
 	}
 	private static String formatDateTime(LocalDateTime value) {
-		return value != null ? value.format(CUSTOMER_DT) : "-";
+		String formatted = AppDateTimeFormats.formatDateTime(value);
+		return formatted != null ? formatted : "-";
 	}
 	private static String formatDateTimeLong(LocalDateTime value) {
-		return value != null ? value.format(CUSTOMER_DT_LONG) : "-";
+		return formatDateTime(value);
 	}
 	private static String formatAddress(User profile) {
 		if (profile == null) {

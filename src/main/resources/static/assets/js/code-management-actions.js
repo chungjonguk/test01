@@ -16,6 +16,11 @@
   var groupPager = null;
   var detailPager = null;
 
+  var C = window.PrintMallCommon || {};
+  var formatDt = C.formatDt || function (v) {
+    return v == null ? '—' : String(v);
+  };
+
   var state = {
     groups: {},
     filteredKeys: null,
@@ -29,35 +34,6 @@
     editGroupKey: null,
     editDetailCodeVal: null
   };
-
-  function formatDt(value) {
-    if (value == null || value === '') {
-      return '—';
-    }
-    var s = String(value);
-    if (Array.isArray(value) && value.length >= 3) {
-      var pad = function (n) {
-        return n < 10 ? '0' + n : String(n);
-      };
-      return (
-        value[0] +
-        '-' +
-        pad(value[1]) +
-        '-' +
-        pad(value[2]) +
-        ' ' +
-        pad(value[3] || 0) +
-        ':' +
-        pad(value[4] || 0) +
-        ':' +
-        pad(value[5] || 0)
-      );
-    }
-    if (s.indexOf('T') !== -1) {
-      return s.replace('T', ' ').slice(0, 19);
-    }
-    return s.length > 19 ? s.slice(0, 19) : s;
-  }
 
   function escapeAttr(value) {
     return String(value == null ? '' : value)

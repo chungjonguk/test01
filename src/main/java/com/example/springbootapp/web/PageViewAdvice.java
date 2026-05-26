@@ -1,5 +1,8 @@
 package com.example.springbootapp.web;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.ui.Model;
@@ -7,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.springbootapp.config.InicisProperties;
+import com.example.springbootapp.config.ScreenSidebarLoader;
 import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.domain.ScreenList;
@@ -18,8 +22,26 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Profile("!test")
 @ControllerAdvice(basePackages = "com.example.springbootapp.controller")
-public class PageViewAdvice {
+	public class PageViewAdvice {
 	private static final String KAKAO_KEY_PLACEHOLDER = "YOUR_KAKAO_REST_API_KEY";
+	/** 대시보드 기본(/) — sidebar data-menu-path 와 동일 */
+	public static final String DASHBOARD_HOME_MENU_KEY = "/dashboard-home";
+	/** 쇼핑몰 홈(/) — sidebar data-menu-path 와 동일 */
+	public static final String SHOP_HOME_MENU_KEY = "/shop-home";
+	public static final String SHOP_DASHBOARD_MENU_KEY = "/shop-dashboard";
+	/** sidebar-shopping-mall.html 과 동일 — 중복 URL 시 쇼핑몰 메뉴 우선 */
+	private static final Set<String> SHOPPING_MALL_MENU_KEYS = Set.of(
+			"/app/e-commerce/product/product-grid",
+			"/app/e-commerce/product/product-list",
+			"/app/e-commerce/shopping-cart",
+			"/app/e-commerce/checkout",
+			"/app/e-commerce/orders/order-list",
+			"/app/e-commerce/orders/order-details",
+			"/pages/user/profile",
+			"/app/e-commerce/customers",
+			"/app/e-commerce/invoice",
+			"/pages/faq/faq-basic",
+			"/shop-dashboard");
 	private final ScreenListService screenListService;
 	private final InicisProperties inicisProperties;
 	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
@@ -44,12 +66,91 @@ public class PageViewAdvice {
 
 	@ModelAttribute("activeScreenUris")
 	public List<String> activeScreenUris() {
-		List<String> paths = screenListService.findActiveUriPaths();
-		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
-		if (crypto == null || !crypto.isEnabled()) {
-			return paths;
+		return new ArrayList<>(expandActiveUriVariants(screenListService.findActiveUriPaths()));
+	}
+
+	/** 사이드바 메뉴 표시용 논리 경로 키 (암호화 URL과 무관하게 매칭) */
+	@ModelAttribute("activeScreenPathKeys")
+	public List<String> activeScreenPathKeys() {
+		LinkedHashSet<String> keys = new LinkedHashSet<>();
+		for (String path : screenListService.findActiveUriPaths()) {
+			if (path == null || path.isBlank()) {
+				continue;
+			}
+			keys.add(logicalPathKey(screenListService.normalizeUriPath(path)));
+			keys.add(logicalPathKey(path));
 		}
-		return paths.stream().map(crypto::toPublicPath).toList();
+		keys.add(DASHBOARD_HOME_MENU_KEY);
+		keys.add(SHOP_HOME_MENU_KEY);
+		keys.add(SHOP_DASHBOARD_MENU_KEY);
+		keys.addAll(SHOPPING_MALL_MENU_KEYS);
+		return new ArrayList<>(keys);
+	}
+
+	private LinkedHashSet<String> expandActiveUriVariants(List<String> paths) {
+		LinkedHashSet<String> expanded = new LinkedHashSet<>();
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		for (String path : paths) {
+			if (path == null || path.isBlank()) {
+				continue;
+			}
+			String normalized = screenListService.normalizeUriPath(path);
+			String stripped = DoPathHelper.stripDoSuffix(path);
+			String strippedNorm = DoPathHelper.stripDoSuffix(normalized);
+			expanded.add(path);
+			expanded.add(normalized);
+			expanded.add(stripped);
+			expanded.add(strippedNorm);
+			expanded.add(logicalPathKey(path));
+			expanded.add(logicalPathKey(normalized));
+			if (crypto != null && crypto.isEnabled()) {
+				expanded.add(crypto.toPublicPath(path));
+				expanded.add(crypto.toPublicPath(normalized));
+				expanded.add(crypto.toPublicPath(stripped));
+			}
+		}
+		return expanded;
+	}
+
+	private static String logicalPathKey(String path) {
+		return DoPathHelper.stripDoSuffix(path);
+	}
+
+	private static boolean isDashboardEcommerceScreenId(String screenId) {
+		return screenId != null
+				&& screenId.startsWith("DASHBOARD_")
+				&& screenId.contains("ECOMMERCE");
+	}
+
+	private static String resolveMenuZone(String pathKey, ScreenList screen) {
+		if (screen != null && screen.getScreenId() != null) {
+			String screenId = screen.getScreenId();
+			if (screenId.startsWith("SHOP_")) {
+				return "shopping-mall";
+			}
+			if (screenId.startsWith("ADMIN_")) {
+				return "admin";
+			}
+			if ("HOME".equals(screenId) || screenId.startsWith("DASHBOARD_") || isDashboardEcommerceScreenId(screenId)) {
+				return "dashboard";
+			}
+		}
+		if (pathKey == null || pathKey.isBlank()) {
+			return "";
+		}
+		if (pathKey.startsWith("/admin")) {
+			return "admin";
+		}
+		if (SHOPPING_MALL_MENU_KEYS.contains(pathKey)) {
+			return "shopping-mall";
+		}
+		if (pathKey.startsWith("/dashboard")) {
+			return "dashboard";
+		}
+		if (pathKey.startsWith("/app/") || pathKey.startsWith("/pages/")) {
+			return "app";
+		}
+		return "";
 	}
 	@ModelAttribute("appBrandName")
 	public String appBrandName() {
@@ -68,7 +169,17 @@ public class PageViewAdvice {
 		if (uri == null || shouldSkip(uri)) {
 			return;
 		}
+		String pathKey = logicalPathKey(screenListService.normalizeUriPath(uri));
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		String menuPathKey = resolveMenuPathKey(pathKey, screen);
+		String menuZone = resolveMenuZone(pathKey, screen);
+		setIfAbsent(model, "currentScreenPathKey", menuPathKey);
+		setIfAbsent(model, "currentMenuZone", menuZone);
 		applyScreenAttributes(uri, model);
+		ScreenList resolved = screenListService.resolveForRequest(uri);
+		String finalPathKey = (String) model.getAttribute("currentScreenPathKey");
+		String finalZone = (String) model.getAttribute("currentMenuZone");
+		applyMenuPresentation(model, resolved, finalPathKey, finalZone);
 		applyScriptFlags(uri, model);
 	}
 	private void applyScreenAttributes(String uri, Model model) {
@@ -77,8 +188,76 @@ public class PageViewAdvice {
 			return;
 		}
 		setIfAbsent(model, "screenId", screen.getScreenId());
-		setIfAbsent(model, "screenNm", screen.getScreenNm());
-		setIfAbsent(model, "title", screen.getScreenNm());
+		String displayNm = ScreenSidebarLoader.resolveDisplayName(screen.getScreenNm(), screen.getUriPath());
+		setIfAbsent(model, "screenNm", displayNm);
+		setIfAbsent(model, "title", displayNm);
+		String uriPath = DoPathHelper.stripDoSuffix(screen.getUriPath());
+		setIfAbsent(model, "screenUriPath", uriPath);
+		String menuPathKey = resolveMenuPathKey(uriPath, screen);
+		String menuZone = resolveMenuZone(uriPath, screen);
+		model.addAttribute("currentScreenPathKey", menuPathKey);
+		model.addAttribute("currentMenuZone", menuZone);
+	}
+
+	private void applyMenuPresentation(Model model, ScreenList screen, String menuPathKey, String menuZone) {
+		model.addAttribute("menuBreadcrumb", buildMenuBreadcrumb(screen, menuPathKey, menuZone));
+	}
+
+	private static List<MenuBreadcrumbItem> buildMenuBreadcrumb(ScreenList screen, String menuPathKey, String menuZone) {
+		List<MenuBreadcrumbItem> crumbs = new ArrayList<>();
+		if (menuZone != null && !menuZone.isBlank()) {
+			crumbs.add(new MenuBreadcrumbItem(zoneLabel(menuZone)));
+		}
+		crumbs.add(new MenuBreadcrumbItem(pageLabel(screen, menuPathKey)));
+		return crumbs;
+	}
+
+	private static String zoneLabel(String zone) {
+		return switch (zone) {
+			case "dashboard" -> "대시보드";
+			case "shopping-mall" -> "쇼핑몰";
+			case "admin" -> "관리";
+			case "app" -> "앱";
+			default -> zone;
+		};
+	}
+
+	private static String pageLabel(ScreenList screen, String menuPathKey) {
+		if (DASHBOARD_HOME_MENU_KEY.equals(menuPathKey)) {
+			return "기본";
+		}
+		if (SHOP_HOME_MENU_KEY.equals(menuPathKey)) {
+			return "쇼핑몰 홈";
+		}
+		if (SHOP_DASHBOARD_MENU_KEY.equals(menuPathKey)) {
+			return "쇼핑몰 통계";
+		}
+		if ("/dashboard/e-commerce".equals(menuPathKey)) {
+			return "이커머스";
+		}
+		if (screen != null) {
+			return ScreenSidebarLoader.resolveDisplayName(screen.getScreenNm(), screen.getUriPath());
+		}
+		return menuPathKey != null && !menuPathKey.isBlank() ? menuPathKey : "현재 화면";
+	}
+
+	private static String resolveMenuPathKey(String pathKey, ScreenList screen) {
+		if (screen != null && screen.getScreenId() != null) {
+			if ("SHOP_HOME".equals(screen.getScreenId())) {
+				return SHOP_HOME_MENU_KEY;
+			}
+			if ("SHOP_DASHBOARD".equals(screen.getScreenId())) {
+				return SHOP_DASHBOARD_MENU_KEY;
+			}
+			if ("DASHBOARD_ECOMMERCE".equals(screen.getScreenId())
+					|| isDashboardEcommerceScreenId(screen.getScreenId())) {
+				return "/dashboard/e-commerce";
+			}
+			if ("HOME".equals(screen.getScreenId()) && "/".equals(pathKey)) {
+				return DASHBOARD_HOME_MENU_KEY;
+			}
+		}
+		return pathKey;
 	}
 	private void applyScriptFlags(String uri, Model model) {
 		if (uri.contains("/modules/charts/echarts")) {
@@ -220,6 +399,9 @@ public class PageViewAdvice {
 		}
 		if (uri.contains("/app/calendar") || uri.contains("/modules/components/calendar")) {
 			setIfAbsent(model, "loadCalendar", true);
+		}
+		if (uri.contains("/app/events/create-an-event")) {
+			setIfAbsent(model, "loadFlatpickr", true);
 		}
 		if (uri.contains("/app/calendar")) {
 			setIfAbsent(model, "loadCalendarActions", true);

@@ -27,4 +27,11 @@ public class HomeController {
 		model.addAttribute("title", "대시보드 - 기본");
 		return "index";
 	}
+
+	/** 쇼핑몰 홈 — 대시보드 {@code /} 와 URI 분리 */
+	@GetMapping("/shop-home")
+	public String shopHome(Model model) {
+		model.addAttribute("title", "쇼핑몰 홈");
+		return "app/e-commerce/product/product-grid";
+	}
 }
