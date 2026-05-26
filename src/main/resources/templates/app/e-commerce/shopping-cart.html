@@ -1,218 +1,192 @@
 <!DOCTYPE html>
+
 <html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{layout :: head}">
+
 </head>
+
 <body>
+
     <th:block th:replace="~{layout :: body}">
+
     <div th:fragment="page-content">
+
+          <style>
+
+            #shoppingCartCard .cart-grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+            #shoppingCartCard .cart-grid-row {
+
+              display: grid;
+
+              grid-template-columns: 2.25rem minmax(8rem, 1fr) 5.5rem 7rem 7.5rem 3rem;
+
+              align-items: center;
+
+              column-gap: 0.75rem;
+
+              padding-left: 1rem;
+
+              padding-right: 1rem;
+
+              margin-left: 0;
+
+              margin-right: 0;
+
+            }
+
+            #shoppingCartCard .cart-cell-product { min-width: 0; }
+
+            #shoppingCartCard .cart-cell-product h5 {
+
+              overflow: hidden;
+
+              text-overflow: ellipsis;
+
+              display: -webkit-box;
+
+              -webkit-line-clamp: 2;
+
+              -webkit-box-orient: vertical;
+
+            }
+
+            @media (max-width: 767.98px) {
+
+              #shoppingCartCard .cart-grid-row { min-width: 32rem; }
+
+            }
+
+          </style>
+
           <div class="card mb-3" id="shoppingCartCard">
+
             <div class="card-header">
-              <div class="row justify-content-between">
+
+              <div class="row flex-between-center g-2">
+
                 <div class="col-md-auto">
-                  <h5 class="mb-3 mb-md-0">Shopping Cart (7 Items)</h5>
+
+                  <h5 class="mb-0" id="cart-title-count">장바구니</h5>
+
                 </div>
-                <div class="col-md-auto"><a class="btn btn-sm btn-outline-secondary border-300 me-2 shadow-none" th:href="@{/app/e-commerce/product/product-list.html}"> <span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4"></span>Continue Shopping</a><a class="btn btn-sm btn-primary" th:href="@{/app/e-commerce/checkout.html}">Checkout</a></div>
+
+                <div class="col-md-auto">
+
+                  <div class="d-flex flex-wrap gap-2">
+
+                    <button type="button" class="btn btn-sm btn-danger" id="btn-cart-delete-selected" disabled title="선택한 상품 삭제">
+
+                      <span class="fas fa-trash-alt me-1"></span>선택 삭제
+
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="btn-cart-clear-all" title="전체 삭제">
+
+                      <span class="fas fa-trash-alt me-1"></span>전체 삭제
+
+                    </button>
+
+                    <a class="btn btn-sm btn-outline-secondary border-300 shadow-none" th:href="@{/app/e-commerce/product/product-list}">
+
+                      <span class="fas fa-chevron-left me-1"></span>쇼핑 계속
+
+                    </a>
+
+                    <a class="btn btn-sm btn-primary" id="cart-checkout-btn" th:href="@{/app/e-commerce/checkout}">결제하기</a>
+
+                  </div>
+
+                </div>
+
               </div>
+
             </div>
-            <div class="card-body p-0">
-              <div class="row gx-card mx-0 bg-200 text-900 fs--1 fw-semi-bold">
-                <div class="col-9 col-md-8 py-2">Name</div>
-                <div class="col-3 col-md-4">
-                  <div class="row">
-                    <div class="col-md-8 py-2 d-none d-md-block text-center">Quantity</div>
-                    <div class="col-12 col-md-4 text-end py-2">Price</div>
-                  </div>
+
+            <div class="card-body p-0 cart-grid-scroll">
+
+              <div class="cart-grid-row bg-200 text-900 fs--1 fw-semi-bold cart-grid-header">
+
+                <div class="cart-cell-check py-2">
+
+                  <input class="form-check-input" type="checkbox" id="cart-select-all" title="전체 선택" aria-label="전체 선택"/>
+
                 </div>
+
+                <div class="cart-cell-product py-2">상품</div>
+
+                <div class="cart-cell-unit py-2 text-end">단가</div>
+
+                <div class="cart-cell-qty py-2 text-center">수량</div>
+
+                <div class="cart-cell-subtotal py-2 text-end">소계</div>
+
+                <div class="cart-cell-action py-2 text-center">삭제</div>
+
               </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/1.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple MacBook Pro 15&quot; Z0V20008N: 2.9GHz 6-core 8th-Gen Intel Core i9, 32GB RAM</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$1292</div>
-                  </div>
-                </div>
+
+              <div id="cart-item-list"></div>
+
+              <div id="cart-empty" class="text-center text-600 py-5 d-none">
+
+                <span class="fas fa-shopping-cart fa-2x mb-3 d-block text-300"></span>
+
+                <p class="mb-2">장바구니가 비어 있습니다.</p>
+
+                <a class="btn btn-sm btn-primary" th:href="@{/app/e-commerce/product/product-list}">상품 보러 가기</a>
+
               </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/2.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iMac Pro (27-inch with Retina 5K Display, 3.0GHz 10-core Intel Xeon W, 1TB SSD)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
+
+              <div class="cart-grid-row fw-bold border-top border-200" id="cart-summary">
+
+                <div class="cart-cell-check py-3"></div>
+
+                <div class="cart-cell-product py-3 text-end text-900">합계</div>
+
+                <div class="cart-cell-unit py-3 text-end text-600">-</div>
+
+                <div class="cart-cell-qty py-3 text-center fs--1 text-600" id="cart-total-count">0건</div>
+
+                <div class="cart-cell-subtotal py-3 text-end">
+
+                  <div class="fs-0" id="cart-total-price">-</div>
+
                 </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$2012</div>
-                  </div>
-                </div>
+
+                <div class="cart-cell-action py-3"></div>
+
               </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/4.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iPad Air 2019 (3GB RAM, 128GB ROM, 8MP Main Camera)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$1024</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/3.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple iPhone XS Max (4GB RAM, 512GB ROM, 12MP Main Camera)</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$990</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/5.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Apple Watch Series 4 44mm GPS Only</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$400</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/7.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Nikon D3200 Digital DSLR Camera</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$2398</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row gx-card mx-0 align-items-center border-bottom border-200">
-                <div class="col-8 py-3">
-                  <div class="d-flex align-items-center"><a th:href="@{/app/e-commerce/product/product-details.html}"><img class="img-fluid rounded-1 me-3 d-none d-md-block" th:src="@{/assets/img/products/8.jpg}" alt="" width="60" /></a>
-                    <div class="flex-1">
-                      <h5 class="fs-0"><a class="text-900" th:href="@{/app/e-commerce/product/product-details.html}">Canon Standard Zoom Lens</a></h5>
-                      <div class="fs--2 fs-md--1"><a class="text-danger cart-remove-link" href="#!" role="button">Remove</a></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 py-3">
-                  <div class="row align-items-center">
-                    <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
-                      <div>
-                        <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="minus">-</button>
-                          <input class="form-control text-center px-2 input-spin-none" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
-                          <button class="btn btn-sm btn-outline-secondary border-300 px-2 shadow-none" data-type="plus">+</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600">$400</div>
-                  </div>
-                </div>
-              </div>
-              <div class="row fw-bold gx-card mx-0">
-                <div class="col-9 col-md-8 py-2 text-end text-900">Total</div>
-                <div class="col px-0">
-                  <div class="row gx-card mx-0">
-                    <div class="col-md-8 py-2 d-none d-md-block text-center">7 (items)</div>
-                    <div class="col-12 col-md-4 text-end py-2">$8516</div>
-                  </div>
-                </div>
-              </div>
+
             </div>
-            <div class="card-footer bg-light d-flex justify-content-end">
-              <form class="me-3" id="cart-promo-form">
+
+            <div class="card-footer bg-light d-flex flex-wrap justify-content-between align-items-center gap-2">
+
+              <form class="me-md-3" id="cart-promo-form">
+
                 <div class="input-group input-group-sm">
-                  <input class="form-control" id="cart-promo-code" type="text" placeholder="Promocode" />
-                  <button class="btn btn-outline-secondary border-300 btn-sm shadow-none" type="submit" id="cart-promo-apply-btn">Apply</button>
+
+                  <input class="form-control" id="cart-promo-code" type="text" placeholder="프로모 코드" autocomplete="off" />
+
+                  <button class="btn btn-outline-secondary border-300 btn-sm shadow-none" type="submit" id="cart-promo-apply-btn">적용</button>
+
                 </div>
-              </form><a class="btn btn-sm btn-primary" th:href="@{/app/e-commerce/checkout.html}">Checkout</a>
+
+              </form>
+
+              <a class="btn btn-sm btn-primary" th:href="@{/app/e-commerce/checkout}">결제하기</a>
+
             </div>
+
           </div>
+
         <div th:replace="~{fragments/footer :: footer}"></div>
+
     </div>
+
     </th:block>
+
 </body>
+
 </html>
+

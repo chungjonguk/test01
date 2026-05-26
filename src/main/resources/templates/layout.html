@@ -197,7 +197,10 @@
         activePaths: /*[[${activeScreenPathKeys}]]*/ []
       };
     </script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=2)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/cart-nav-sync.js(v=6)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/notification-nav-sync.js(v=1)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=4)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/currency-won.js(v=2)}"></script>
@@ -210,7 +213,7 @@
     <script th:src="@{/assets/js/theme.js(v=8)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=6)}"></script>
     <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
-    <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=8)}"></script>
+    <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=9)}"></script>
     <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
     <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
@@ -221,7 +224,7 @@
     <script th:if="${loadBillingActions}" th:src="@{/assets/js/billing-actions.js(v=1)}"></script>
     <script th:if="${loadCheckoutActions}" th:src="@{/assets/js/checkout-actions.js(v=3)}"></script>
     <script th:if="${loadCustomersActions}" th:src="@{/assets/js/customers-actions.js(v=2)}"></script>
-    <script th:if="${loadShoppingCartActions}" th:src="@{/assets/js/shopping-cart-actions.js(v=1)}"></script>
+    <script th:if="${loadShoppingCartActions}" th:src="@{/assets/js/shopping-cart-actions.js(v=10)}"></script>
     <script th:if="${loadCodeManagementActions}" th:src="@{/assets/js/code-management-actions.js(v=28)}"></script>
     <script th:if="${loadTableSequenceActions}" th:src="@{/assets/js/table-sequence-actions.js(v=1)}"></script>
     <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=5)}"></script>

@@ -39,10 +39,11 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-bs-toggle="" aria-expanded="false">
+        <a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-menu-path="/app/e-commerce/shopping-cart" data-cart-nav="sidebar" data-bs-toggle="" aria-expanded="false">
           <div class="d-flex align-items-center">
             <span class="nav-link-icon"><span class="fas fa-shopping-cart"></span></span>
             <span class="nav-link-text ps-1">장바구니</span>
+            <span class="badge rounded-pill badge-soft-warning ms-2 d-none" data-cart-badge aria-label="장바구니 수량"></span>
           </div>
         </a>
       </li>

@@ -363,6 +363,8 @@
 
       '" data-bs-toggle="tooltip" title="수정"><span class="fas fa-edit"></span></a>' +
 
+      '<button type="button" class="btn btn-sm btn-primary me-1" data-add-to-cart="true" data-bs-toggle="tooltip" title="장바구니 담기"><span class="fas fa-cart-plus"></span></button>' +
+
       '<button type="button" class="btn btn-sm btn-falcon-default btn-delete-product" data-id="' +
 
       escapeAttr(id) +

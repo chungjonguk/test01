@@ -232,8 +232,9 @@
                       </a>
                       <!-- more inner pages-->
                     </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Shopping cart</span>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-menu-path="/app/e-commerce/shopping-cart" data-cart-nav="sidebar" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">장바구니</span>
+                          <span class="badge rounded-pill badge-soft-warning ms-2 d-none" data-cart-badge aria-label="장바구니 수량"></span>
                         </div>
                       </a>
                       <!-- more inner pages-->
@@ -296,8 +297,8 @@
                       </a>
                       <!-- more inner pages-->
                     </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/notifications}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">알림</span>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/app/social/notifications}" data-menu-path="/app/social/notifications" data-notification-nav="sidebar" data-bs-toggle="" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">알림</span><span class="badge rounded-pill ms-2 badge-soft-warning notification-indicator-number d-none" data-notification-badge>0</span>
                         </div>
                       </a>
                       <!-- more inner pages-->

@@ -259,6 +259,41 @@ import jakarta.servlet.http.HttpServletRequest;
 		}
 		return pathKey;
 	}
+	/** 암호화 URL·.do 경로와 무관하게 화면 템플릿 기준으로 장바구니 목록 스크립트 로드 */
+	private void applyShoppingCartScriptFlag(String uri, Model model) {
+		if (uri != null && uri.contains("/app/e-commerce/shopping-cart")) {
+			setIfAbsent(model, "loadShoppingCartActions", true);
+			return;
+		}
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		if (screen == null || screen.getTemplatePath() == null) {
+			return;
+		}
+		String tpl = screen.getTemplatePath().toLowerCase();
+		if (tpl.contains("shopping-cart")) {
+			setIfAbsent(model, "loadShoppingCartActions", true);
+		}
+	}
+
+	/** 암호화 URL·.do 경로와 무관하게 화면 템플릿 기준으로 장바구니 담기 스크립트 로드 */
+	private void applyProductCartScriptFlag(String uri, Model model) {
+		String logical = DoPathHelper.stripDoSuffix(uri != null ? uri : "");
+		if (logical.contains("/app/e-commerce/product/product-list")
+				|| logical.contains("/app/e-commerce/product/product-grid")
+				|| logical.contains("/app/e-commerce/product/product-manage")) {
+			setIfAbsent(model, "loadProductCartActions", true);
+			return;
+		}
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		if (screen == null || screen.getTemplatePath() == null) {
+			return;
+		}
+		String tpl = screen.getTemplatePath().toLowerCase();
+		if (tpl.contains("product-list") || tpl.contains("product-grid") || tpl.contains("product-manage")) {
+			setIfAbsent(model, "loadProductCartActions", true);
+		}
+	}
+
 	private void applyScriptFlags(String uri, Model model) {
 		if (uri.contains("/modules/charts/echarts")) {
 			setIfAbsent(model, "loadEchartsExamples", true);
@@ -345,9 +380,8 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (uri.contains("/app/e-commerce/customers")) {
 			setIfAbsent(model, "loadCustomersActions", true);
 		}
-		if (uri.contains("/app/e-commerce/shopping-cart")) {
-			setIfAbsent(model, "loadShoppingCartActions", true);
-		}
+		applyProductCartScriptFlag(uri, model);
+		applyShoppingCartScriptFlag(uri, model);
 		if (uri.contains("/app/e-commerce/invoice")) {
 			setIfAbsent(model, "loadInvoicePdf", true);
 		}

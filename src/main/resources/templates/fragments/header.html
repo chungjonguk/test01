@@ -125,93 +125,38 @@
                 </div>
               </li>
               <li class="nav-item d-none d-sm-block">
-                <a class="nav-link px-0 notification-indicator notification-indicator-warning notification-indicator-fill fa-icon-wait" th:href="@{/app/e-commerce/shopping-cart}"><span class="fas fa-shopping-cart" data-fa-transform="shrink-7" style="font-size: 33px;"></span><span class="notification-indicator-number">1</span></a>
-
+                <a class="nav-link px-0 notification-indicator notification-indicator-warning fa-icon-wait"
+                   id="header-cart-link"
+                   th:href="@{/app/e-commerce/shopping-cart}"
+                   data-menu-path="/app/e-commerce/shopping-cart"
+                   data-cart-nav="header"
+                   title="장바구니"><span class="fas fa-shopping-cart" data-fa-transform="shrink-7" style="font-size: 33px;"></span><span class="notification-indicator-number d-none" id="header-cart-count" data-cart-badge>0</span></a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait" id="navbarDropdownNotification" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hide-on-body-scroll="data-hide-on-body-scroll"><span class="fas fa-bell" data-fa-transform="shrink-6" style="font-size: 33px;"></span></a>
-                <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end dropdown-menu-card dropdown-menu-notification dropdown-caret-bg" aria-labelledby="navbarDropdownNotification">
+                <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
+                   id="header-notification-link"
+                   data-menu-path="/app/social/notifications"
+                   data-notification-nav="header"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                   data-hide-on-body-scroll="data-hide-on-body-scroll"
+                   title="알림"><span class="fas fa-bell" data-fa-transform="shrink-6" style="font-size: 33px;"></span><span class="notification-indicator-number d-none" id="header-notification-count" data-notification-badge>0</span></a>
+                <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end dropdown-menu-card dropdown-menu-notification dropdown-caret-bg" aria-labelledby="header-notification-link">
                   <div class="card card-notification shadow-none">
                     <div class="card-header">
                       <div class="row justify-content-between align-items-center">
                         <div class="col-auto">
                           <h6 class="card-header-title mb-0">알림</h6>
                         </div>
-                        <div class="col-auto ps-0 ps-sm-3"><a class="card-link fw-normal" href="#!">Mark all as read</a></div>
+                        <div class="col-auto ps-0 ps-sm-3"><a class="card-link fw-normal" href="#!" data-notification-mark-all="true">모두 읽음</a></div>
                       </div>
                     </div>
                     <div class="scrollbar-overlay" style="max-height:19rem">
-                      <div class="list-group list-group-flush fw-normal fs--1">
-                        <div class="list-group-title border-bottom">NEW</div>
-                        <div class="list-group-item">
-                          <a class="notification notification-flush notification-unread" href="#!">
-                            <div class="notification-avatar">
-                              <div class="avatar avatar-2xl me-3">
-                                <img class="rounded-circle" th:src="@{/assets/img/team/1-thumb.png}" alt="" />
-                              </div>
-                            </div>
-                            <div class="notification-body">
-                              <p class="mb-1"><strong>Emma Watson</strong> replied to your comment : "Hello world 😍"</p>
-                              <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">💬</span>Just now</span>
-                            </div>
-                          </a>
-                        </div>
-                        <div class="list-group-item">
-                          <a class="notification notification-flush notification-unread" href="#!">
-                            <div class="notification-avatar">
-                              <div class="avatar avatar-2xl me-3">
-                                <div class="avatar-name rounded-circle"><span>AB</span></div>
-                              </div>
-                            </div>
-                            <div class="notification-body">
-                              <p class="mb-1"><strong>Albert Brooks</strong> reacted to <strong>Mia Khalifa's</strong> status</p>
-                              <span class="notification-time"><span class="me-2 fab fa-gratipay text-danger"></span>9hr</span>
-                            </div>
-                          </a>
-                        </div>
-                        <div class="list-group-title border-bottom">EARLIER</div>
-                        <div class="list-group-item">
-                          <a class="notification notification-flush" href="#!">
-                            <div class="notification-avatar">
-                              <div class="avatar avatar-2xl me-3">
-                                <img class="rounded-circle" th:src="@{/assets/img/icons/weather-sm.jpg}" alt="" />
-                              </div>
-                            </div>
-                            <div class="notification-body">
-                              <p class="mb-1">The forecast today shows a low of 20&#8451; in California. See today's weather.</p>
-                              <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">🌤️</span>1d</span>
-                            </div>
-                          </a>
-                        </div>
-                        <div class="list-group-item">
-                          <a class="border-bottom-0 notification-unread notification notification-flush" href="#!">
-                            <div class="notification-avatar">
-                              <div class="avatar avatar-xl me-3">
-                                <img class="rounded-circle" th:src="@{/assets/img/logos/oxford.png}" alt="" />
-                              </div>
-                            </div>
-                            <div class="notification-body">
-                              <p class="mb-1"><strong>University of Oxford</strong> created an event : "Causal Inference Hilary 2019"</p>
-                              <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">✌️</span>1w</span>
-                            </div>
-                          </a>
-                        </div>
-                        <div class="list-group-item">
-                          <a class="border-bottom-0 notification notification-flush" href="#!">
-                            <div class="notification-avatar">
-                              <div class="avatar avatar-xl me-3">
-                                <img class="rounded-circle" th:src="@{/assets/img/team/10.jpg}" alt="" />
-                              </div>
-                            </div>
-                            <div class="notification-body">
-                              <p class="mb-1"><strong>James Cameron</strong> invited to join the group: United Nations International Children's Fund</p>
-                              <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">🙋‍</span>2d</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
+                      <div class="list-group list-group-flush fw-normal fs--1" id="header-notification-dropdown-list"></div>
                     </div>
-                    <div class="card-footer text-center border-top"><a class="card-link d-block" th:href="@{/app/social/notifications}">View all</a></div>
+                    <div class="card-footer text-center border-top"><a class="card-link d-block" th:href="@{/app/social/notifications}" data-menu-path="/app/social/notifications">모두 보기</a></div>
                   </div>
                 </div>
               </li>

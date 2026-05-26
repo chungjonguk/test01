@@ -197,17 +197,10 @@
     }
   }
 
-  function applyActive() {
-    var c = ctx();
-    var nav = navRoot();
-    if (!c || !nav) {
-      return;
-    }
-    clearMarkers(nav);
-    var link = findActiveLink(nav, c);
-    if (!link) {
-      return;
-    }
+  var CART_PATH_KEY = '/app/e-commerce/shopping-cart';
+  var NOTIFICATION_PATH_KEY = '/app/social/notifications';
+
+  function markActiveLink(link, nav) {
     link.classList.add('active', 'menu-current');
     link.setAttribute('aria-current', 'page');
     appendBadge(link);
@@ -216,6 +209,68 @@
       item.classList.add('menu-current-item');
     }
     expandToLink(link, nav);
+  }
+
+  function applyActive() {
+    var c = ctx();
+    var nav = navRoot();
+    if (!c || !nav) {
+      return;
+    }
+    clearMarkers(nav);
+    var want = pathKey(c.pathKey);
+    if (want === CART_PATH_KEY) {
+      var cartLinks = [];
+      nav.querySelectorAll('a.nav-link[href]').forEach(function (link) {
+        if (link.classList.contains('dropdown-indicator')) {
+          return;
+        }
+        if (linkKey(link) !== CART_PATH_KEY) {
+          return;
+        }
+        cartLinks.push(link);
+      });
+      if (!cartLinks.length) {
+        return;
+      }
+      cartLinks.forEach(function (link) {
+        markActiveLink(link, nav);
+      });
+      if (global.PrintMallCartNav && typeof global.PrintMallCartNav.refresh === 'function') {
+        global.PrintMallCartNav.refresh();
+      }
+      return;
+    }
+    if (want === NOTIFICATION_PATH_KEY) {
+      var notificationLinks = [];
+      nav.querySelectorAll('a.nav-link[href]').forEach(function (link) {
+        if (link.classList.contains('dropdown-indicator')) {
+          return;
+        }
+        if (linkKey(link) !== NOTIFICATION_PATH_KEY) {
+          return;
+        }
+        notificationLinks.push(link);
+      });
+      if (!notificationLinks.length) {
+        return;
+      }
+      notificationLinks.forEach(function (link) {
+        markActiveLink(link, nav);
+      });
+      if (
+        global.PrintMallNotificationNav &&
+        typeof global.PrintMallNotificationNav.refresh === 'function'
+      ) {
+        global.PrintMallNotificationNav.refresh();
+      }
+      return;
+    }
+    var link = findActiveLink(nav, c);
+    if (!link) {
+      return;
+    }
+    markActiveLink(link, nav);
   }
 
   function ensureSidebarExpanded() {
