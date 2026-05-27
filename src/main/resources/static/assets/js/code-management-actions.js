@@ -3,7 +3,7 @@
  * 상단 조회그리드 + 코드그룹/상세코드 그리드
  * API: /api/admin/codes
  * @module code-management-actions
- * @version 28
+ * @version 29
  */
 (function () {
   'use strict';
@@ -34,6 +34,10 @@
     editGroupKey: null,
     editDetailCodeVal: null
   };
+
+  function handleUnauthorized(res) {
+    return C.goLoginIfUnauthorized && C.goLoginIfUnauthorized(res.status);
+  }
 
   function escapeAttr(value) {
     return String(value == null ? '' : value)
@@ -424,6 +428,9 @@
   }
 
   function parseApiResponse(res) {
+    if (handleUnauthorized(res)) {
+      return new Promise(function () {});
+    }
     if (!res.ok) {
       return res
         .json()
@@ -495,12 +502,18 @@
       credentials: 'same-origin'
     })
       .then(function (res) {
+        if (handleUnauthorized(res)) {
+          return;
+        }
         if (!res.ok) {
           throw new Error('조회 API 오류 (' + res.status + ')');
         }
         return res.json();
       })
       .then(function (data) {
+        if (!data) {
+          return;
+        }
         applyGroupsFromApi(data.groups);
         finishSearch(true);
       })
@@ -1776,12 +1789,18 @@
       credentials: 'same-origin'
     })
       .then(function (res) {
+        if (handleUnauthorized(res)) {
+          return;
+        }
         if (!res.ok) {
           throw new Error('조회 API 오류 (' + res.status + ')');
         }
         return res.json();
       })
       .then(function (data) {
+        if (!data) {
+          return;
+        }
         applyGroupsFromApi(data.groups);
         finishSearch(false);
       });

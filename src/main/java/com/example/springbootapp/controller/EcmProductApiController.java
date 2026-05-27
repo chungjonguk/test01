@@ -25,6 +25,7 @@ import com.example.springbootapp.dto.ProductExcelImportResult;
 import com.example.springbootapp.service.EcmProductService;
 import com.example.springbootapp.service.ProductExcelService;
 import com.example.springbootapp.service.ProductImageStorageService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 /**
  * 상품 REST API — {@code /api/ecommerce/products}
@@ -89,9 +90,11 @@ public class EcmProductApiController {
 	public ResponseEntity<byte[]> exportExcel(
 			@RequestParam(required = false) String productNm,
 			@RequestParam(required = false) String categoryCd,
-			@RequestParam(required = false) String statusCd) {
+			@RequestParam(required = false) String statusCd,
+			HttpServletRequest request,
+			HttpSession session) {
 		try {
-			byte[] data = productExcelService.export(productNm, categoryCd, statusCd);
+			byte[] data = productExcelService.export(productNm, categoryCd, statusCd, request, session);
 			return xlsxResponse(data, productExcelService.buildExportFileName());
 		} catch (java.io.IOException ex) {
 			return ResponseEntity.internalServerError().build();
@@ -121,6 +124,7 @@ public class EcmProductApiController {
 	@PostMapping("/excel/import")
 	public ResponseEntity<Map<String, Object>> importExcel(
 			@RequestParam("file") MultipartFile file,
+			HttpServletRequest request,
 			HttpSession session) {
 		if (file == null || file.isEmpty()) {
 			return badRequest("업로드할 엑셀 파일을 선택해 주세요.");
@@ -131,7 +135,8 @@ public class EcmProductApiController {
 			return badRequest("xlsx 형식의 엑셀 파일만 업로드할 수 있습니다.");
 		}
 		try {
-			ProductExcelImportResult result = productExcelService.importExcel(file.getInputStream(), session);
+			ProductExcelImportResult result = productExcelService.importExcel(
+					file.getInputStream(), session, request);
 			Map<String, Object> body = new LinkedHashMap<>();
 			body.put("success", !result.hasErrors() || result.getCreated() > 0 || result.getUpdated() > 0);
 			body.put("created", result.getCreated());
@@ -159,12 +164,35 @@ public class EcmProductApiController {
 	 * @param statusCd   in: 판매 상태 (optional)
 	 * @return out: {@code { products: [...], count }}
 	 */
+	/**
+	 * 고객 스토어(업체 Host) — ACTIVE 상품만, 테넌트 업체 스코프.
+	 */
+	@GetMapping("/store-catalog")
+	public ResponseEntity<Map<String, Object>> storeCatalog(HttpServletRequest request) {
+		try {
+			List<Map<String, Object>> products = ecmProductService.searchStoreCatalog(request).stream()
+					.map(this::toDto)
+					.collect(Collectors.toList());
+			Map<String, Object> body = new LinkedHashMap<>();
+			body.put("success", true);
+			body.put("products", products);
+			body.put("count", products.size());
+			return ResponseEntity.ok(body);
+		} catch (IllegalArgumentException ex) {
+			return badRequest(ex.getMessage());
+		}
+	}
+
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> list(
 			@RequestParam(required = false) String productNm,
 			@RequestParam(required = false) String categoryCd,
-			@RequestParam(required = false) String statusCd) {
-		List<Map<String, Object>> products = ecmProductService.search(productNm, categoryCd, statusCd).stream()
+			@RequestParam(required = false) String statusCd,
+			HttpServletRequest request,
+			HttpSession session) {
+		List<Map<String, Object>> products = ecmProductService
+				.search(productNm, categoryCd, statusCd, request, session)
+				.stream()
 				.map(this::toDto)
 				.collect(Collectors.toList());
 		Map<String, Object> body = new LinkedHashMap<>();
@@ -179,8 +207,11 @@ public class EcmProductApiController {
 	 * @return out: 상품 JSON (이미지 URL 포함), 없으면 404
 	 */
 	@GetMapping("/{productId}")
-	public ResponseEntity<Map<String, Object>> get(@PathVariable Long productId) {
-		EcmProduct product = ecmProductService.findById(productId);
+	public ResponseEntity<Map<String, Object>> get(
+			@PathVariable Long productId,
+			HttpServletRequest request,
+			HttpSession session) {
+		EcmProduct product = ecmProductService.findByIdForScope(productId, request, session);
 		if (product == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -194,9 +225,12 @@ public class EcmProductApiController {
 	 * @return out: 201 {@code { success, productId, message }}
 	 */
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> create(@RequestBody EcmProductFormDto dto, HttpSession session) {
+	public ResponseEntity<Map<String, Object>> create(
+			@RequestBody EcmProductFormDto dto,
+			HttpServletRequest request,
+			HttpSession session) {
 		try {
-			Long id = ecmProductService.save(dto, session);
+			Long id = ecmProductService.save(dto, session, request);
 			Map<String, Object> body = new LinkedHashMap<>();
 			body.put("success", true);
 			body.put("productId", id);
@@ -218,10 +252,11 @@ public class EcmProductApiController {
 	public ResponseEntity<Map<String, Object>> update(
 			@PathVariable Long productId,
 			@RequestBody EcmProductFormDto dto,
+			HttpServletRequest request,
 			HttpSession session) {
 		dto.setProductId(productId);
 		try {
-			Long id = ecmProductService.save(dto, session);
+			Long id = ecmProductService.save(dto, session, request);
 			Map<String, Object> body = new LinkedHashMap<>();
 			body.put("success", true);
 			body.put("productId", id);
@@ -267,6 +302,7 @@ public class EcmProductApiController {
 	private Map<String, Object> toDto(EcmProduct p) {
 		Map<String, Object> row = new LinkedHashMap<>();
 		row.put("productId", p.getProductId());
+		row.put("companyId", p.getCompanyId());
 		row.put("productNm", p.getProductNm());
 		row.put("categoryCd", p.getCategoryCd());
 		row.put("price", p.getPrice());

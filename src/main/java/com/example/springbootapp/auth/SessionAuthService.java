@@ -1,5 +1,6 @@
 package com.example.springbootapp.auth;
 import com.example.springbootapp.domain.User;
+import com.example.springbootapp.service.MenuAccessService;
 import com.example.springbootapp.service.UserAccessLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,10 +19,12 @@ public class SessionAuthService {
     /** 세션에 저장되는 로그인 사용자 객체 키 */
     public static final String ATTR_LOGIN_USER = "loginUser";
     private final UserAccessLogService userAccessLogService;
+    private final MenuAccessService menuAccessService;
     @Value("${app.auth.session-timeout-minutes:10}")
     private int sessionTimeoutMinutes;
-    public SessionAuthService(UserAccessLogService userAccessLogService) {
+    public SessionAuthService(UserAccessLogService userAccessLogService, MenuAccessService menuAccessService) {
         this.userAccessLogService = userAccessLogService;
+        this.menuAccessService = menuAccessService;
     }
     /**
      * 설정된 세션 타임아웃을 초 단위로 반환한다.
@@ -116,6 +119,9 @@ public class SessionAuthService {
     }
     private void establishSession(HttpSession session, LoginSession loginSession) {
         loginSession.setLoginAt(LocalDateTime.now());
+        if (loginSession.getUserId() != null) {
+            loginSession.setMenuAccess(menuAccessService.resolveForUser(loginSession.getUserId()));
+        }
         session.setAttribute(ATTR_LOGIN_USER, loginSession);
         session.setMaxInactiveInterval(getSessionTimeoutSeconds());
     }
@@ -131,6 +137,9 @@ public class SessionAuthService {
         }
         Object value = session.getAttribute(ATTR_LOGIN_USER);
         if (value instanceof LoginSession loginSession) {
+            if (loginSession.getUserId() != null) {
+                loginSession.setMenuAccess(menuAccessService.resolveForUser(loginSession.getUserId()));
+            }
             return loginSession;
         }
         return null;
@@ -143,6 +152,25 @@ public class SessionAuthService {
      */
     public boolean isLoggedIn(HttpSession session) {
         return getLoginSession(session) != null;
+    }
+    /**
+     * 프로필 저장 등으로 변경된 표시 이름을 세션에 반영한다.
+     */
+    public void refreshLoginUserName(HttpSession session, String name) {
+        if (session == null) {
+            return;
+        }
+        LoginSession loginSession = getLoginSession(session);
+        if (loginSession == null) {
+            return;
+        }
+        String trimmed = name != null ? name.trim() : "";
+        if (!trimmed.isEmpty()) {
+            loginSession.setUserName(trimmed);
+        } else if (loginSession.getUserId() != null) {
+            loginSession.setUserName(loginSession.getUserId());
+        }
+        session.setAttribute(ATTR_LOGIN_USER, loginSession);
     }
     /**
      * 로그인 사용자 ID를 반환한다.

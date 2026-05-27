@@ -168,6 +168,9 @@
       if (el(ids.detailId)) {
         el(ids.detailId).value = detail || '';
       }
+      [ids.zipId, ids.baseId, ids.detailId].forEach(function (id) {
+        dispatchChange(el(id));
+      });
     }
 
     function fillExtended(postal, state, city, line1, line2) {

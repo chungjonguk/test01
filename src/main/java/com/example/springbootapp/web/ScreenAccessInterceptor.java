@@ -56,6 +56,7 @@ public class ScreenAccessInterceptor implements HandlerInterceptor {
 				|| uri.startsWith("/assets/")
 				|| uri.startsWith("/vendors/")
 				|| uri.endsWith("/pages/errors/404")
+				|| uri.endsWith("/pages/errors/403")
 				|| uri.endsWith("/pages/errors/500");
 	}
 }

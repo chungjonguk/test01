@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!-- 암호화 URL(/e/…do)에서 상대 assets 경로가 /e/assets 로 틀어지는 것 방지 -->
+    <base th:href="@{/}">
 
     <!-- ===============================================-->
     <!--    Document Title-->
@@ -21,11 +22,12 @@
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/img/favicons/favicon-16x16.png}">
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/favicons/favicon.ico}">
     <link rel="manifest" th:href="@{/assets/img/favicons/manifest.json}">
-    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="msapplication-TileImage" th:content="@{/assets/img/favicons/mstile-150x150.png}">
     <meta name="theme-color" content="#ffffff">
     <meta th:if="${screenId}" name="screen-id" th:content="${screenId}" />
     <script th:src="@{/assets/js/config.js}"></script>
-    <script th:src="@{/assets/js/do-path.js(v=5)}"></script>
+    <script th:src="@{/assets/js/asset-path-fix.js(v=1)}"></script>
+    <script th:src="@{/assets/js/do-path.js(v=9)}"></script>
     <script th:src="@{/vendors/simplebar/simplebar.min.js}"></script>
 
 
@@ -39,9 +41,10 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=44)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=48)}" rel="stylesheet" id="user-style-default" />
     <link th:href="@{/vendors/flatpickr/flatpickr.min.css}" rel="stylesheet" />
-    <link th:if="${loadSwiper}" th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
+    <link th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
+    <link th:href="@{/vendors/dropzone/dropzone.min.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet/leaflet.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.css}" rel="stylesheet" />
     <link th:if="${loadLeaflet}" th:href="@{/vendors/leaflet.markercluster/MarkerCluster.Default.css}" rel="stylesheet" />
@@ -134,7 +137,7 @@
                 <div th:if="${hideSidebar != true}" th:replace="~{fragments/top-navbar :: topNavbar}"></div>
                 <div th:if="${hideSidebar != true}" th:replace="~{fragments/header :: header}"></div>
 
-                <div th:if="${hideSidebar != true}" th:replace="~{fragments/menu-location :: menuLocation}"></div>
+                <div th:if="${hideSidebar != true and (storefrontMode == null or !storefrontMode)}" th:replace="~{fragments/menu-location :: menuLocation}"></div>
                 
                 <!-- 페이지별 콘텐츠 -->
                 <div th:replace="~{::page-content}">
@@ -160,8 +163,8 @@
     <script th:src="@{/vendors/list.js/list.min.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <th:block th:replace="~{fragments/app-loading :: scripts}"></th:block>
-    <script th:if="${loadDropzone}" th:src="@{/vendors/dropzone/dropzone.min.js}"></script>
-    <script th:if="${loadDropzone}">
+    <script th:src="@{/vendors/dropzone/dropzone.min.js}"></script>
+    <script>
       if (window.Dropzone) {
         window.Dropzone.autoDiscover = false;
       }
@@ -184,7 +187,7 @@
     <script th:if="${loadLeaflet}" th:src="@{/vendors/leaflet.markercluster/leaflet.markercluster.js}"></script>
     <script th:if="${loadLeaflet}" th:src="@{/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js}"></script>
     <script th:if="${loadTinymce}" th:src="@{/vendors/tinymce/tinymce.min.js}"></script>
-    <script th:if="${loadSwiper}" th:src="@{/vendors/swiper/swiper-bundle.min.js}"></script>
+    <script th:src="@{/vendors/swiper/swiper-bundle.min.js}"></script>
     <script th:if="${loadEchartsExamples}" th:src="@{/assets/js/echarts-example.js(v=2)}"></script>
     <script th:if="${codeOptionsForJs != null}" th:inline="javascript">
       window.__CODE_OPTIONS__ = /*[[${codeOptionsForJs}]]*/ {};
@@ -194,26 +197,34 @@
         pathKey: /*[[${currentScreenPathKey}]]*/ '',
         zone: /*[[${currentMenuZone}]]*/ '',
         screenId: /*[[${screenId}]]*/ '',
-        activePaths: /*[[${activeScreenPathKeys}]]*/ []
+        activePaths: /*[[${pageMenuActivePaths}]]*/ [],
+        roleCd: /*[[${authRoleCd}]]*/ '',
+        canWriteAll: /*[[${authCanWriteAll}]]*/ false,
+        allowedMenuPaths: /*[[${authAllowedMenuPathsJson}]]*/ []
       };
     </script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/cart-nav-sync.js(v=6)}"></script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/notification-nav-sync.js(v=7)}"></script>
     <script th:if="${loadNotificationListActions}" th:src="@{/assets/js/notification-list-actions.js(v=3)}"></script>
     <script th:if="${loadNotificationActions}" th:src="@{/assets/js/notification-actions.js(v=2)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=4)}"></script>
+    <script th:if="${loadProductGridActions}" th:src="@{/assets/js/product-grid-actions.js(v=1)}"></script>
+    <script th:if="${hideSidebar != true or storefrontMode}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=9)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/currency-won.js(v=2)}"></script>
-    <script th:src="@{/assets/js/app-common.js(v=6)}"></script>
+    <script th:if="${isLoggedIn}" th:inline="javascript">
+      window.__USER_PROFILE_IMAGE_URL__ = /*[[${userProfileImageUrl}]]*/ '';
+    </script>
+    <script th:if="${isLoggedIn}" th:src="@{/assets/js/user-nav-avatar-sync.js(v=1)}"></script>
+    <script th:src="@{/assets/js/app-common.js(v=7)}"></script>
     <script th:inline="javascript">
       window.__PRINTMALL_GRID_PAGE_SIZE__ = /*[[${gridPageSize}]]*/ 30;
     </script>
     <script th:src="@{/assets/js/grid-pager.js(v=2)}"></script>
     <script th:src="@{/assets/js/grid-excel-actions.js(v=4)}"></script>
-    <script th:src="@{/assets/js/theme.js(v=8)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/header-menu-search.js(v=1)}"></script>
+    <script th:src="@{/assets/js/theme.js(v=10)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/header-menu-search.js(v=3)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=6)}"></script>
     <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
     <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=9)}"></script>
@@ -234,17 +245,20 @@
     <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=7)}"></script>
     <script th:if="${loadNasAdminActions}" th:src="@{/assets/js/nas-settings-actions.js(v=1)}"></script>
     <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=5)}"></script>
-    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-search.js(v=3)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-search.js(v=4)}"></script>
     <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-map.js(v=5)}"></script>
-    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=2)}"></script>
+    <script th:if="${loadKakaoAddressForm != null and loadKakaoAddressForm}" th:src="@{/assets/js/kakao-address-form.js(v=3)}"></script>
     <script th:if="${loadUsersAddressInit != null and loadUsersAddressInit}" th:src="@{/assets/js/users-address-init.js(v=1)}"></script>
     <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-dashboard-init.js(v=7)}"></script>
     <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-card-actions.js(v=1)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=12)}"></script>
     <script th:if="${loadInventoryManageActions}" th:src="@{/assets/js/inventory-manage-actions.js(v=1)}"></script>
     <script th:if="${loadShippingWaybillActions}" th:src="@{/assets/js/shipping-waybill-actions.js(v=1)}"></script>
-    <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=2)}"></script>
+    <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=3)}"></script>
+    <script th:if="${loadUserSettingsActions}" th:src="@{/assets/js/phone-format.js(v=1)}"></script>
+    <script th:if="${loadUserSettingsActions}" th:src="@{/assets/js/user-settings-actions.js(v=11)}"></script>
     <script th:if="${loadCompanyDomainActions}" th:src="@{/assets/js/company-domain-actions.js(v=3)}"></script>
+    <script th:if="${loadCompanyCustomerMenuActions}" th:src="@{/assets/js/company-customer-menu-actions.js(v=1)}"></script>
     <script th:if="${loadEmailDetailActions}" th:src="@{/assets/js/email-detail-actions.js(v=1)}"></script>
     <script th:if="${loadEmailInboxActions}" th:src="@{/assets/js/email-inbox-actions.js(v=1)}"></script>
     <script th:if="${loadEmailComposeActions}" th:src="@{/assets/js/email-compose-actions.js(v=4)}"></script>

@@ -3,11 +3,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.springbootapp.config.web.DoPathHelper;
+import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.domain.ScreenList;
 import com.example.springbootapp.service.ScreenListService;
 /**
@@ -18,8 +21,13 @@ import com.example.springbootapp.service.ScreenListService;
 @RequestMapping("/api/screens")
 public class ScreenListApiController {
 	private final ScreenListService screenListService;
-	public ScreenListApiController(ScreenListService screenListService) {
+	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
+
+	public ScreenListApiController(
+			ScreenListService screenListService,
+			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.screenListService = screenListService;
+		this.publicPathCrypto = publicPathCrypto;
 	}
 	/**
 	 * 활성화된 전체 화면 목록을 조회합니다.
@@ -58,6 +66,22 @@ public class ScreenListApiController {
 		row.put("templatePath", screen.getTemplatePath());
 		row.put("sortOrd", screen.getSortOrd());
 		row.put("useYn", screen.getUseYn());
+		String linkPath = toLinkPath(screen.getUriPath());
+		row.put("linkPath", linkPath);
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		if (crypto != null && crypto.isEnabled()) {
+			row.put("href", crypto.toPublicPath(linkPath));
+		} else {
+			row.put("href", DoPathHelper.toDoPath(linkPath));
+		}
 		return row;
+	}
+
+	private static String toLinkPath(String uriPath) {
+		String path = DoPathHelper.stripDoSuffix(uriPath != null ? uriPath : "");
+		if (path.isEmpty() || "/index".equals(path)) {
+			return "/";
+		}
+		return path;
 	}
 }

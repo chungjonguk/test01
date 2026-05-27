@@ -28,6 +28,11 @@
         <span class="badge badge-soft-info" th:if="${currentScreenPathKey != null}">
           <span class="text-500 me-1">메뉴</span><code class="text-800" th:text="${currentScreenPathKey}">/</code>
         </span>
+        <span class="badge badge-soft-success" th:if="${tenantResolvedHost != null}">
+          <span class="text-500 me-1">접속 도메인</span>
+          <code class="text-800" th:text="${tenantResolvedHost}">host</code>
+          <span th:if="${tenantCompanyName != null}" class="ms-1" th:text="'· ' + ${tenantCompanyName}">업체</span>
+        </span>
       </div>
     </div>
   </div>

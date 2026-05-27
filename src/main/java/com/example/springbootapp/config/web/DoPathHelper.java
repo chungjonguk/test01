@@ -40,6 +40,23 @@ public final class DoPathHelper {
 				|| KakaoMapSdkController.class.isAssignableFrom(handlerType);
 	}
 
+	/** 암호화·공개 URL 변환 제외 (API·정적). 논리 경로 {@code *.do} 는 암호화 대상 */
+	public static boolean shouldSkipEncryption(String path) {
+		if (path == null || path.isBlank()) {
+			return true;
+		}
+		String p = stripQuery(path);
+		for (String prefix : EXCLUDED_PREFIXES) {
+			if (p.startsWith(prefix)) {
+				return true;
+			}
+		}
+		if (p.endsWith(".do") && !p.startsWith("/e/")) {
+			return false;
+		}
+		return hasNonDoFileExtension(p);
+	}
+
 	/** .do 접미사·리다이렉트 대상에서 제외할 경로 여부 */
 	public static boolean shouldSkipSuffix(String path) {
 		if (path == null || path.isBlank()) {
@@ -145,9 +162,43 @@ public final class DoPathHelper {
 		return dot > 0 && dot < last.length() - 1;
 	}
 
+	private static boolean hasNonDoFileExtension(String path) {
+		if (path == null || path.endsWith(".do")) {
+			return false;
+		}
+		return hasFileExtension(path);
+	}
+
+	/**
+	 * 쿼리·세션 path parameter 제거.
+	 * <p>잘못된 {@code /path;jsessionid=xxx.do} 형태는 {@code /path.do} 로 복구합니다.</p>
+	 */
+	public static String sanitizeRequestPath(String uri) {
+		if (uri == null || uri.isBlank()) {
+			return uri;
+		}
+		String path = uri.trim();
+		int q = path.indexOf('?');
+		String query = q >= 0 ? path.substring(q) : "";
+		path = q >= 0 ? path.substring(0, q) : path;
+		int semi = path.indexOf(';');
+		if (semi >= 0) {
+			String before = path.substring(0, semi);
+			String after = path.substring(semi + 1);
+			int doIdx = after.indexOf(".do");
+			if (doIdx >= 0 && !before.endsWith(".do")) {
+				path = before + ".do";
+			} else {
+				path = before;
+			}
+		}
+		return path + query;
+	}
+
 	private static String stripQuery(String uri) {
-		int q = uri.indexOf('?');
-		return q >= 0 ? uri.substring(0, q) : uri;
+		String sanitized = sanitizeRequestPath(uri);
+		int q = sanitized.indexOf('?');
+		return q >= 0 ? sanitized.substring(0, q) : sanitized;
 	}
 
 	static boolean appliesToController(Class<?> handlerType) {

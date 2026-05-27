@@ -1,5 +1,6 @@
 package com.example.springbootapp.controller;
 import com.example.springbootapp.auth.SessionAuthService;
+import com.example.springbootapp.config.AuthRequiredPaths;
 import com.example.springbootapp.domain.User;
 import com.example.springbootapp.mapper.UserMapper;
 import com.example.springbootapp.service.UserAccessLogService;
@@ -51,6 +52,7 @@ public class AuthController {
     public String login(
             @RequestParam("id") String id,
             @RequestParam("pw") String pw,
+            @RequestParam(value = "returnUrl", required = false) String returnUrl,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes
     ) {
@@ -68,6 +70,9 @@ public class AuthController {
         }
         sessionAuthService.loginFromUser(request.getSession(true), user.get(), request);
         redirectAttributes.addFlashAttribute("loginSuccess", user.get().getName() + "님, 로그인되었습니다.");
+        if (AuthRequiredPaths.isSafeReturnUrl(returnUrl)) {
+            return "redirect:" + returnUrl.trim();
+        }
         return "redirect:/dashboard";
     }
     /**

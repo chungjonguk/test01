@@ -56,6 +56,18 @@
    * @param {string} message in: 알림 메시지
    * @param {string} [icon] in: SweetAlert 아이콘 (success|error|info 등)
    */
+  /**
+   * @param {number} status in: HTTP 상태 코드
+   * @returns {boolean} out: 로그인 페이지로 이동했으면 true
+   */
+  function goLoginIfUnauthorized(status) {
+    if (status !== 401) {
+      return false;
+    }
+    notify('로그인이 필요합니다. 상단 메뉴에서 로그인해 주세요.', 'warning');
+    return true;
+  }
+
   function notify(message, icon) {
     if (window.Swal) {
       window.Swal.fire({
@@ -221,6 +233,7 @@
     escapeHtml: escapeHtml,
     escapeAttr: escapeAttr,
     fetchJson: fetchJson,
+    goLoginIfUnauthorized: goLoginIfUnauthorized,
     notify: notify,
     DATE_PATTERN: DATE_PATTERN,
     DATETIME_PATTERN: DATETIME_PATTERN,

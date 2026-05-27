@@ -15,6 +15,16 @@
       .replace(/>/g, '&gt;');
   }
 
+  function stripDoSuffix(path) {
+    if (!path) return '';
+    var p = String(path).trim();
+    if (p.length > 3 && p.slice(-3) === '.do') {
+      p = p.slice(0, -3);
+    }
+    if (p === '/index') return '/';
+    return p;
+  }
+
   function normalizeUri(uri) {
     if (!uri) return '';
     var p = String(uri).trim();
@@ -23,7 +33,16 @@
     if (p.length > 1 && p.charAt(p.length - 1) === '/') {
       p = p.slice(0, -1);
     }
-    return p;
+    return stripDoSuffix(p);
+  }
+
+  function resolveHref(screen) {
+    if (screen.href) return screen.href;
+    return normalizeUri(screen.linkPath || screen.uriPath);
+  }
+
+  function resolveMenuPath(screen) {
+    return normalizeUri(screen.linkPath || screen.uriPath);
   }
 
   function sortScreens(screens) {
@@ -37,15 +56,27 @@
     });
   }
 
+  function isCurrentMenuPath(menuPath) {
+    var ctx = global.__PAGE_MENU_CONTEXT__;
+    if (!ctx || !ctx.pathKey || !menuPath) {
+      return false;
+    }
+    return normalizeUri(ctx.pathKey) === normalizeUri(menuPath);
+  }
+
   function renderMenuItem(screen) {
-    var uri = normalizeUri(screen.uriPath);
-    var title = screen.screenNm || screen.screenId || uri || '메뉴';
-    if (!uri) return '';
+    var href = resolveHref(screen);
+    var menuPath = resolveMenuPath(screen);
+    var title = screen.screenNm || screen.screenId || menuPath || '메뉴';
+    if (!href) return '';
+    var currentCls = isCurrentMenuPath(menuPath) ? ' bg-200 fw-semi-bold' : '';
     return (
-      '<a class="dropdown-item fs--1 px-card py-1 hover-primary" href="' +
-      escapeHtml(uri) +
+      '<a class="dropdown-item fs--1 px-card py-1 hover-primary' +
+      currentCls +
+      '" href="' +
+      escapeHtml(href) +
       '" data-menu-path="' +
-      escapeHtml(uri) +
+      escapeHtml(menuPath) +
       '">' +
       '<div class="d-flex align-items-center">' +
       '<span class="fas fa-circle me-2 text-300 fs--2"></span>' +
@@ -54,7 +85,7 @@
       escapeHtml(title) +
       '</div>' +
       '<div class="fs--2 text-500 path text-truncate">' +
-      escapeHtml(uri) +
+      escapeHtml(menuPath) +
       '</div>' +
       '</div></div></a>'
     );
@@ -83,6 +114,23 @@
       }
       var fallback = box.querySelector('.fallback');
       if (fallback) fallback.classList.add('d-none');
+    });
+  }
+
+  function bindSearchNavigation(box) {
+    if (!box || box.getAttribute('data-search-nav-bound') === 'true') return;
+    box.setAttribute('data-search-nav-bound', 'true');
+    box.addEventListener('click', function (e) {
+      var link = e.target.closest('a.dropdown-item[href^="/"]');
+      if (!link) return;
+      var href = link.getAttribute('href');
+      if (!href || href.indexOf('/e/') === 0) return;
+      var pathApi = global.PrintMallPath || global.PrintMallDoPath;
+      if (!pathApi || !pathApi.toPublic) return;
+      e.preventDefault();
+      pathApi.toPublic(href).then(function (enc) {
+        if (enc) global.location.assign(enc);
+      });
     });
   }
 
@@ -115,7 +163,7 @@
     if (!listEl || !box) return;
 
     var rows = sortScreens(screens).filter(function (s) {
-      return s && normalizeUri(s.uriPath);
+      return s && resolveHref(s);
     });
 
     if (!rows.length) {
@@ -125,10 +173,14 @@
     }
 
     listEl.innerHTML = rows.map(renderMenuItem).join('');
+    bindSearchNavigation(box);
 
     var pathApi = global.PrintMallPath || global.PrintMallDoPath;
+    var needsRewrite = rows.some(function (s) {
+      return !s.href;
+    });
     var afterPaths =
-      pathApi && pathApi.rewritePageLinks
+      needsRewrite && pathApi && pathApi.rewritePageLinks
         ? pathApi.rewritePageLinks()
         : Promise.resolve();
 

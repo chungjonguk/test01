@@ -66,6 +66,17 @@
         WHERE d.host_name = #{hostName}
     </select>
 
+    <select id="findActiveByHostName" resultMap="bizCompanyDomainResultMap">
+        SELECT <include refid="domainColumns"/>
+        FROM biz_company_domain d
+        INNER JOIN biz_company c ON c.company_id = d.company_id
+        WHERE d.host_name = #{hostName}
+          AND d.use_yn = 'Y'
+          AND c.use_yn = 'Y'
+        ORDER BY d.primary_yn DESC, d.domain_id ASC
+        LIMIT 1
+    </select>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="domainId">
         INSERT INTO biz_company_domain (
             company_id, host_name, primary_yn, ssl_yn,

@@ -4,6 +4,7 @@ USE spring_boot_app;
 -- ========== E-Commerce ==========
 CREATE TABLE IF NOT EXISTS ecm_product (
   product_id     BIGINT        NOT NULL AUTO_INCREMENT COMMENT '상품ID',
+  company_id     BIGINT        NULL COMMENT '업체ID(biz_company)',
   product_nm     VARCHAR(200)  NOT NULL COMMENT '상품명',
   category_cd    VARCHAR(50)   NULL COMMENT '카테고리(공통코드)',
   price          DECIMAL(12,2) NOT NULL DEFAULT 0 COMMENT '가격',
@@ -17,7 +18,9 @@ CREATE TABLE IF NOT EXISTS ecm_product (
   update_dt      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (product_id),
   KEY idx_ecm_product_category (category_cd),
-  KEY idx_ecm_product_status (status_cd)
+  KEY idx_ecm_product_status (status_cd),
+  KEY idx_ecm_product_company (company_id),
+  CONSTRAINT fk_ecm_product_company FOREIGN KEY (company_id) REFERENCES biz_company (company_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS ecm_product_image (

@@ -23,20 +23,10 @@
           </div>
         </div>
         <div class="card-footer text-center border-top">
-          <a class="card-link d-block" th:href="@{/app/social/notifications}" data-menu-path="/app/social/notifications">알림 피드</a>
-          <a class="card-link d-block mt-1" th:href="@{/app/social/notification-list}" data-menu-path="/app/social/notification-list">알림 목록 관리</a>
+          <a class="card-link d-block" th:href="@{/app/social/notification-list}" data-menu-path="/app/social/notification-list">전체 보기</a>
         </div>
       </div>
     </div>
-  </th:block>
-
-  <!-- 사이드바 알림 미리보기 (최대 5건) -->
-  <th:block th:fragment="sidebar-preview">
-    <ul class="nav flex-column ms-3 my-1 fs--2" id="sidebar-notification-icon-list" data-notification-icon-list="sidebar">
-      <li class="nav-item">
-        <span class="nav-link text-600 py-1">알림을 불러오는 중…</span>
-      </li>
-    </ul>
   </th:block>
 </body>
 </html>

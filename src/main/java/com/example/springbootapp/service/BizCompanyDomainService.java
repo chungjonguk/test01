@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.springbootapp.auth.SessionAuthService;
+import com.example.springbootapp.config.web.PublicPathCryptoService;
+import org.springframework.beans.factory.ObjectProvider;
 import com.example.springbootapp.domain.BizCompany;
 import com.example.springbootapp.domain.BizCompanyDomain;
 import com.example.springbootapp.dto.BizCompanyDomainFormDto;
@@ -39,16 +41,19 @@ public class BizCompanyDomainService {
 	private final BizCompanyMapper bizCompanyMapper;
 	private final SessionAuthService sessionAuthService;
 	private final NasStorageService nasStorageService;
+	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
 
 	public BizCompanyDomainService(
 			BizCompanyDomainMapper bizCompanyDomainMapper,
 			BizCompanyMapper bizCompanyMapper,
 			SessionAuthService sessionAuthService,
-			NasStorageService nasStorageService) {
+			NasStorageService nasStorageService,
+			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.bizCompanyDomainMapper = bizCompanyDomainMapper;
 		this.bizCompanyMapper = bizCompanyMapper;
 		this.sessionAuthService = sessionAuthService;
 		this.nasStorageService = nasStorageService;
+		this.publicPathCrypto = publicPathCrypto;
 	}
 
 	public List<Map<String, Object>> search(Long companyId, String hostName, String useYn, int limit) {
@@ -94,6 +99,44 @@ public class BizCompanyDomainService {
 		appendSslValidityFlags(body, parsed.notAfter());
 		body.put("message", "SSL 인증서가 등록되었습니다. 유효기간을 확인한 뒤 저장하세요.");
 		return body;
+	}
+
+	/**
+	 * 신규 업체 등록 시 대표 접속 도메인을 함께 등록한다 (선택).
+	 */
+	@Transactional
+	public void registerPrimaryHostForNewCompany(Long companyId, String rawHost, String actor) {
+		if (companyId == null) {
+			throw new IllegalArgumentException("업체 ID가 필요합니다.");
+		}
+		if (bizCompanyMapper.findById(companyId) == null) {
+			throw new IllegalArgumentException("업체를 찾을 수 없습니다.");
+		}
+		String host = normalizeHostName(rawHost);
+		if (host == null || host.isBlank()) {
+			return;
+		}
+		if (host.length() > 253) {
+			throw new IllegalArgumentException("도메인은 253자 이하여야 합니다.");
+		}
+		if (!HOST_PATTERN.matcher(host).matches()) {
+			throw new IllegalArgumentException("올바른 도메인 형식이 아닙니다. (예: shop.example.com)");
+		}
+		BizCompanyDomain duplicate = bizCompanyDomainMapper.findByHostName(host);
+		if (duplicate != null) {
+			throw new IllegalArgumentException("이미 등록된 도메인입니다: " + host);
+		}
+		String resolvedActor = actor != null && !actor.isBlank() ? actor : "SYSTEM";
+		BizCompanyDomain domain = new BizCompanyDomain();
+		domain.setCompanyId(companyId);
+		domain.setHostName(host);
+		domain.setPrimaryYn("Y");
+		domain.setSslYn("N");
+		domain.setVerifyStatusCd("VERIFIED");
+		domain.setUseYn("Y");
+		domain.setRegId(resolvedActor);
+		domain.setUpdateId(resolvedActor);
+		bizCompanyDomainMapper.insert(domain);
 	}
 
 	@Transactional
@@ -263,6 +306,7 @@ public class BizCompanyDomainService {
 		map.put("useYn", row.getUseYn());
 		map.put("memo", row.getMemo());
 		map.put("accessUrl", buildAccessUrl(row));
+		map.put("customerStoreUrl", buildCustomerStoreUrl(row));
 		map.put("regDt", AppDateTimeFormats.formatDateTime(row.getRegDt()));
 		map.put("updateDt", AppDateTimeFormats.formatDateTime(row.getUpdateDt()));
 		return map;
@@ -271,6 +315,21 @@ public class BizCompanyDomainService {
 	private static String buildAccessUrl(BizCompanyDomain row) {
 		String scheme = "Y".equalsIgnoreCase(row.getSslYn()) ? "https" : "http";
 		return scheme + "://" + row.getHostName() + "/";
+	}
+
+	private String buildCustomerStoreUrl(BizCompanyDomain row) {
+		String base = buildAccessUrl(row);
+		if (row.getHostName() == null || row.getHostName().isBlank()) {
+			return base;
+		}
+		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+		String path = crypto != null && crypto.isEnabled()
+				? crypto.toPublicPath("/shop-home")
+				: "/shop-home";
+		if (base.endsWith("/")) {
+			return base + (path.startsWith("/") ? path.substring(1) : path);
+		}
+		return base + path;
 	}
 
 	private String resolveActor(HttpSession session) {

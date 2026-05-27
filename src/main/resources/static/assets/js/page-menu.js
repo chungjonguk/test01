@@ -6,6 +6,9 @@
 
   var LG = 992;
 
+  /** 쇼핑몰 zone 필터와 무관하게 항상 표시 (관리·설정 메뉴) */
+  var ALWAYS_VISIBLE_ZONES = ['admin'];
+
   function ctx() {
     return global.__PAGE_MENU_CONTEXT__ || null;
   }
@@ -40,10 +43,14 @@
 
   function linkKey(link) {
     var fromData = link.getAttribute('data-menu-path');
-    if (fromData) {
+    if (fromData && fromData.indexOf('/e/') !== 0) {
       return pathKey(fromData);
     }
-    return pathKey(link.getAttribute('href'));
+    var href = link.getAttribute('href');
+    if (href && href.indexOf('/e/') !== 0) {
+      return pathKey(href);
+    }
+    return '';
   }
 
   function linkZone(link) {
@@ -62,7 +69,34 @@
         set[pathKey(p)] = true;
       }
     });
+    if (c.pathKey) {
+      set[pathKey(c.pathKey)] = true;
+    }
     return set;
+  }
+
+  function isPersistentZone(zone) {
+    return zone && ALWAYS_VISIBLE_ZONES.indexOf(zone) >= 0;
+  }
+
+  function isRoleMenuAllowed(key) {
+    if (!key) {
+      return false;
+    }
+    var c = ctx();
+    if (!c || !c.roleCd || c.canWriteAll || c.roleCd === 'PLATFORM_ADMIN') {
+      return true;
+    }
+    if (!c.allowedMenuPaths || !c.allowedMenuPaths.length) {
+      return false;
+    }
+    var want = pathKey(key);
+    for (var i = 0; i < c.allowedMenuPaths.length; i++) {
+      if (pathKey(c.allowedMenuPaths[i]) === want) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function shouldShowLink(link, c, active) {
@@ -70,10 +104,19 @@
       return true;
     }
     var key = linkKey(link);
-    if (active[key]) {
-      return true;
+    if (!isRoleMenuAllowed(key)) {
+      return false;
     }
     var zone = linkZone(link);
+    if (isPersistentZone(zone)) {
+      return true;
+    }
+    if (c.pathKey && pathKey(c.pathKey) === key) {
+      return !c.zone || !zone || zone === c.zone;
+    }
+    if (active[key]) {
+      return !c.zone || !zone || zone === c.zone;
+    }
     if (c.zone && zone && zone === c.zone) {
       return true;
     }
@@ -107,7 +150,7 @@
     });
     nav.querySelectorAll('li.nav-item[data-menu-zone]').forEach(function (zoneLi) {
       var zone = zoneLi.getAttribute('data-menu-zone');
-      var showZone = !c.zone || zone === c.zone;
+      var showZone = !c.zone || zone === c.zone || isPersistentZone(zone);
       if (!showZone) {
         var links = zoneLi.querySelectorAll('a.nav-link[href]');
         for (var i = 0; i < links.length; i++) {

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.dto.EcmProductFormDto;
 import com.example.springbootapp.service.EcmProductService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 /**
  * 화면 경로: {@code /app/e-commerce/product/product-manage}, {@code product-register}, {@code product-images}, {@code product-details}
  * <p>상품 CRUD·이미지·상세 미리보기 등 이커머스 상품 관련 업무 화면을 렌더링합니다.</p>
@@ -77,13 +79,17 @@ public class EcmProductPageController {
 	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-images}
 	 */
 	@GetMapping({"/app/e-commerce/product/product-images", "/app/e-commerce/product/product-images.html"})
-	public String productImages(@RequestParam(required = false) Long id, Model model) {
+	public String productImages(
+			@RequestParam(required = false) Long id,
+			Model model,
+			HttpServletRequest request,
+			HttpSession session) {
 		model.addAttribute("title", "상품 이미지");
 		if (id == null) {
 			model.addAttribute("missingId", true);
 			return "app/e-commerce/product/product-images";
 		}
-		EcmProduct product = ecmProductService.findById(id);
+		EcmProduct product = ecmProductService.findByIdForScope(id, request, session);
 		if (product == null) {
 			model.addAttribute("productNotFound", true);
 			model.addAttribute("requestedProductId", id);
@@ -105,13 +111,17 @@ public class EcmProductPageController {
 	 * @return out: Thymeleaf view path {@code app/e-commerce/product/product-details}
 	 */
 	@GetMapping({"/app/e-commerce/product/product-details", "/app/e-commerce/product/product-details.html"})
-	public String productDetails(@RequestParam(required = false) Long id, Model model) {
+	public String productDetails(
+			@RequestParam(required = false) Long id,
+			Model model,
+			HttpServletRequest request,
+			HttpSession session) {
 		model.addAttribute("title", "상품 상세");
 		if (id == null) {
 			model.addAttribute("demoMode", true);
 			return "app/e-commerce/product/product-details";
 		}
-		EcmProduct product = ecmProductService.findById(id);
+		EcmProduct product = ecmProductService.findByIdForScope(id, request, session);
 		if (product == null) {
 			model.addAttribute("productNotFound", true);
 			model.addAttribute("requestedProductId", id);

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.UserAuthProfileMapper">
+
+    <resultMap id="userAuthProfileMap" type="UserAuthProfile">
+        <id property="userId" column="user_id"/>
+        <result property="roleCd" column="role_cd"/>
+        <result property="useYn" column="use_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="userAuthProfileMap">
+        SELECT user_id, role_cd, use_yn, reg_id, reg_dt, update_id, update_dt
+        FROM user_auth_profile
+        WHERE user_id = #{userId} AND use_yn = 'Y'
+    </select>
+
+    <insert id="upsert">
+        INSERT INTO user_auth_profile (user_id, role_cd, use_yn, reg_id, update_id)
+        VALUES (#{userId}, #{roleCd}, #{useYn}, #{regId}, #{updateId})
+        ON DUPLICATE KEY UPDATE
+            role_cd = VALUES(role_cd),
+            use_yn = VALUES(use_yn),
+            update_id = VALUES(update_id)
+    </insert>
+</mapper>

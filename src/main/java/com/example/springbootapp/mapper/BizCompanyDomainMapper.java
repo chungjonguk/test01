@@ -18,6 +18,9 @@ public interface BizCompanyDomainMapper {
 
 	BizCompanyDomain findByHostName(@Param("hostName") String hostName);
 
+	/** 사용 중인 도메인·업체에 매핑된 Host (대표 도메인 우선) */
+	BizCompanyDomain findActiveByHostName(@Param("hostName") String hostName);
+
 	int insert(BizCompanyDomain domain);
 
 	int update(BizCompanyDomain domain);

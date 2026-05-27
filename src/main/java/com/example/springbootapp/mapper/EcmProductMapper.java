@@ -16,7 +16,10 @@ public interface EcmProductMapper {
 	 * @param statusCd   판매 상태 코드 (nullable)
 	 * @return 상품 목록
 	 */
-	List<EcmProduct> findAll(@Param("productNm") String productNm, @Param("categoryCd") String categoryCd,
+	List<EcmProduct> findAll(
+			@Param("companyId") Long companyId,
+			@Param("productNm") String productNm,
+			@Param("categoryCd") String categoryCd,
 			@Param("statusCd") String statusCd);
 
 	/**
@@ -26,6 +29,7 @@ public interface EcmProductMapper {
 	 * @param lowThreshold 부족 재고 상한 (LOW 필터용)
 	 */
 	List<EcmProduct> findForInventory(
+			@Param("companyId") Long companyId,
 			@Param("productNm") String productNm,
 			@Param("categoryCd") String categoryCd,
 			@Param("statusCd") String statusCd,

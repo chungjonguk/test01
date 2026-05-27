@@ -259,12 +259,24 @@
     $('form-status-cd').value = 'ACTIVE';
     $('form-use-yn').value = 'Y';
     $('form-memo').value = '';
+    var hostRow = $('company-form-primary-host-row');
+    var hostInput = $('form-primary-host');
+    if (hostInput) {
+      hostInput.value = '';
+    }
+    if (hostRow) {
+      hostRow.style.display = '';
+    }
   }
 
   function openFormModal(title, company) {
     clearForm();
     $('company-form-modal-label').textContent = title;
+    var hostRow = $('company-form-primary-host-row');
     if (company) {
+      if (hostRow) {
+        hostRow.style.display = 'none';
+      }
       $('form-company-id').value = company.companyId || '';
       $('form-company-nm').value = company.companyNm || '';
       $('form-biz-no').value = formatBizNo(company.bizNo || '');
@@ -278,6 +290,8 @@
       $('form-status-cd').value = company.statusCd || 'ACTIVE';
       $('form-use-yn').value = company.useYn || 'Y';
       $('form-memo').value = company.memo || '';
+    } else if (hostRow) {
+      hostRow.style.display = '';
     }
     var modal = getModal();
     if (modal) {
@@ -325,6 +339,12 @@
       useYn: $('form-use-yn').value,
       memo: $('form-memo').value.trim()
     };
+    if (!payload.companyId) {
+      var primaryHost = ($('form-primary-host') || {}).value;
+      if (primaryHost && primaryHost.trim()) {
+        payload.primaryHostName = primaryHost.trim();
+      }
+    }
     if (!payload.companyNm) {
       notify('업체명을 입력하세요.', 'warning');
       return;

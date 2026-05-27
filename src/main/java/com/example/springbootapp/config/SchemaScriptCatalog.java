@@ -29,6 +29,11 @@ public final class SchemaScriptCatalog {
 			"schema/biz_company_domain_ssl_alter.sql",
 			"schema/ecm_payment.sql",
 			"schema/tables/biz_schema.sql",
+			"schema/ecm_product_company_id.sql",
+			"schema/auth_user_role.sql",
+			"schema/user_profile_images.sql",
+			"schema/user_profile_addresses.sql",
+			"schema/user_profile_work_company.sql",
 			"schema/social_notification_alter.sql",
 			"schema/ecm_shipment.sql",
 			"schema/tables/ecm_product_image.sql",
@@ -45,8 +50,14 @@ public final class SchemaScriptCatalog {
 			"schema/screen_list_admin_shipping_menu.sql",
 			"schema/screen_list_shopping_mall_menu.sql",
 			"schema/screen_list_admin_company_domains.sql",
+			"schema/screen_list_admin_company_customer_menus.sql",
+			"schema/auth_user_role_seed.sql",
 			"schema/screen_list_admin_table_sequences.sql",
 			"schema/screen_list_social_notification_list.sql",
+			"schema/screen_list_remove_pricing_menu.sql",
+			"schema/screen_list_remove_documentation_menu.sql",
+			"schema/screen_list_remove_modules_menu.sql",
+			"schema/screen_list_remove_admin_settings_menu.sql",
 			"schema/sys_table_sequence_seed.sql");
 
 	private SchemaScriptCatalog() {

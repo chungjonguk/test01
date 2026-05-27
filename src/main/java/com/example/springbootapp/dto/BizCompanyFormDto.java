@@ -13,6 +13,7 @@ package com.example.springbootapp.dto;
  *   <li>{@code statusCd} — in/out: 상태 코드</li>
  *   <li>{@code useYn} — in/out: 사용 여부</li>
  *   <li>{@code memo} — in/out: 메모</li>
+ *   <li>{@code primaryHostName} — in: 신규 등록 시 대표 접속 도메인 (선택)</li>
  * </ul>
  */
 public class BizCompanyFormDto {
@@ -26,6 +27,9 @@ public class BizCompanyFormDto {
 	private String statusCd;
 	private String useYn;
 	private String memo;
+	/** 신규 등록 시 대표 Host (예: shop.example.com) */
+	private String primaryHostName;
+
 	public Long getCompanyId() {
 		return companyId;
 	}
@@ -86,6 +90,15 @@ public class BizCompanyFormDto {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+
+	public String getPrimaryHostName() {
+		return primaryHostName;
+	}
+
+	public void setPrimaryHostName(String primaryHostName) {
+		this.primaryHostName = primaryHostName;
+	}
+
 	@Override
 	public String toString() {
 		return "BizCompanyFormDto{companyId=" + companyId + ", companyNm='" + companyNm + "', bizNo='" + bizNo

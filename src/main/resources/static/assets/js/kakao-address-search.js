@@ -130,7 +130,9 @@
           if (!result.ok) {
             var msg =
               (result.data && result.data.message) ||
-              '주소 검색에 실패했습니다. (HTTP ' + result.status + ')';
+              (result.status === 403
+                ? '주소 검색 API 접근 권한이 없습니다. 로그인 상태를 확인하거나 관리자에게 문의하세요.'
+                : '주소 검색에 실패했습니다. (HTTP ' + result.status + ')');
             showHint(hintEl, msg, true);
             if (options.onError) {
               options.onError(msg, String(result.status));

@@ -14,7 +14,11 @@ import com.example.springbootapp.config.ScreenSidebarLoader;
 import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.domain.ScreenList;
+import com.example.springbootapp.auth.LoginSession;
+import com.example.springbootapp.auth.MenuAccessSnapshot;
+import com.example.springbootapp.auth.SessionAuthService;
 import com.example.springbootapp.service.ScreenListService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.ObjectProvider;
 import jakarta.servlet.http.HttpServletRequest;
 /**
@@ -33,16 +37,23 @@ import jakarta.servlet.http.HttpServletRequest;
 	private static final Set<String> SHOPPING_MALL_MENU_KEYS = Set.of(
 			"/app/e-commerce/product/product-grid",
 			"/app/e-commerce/product/product-list",
+			"/app/e-commerce/product/product-register",
+			"/app/e-commerce/product/product-manage",
+			"/app/e-commerce/product/product-images",
+			"/admin/inventory",
+			"/admin/shipping",
+			"/app/e-commerce/billing",
 			"/app/e-commerce/shopping-cart",
 			"/app/e-commerce/checkout",
 			"/app/e-commerce/orders/order-list",
 			"/app/e-commerce/orders/order-details",
-			"/pages/user/profile",
+			"/pages/user/settings",
 			"/app/e-commerce/customers",
 			"/app/e-commerce/invoice",
 			"/pages/faq/faq-basic",
 			"/shop-dashboard");
 	private final ScreenListService screenListService;
+	private final SessionAuthService sessionAuthService;
 	private final InicisProperties inicisProperties;
 	private final ObjectProvider<PublicPathCryptoService> publicPathCrypto;
 	@Value("${kakao.javascript-key:}")
@@ -57,9 +68,11 @@ import jakarta.servlet.http.HttpServletRequest;
 	private int gridPageSize;
 	public PageViewAdvice(
 			ScreenListService screenListService,
+			SessionAuthService sessionAuthService,
 			InicisProperties inicisProperties,
 			ObjectProvider<PublicPathCryptoService> publicPathCrypto) {
 		this.screenListService = screenListService;
+		this.sessionAuthService = sessionAuthService;
 		this.inicisProperties = inicisProperties;
 		this.publicPathCrypto = publicPathCrypto;
 	}
@@ -123,6 +136,9 @@ import jakarta.servlet.http.HttpServletRequest;
 	}
 
 	private static String resolveMenuZone(String pathKey, ScreenList screen) {
+		if (pathKey != null && !pathKey.isBlank() && SHOPPING_MALL_MENU_KEYS.contains(pathKey)) {
+			return "shopping-mall";
+		}
 		if (screen != null && screen.getScreenId() != null) {
 			String screenId = screen.getScreenId();
 			if (screenId.startsWith("SHOP_")) {
@@ -141,9 +157,6 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (pathKey.startsWith("/admin")) {
 			return "admin";
 		}
-		if (SHOPPING_MALL_MENU_KEYS.contains(pathKey)) {
-			return "shopping-mall";
-		}
 		if (pathKey.startsWith("/dashboard")) {
 			return "dashboard";
 		}
@@ -161,7 +174,7 @@ import jakarta.servlet.http.HttpServletRequest;
 		return gridPageSize > 0 ? gridPageSize : 30;
 	}
 	@ModelAttribute
-	public void applyPageViewAttributes(HttpServletRequest request, Model model) {
+	public void applyPageViewAttributes(HttpServletRequest request, Model model, HttpSession session) {
 		if (request == null) {
 			return;
 		}
@@ -181,6 +194,65 @@ import jakarta.servlet.http.HttpServletRequest;
 		String finalZone = (String) model.getAttribute("currentMenuZone");
 		applyMenuPresentation(model, resolved, finalPathKey, finalZone);
 		applyScriptFlags(uri, model);
+		applySwiperScriptFlag(uri, model);
+		model.addAttribute("pageMenuActivePaths", buildPageMenuActivePaths(model, session));
+		applyAuthMenuContext(model, session);
+	}
+
+	private void applyAuthMenuContext(Model model, HttpSession session) {
+		LoginSession login = sessionAuthService.getLoginSession(session);
+		if (login == null || login.getMenuAccess() == null) {
+			model.addAttribute("authAllowedMenuPathsJson", "[]");
+			return;
+		}
+		MenuAccessSnapshot access = login.getMenuAccess();
+		model.addAttribute("authRoleCd", access.getRoleCd());
+		model.addAttribute("authCanWriteAll", access.isWriteAll());
+		StringBuilder json = new StringBuilder("[");
+		List<String> paths = access.getAllowedMenuPaths();
+		for (int i = 0; i < paths.size(); i++) {
+			if (i > 0) {
+				json.append(',');
+			}
+			json.append('"').append(paths.get(i).replace("\\", "\\\\").replace("\"", "\\\"")).append('"');
+		}
+		json.append(']');
+		model.addAttribute("authAllowedMenuPathsJson", json.toString());
+	}
+
+	private List<String> buildPageMenuActivePaths(Model model, HttpSession session) {
+		LinkedHashSet<String> keys = new LinkedHashSet<>();
+		for (String path : screenListService.findActiveUriPaths()) {
+			if (path == null || path.isBlank()) {
+				continue;
+			}
+			keys.add(logicalPathKey(screenListService.normalizeUriPath(path)));
+			keys.add(logicalPathKey(path));
+			keys.add(DoPathHelper.stripDoSuffix(path));
+		}
+		keys.add(DASHBOARD_HOME_MENU_KEY);
+		keys.add(SHOP_HOME_MENU_KEY);
+		keys.add(SHOP_DASHBOARD_MENU_KEY);
+		keys.addAll(SHOPPING_MALL_MENU_KEYS);
+		String pathKey = (String) model.getAttribute("currentScreenPathKey");
+		if (StringUtils.hasText(pathKey)) {
+			keys.add(pathKey.trim());
+			keys.add(logicalPathKey(pathKey));
+		}
+		String screenUri = (String) model.getAttribute("screenUriPath");
+		if (StringUtils.hasText(screenUri)) {
+			keys.add(DoPathHelper.stripDoSuffix(screenUri));
+			keys.add(logicalPathKey(screenUri));
+			keys.add(logicalPathKey(screenListService.normalizeUriPath(screenUri)));
+		}
+		LoginSession login = sessionAuthService.getLoginSession(session);
+		if (login != null && login.getMenuAccess() != null && !login.getMenuAccess().isWriteAll()) {
+			keys.retainAll(new LinkedHashSet<>(login.getMenuAccess().getAllowedMenuPaths()));
+			if (StringUtils.hasText(pathKey)) {
+				keys.add(pathKey.trim());
+			}
+		}
+		return new ArrayList<>(keys);
 	}
 	private void applyScreenAttributes(String uri, Model model) {
 		ScreenList screen = screenListService.resolveForRequest(uri);
@@ -327,8 +399,10 @@ import jakarta.servlet.http.HttpServletRequest;
 		String logical = DoPathHelper.stripDoSuffix(uri != null ? uri : "");
 		if (logical.contains("/app/e-commerce/product/product-list")
 				|| logical.contains("/app/e-commerce/product/product-grid")
-				|| logical.contains("/app/e-commerce/product/product-manage")) {
+				|| logical.contains("/app/e-commerce/product/product-manage")
+				|| "/shop-home".equals(logical)) {
 			setIfAbsent(model, "loadProductCartActions", true);
+			setIfAbsent(model, "loadProductGridActions", logical.contains("product-grid") || "/shop-home".equals(logical));
 			return;
 		}
 		ScreenList screen = screenListService.resolveForRequest(uri);
@@ -338,6 +412,31 @@ import jakarta.servlet.http.HttpServletRequest;
 		String tpl = screen.getTemplatePath().toLowerCase();
 		if (tpl.contains("product-list") || tpl.contains("product-grid") || tpl.contains("product-manage")) {
 			setIfAbsent(model, "loadProductCartActions", true);
+			setIfAbsent(model, "loadProductGridActions", tpl.contains("product-grid"));
+		}
+	}
+
+	/** theme.js swiperInit — 템플릿·경로에 [data-swiper] 가 있으면 Swiper 로드 */
+	private void applySwiperScriptFlag(String uri, Model model) {
+		if (uri != null) {
+			String logical = DoPathHelper.stripDoSuffix(uri);
+			if (logical.contains("/app/e-commerce/product")
+					|| logical.contains("/modules/components/carousel")
+					|| logical.contains("/app/e-learning/course/course-details")
+					|| logical.contains("/pages/landing")) {
+				setIfAbsent(model, "loadSwiper", true);
+				return;
+			}
+		}
+		ScreenList screen = screenListService.resolveForRequest(uri);
+		if (screen == null || screen.getTemplatePath() == null) {
+			return;
+		}
+		String tpl = screen.getTemplatePath().toLowerCase();
+		if (tpl.contains("product-list") || tpl.contains("product-grid") || tpl.contains("product-details")
+				|| tpl.contains("product-manage") || tpl.contains("course-details")
+				|| tpl.contains("carousel/swiper") || tpl.contains("landing")) {
+			setIfAbsent(model, "loadSwiper", true);
 		}
 	}
 
@@ -466,6 +565,9 @@ import jakarta.servlet.http.HttpServletRequest;
 		if (uri.contains("/admin/company-domains")) {
 			setIfAbsent(model, "loadCompanyDomainActions", true);
 		}
+		if (uri.contains("/admin/company-customer-menus")) {
+			setIfAbsent(model, "loadCompanyCustomerMenuActions", true);
+		}
 		if (uri.contains("/app/email/email-detail")) {
 			setIfAbsent(model, "loadEmailDetailActions", true);
 		}
@@ -513,6 +615,9 @@ import jakarta.servlet.http.HttpServletRequest;
 		if ("/users".equals(DoPathHelper.stripDoSuffix(uri))) {
 			applyKakaoAddressFormFlags(model);
 			setIfAbsent(model, "loadUsersAddressInit", true);
+		}
+		if (uri.contains("/pages/user/settings") || uri.contains("/pages/user/profile")) {
+			applyKakaoAddressFormFlags(model);
 		}
 		if (uri.contains("/pages/authentication/wizard")) {
 			setIfAbsent(model, "hideSidebar", true);

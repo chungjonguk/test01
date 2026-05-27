@@ -14,13 +14,30 @@
         <result property="zipcode" column="zipcode"/>
         <result property="address" column="address"/>
         <result property="addressDetail" column="address_detail"/>
+        <result property="profileImageUrl" column="profile_image_url"/>
+        <result property="coverImageUrl" column="cover_image_url"/>
+        <result property="homeZipcode" column="home_zipcode"/>
+        <result property="homeAddress" column="home_address"/>
+        <result property="homeAddressDetail" column="home_address_detail"/>
+        <result property="homePhone" column="home_phone"/>
+        <result property="workZipcode" column="work_zipcode"/>
+        <result property="workAddress" column="work_address"/>
+        <result property="workAddressDetail" column="work_address_detail"/>
+        <result property="workPhone" column="work_phone"/>
+        <result property="workCompanyName" column="work_company_name"/>
+        <result property="primaryAddressType" column="primary_address_type"/>
         <result property="updateId" column="update_id"/>
         <result property="regDt" column="reg_dt"/>
         <result property="updDt" column="upd_dt"/>
     </resultMap>
 
     <sql id="userColumns">
-        id, pw, name, sex, rrno, email, zipcode, address, address_detail, update_id, reg_dt, upd_dt
+        id, pw, name, sex, rrno, email, zipcode, address, address_detail,
+        profile_image_url, cover_image_url,
+        home_zipcode, home_address, home_address_detail, home_phone,
+        work_zipcode, work_address, work_address_detail, work_phone, work_company_name,
+        primary_address_type,
+        update_id, reg_dt, upd_dt
     </sql>
 
     <select id="findAll" resultMap="userResultMap">
@@ -45,6 +62,13 @@
         SELECT COUNT(1) > 0
         FROM `user`
         WHERE email = #{email}
+    </select>
+
+    <select id="existsByEmailForOtherUser" resultType="boolean">
+        SELECT COUNT(1) > 0
+        FROM `user`
+        WHERE email = #{email}
+          AND id != #{id}
     </select>
 
     <insert id="insert">
@@ -72,6 +96,41 @@
     <update id="updatePassword">
         UPDATE `user`
         SET pw = #{pw},
+            update_id = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateProfileImageUrl">
+        UPDATE `user`
+        SET profile_image_url = #{profileImageUrl},
+            update_id = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateCoverImageUrl">
+        UPDATE `user`
+        SET cover_image_url = #{coverImageUrl},
+            update_id = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateProfileSettings">
+        UPDATE `user`
+        SET name = #{name},
+            email = #{email},
+            zipcode = #{zipcode},
+            address = #{address},
+            address_detail = #{addressDetail},
+            home_zipcode = #{homeZipcode},
+            home_address = #{homeAddress},
+            home_address_detail = #{homeAddressDetail},
+            home_phone = #{homePhone},
+            work_zipcode = #{workZipcode},
+            work_address = #{workAddress},
+            work_address_detail = #{workAddressDetail},
+            work_phone = #{workPhone},
+            work_company_name = #{workCompanyName},
+            primary_address_type = #{primaryAddressType},
             update_id = #{updateId}
         WHERE id = #{id}
     </update>

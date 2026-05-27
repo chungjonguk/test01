@@ -46,7 +46,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
                    id="header-notification-link"
-                   data-menu-path="/app/social/notifications"
+                   data-menu-path="/app/social/notification-list"
                    data-notification-nav="header"
                    role="button"
                    data-bs-toggle="dropdown"
@@ -56,30 +56,145 @@
                    title="알림"><span class="fas fa-bell" data-fa-transform="shrink-6" style="font-size: 33px;"></span><span class="notification-indicator-number d-none" id="header-notification-count" data-notification-badge>0</span></a>
                 <th:block th:replace="~{fragments/notification-icon-list :: dropdown}"></th:block>
               </li>
-              <li class="nav-item dropdown"><a class="nav-link pe-0 ps-2" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="avatar avatar-xl">
-                    <img class="rounded-circle" th:src="@{/assets/img/team/3-thumb.png}" alt="" />
-
-                  </div>
-                </a>
-                <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
-                  <div class="bg-white dark__bg-1000 rounded-2 py-2">
-                    <div class="dropdown-item-text" th:if="${isLoggedIn}">
-                      <div class="fw-bold" th:text="${loginUser.userName}">사용자</div>
-                      <div class="fs--2 text-600" th:text="${loginUser.userId}">userId</div>
-                      <div class="fs--2 text-500" th:if="${loginUser.email}" th:text="${loginUser.email}">email</div>
-                      <div class="fs--2 text-500">세션 <span th:text="${sessionTimeoutMinutes}">10</span>분 · <span th:text="${loginUser.loginType}">FORM</span></div>
+              <li class="nav-item dropdown">
+                <a class="nav-link user-nav-trigger px-2"
+                   id="navbarDropdownUser"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                   th:classappend="${!isLoggedIn} ? ' user-nav-trigger--guest' : ''">
+                  <span class="user-nav-chip" th:if="${isLoggedIn}">
+                    <div class="user-nav-avatar" data-user-nav-avatar aria-hidden="true">
+                      <img th:if="${userProfileImageUrl != null and !#strings.isEmpty(userProfileImageUrl)}"
+                           class="user-nav-avatar-photo"
+                           th:src="${userProfileImageUrl}"
+                           alt="" />
+                      <span th:unless="${userProfileImageUrl != null and !#strings.isEmpty(userProfileImageUrl)}"
+                            class="user-nav-avatar-initial"
+                            th:text="${userInitial}">U</span>
                     </div>
-                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
-                    <a class="dropdown-item" th:if="${!isLoggedIn}" th:href="@{/pages/authentication/simple/login}">로그인</a>
-                    <a class="dropdown-item fw-bold text-warning" th:if="${isLoggedIn}" href="#!"><span class="fas fa-crown me-1"></span><span>Go Pro</span></a>
-                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
-                    <a class="dropdown-item" th:if="${isLoggedIn}" href="#!">Set status</a>
-                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/pages/user/profile}">프로필 &amp; account</a>
-                    <a class="dropdown-item" th:if="${isLoggedIn}" href="#!">피드back</a>
-                    <div class="dropdown-divider" th:if="${isLoggedIn}"></div>
-                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/pages/user/settings}">설정</a>
-                    <a class="dropdown-item" th:if="${isLoggedIn}" th:href="@{/auth/logout}">로그아웃</a>
+                    <span class="user-nav-label">
+                      <span class="user-nav-name" th:text="|${userDisplayName}님|">사용자님</span>
+                      <span class="user-nav-role" th:text="${authRoleLabel}">역할</span>
+                    </span>
+                    <span class="fas fa-chevron-down user-nav-chevron" aria-hidden="true"></span>
+                  </span>
+                  <span class="user-nav-chip user-nav-chip--guest" th:if="${!isLoggedIn}">
+                    <span class="user-nav-avatar user-nav-avatar--guest" aria-hidden="true">
+                      <span class="fas fa-sign-in-alt"></span>
+                    </span>
+                    <span class="user-nav-label">
+                      <span class="user-nav-name">로그인</span>
+                    </span>
+                  </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-caret user-nav-dropdown py-0"
+                     aria-labelledby="navbarDropdownUser">
+                  <div class="user-nav-dropdown-panel" th:if="${!isLoggedIn}">
+                    <div class="user-nav-dropdown-guest px-card py-4 text-center">
+                      <div class="user-nav-avatar user-nav-avatar--lg mx-auto mb-2">
+                        <span class="fas fa-user"></span>
+                      </div>
+                      <p class="text-600 fs--1 mb-3">로그인하면 계정·권한 정보를 확인할 수 있습니다.</p>
+                      <a class="btn btn-primary btn-sm" th:href="@{/pages/authentication/simple/login}">로그인</a>
+                    </div>
+                  </div>
+
+                  <div class="user-nav-dropdown-panel" th:if="${isLoggedIn}">
+                    <div class="user-nav-dropdown-hero" th:classappend="| user-nav-dropdown-hero--${authRoleTheme}|">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="user-nav-avatar user-nav-avatar--lg" data-user-nav-avatar>
+                          <img th:if="${userProfileImageUrl != null and !#strings.isEmpty(userProfileImageUrl)}"
+                               class="user-nav-avatar-photo"
+                               th:src="${userProfileImageUrl}"
+                               alt="" />
+                          <span th:unless="${userProfileImageUrl != null and !#strings.isEmpty(userProfileImageUrl)}"
+                                class="user-nav-avatar-initial"
+                                th:text="${userInitial}">U</span>
+                        </div>
+                        <div class="flex-1 min-w-0 text-white">
+                          <div class="fw-bold fs-0 text-truncate" th:text="|${userDisplayName}님|">사용자님</div>
+                          <div class="fs--2 opacity-75 text-truncate" th:text="${loginUser.userId}">userId</div>
+                          <span class="badge rounded-pill user-nav-hero-badge mt-1" th:text="${authRoleLabel}">역할</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="user-nav-dropdown-body px-3 py-3">
+                      <div class="row g-2 mb-2">
+                        <div class="col-12">
+                          <div class="user-nav-info-card">
+                            <span class="user-nav-info-icon fas fa-envelope text-primary"></span>
+                            <div class="user-nav-info-text">
+                              <div class="user-nav-info-label">이메일</div>
+                              <div class="user-nav-info-value text-truncate"
+                                   th:text="${#strings.isEmpty(loginUser.email)} ? '—' : ${loginUser.email}">—</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="user-nav-info-card">
+                            <span class="user-nav-info-icon fas fa-key text-success"></span>
+                            <div class="user-nav-info-text">
+                              <div class="user-nav-info-label">로그인</div>
+                              <div class="user-nav-info-value" th:text="${loginTypeLabel}">—</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6" th:if="${loginAtText != null and !loginAtText.isEmpty()}">
+                          <div class="user-nav-info-card">
+                            <span class="user-nav-info-icon fas fa-clock text-info"></span>
+                            <div class="user-nav-info-text">
+                              <div class="user-nav-info-label">접속</div>
+                              <div class="user-nav-info-value" th:text="${loginAtText}">—</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="user-nav-info-card">
+                            <span class="user-nav-info-icon fas fa-hourglass-half text-warning"></span>
+                            <div class="user-nav-info-text">
+                              <div class="user-nav-info-label">세션</div>
+                              <div class="user-nav-info-value"><span th:text="${sessionTimeoutMinutes}">10</span>분 유휴 시 만료</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="user-nav-section-title">
+                        <span class="fas fa-shield-alt me-1"></span>권한 정보
+                      </div>
+                      <div class="user-nav-perm-card mb-0">
+                        <div class="d-flex flex-wrap align-items-center gap-1 mb-2">
+                          <span class="badge rounded-pill user-nav-role-badge" th:text="${authRoleLabel}">역할</span>
+                          <span class="fs--2 text-500" th:if="${authRoleCd != null}" th:text="|${authRoleCd}|">CODE</span>
+                        </div>
+                        <div class="user-nav-perm-row">
+                          <span class="user-nav-perm-label">수정</span>
+                          <span class="user-nav-perm-value" th:text="${authWriteLabel}">—</span>
+                        </div>
+                        <div class="user-nav-perm-row">
+                          <span class="user-nav-perm-label">업체</span>
+                          <span class="user-nav-perm-value" th:text="${authCompanySummary}">—</span>
+                        </div>
+                        <div class="user-nav-perm-row mb-0">
+                          <span class="user-nav-perm-label">메뉴</span>
+                          <span class="user-nav-perm-value"><span th:text="${authMenuCount}">0</span>개 허용</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="user-nav-dropdown-actions px-3 pb-3 pt-0">
+                      <div class="d-grid gap-1">
+                        <a class="btn btn-falcon-default btn-sm" th:href="@{/pages/user/settings}">
+                          <span class="fas fa-user-circle me-1"></span>프로필 설정
+                        </a>
+                        <a class="btn btn-outline-danger btn-sm" th:href="@{/auth/logout}">
+                          <span class="fas fa-sign-out-alt me-1"></span>로그아웃
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </li>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.dto.InventoryStockAdjustDto;
 import com.example.springbootapp.service.EcmProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -40,9 +41,11 @@ public class AdminInventoryApiController {
 			@RequestParam(required = false) String productNm,
 			@RequestParam(required = false) String categoryCd,
 			@RequestParam(required = false) String statusCd,
-			@RequestParam(required = false) String stockFilter) {
+			@RequestParam(required = false) String stockFilter,
+			HttpServletRequest request,
+			HttpSession session) {
 		List<Map<String, Object>> items = ecmProductService
-				.searchInventory(productNm, categoryCd, statusCd, stockFilter)
+				.searchInventory(productNm, categoryCd, statusCd, stockFilter, request, session)
 				.stream()
 				.map(this::toRow)
 				.collect(Collectors.toList());

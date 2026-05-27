@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.springbootapp.domain.EcmProduct;
 import com.example.springbootapp.dto.EcmProductFormDto;
 import com.example.springbootapp.dto.ProductExcelImportResult;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 /**
  * 상품 xlsx 내보내기·가져오기 (Apache POI).
@@ -49,8 +50,10 @@ public class ProductExcelService {
 	 * @return xlsx 파일 바이트 배열
 	 * @throws IOException 워크북 생성·쓰기 실패 시
 	 */
-	public byte[] export(String productNm, String categoryCd, String statusCd) throws IOException {
-		List<EcmProduct> products = ecmProductService.search(productNm, categoryCd, statusCd);
+	public byte[] export(
+			String productNm, String categoryCd, String statusCd, HttpServletRequest request, HttpSession session)
+			throws IOException {
+		List<EcmProduct> products = ecmProductService.search(productNm, categoryCd, statusCd, request, session);
 		try (Workbook workbook = new XSSFWorkbook()) {
 			Sheet sheet = workbook.createSheet("상품목록");
 			writeHeaderRow(workbook, sheet);
@@ -104,7 +107,8 @@ public class ProductExcelService {
 	 * @throws IOException 파일 읽기 실패 시
 	 */
 	@Transactional
-	public ProductExcelImportResult importExcel(InputStream inputStream, HttpSession session) throws IOException {
+	public ProductExcelImportResult importExcel(
+			InputStream inputStream, HttpSession session, HttpServletRequest request) throws IOException {
 		ProductExcelImportResult result = new ProductExcelImportResult();
 		try (Workbook workbook = new XSSFWorkbook(inputStream)) {
 			Sheet sheet = workbook.getNumberOfSheets() > 0 ? workbook.getSheetAt(0) : null;
@@ -138,7 +142,7 @@ public class ProductExcelService {
 					}
 					boolean isUpdate = dto.getProductId() != null
 							&& ecmProductService.findById(dto.getProductId()) != null;
-					ecmProductService.save(dto, session);
+					ecmProductService.save(dto, session, request);
 					if (isUpdate) {
 						result.incrementUpdated();
 					} else {

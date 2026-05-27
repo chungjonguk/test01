@@ -18,9 +18,15 @@ import jakarta.servlet.http.HttpSession;
 public class BizCompanyService {
 	private static final int MAX_LIMIT = 500;
 	private final BizCompanyMapper bizCompanyMapper;
+	private final BizCompanyDomainService bizCompanyDomainService;
 	private final SessionAuthService sessionAuthService;
-	public BizCompanyService(BizCompanyMapper bizCompanyMapper, SessionAuthService sessionAuthService) {
+
+	public BizCompanyService(
+			BizCompanyMapper bizCompanyMapper,
+			BizCompanyDomainService bizCompanyDomainService,
+			SessionAuthService sessionAuthService) {
 		this.bizCompanyMapper = bizCompanyMapper;
+		this.bizCompanyDomainService = bizCompanyDomainService;
 		this.sessionAuthService = sessionAuthService;
 	}
 	/**
@@ -67,6 +73,10 @@ public class BizCompanyService {
 		entity.setUpdateId(actor);
 		if (dto.getCompanyId() == null) {
 			bizCompanyMapper.insert(entity);
+			if (dto.getPrimaryHostName() != null && !dto.getPrimaryHostName().isBlank()) {
+				bizCompanyDomainService.registerPrimaryHostForNewCompany(
+						entity.getCompanyId(), dto.getPrimaryHostName(), actor);
+			}
 			return entity.getCompanyId();
 		}
 		BizCompany existing = bizCompanyMapper.findById(dto.getCompanyId());

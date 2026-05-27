@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.UserCompanyMapper">
+
+    <select id="findCompanyIdsByUserId" resultType="long">
+        SELECT company_id
+        FROM user_company
+        WHERE user_id = #{userId} AND use_yn = 'Y'
+        ORDER BY company_id
+    </select>
+
+    <delete id="deleteByUserId">
+        DELETE FROM user_company WHERE user_id = #{userId}
+    </delete>
+
+    <insert id="insert">
+        INSERT INTO user_company (user_id, company_id, use_yn, reg_id, update_id)
+        VALUES (#{userId}, #{companyId}, 'Y', #{regId}, #{updateId})
+        ON DUPLICATE KEY UPDATE use_yn = 'Y', update_id = VALUES(update_id)
+    </insert>
+</mapper>

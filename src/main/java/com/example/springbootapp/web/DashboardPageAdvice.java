@@ -1,6 +1,7 @@
 package com.example.springbootapp.web;
 
 import com.example.springbootapp.config.DashboardWidgetCatalog;
+import com.example.springbootapp.config.web.CompanyHostTenantContext;
 import com.example.springbootapp.config.web.DoPathHelper;
 import com.example.springbootapp.config.web.PublicPathCryptoService;
 import com.example.springbootapp.service.DashboardCompanyConfigService;
@@ -38,6 +39,12 @@ public class DashboardPageAdvice {
 		Long companyId = companySessionService.resolveSelectedCompanyId(session);
 		model.addAttribute("dashboardCompanyId", companyId);
 		model.addAttribute("dashboardCompanyName", companySessionService.companyName(companyId));
+
+		Object tenantHost = request.getAttribute(CompanyHostTenantContext.ATTR_RESOLVED_HOST);
+		if (tenantHost != null) {
+			model.addAttribute("tenantResolvedHost", tenantHost);
+			model.addAttribute("tenantCompanyName", request.getAttribute(CompanyHostTenantContext.ATTR_COMPANY_NAME));
+		}
 
 		if (!isDashboardUri(request)) {
 			return;

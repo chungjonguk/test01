@@ -36,6 +36,10 @@ public interface UserMapper {
 	 * @return 존재하면 {@code true}
 	 */
 	boolean existsByEmail(@Param("email") String email);
+
+	boolean existsByEmailForOtherUser(@Param("email") String email, @Param("id") String id);
+
+	int updateProfileSettings(User user);
 	/**
 	 * 사용자를 등록합니다.
 	 *
@@ -59,6 +63,17 @@ public interface UserMapper {
 	 * @return 반영된 행 수
 	 */
 	int updatePassword(@Param("id") String id, @Param("pw") String pw, @Param("updateId") String updateId);
+
+	int updateProfileImageUrl(
+			@Param("id") String id,
+			@Param("profileImageUrl") String profileImageUrl,
+			@Param("updateId") String updateId);
+
+	int updateCoverImageUrl(
+			@Param("id") String id,
+			@Param("coverImageUrl") String coverImageUrl,
+			@Param("updateId") String updateId);
+
 	/**
 	 * 로그인 ID로 사용자를 삭제합니다.
 	 *

@@ -1070,6 +1070,10 @@ var dropdownOnHover = function dropdownOnHover() {
 window.Dropzone ? window.Dropzone.autoDiscover = false : '';
 
 var dropzoneInit = function dropzoneInit() {
+  if (typeof window.Dropzone !== 'function') {
+    return;
+  }
+  window.Dropzone.autoDiscover = false;
   var merge = window._.merge;
   var Selector = {
     DROPZONE: '[data-dropzone]',
@@ -4107,7 +4111,13 @@ var searchInit = function searchInit() {
 
 
 var swiperInit = function swiperInit() {
+  if (typeof window.Swiper !== 'function') {
+    return;
+  }
   var swipers = document.querySelectorAll('[data-swiper]');
+  if (!swipers.length) {
+    return;
+  }
   var navbarVerticalToggle = document.querySelector('.navbar-vertical-toggle');
   swipers.forEach(function (swiper) {
     var options = utils.getData(swiper, 'swiper');

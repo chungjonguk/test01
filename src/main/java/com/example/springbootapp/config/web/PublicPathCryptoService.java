@@ -39,8 +39,15 @@ public class PublicPathCryptoService {
 
 	/** 논리 경로 → 공개 URL ({@code /e/토큰.do}) */
 	public String toPublicPath(String path) {
-		if (!isEnabled() || DoPathHelper.shouldSkipSuffix(path)) {
+		if (!isEnabled()) {
 			return path == null || path.isBlank() ? "/" : stripQuery(path.trim());
+		}
+		if (path == null || path.isBlank()) {
+			path = "/";
+		}
+		String trimmed = stripQuery(path.trim());
+		if (DoPathHelper.shouldSkipEncryption(trimmed)) {
+			return trimmed.isEmpty() ? "/" : trimmed;
 		}
 		String canonical = DoPathHelper.toDoPath(path);
 		if (isAlreadyPublic(canonical)) {
@@ -109,6 +116,7 @@ public class PublicPathCryptoService {
 				mapped.add(raw);
 			} else {
 				mapped.add(toPublicPath(raw));
+				mapped.add(DoPathHelper.toDoPath(raw));
 			}
 		}
 		if (mapped.isEmpty()) {
@@ -182,7 +190,8 @@ public class PublicPathCryptoService {
 	}
 
 	private static String stripQuery(String uri) {
-		int q = uri.indexOf('?');
-		return q >= 0 ? uri.substring(0, q) : uri;
+		String sanitized = DoPathHelper.sanitizeRequestPath(uri);
+		int q = sanitized.indexOf('?');
+		return q >= 0 ? sanitized.substring(0, q) : sanitized;
 	}
 }

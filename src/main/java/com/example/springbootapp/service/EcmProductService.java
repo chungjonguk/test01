@@ -13,6 +13,7 @@ import com.example.springbootapp.dto.EcmProductFormDto;
 import com.example.springbootapp.dto.InventoryStockAdjustDto;
 import com.example.springbootapp.mapper.EcmProductImageMapper;
 import com.example.springbootapp.mapper.EcmProductMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 /**
  * 이커머스 상품 및 상품 이미지 조회·등록·수정·삭제를 처리하는 서비스.
@@ -27,13 +28,20 @@ public class EcmProductService {
 	private final EcmProductMapper ecmProductMapper;
 	private final EcmProductImageMapper ecmProductImageMapper;
 	private final SessionAuthService sessionAuthService;
+	private final CompanyTenantContext companyTenantContext;
+	private final DashboardCompanySessionService companySessionService;
+
 	public EcmProductService(
 			EcmProductMapper ecmProductMapper,
 			EcmProductImageMapper ecmProductImageMapper,
-			SessionAuthService sessionAuthService) {
+			SessionAuthService sessionAuthService,
+			CompanyTenantContext companyTenantContext,
+			DashboardCompanySessionService companySessionService) {
 		this.ecmProductMapper = ecmProductMapper;
 		this.ecmProductImageMapper = ecmProductImageMapper;
 		this.sessionAuthService = sessionAuthService;
+		this.companyTenantContext = companyTenantContext;
+		this.companySessionService = companySessionService;
 	}
 	/**
 	 * 조건에 맞는 상품 목록을 검색한다.
@@ -44,7 +52,24 @@ public class EcmProductService {
 	 * @return 상품 엔티티 목록
 	 */
 	public List<EcmProduct> search(String productNm, String categoryCd, String statusCd) {
-		return ecmProductMapper.findAll(trimToNull(productNm), trimToNull(categoryCd), trimToNull(statusCd));
+		return search(productNm, categoryCd, statusCd, null, null);
+	}
+
+	public List<EcmProduct> search(
+			String productNm, String categoryCd, String statusCd, HttpServletRequest request, HttpSession session) {
+		Long companyId = companyTenantContext.resolveProductScopeCompanyId(request, session);
+		return ecmProductMapper.findAll(
+				companyId, trimToNull(productNm), trimToNull(categoryCd), trimToNull(statusCd));
+	}
+
+	/** 고객 스토어: Host 테넌트 업체의 판매중(ACTIVE) 상품만 */
+	public List<EcmProduct> searchStoreCatalog(HttpServletRequest request) {
+		Long companyId = companyTenantContext.resolveTenantCompanyId(request);
+		if (companyId == null) {
+			throw new IllegalArgumentException("업체 도메인으로 접속해 주세요.");
+		}
+		return ecmProductMapper.findAll(
+				companyId, null, null, CompanyTenantContext.STORE_CATALOG_STATUS);
 	}
 
 	/**
@@ -58,7 +83,23 @@ public class EcmProductService {
 		if (filter == null) {
 			filter = "ALL";
 		}
+		return searchInventory(productNm, categoryCd, statusCd, stockFilter, null, null);
+	}
+
+	public List<EcmProduct> searchInventory(
+			String productNm,
+			String categoryCd,
+			String statusCd,
+			String stockFilter,
+			HttpServletRequest request,
+			HttpSession session) {
+		String filter = trimToNull(stockFilter);
+		if (filter == null) {
+			filter = "ALL";
+		}
+		Long companyId = companyTenantContext.resolveProductScopeCompanyId(request, session);
 		return ecmProductMapper.findForInventory(
+				companyId,
 				trimToNull(productNm),
 				trimToNull(categoryCd),
 				trimToNull(statusCd),
@@ -115,6 +156,23 @@ public class EcmProductService {
 		}
 		return ecmProductMapper.findById(productId);
 	}
+
+	public EcmProduct findByIdForScope(Long productId, HttpServletRequest request, HttpSession session) {
+		EcmProduct product = findById(productId);
+		if (product == null) {
+			return null;
+		}
+		Long scopeCompanyId = companyTenantContext.resolveProductScopeCompanyId(request, session);
+		if (scopeCompanyId != null && product.getCompanyId() != null
+				&& !scopeCompanyId.equals(product.getCompanyId())) {
+			return null;
+		}
+		if (companyTenantContext.resolveTenantCompanyId(request) != null
+				&& !CompanyTenantContext.STORE_CATALOG_STATUS.equalsIgnoreCase(product.getStatusCd())) {
+			return null;
+		}
+		return product;
+	}
 	/**
 	 * 상품에 연결된 이미지 목록을 조회한다. 별도 이미지가 없으면 레거시 imgUrl을 반환한다.
 	 *
@@ -163,10 +221,17 @@ public class EcmProductService {
 	 */
 	@Transactional
 	public Long save(EcmProductFormDto dto, HttpSession session) {
+		return save(dto, session, null);
+	}
+
+	@Transactional
+	public Long save(EcmProductFormDto dto, HttpSession session, HttpServletRequest request) {
 		validate(dto);
 		List<String> imageUrls = normalizeImageUrls(dto);
 		String actor = resolveActor(session);
 		EcmProduct product = toEntity(dto);
+		Long scopeCompanyId = resolveSaveCompanyId(dto, request, session);
+		product.setCompanyId(scopeCompanyId);
 		product.setImgUrl(imageUrls.isEmpty() ? null : imageUrls.get(0));
 		product.setRegId(actor);
 		product.setUpdateId(actor);
@@ -179,7 +244,14 @@ public class EcmProductService {
 		if (existing == null) {
 			throw new IllegalArgumentException("상품을 찾을 수 없습니다.");
 		}
+		if (scopeCompanyId != null && existing.getCompanyId() != null
+				&& !scopeCompanyId.equals(existing.getCompanyId())) {
+			throw new IllegalArgumentException("다른 업체의 상품은 수정할 수 없습니다.");
+		}
 		product.setProductId(dto.getProductId());
+		if (existing.getCompanyId() != null) {
+			product.setCompanyId(existing.getCompanyId());
+		}
 		ecmProductMapper.update(product);
 		saveImages(product.getProductId(), imageUrls, actor);
 		return product.getProductId();
@@ -320,6 +392,20 @@ public class EcmProductService {
 		p.setDescription(trimToNull(dto.getDescription()));
 		return p;
 	}
+	private Long resolveSaveCompanyId(EcmProductFormDto dto, HttpServletRequest request, HttpSession session) {
+		Long scope = companyTenantContext.resolveProductScopeCompanyId(request, session);
+		if (dto.getCompanyId() != null) {
+			if (scope != null && !scope.equals(dto.getCompanyId())) {
+				throw new IllegalArgumentException("선택 업체와 일치하지 않는 companyId입니다.");
+			}
+			return dto.getCompanyId();
+		}
+		if (scope != null) {
+			return scope;
+		}
+		return companySessionService.resolveSelectedCompanyId(session);
+	}
+
 	private String resolveActor(HttpSession session) {
 		String userId = sessionAuthService.getLoginUserId(session);
 		return userId != null && !userId.isBlank() ? userId : "SYSTEM";

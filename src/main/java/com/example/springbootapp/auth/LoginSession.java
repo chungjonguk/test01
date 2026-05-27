@@ -13,6 +13,8 @@ public class LoginSession implements Serializable {
     /** FORM, KAKAO, NAVER */
     private String loginType;
     private LocalDateTime loginAt;
+    private MenuAccessSnapshot menuAccess;
+
     public String getUserId() {
         return userId;
     }
@@ -42,5 +44,13 @@ public class LoginSession implements Serializable {
     }
     public void setLoginAt(LocalDateTime loginAt) {
         this.loginAt = loginAt;
+    }
+
+    public MenuAccessSnapshot getMenuAccess() {
+        return menuAccess;
+    }
+
+    public void setMenuAccess(MenuAccessSnapshot menuAccess) {
+        this.menuAccess = menuAccess;
     }
 }

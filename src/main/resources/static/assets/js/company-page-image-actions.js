@@ -288,13 +288,25 @@
     showMessage('업로드 중…', false);
     fetch(API, { method: 'POST', body: form, credentials: 'same-origin' })
       .then(function (res) {
-        return res.json().then(function (data) {
-          return { ok: res.ok, data: data };
-        });
+        var ct = res.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') >= 0) {
+          return res.json().then(function (data) {
+            return { ok: res.ok, status: res.status, data: data };
+          });
+        }
+        return { ok: res.ok, status: res.status, data: { success: false, message: '서버 오류 (' + res.status + ')' } };
       })
       .then(function (result) {
+        if (result.status === 401) {
+          showMessage('로그인이 필요합니다. 다시 로그인해 주세요.', true);
+          return;
+        }
+        if (result.status === 403) {
+          showMessage('이미지 등록 권한이 없습니다. 플랫폼·업체 관리자 계정으로 로그인해 주세요.', true);
+          return;
+        }
         if (!result.ok || !result.data.success) {
-          throw new Error(result.data.message || '업로드 실패');
+          throw new Error(result.data.message || '업로드 실패 (' + result.status + ')');
         }
         renderPreview(col, result.data.image, { bustCache: true });
         fileInput.value = '';
@@ -415,6 +427,10 @@
     }
     bindSlots();
     bindCompanySelect();
+    if (!getCompanyId()) {
+      showMessage('업체를 선택한 뒤 이미지를 등록하세요.', true);
+      return;
+    }
     loadImages();
   }
 

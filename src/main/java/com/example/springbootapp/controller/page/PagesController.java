@@ -1,6 +1,8 @@
 package com.example.springbootapp.controller.page;
 import com.example.springbootapp.auth.SessionAuthService;
+import com.example.springbootapp.service.UserProfileImageService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class PagesController {
 	private final SessionAuthService sessionAuthService;
-	public PagesController(SessionAuthService sessionAuthService) {
+	private final UserProfileImageService userProfileImageService;
+
+	public PagesController(
+			SessionAuthService sessionAuthService,
+			UserProfileImageService userProfileImageService) {
 		this.sessionAuthService = sessionAuthService;
+		this.userProfileImageService = userProfileImageService;
 	}
 	/**
 	 * @return out: Thymeleaf view path {@code pages/starter}
@@ -35,7 +42,10 @@ public class PagesController {
 	 * @return out: Thymeleaf view path {@code pages/authentication/simple/login}
 	 */
 	@GetMapping("/pages/authentication/simple/login")
-	public String pagesAuthSimpleLogin(Model model) {
+	public String pagesAuthSimpleLogin(HttpServletRequest request, Model model) {
+		if (sessionAuthService.isLoggedIn(request.getSession(false))) {
+			return "redirect:/dashboard";
+		}
 		model.addAttribute("title", "로그인");
 		return "pages/authentication/simple/login";
 	}
@@ -211,19 +221,35 @@ public class PagesController {
 		return "pages/authentication/wizard";
 	}
 	/**
-	 * @return out: Thymeleaf view path {@code pages/user/profile}
+	 * 계정 프로필 — {@code pages/user/settings} 와 동일 화면.
 	 */
 	@GetMapping("/pages/user/profile")
-	public String pagesUserProfile(Model model) {
-		model.addAttribute("title", "프로필");
-		return "pages/user/profile";
+	public String pagesUserProfile(HttpSession session, Model model) {
+		return renderUserSettingsPage(session, model);
 	}
+
 	/**
 	 * @return out: Thymeleaf view path {@code pages/user/settings}
 	 */
 	@GetMapping("/pages/user/settings")
-	public String pagesUserSettings(Model model) {
-		model.addAttribute("title", "설정");
+	public String pagesUserSettings(HttpSession session, Model model) {
+		return renderUserSettingsPage(session, model);
+	}
+
+	private String renderUserSettingsPage(HttpSession session, Model model) {
+		if (!sessionAuthService.isLoggedIn(session)) {
+			return "redirect:/pages/authentication/simple/login?returnUrl=/pages/user/settings";
+		}
+		var login = sessionAuthService.getLoginSession(session);
+		if (login != null && login.getUserId() != null) {
+			userProfileImageService.findUser(login.getUserId()).ifPresent(user -> {
+				model.addAttribute("userProfileImageUrl", user.getProfileImageUrl());
+				model.addAttribute("userCoverImageUrl", user.getCoverImageUrl());
+				model.addAttribute("settingsUser", user);
+			});
+		}
+		model.addAttribute("title", "프로필 설정");
+		model.addAttribute("loadUserSettingsActions", true);
 		return "pages/user/settings";
 	}
 	/**
@@ -273,6 +299,14 @@ public class PagesController {
 	public String pagesErrors404(Model model) {
 		model.addAttribute("title", "404 - 페이지를 찾을 수 없음");
 		return "pages/errors/404";
+	}
+	/**
+	 * @return out: Thymeleaf view path {@code pages/errors/403}
+	 */
+	@GetMapping("/pages/errors/403")
+	public String pagesErrors403(Model model) {
+		model.addAttribute("title", "403 - 접근 권한 없음");
+		return "pages/errors/403";
 	}
 	/**
 	 * @return out: Thymeleaf view path {@code pages/errors/500}

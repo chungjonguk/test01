@@ -15,6 +15,110 @@
         <span class="nav-link-text ps-1">쇼핑몰 홈</span>
       </div>
     </a>
+    <a class="nav-link dropdown-indicator" href="#sidebar-shopping-product" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-shopping-product">
+      <div class="d-flex align-items-center">
+        <span class="nav-link-icon"><span class="fas fa-box-open"></span></span>
+        <span class="nav-link-text ps-1">상품 관리</span>
+      </div>
+    </a>
+    <ul class="nav collapse" id="sidebar-shopping-product">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-list}" data-menu-path="/app/e-commerce/product/product-list" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-list"></span></span>
+            <span class="nav-link-text ps-1">상품 목록</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-grid}" data-menu-path="/app/e-commerce/product/product-grid" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-th"></span></span>
+            <span class="nav-link-text ps-1">상품 그리드</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-register}" data-menu-path="/app/e-commerce/product/product-register" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-plus-circle"></span></span>
+            <span class="nav-link-text ps-1">상품 등록</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-manage}" data-menu-path="/app/e-commerce/product/product-manage" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-edit"></span></span>
+            <span class="nav-link-text ps-1">상품 관리</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-images}" data-menu-path="/app/e-commerce/product/product-images" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-images"></span></span>
+            <span class="nav-link-text ps-1">상품 이미지</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/inventory}" data-menu-path="/admin/inventory" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-warehouse"></span></span>
+            <span class="nav-link-text ps-1">재고관리</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/shipping}" data-menu-path="/admin/shipping" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-shipping-fast"></span></span>
+            <span class="nav-link-text ps-1">운송장발급</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/billing}" data-menu-path="/app/e-commerce/billing" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-file-invoice-dollar"></span></span>
+            <span class="nav-link-text ps-1">청구</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <a class="nav-link dropdown-indicator" href="#sidebar-shopping-orders" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-shopping-orders">
+      <div class="d-flex align-items-center">
+        <span class="nav-link-icon"><span class="fas fa-receipt"></span></span>
+        <span class="nav-link-text ps-1">주문</span>
+      </div>
+    </a>
+    <ul class="nav collapse" id="sidebar-shopping-orders">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-menu-path="/app/e-commerce/orders/order-list" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-list-alt"></span></span>
+            <span class="nav-link-text ps-1">주문 목록</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/orders/order-details}" data-menu-path="/app/e-commerce/orders/order-details" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-truck"></span></span>
+            <span class="nav-link-text ps-1">주문 상세</span>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/app/e-commerce/invoice}" data-menu-path="/app/e-commerce/invoice" data-bs-toggle="" aria-expanded="false">
+          <div class="d-flex align-items-center">
+            <span class="nav-link-icon"><span class="fas fa-file-invoice"></span></span>
+            <span class="nav-link-text ps-1">인보이스</span>
+          </div>
+        </a>
+      </li>
+    </ul>
     <a class="nav-link dropdown-indicator" href="#sidebar-shopping-mall" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="sidebar-shopping-mall">
       <div class="d-flex align-items-center">
         <span class="nav-link-icon"><span class="fas fa-shopping-bag"></span></span>
@@ -23,18 +127,10 @@
     </a>
     <ul class="nav collapse show" id="sidebar-shopping-mall">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/product/product-grid}" data-bs-toggle="" aria-expanded="false">
+        <a class="nav-link" th:href="@{/app/e-commerce/product/product-grid}" data-menu-path="/app/e-commerce/product/product-grid" data-bs-toggle="" aria-expanded="false">
           <div class="d-flex align-items-center">
             <span class="nav-link-icon"><span class="fas fa-th"></span></span>
             <span class="nav-link-text ps-1">상품 카탈로그</span>
-          </div>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/product/product-list}" data-bs-toggle="" aria-expanded="false">
-          <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fas fa-list"></span></span>
-            <span class="nav-link-text ps-1">상품 목록</span>
           </div>
         </a>
       </li>
@@ -48,26 +144,10 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/checkout}" data-bs-toggle="" aria-expanded="false">
+        <a class="nav-link" th:href="@{/app/e-commerce/checkout}" data-menu-path="/app/e-commerce/checkout" data-bs-toggle="" aria-expanded="false">
           <div class="d-flex align-items-center">
             <span class="nav-link-icon"><span class="fas fa-credit-card"></span></span>
             <span class="nav-link-text ps-1">주문·결제</span>
-          </div>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-bs-toggle="" aria-expanded="false">
-          <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fas fa-receipt"></span></span>
-            <span class="nav-link-text ps-1">주문 내역</span>
-          </div>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/orders/order-details}" data-bs-toggle="" aria-expanded="false">
-          <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fas fa-truck"></span></span>
-            <span class="nav-link-text ps-1">주문·배송 상세</span>
           </div>
         </a>
       </li>
@@ -80,7 +160,7 @@
     </a>
     <ul class="nav collapse" id="sidebar-shopping-mypage">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/pages/user/profile}" data-bs-toggle="" aria-expanded="false">
+        <a class="nav-link" th:href="@{/pages/user/settings}" data-bs-toggle="" aria-expanded="false">
           <div class="d-flex align-items-center">
             <span class="nav-link-icon"><span class="fas fa-id-card"></span></span>
             <span class="nav-link-text ps-1">내 프로필</span>
@@ -92,14 +172,6 @@
           <div class="d-flex align-items-center">
             <span class="nav-link-icon"><span class="fas fa-users"></span></span>
             <span class="nav-link-text ps-1">고객 정보</span>
-          </div>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/app/e-commerce/invoice}" data-bs-toggle="" aria-expanded="false">
-          <div class="d-flex align-items-center">
-            <span class="nav-link-icon"><span class="fas fa-file-invoice"></span></span>
-            <span class="nav-link-text ps-1">영수증·인보이스</span>
           </div>
         </a>
       </li>

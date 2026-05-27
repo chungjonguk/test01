@@ -4,15 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base th:href="@{/}">
     <title th:text="${title} ?: (${appBrandName} + ' | 인증')">PrintMall | 인증</title>
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/img/favicons/apple-touch-icon.png}">
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/img/favicons/favicon-32x32.png}">
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/img/favicons/favicon-16x16.png}">
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/favicons/favicon.ico}">
     <link rel="manifest" th:href="@{/assets/img/favicons/manifest.json}">
-    <meta name="msapplication-TileImage" content="/assets/img/favicons/mstile-150x150.png">
+    <meta name="msapplication-TileImage" th:content="@{/assets/img/favicons/mstile-150x150.png}">
     <meta name="theme-color" content="#ffffff">
     <script th:src="@{/assets/js/config.js}"></script>
+    <script th:src="@{/assets/js/asset-path-fix.js(v=1)}"></script>
     <script th:src="@{/vendors/simplebar/simplebar.min.js}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

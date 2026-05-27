@@ -317,11 +317,11 @@ public class AppController {
 		return "app/social/activity-log";
 	}
 	/**
-	 * @return out: Thymeleaf view path {@code app/social/notifications}
+	 * @return out: 알림 목록 화면으로 통합 리다이렉트
 	 */
 	@GetMapping("/app/social/notifications")
 	public String appSocialNotifications() {
-		return "app/social/notifications";
+		return "redirect:/app/social/notification-list";
 	}
 	/**
 	 * @return out: Thymeleaf view path {@code app/social/notification-list}

@@ -6,14 +6,30 @@
 (function (global) {
   'use strict';
 
-  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/error', '/api/'];
+  var EXCLUDED_PREFIXES = ['/auth/', '/assets/', '/vendors/', '/uploads/', '/error', '/api/'];
   var ENCRYPT_PREFIX = '/e/';
   var cache = Object.create(null);
   var pending = Object.create(null);
 
   function stripQuery(path) {
+    if (!path) {
+      return path;
+    }
     var q = path.indexOf('?');
-    return q >= 0 ? path.substring(0, q) : path;
+    var query = q >= 0 ? path.substring(q) : '';
+    var base = q >= 0 ? path.substring(0, q) : path;
+    var semi = base.indexOf(';');
+    if (semi >= 0) {
+      var before = base.substring(0, semi);
+      var after = base.substring(semi + 1);
+      var doIdx = after.indexOf('.do');
+      if (doIdx >= 0 && before.slice(-3) !== '.do') {
+        base = before + '.do';
+      } else {
+        base = before;
+      }
+    }
+    return base + query;
   }
 
   /** 사이드바 메뉴 필터용 논리 경로 키 (암호화 전 href 보존) */
@@ -22,6 +38,9 @@
       return '';
     }
     var p = stripQuery(path);
+    if (p.indexOf('/e/') === 0) {
+      return '';
+    }
     if (p.length > 3 && p.slice(-3) === '.do') {
       p = p.slice(0, -3);
     }
@@ -31,7 +50,24 @@
     return p;
   }
 
-  function hasFileExtension(path) {
+  function ensureMenuPath(link, href) {
+    if (!link || !href) {
+      return;
+    }
+    var existing = link.getAttribute('data-menu-path');
+    if (existing && existing.indexOf('/e/') !== 0) {
+      return;
+    }
+    var key = toMenuPathKey(href);
+    if (key) {
+      link.setAttribute('data-menu-path', key);
+    }
+  }
+
+  function hasNonDoFileExtension(path) {
+    if (!path || path.slice(-3) === '.do') {
+      return false;
+    }
     var slash = path.lastIndexOf('/');
     var last = slash >= 0 ? path.substring(slash + 1) : path;
     var dot = last.indexOf('.');
@@ -52,7 +88,10 @@
     if (p.indexOf(ENCRYPT_PREFIX) === 0 && p.slice(-3) === '.do') {
       return true;
     }
-    return hasFileExtension(p);
+    if (p.length > 3 && p.slice(-3) === '.do') {
+      return false;
+    }
+    return hasNonDoFileExtension(p);
   }
 
   function isEncrypted(path) {
@@ -150,9 +189,7 @@
       if (!href || shouldSkip(href)) {
         return;
       }
-      if (!link.getAttribute('data-menu-path')) {
-        link.setAttribute('data-menu-path', toMenuPathKey(href));
-      }
+      ensureMenuPath(link, href);
       tasks.push(
         toPublic(href).then(function (enc) {
           if (enc && enc !== href) {

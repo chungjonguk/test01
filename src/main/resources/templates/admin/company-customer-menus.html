@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<th:block th:replace="~{layout :: body}">
+<div th:fragment="page-content">
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="mb-0">고객 노출 메뉴 설정</h5>
+    </div>
+    <div class="card-body">
+      <p class="text-600 fs--1 mb-3">
+        <strong>COMPANY_CUSTOMER</strong> 권한 사용자에게 보여 줄 메뉴를 업체별로 선택합니다.
+        선택 업체: <span class="badge badge-soft-primary" th:text="${dashboardCompanyName}">—</span>
+      </p>
+      <div id="customer-menu-list" class="row g-2"></div>
+      <div class="mt-3">
+        <button type="button" class="btn btn-primary btn-sm" id="btn-save-customer-menus">저장</button>
+      </div>
+      <div id="customer-menu-message" class="mt-2 fs--1"></div>
+    </div>
+  </div>
+</div>
+</th:block>
+</body>
+</html>

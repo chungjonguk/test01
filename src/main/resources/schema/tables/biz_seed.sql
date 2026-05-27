@@ -6,10 +6,14 @@ INSERT INTO ecm_customer (customer_id, customer_nm, email, phone, address, reg_i
 (2, 'Kin Rossow', 'kin@example.com', '010-1111-0002', '1 Hollywood Blvd, Beverly Hills, California', 'SYSTEM', 'SYSTEM')
 ON DUPLICATE KEY UPDATE customer_nm = VALUES(customer_nm), update_id = VALUES(update_id);
 
-INSERT INTO ecm_product (product_id, product_nm, category_cd, price, stock_qty, status_cd, reg_id, update_id) VALUES
-(1, 'Fitbit Tracker', 'WEARABLE', 99.00, 50, 'ACTIVE', 'SYSTEM', 'SYSTEM'),
-(2, 'Apple Watch', 'WEARABLE', 199.00, 30, 'ACTIVE', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE product_nm = VALUES(product_nm), update_id = VALUES(update_id);
+INSERT INTO biz_company (company_id, company_nm, status_cd, use_yn, reg_id, update_id)
+VALUES (1, '기본 데모 업체', 'ACTIVE', 'Y', 'SYSTEM', 'SYSTEM')
+ON DUPLICATE KEY UPDATE company_nm = VALUES(company_nm), update_id = VALUES(update_id);
+
+INSERT INTO ecm_product (product_id, company_id, product_nm, category_cd, price, stock_qty, status_cd, reg_id, update_id) VALUES
+(1, 1, 'Fitbit Tracker', 'WEARABLE', 99.00, 50, 'ACTIVE', 'SYSTEM', 'SYSTEM'),
+(2, 1, 'Apple Watch', 'WEARABLE', 199.00, 30, 'ACTIVE', 'SYSTEM', 'SYSTEM')
+ON DUPLICATE KEY UPDATE product_nm = VALUES(product_nm), company_id = VALUES(company_id), update_id = VALUES(update_id);
 
 INSERT INTO ecm_order (order_id, order_no, customer_id, order_dt, ship_to, shipping_method, status_cd, amount, reg_id, update_id) VALUES
 (1, '#181', 1, '2019-04-20', 'Ricky Antony, 2392 Main Avenue, Penasauka, New Jersey 02149', 'Flat Rate', 'COMPLETED', 99.00, 'SYSTEM', 'SYSTEM'),

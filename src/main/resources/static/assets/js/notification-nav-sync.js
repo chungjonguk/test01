@@ -448,7 +448,7 @@
     var title = global.document.getElementById('notification-page-title');
     if (title) {
       var unread = getUnreadCount(items);
-      title.textContent = unread ? '알림 목록 (' + unread + '건 미읽음)' : '알림 목록';
+      title.textContent = unread ? '알림 (' + unread + '건 미읽음)' : '알림';
     }
   }
 
