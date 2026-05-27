@@ -210,14 +210,14 @@
     <script th:if="${loadProductGridActions}" th:src="@{/assets/js/product-grid-actions.js(v=1)}"></script>
     <script th:if="${hideSidebar != true or storefrontMode}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=9)}"></script>
-    <script th:src="@{/assets/js/code-select-loader.js(v=1)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/currency-won.js(v=2)}"></script>
     <script th:if="${isLoggedIn}" th:inline="javascript">
       window.__USER_PROFILE_IMAGE_URL__ = /*[[${userProfileImageUrl}]]*/ '';
     </script>
     <script th:if="${isLoggedIn}" th:src="@{/assets/js/user-nav-avatar-sync.js(v=1)}"></script>
-    <script th:src="@{/assets/js/app-common.js(v=7)}"></script>
+    <script th:src="@{/assets/js/app-common.js(v=8)}"></script>
+    <script th:src="@{/assets/js/code-select-loader.js(v=2)}"></script>
     <script th:inline="javascript">
       window.__PRINTMALL_GRID_PAGE_SIZE__ = /*[[${gridPageSize}]]*/ 30;
     </script>

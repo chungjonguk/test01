@@ -591,21 +591,26 @@
     wrap.appendChild(label);
 
     var control;
-    if (f.type === 'select' && f.options && f.options.length) {
+    if (f.type === 'select' && (f.codeGroup || (f.options && f.options.length))) {
       control = document.createElement('select');
       control.className = 'form-select form-select-sm code-mgmt-prompt-select';
       control.id = fieldId;
-      var selected = f.value != null ? String(f.value) : '';
-      f.options.forEach(function (opt) {
-        var option = document.createElement('option');
-        var val = opt.value != null ? String(opt.value) : '';
-        option.value = val;
-        option.textContent = opt.label != null ? String(opt.label) : val;
-        if (val === selected) {
-          option.selected = true;
-        }
-        control.appendChild(option);
-      });
+      var selectedVal = f.value != null ? String(f.value) : '';
+      if (f.codeGroup && window.PrintMallCommon && window.PrintMallCommon.fillCodeSelect) {
+        control.setAttribute('data-code-group', f.codeGroup);
+        window.PrintMallCommon.fillCodeSelect(control, f.codeGroup, selectedVal);
+      } else {
+        f.options.forEach(function (opt) {
+          var option = document.createElement('option');
+          var val = opt.value != null ? String(opt.value) : '';
+          option.value = val;
+          option.textContent = opt.label != null ? String(opt.label) : val;
+          if (val === selectedVal) {
+            option.selected = true;
+          }
+          control.appendChild(option);
+        });
+      }
     } else {
       control = document.createElement('input');
       control.className = 'form-control form-control-sm';
@@ -1134,11 +1139,6 @@
     });
   }
 
-  var USE_YN_OPTIONS = [
-    { value: 'Y', label: '사용' },
-    { value: 'N', label: '사용안함' }
-  ];
-
   function normalizeUseYn(value) {
     return String(value || 'Y').toUpperCase() === 'N' ? 'N' : 'Y';
   }
@@ -1320,7 +1320,7 @@
         label: '사용여부',
         type: 'select',
         value: 'Y',
-        options: USE_YN_OPTIONS
+        codeGroup: 'USE_YN_ADMIN'
       }
     ]).then(function (vals) {
       if (!vals || !vals.codeId) {
@@ -1591,7 +1591,7 @@
         label: '사용여부',
         type: 'select',
         value: 'Y',
-        options: USE_YN_OPTIONS
+        codeGroup: 'USE_YN_ADMIN'
       }
     ]).then(function (vals) {
       if (!vals || !vals.codeVal) {

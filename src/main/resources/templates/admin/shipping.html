@@ -22,9 +22,7 @@
               </div>
               <div class="col-md-3">
                 <label class="form-label" for="ship-carrier">택배사</label>
-                <select class="form-select form-select-sm" id="ship-carrier" required="required">
-                  <th:block th:replace="~{fragments/code-select :: optionsByGroup('CARRIER_CD', 'CJ')}"></th:block>
-                </select>
+                <th:block th:replace="~{fragments/code-select :: formSelectField('CARRIER_CD', 'CJ', 'ship-carrier', 'form-select-sm', '택배사', true)}"></th:block>
               </div>
               <div class="col-md-2">
                 <label class="form-label" for="ship-box-cnt">박스 수</label>

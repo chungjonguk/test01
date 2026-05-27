@@ -194,6 +194,47 @@
   }
 
   /**
+   * @param {HTMLSelectElement} select in: 대상 select
+   * @param {string} groupCode in: common_code.code_id
+   * @param {string} [selected] in: 선택값
+   * @param {boolean} [preserve] in: true면 기존 option 유지
+   */
+  function fillCodeSelect(select, groupCode, selected, preserve) {
+    if (!select || !groupCode || !window.__CODE_OPTIONS__) {
+      return;
+    }
+    var options = window.__CODE_OPTIONS__[groupCode];
+    if (!options || !options.length) {
+      return;
+    }
+    if (selected == null) {
+      selected = select.value;
+    }
+    if (!preserve) {
+      select.innerHTML = '';
+    }
+    options.forEach(function (opt) {
+      var el = document.createElement('option');
+      el.value = opt.value != null ? opt.value : '';
+      el.textContent = opt.label != null ? opt.label : el.value;
+      if (selected != null && String(selected) === String(el.value)) {
+        el.selected = true;
+      }
+      select.appendChild(el);
+    });
+    select.setAttribute('data-code-hydrated', 'true');
+  }
+
+  /**
+   * @param {string} groupCode in: common_code.code_id
+   * @returns {Array<{value:string,label:string}>}
+   */
+  function codeSelectOptions(groupCode) {
+    var opts = window.__CODE_OPTIONS__ && window.__CODE_OPTIONS__[groupCode];
+    return opts ? opts.slice() : [];
+  }
+
+  /**
    * @param {URLSearchParams|Object|string|Function|null} query in: 쿼리 또는 생성 함수
    * @returns {string} out: {@code ?key=val} 접미사 (없으면 빈 문자열)
    */
@@ -240,6 +281,8 @@
     formatDate: formatDate,
     formatDt: formatDt,
     codeLabel: codeLabel,
+    fillCodeSelect: fillCodeSelect,
+    codeSelectOptions: codeSelectOptions,
     toQuerySuffix: toQuerySuffix
   };
 })();

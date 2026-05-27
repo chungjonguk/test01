@@ -35,9 +35,7 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-notification-read">읽음</label>
-                      <select class="form-select form-select-sm" id="search-notification-read">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('NOTIFICATION_READ_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('NOTIFICATION_READ_FILTER', '', 'search-notification-read', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3">
                       <label class="form-label fs--1 mb-1" for="search-notification-keyword">내용 검색</label>
@@ -74,15 +72,11 @@
                       </div>
                       <div class="col-md-2">
                         <label class="form-label" for="notification-section">구분</label>
-                        <select class="form-select form-select-sm" id="notification-section">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('NOTIFICATION_SECTION', 'NEW')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('NOTIFICATION_SECTION', 'NEW', 'notification-section', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label" for="notification-time-icon">아이콘</label>
-                        <select class="form-select form-select-sm" id="notification-time-icon">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('NOTIFICATION_TIME_ICON', '📢')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('NOTIFICATION_TIME_ICON', '📢', 'notification-time-icon', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-12">
                         <label class="form-label" for="notification-message">알림 내용 <span class="text-danger">*</span></label>

@@ -74,9 +74,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label" for="order-filter-status">상태</label>
-                <select class="form-select form-select-sm" id="order-filter-status">
-                  <th:block th:replace="~{fragments/code-select :: optionsByGroup('ORDER_STATUS_FILTER', '')}"></th:block>
-                </select>
+                <th:block th:replace="~{fragments/code-select :: formSelectFilter('ORDER_STATUS_FILTER', '', 'order-filter-status', 'form-select-sm', '상태')}"></th:block>
               </div>
               <div class="d-grid gap-2">
                 <button class="btn btn-primary btn-sm" type="button" id="order-filter-apply">적용</button>

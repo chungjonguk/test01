@@ -31,21 +31,15 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-access-type">접속 유형</label>
-                      <select class="form-select form-select-sm" id="search-access-type">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USER_ACCESS_TYPE_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('USER_ACCESS_TYPE_FILTER', '', 'search-access-type', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-login-type">로그인 방식</label>
-                      <select class="form-select form-select-sm" id="search-login-type">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('LOGIN_TYPE_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('LOGIN_TYPE_FILTER', '', 'search-login-type', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-1">
                       <label class="form-label fs--1 mb-1" for="search-success-yn">성공</label>
-                      <select class="form-select form-select-sm" id="search-success-yn">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USE_YN_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('USE_YN_FILTER', '', 'search-success-yn', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-date-from">시작일</label>

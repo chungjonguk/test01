@@ -44,9 +44,7 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-group-use">사용여부</label>
-                      <select class="form-select form-select-sm" id="search-group-use">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('USE_YN_FILTER', '', 'search-group-use', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6 col-sm-8 col-lg-4">
                       <div class="d-flex flex-wrap gap-2">
@@ -188,9 +186,7 @@
                     </div>
                     <div class="mb-0">
                       <label class="form-label" for="code-group-add-use-yn">사용여부</label>
-                      <select class="form-select form-select-sm" id="code-group-add-use-yn" required>
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_ADMIN', 'Y', 'code-group-add-use-yn', 'form-select-sm', null, true)}"></th:block>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -221,9 +217,7 @@
                     </div>
                     <div class="mb-0">
                       <label class="form-label" for="code-group-edit-use-yn">사용여부</label>
-                      <select class="form-select form-select-sm" id="code-group-edit-use-yn" required>
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_ADMIN', 'Y', 'code-group-edit-use-yn', 'form-select-sm', null, true)}"></th:block>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -254,9 +248,7 @@
                     </div>
                     <div class="mb-0">
                       <label class="form-label" for="code-detail-edit-use-yn">사용여부</label>
-                      <select class="form-select form-select-sm" id="code-detail-edit-use-yn" required>
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_ADMIN', 'Y', 'code-detail-edit-use-yn', 'form-select-sm', null, true)}"></th:block>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -288,9 +280,7 @@
                     </div>
                     <div class="mb-0">
                       <label class="form-label" for="code-detail-add-use-yn">사용여부</label>
-                      <select class="form-select form-select-sm" id="code-detail-add-use-yn" required>
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_ADMIN', 'Y', 'code-detail-add-use-yn', 'form-select-sm', null, true)}"></th:block>
                     </div>
                   </div>
                   <div class="modal-footer">

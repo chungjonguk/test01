@@ -32,21 +32,15 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-category-cd">카테고리</label>
-                      <select class="form-select form-select-sm" id="search-category-cd">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_CATEGORY', '', 'search-category-cd', 'form-select-sm', '카테고리')}"></th:block>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-status-cd">판매상태</label>
-                      <select class="form-select form-select-sm" id="search-status-cd">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_STATUS', '', 'search-status-cd', 'form-select-sm', '판매상태')}"></th:block>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-stock-filter">재고상태</label>
-                      <select class="form-select form-select-sm" id="search-stock-filter">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('STOCK_STATUS_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('STOCK_STATUS_FILTER', '', 'search-stock-filter', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-12 col-lg-3">
                       <div class="d-flex flex-wrap gap-2">
@@ -102,9 +96,7 @@
                     <p class="mb-3">현재 재고: <strong id="adjust-current-stock">0</strong>개</p>
                     <div class="mb-3">
                       <label class="form-label" for="adjust-type">조정 유형</label>
-                      <select class="form-select form-select-sm" id="adjust-type" required="required">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('INVENTORY_ADJUST_TYPE', 'SET')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectField('INVENTORY_ADJUST_TYPE', 'SET', 'adjust-type', 'form-select-sm', '조정 유형', true)}"></th:block>
                     </div>
                     <div class="mb-0">
                       <label class="form-label" for="adjust-quantity">수량</label>

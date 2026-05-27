@@ -47,16 +47,12 @@
 
                 <div class="col-md-6">
                   <label class="form-label" for="category-cd">카테고리 <span class="text-danger">*</span></label>
-                  <select class="form-select" id="category-cd" required>
-                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('PRODUCT_CATEGORY', ${productForm.categoryCd})}"></th:block>
-                  </select>
+                  <th:block th:replace="~{fragments/code-select :: formSelectField('PRODUCT_CATEGORY', ${productForm.categoryCd}, 'category-cd', null, null, true)}"></th:block>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label" for="status-cd">판매 상태 <span class="text-danger">*</span></label>
-                  <select class="form-select" id="status-cd" required>
-                    <th:block th:replace="~{fragments/code-select :: optionsByGroup('PRODUCT_STATUS', ${productForm.statusCd})}"></th:block>
-                  </select>
+                  <th:block th:replace="~{fragments/code-select :: formSelectField('PRODUCT_STATUS', ${productForm.statusCd}, 'status-cd', null, null, true)}"></th:block>
                 </div>
 
                 <div class="col-md-6">

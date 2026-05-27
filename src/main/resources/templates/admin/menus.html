@@ -35,9 +35,7 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-use-yn">사용여부</label>
-                      <select class="form-select form-select-sm" id="search-use-yn">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('USE_YN_FILTER', '', 'search-use-yn', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6 col-sm-8 col-lg-3">
                       <div class="d-flex flex-wrap gap-2">

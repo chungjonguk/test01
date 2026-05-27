@@ -21,14 +21,10 @@
                           <input class="form-control form-control-sm" id="search-product-nm" type="text" placeholder="상품명" autocomplete="off" style="min-width:120px" />
                         </div>
                         <div class="col-auto">
-                          <select class="form-select form-select-sm" id="search-category-cd" aria-label="카테고리">
-                            <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
-                          </select>
+                          <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_CATEGORY', '', 'search-category-cd', 'form-select-sm', '카테고리')}"></th:block>
                         </div>
                         <div class="col-auto">
-                          <select class="form-select form-select-sm" id="search-status-cd" aria-label="상태">
-                            <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
-                          </select>
+                          <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_STATUS', '', 'search-status-cd', 'form-select-sm', '상태')}"></th:block>
                         </div>
                         <div class="col-auto">
                           <button class="btn btn-primary btn-sm" type="submit"><span class="fas fa-search"></span></button>
@@ -39,9 +35,7 @@
                       <form class="row gx-2 align-items-center">
                         <div class="col-auto"><small>정렬:</small></div>
                         <div class="col-auto">
-                          <select class="form-select form-select-sm" id="product-sort" aria-label="정렬">
-                            <th:block th:replace="~{fragments/code-select :: optionsByGroup('PRODUCT_SORT', 'newest')}"></th:block>
-                          </select>
+                          <th:block th:replace="~{fragments/code-select :: formSelectField('PRODUCT_SORT', 'newest', 'product-sort', 'form-select-sm', '정렬', null)}"></th:block>
                         </div>
                       </form>
                     </div>
@@ -77,14 +71,10 @@
                       <input class="form-control form-control-sm" id="search-product-nm-mobile" type="text" placeholder="상품명 검색" />
                     </div>
                     <div class="col-6">
-                      <select class="form-select form-select-sm" id="search-category-cd-mobile">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_CATEGORY', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_CATEGORY', '', 'search-category-cd-mobile', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-6">
-                      <select class="form-select form-select-sm" id="search-status-cd-mobile">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('PRODUCT_STATUS', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('PRODUCT_STATUS', '', 'search-status-cd-mobile', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-12">
                       <button class="btn btn-primary btn-sm w-100" type="button" id="btn-search-mobile">조회</button>

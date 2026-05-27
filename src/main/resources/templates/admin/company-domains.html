@@ -43,9 +43,7 @@
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-use-yn">사용</label>
-                      <select class="form-select form-select-sm" id="search-use-yn">
-                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USE_YN_FILTER', '')}"></th:block>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('USE_YN_FILTER', '', 'search-use-yn', 'form-select-sm', null)}"></th:block>
                     </div>
                     <div class="col-12 col-lg-auto">
                       <div class="d-flex flex-wrap gap-2">
@@ -116,15 +114,11 @@
                     <div class="row g-2">
                       <div class="col-6">
                         <label class="form-label" for="form-primary-yn">대표 도메인</label>
-                        <select class="form-select form-select-sm" id="form-primary-yn">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'N')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_VALUE', 'N', 'form-primary-yn', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-6">
                         <label class="form-label" for="form-ssl-yn">HTTPS(SSL)</label>
-                        <select class="form-select form-select-sm" id="form-ssl-yn">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'Y')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_VALUE', 'Y', 'form-ssl-yn', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-12" id="ssl-cert-section">
                         <label class="form-label" for="form-ssl-cert-file">SSL 인증서 파일</label>
@@ -151,15 +145,11 @@
                       </div>
                       <div class="col-6">
                         <label class="form-label" for="form-verify-status-cd">검증 상태</label>
-                        <select class="form-select form-select-sm" id="form-verify-status-cd">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('DOMAIN_VERIFY_STATUS', 'PENDING')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('DOMAIN_VERIFY_STATUS', 'PENDING', 'form-verify-status-cd', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-6">
                         <label class="form-label" for="form-use-yn">사용</label>
-                        <select class="form-select form-select-sm" id="form-use-yn">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'Y')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectField('USE_YN_VALUE', 'Y', 'form-use-yn', 'form-select-sm', null, null)}"></th:block>
                       </div>
                       <div class="col-12">
                         <label class="form-label" for="form-memo">비고</label>
