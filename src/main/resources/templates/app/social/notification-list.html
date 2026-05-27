@@ -36,9 +36,7 @@
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-notification-read">읽음</label>
                       <select class="form-select form-select-sm" id="search-notification-read">
-                        <option value="">전체</option>
-                        <option value="N">미읽음</option>
-                        <option value="Y">읽음</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('NOTIFICATION_READ_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-3">
@@ -77,22 +75,13 @@
                       <div class="col-md-2">
                         <label class="form-label" for="notification-section">구분</label>
                         <select class="form-select form-select-sm" id="notification-section">
-                          <option value="NEW" selected>NEW</option>
-                          <option value="EARLIER">EARLIER</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('NOTIFICATION_SECTION', 'NEW')}"></th:block>
                         </select>
                       </div>
                       <div class="col-md-2">
                         <label class="form-label" for="notification-time-icon">아이콘</label>
                         <select class="form-select form-select-sm" id="notification-time-icon">
-                          <option value="🔍">🔍 조회/팔로우</option>
-                          <option value="📌">📌 저장</option>
-                          <option value="🏷️">🏷️ 태그</option>
-                          <option value="💬">💬 댓글/멘션</option>
-                          <option value="😂">😂 반응</option>
-                          <option value="🎁">🎁 축하</option>
-                          <option value="📋️">📋️ 참여</option>
-                          <option value="📅️">📅️ 일정</option>
-                          <option value="📢" selected>📢 공지</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('NOTIFICATION_TIME_ICON', '📢')}"></th:block>
                         </select>
                       </div>
                       <div class="col-12">

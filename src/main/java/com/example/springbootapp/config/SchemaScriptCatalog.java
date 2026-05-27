@@ -42,6 +42,7 @@ public final class SchemaScriptCatalog {
 			"schema/common_code_charset.sql",
 			"schema/common_code_seed.sql",
 			"schema/common_code_combo_seed.sql",
+			"schema/common_code_admin_screen_seed.sql",
 			"schema/shipping_common_code_seed.sql",
 			"schema/screen_list_admin_companies_menu.sql",
 			"schema/screen_list_admin_company_section.sql",

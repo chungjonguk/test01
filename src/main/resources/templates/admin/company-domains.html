@@ -44,9 +44,7 @@
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-use-yn">사용</label>
                       <select class="form-select form-select-sm" id="search-use-yn">
-                        <option value="">전체</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USE_YN_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-12 col-lg-auto">
@@ -119,15 +117,13 @@
                       <div class="col-6">
                         <label class="form-label" for="form-primary-yn">대표 도메인</label>
                         <select class="form-select form-select-sm" id="form-primary-yn">
-                          <option value="Y">Y</option>
-                          <option value="N" selected="selected">N</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'N')}"></th:block>
                         </select>
                       </div>
                       <div class="col-6">
                         <label class="form-label" for="form-ssl-yn">HTTPS(SSL)</label>
                         <select class="form-select form-select-sm" id="form-ssl-yn">
-                          <option value="Y" selected="selected">Y</option>
-                          <option value="N">N</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'Y')}"></th:block>
                         </select>
                       </div>
                       <div class="col-12" id="ssl-cert-section">
@@ -156,16 +152,13 @@
                       <div class="col-6">
                         <label class="form-label" for="form-verify-status-cd">검증 상태</label>
                         <select class="form-select form-select-sm" id="form-verify-status-cd">
-                          <option value="PENDING">PENDING</option>
-                          <option value="VERIFIED">VERIFIED</option>
-                          <option value="FAILED">FAILED</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('DOMAIN_VERIFY_STATUS', 'PENDING')}"></th:block>
                         </select>
                       </div>
                       <div class="col-6">
                         <label class="form-label" for="form-use-yn">사용</label>
                         <select class="form-select form-select-sm" id="form-use-yn">
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'Y')}"></th:block>
                         </select>
                       </div>
                       <div class="col-12">

@@ -45,10 +45,7 @@
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-stock-filter">재고상태</label>
                       <select class="form-select form-select-sm" id="search-stock-filter">
-                        <option value="">전체</option>
-                        <option value="ZERO">품절(0)</option>
-                        <option value="LOW">부족</option>
-                        <option value="OK">정상</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('STOCK_STATUS_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-12 col-lg-3">
@@ -106,9 +103,7 @@
                     <div class="mb-3">
                       <label class="form-label" for="adjust-type">조정 유형</label>
                       <select class="form-select form-select-sm" id="adjust-type" required="required">
-                        <option value="SET">직접 설정</option>
-                        <option value="ADD">입고 (+)</option>
-                        <option value="SUB">출고 (−)</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('INVENTORY_ADJUST_TYPE', 'SET')}"></th:block>
                       </select>
                     </div>
                     <div class="mb-0">

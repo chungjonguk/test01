@@ -36,17 +36,13 @@
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-status-cd">상태</label>
                       <select class="form-select form-select-sm" id="search-status-cd">
-                        <option value="">전체</option>
-                        <option value="ACTIVE">ACTIVE</option>
-                        <option value="INACTIVE">INACTIVE</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('COMPANY_STATUS_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-use-yn">사용</label>
                       <select class="form-select form-select-sm" id="search-use-yn">
-                        <option value="">전체</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USE_YN_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-12 col-lg-3">
@@ -135,15 +131,13 @@
                       <div class="col-md-4">
                         <label class="form-label" for="form-status-cd">상태</label>
                         <select class="form-select form-select-sm" id="form-status-cd">
-                          <option value="ACTIVE">ACTIVE</option>
-                          <option value="INACTIVE">INACTIVE</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('COMPANY_STATUS', 'ACTIVE')}"></th:block>
                         </select>
                       </div>
                       <div class="col-md-4">
                         <label class="form-label" for="form-use-yn">사용여부</label>
                         <select class="form-select form-select-sm" id="form-use-yn">
-                          <option value="Y">Y</option>
-                          <option value="N">N</option>
+                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_VALUE', 'Y')}"></th:block>
                         </select>
                       </div>
                       <div class="col-12" id="company-form-primary-host-row">

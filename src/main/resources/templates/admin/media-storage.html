@@ -80,12 +80,7 @@
                   <h6 class="mb-0">DB 저장 목록 (nas_file)</h6>
                   <div class="d-flex gap-2">
                     <select class="form-select form-select-sm" id="media-list-type" style="width:auto">
-                      <option value="">전체</option>
-                      <option value="image">이미지</option>
-                      <option value="document">문서</option>
-                      <option value="video">영상</option>
-                      <option value="product">상품</option>
-                      <option value="company-page">업체 페이지</option>
+                      <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('NAS_MEDIA_TYPE_FILTER', '')}"></th:block>
                     </select>
                     <button class="btn btn-falcon-default btn-sm" type="button" id="btn-reload-media-list">새로고침</button>
                   </div>

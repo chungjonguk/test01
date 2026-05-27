@@ -23,9 +23,7 @@
               <div class="col-md-3">
                 <label class="form-label" for="ship-carrier">택배사</label>
                 <select class="form-select form-select-sm" id="ship-carrier" required="required">
-                  <option value="CJ">CJ대한통운</option>
-                  <option value="EPOST">우체국</option>
-                  <option value="LOTTE">롯데택배</option>
+                  <th:block th:replace="~{fragments/code-select :: optionsByGroup('CARRIER_CD', 'CJ')}"></th:block>
                 </select>
               </div>
               <div class="col-md-2">

@@ -189,8 +189,7 @@
                     <div class="mb-0">
                       <label class="form-label" for="code-group-add-use-yn">사용여부</label>
                       <select class="form-select form-select-sm" id="code-group-add-use-yn" required>
-                        <option value="Y">사용</option>
-                        <option value="N">사용안함</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
                       </select>
                     </div>
                   </div>
@@ -223,8 +222,7 @@
                     <div class="mb-0">
                       <label class="form-label" for="code-group-edit-use-yn">사용여부</label>
                       <select class="form-select form-select-sm" id="code-group-edit-use-yn" required>
-                        <option value="Y">사용</option>
-                        <option value="N">사용안함</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
                       </select>
                     </div>
                   </div>
@@ -257,8 +255,7 @@
                     <div class="mb-0">
                       <label class="form-label" for="code-detail-edit-use-yn">사용여부</label>
                       <select class="form-select form-select-sm" id="code-detail-edit-use-yn" required>
-                        <option value="Y">사용</option>
-                        <option value="N">사용안함</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
                       </select>
                     </div>
                   </div>
@@ -292,8 +289,7 @@
                     <div class="mb-0">
                       <label class="form-label" for="code-detail-add-use-yn">사용여부</label>
                       <select class="form-select form-select-sm" id="code-detail-add-use-yn" required>
-                        <option value="Y">사용</option>
-                        <option value="N">사용안함</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroup('USE_YN_ADMIN', 'Y')}"></th:block>
                       </select>
                     </div>
                   </div>

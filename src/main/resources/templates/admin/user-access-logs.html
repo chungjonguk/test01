@@ -32,27 +32,19 @@
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-access-type">접속 유형</label>
                       <select class="form-select form-select-sm" id="search-access-type">
-                        <option value="">전체</option>
-                        <option value="LOGIN">LOGIN</option>
-                        <option value="LOGOUT">LOGOUT</option>
-                        <option value="PAGE">PAGE</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USER_ACCESS_TYPE_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">
                       <label class="form-label fs--1 mb-1" for="search-login-type">로그인 방식</label>
                       <select class="form-select form-select-sm" id="search-login-type">
-                        <option value="">전체</option>
-                        <option value="FORM">FORM</option>
-                        <option value="KAKAO">KAKAO</option>
-                        <option value="NAVER">NAVER</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('LOGIN_TYPE_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-1">
                       <label class="form-label fs--1 mb-1" for="search-success-yn">성공</label>
                       <select class="form-select form-select-sm" id="search-success-yn">
-                        <option value="">전체</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('USE_YN_FILTER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="col-6 col-sm-4 col-lg-2">

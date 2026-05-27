@@ -52,5 +52,21 @@
     <th:block th:replace="~{fragments/form-controls :: codeSelect('DASHBOARD_PROJECT_TIME', ${selected}, ${cssClasses})}"></th:block>
   </th:block>
 
+  <th:block th:fragment="companyStatusFilter(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('COMPANY_STATUS_FILTER', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="companyStatus(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('COMPANY_STATUS', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="useYnValue(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('USE_YN_VALUE', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
+  <th:block th:fragment="useYnAdmin(selected, cssClasses)">
+    <th:block th:replace="~{fragments/form-controls :: codeSelect('USE_YN_ADMIN', ${selected}, ${cssClasses})}"></th:block>
+  </th:block>
+
 </body>
 </html>
