@@ -23,16 +23,16 @@
 </th:block>
 
 <!-- 조회용 form-select (전체/placeholder 포함) -->
-<th:block th:fragment="formSelectFilter(groupId, selected, selectId, selectClass, ariaLabel)">
-    <select class="form-select" th:id="${selectId}" th:classappend="${selectClass}"
+<th:block th:fragment="formSelectFilter(groupId, selected, selectId, selectClass, ariaLabel, selectName)">
+    <select class="form-select" th:id="${selectId}" th:name="${selectName}" th:classappend="${selectClass}"
             th:attr="data-code-group=${groupId},aria-label=${ariaLabel}">
         <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty(${groupId}, ${selected})}"></th:block>
     </select>
 </th:block>
 
 <!-- 입력용 form-select (required=true 시 HTML required) -->
-<th:block th:fragment="formSelectField(groupId, selected, selectId, selectClass, ariaLabel, required)">
-    <select class="form-select" th:id="${selectId}" th:classappend="${selectClass}"
+<th:block th:fragment="formSelectField(groupId, selected, selectId, selectClass, ariaLabel, required, selectName)">
+    <select class="form-select" th:id="${selectId}" th:name="${selectName}" th:classappend="${selectClass}"
             th:attr="data-code-group=${groupId},aria-label=${ariaLabel}"
             th:required="${required}">
         <th:block th:replace="~{fragments/code-select :: optionsByGroup(${groupId}, ${selected})}"></th:block>

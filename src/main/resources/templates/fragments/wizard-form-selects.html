@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+  <th:block th:fragment="gender(selectId)">
+    <select class="form-select" th:id="${selectId}" name="gender" data-code-group="WIZARD_GENDER">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('WIZARD_GENDER', '')}"></th:block>
+    </select>
+  </th:block>
+
+  <th:block th:fragment="country(selectId)">
+    <select class="form-select" th:id="${selectId}" name="customSelectCountry" data-code-group="COUNTRY_LIST">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('COUNTRY_LIST', '')}"></th:block>
+    </select>
+  </th:block>
+
+  <th:block th:fragment="birthMonth(selectId, selected)">
+    <select class="form-select" th:id="${selectId}" name="birthMonth" data-code-group="BIRTH_MONTH" aria-label="월">
+      <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('BIRTH_MONTH', ${selected})}"></th:block>
+    </select>
+  </th:block>
+
+</body>
+</html>

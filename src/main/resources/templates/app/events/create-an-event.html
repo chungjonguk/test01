@@ -253,9 +253,7 @@
                       </div>
                       <div class="col-sm-6 mb-3">
                         <label class="form-label" for="field-type">Type</label>
-                        <select class="form-select form-select-sm" id="field-type">
-                          <th:block th:replace="~{fragments/code-select :: optionsByGroup('FORM_FIELD_TYPE', '')}"></th:block>
-                        </select>
+                        <th:block th:replace="~{fragments/code-select :: formSelectFilter('FORM_FIELD_TYPE', '', 'field-type', 'form-select-sm', null)}"></th:block>
                       </div>
                       <div class="col-12">
                         <label class="form-label" for="field-options">Field Options</label>
@@ -280,12 +278,8 @@
                         <label class="form-label" for="organizer">Organizer</label>
                         <button class="btn btn-link btn-sm pe-0" type="button">Add New</button>
                       </div>
-                      <select class="form-select js-choice" id="organizer" multiple="multiple" size="1" name="organizer" data-options='{"removeItemButton":true,"placeholder":true}'>
-                        <option value="">Select organizer...</option>
-                        <option>Massachusetts Institute of Technology</option>
-                        <option>University of Chicago</option>
-                        <option>GSAS Open Labs At Harvard</option>
-                        <option>California Institute of Technology</option>
+                      <select class="form-select js-choice" id="organizer" multiple="multiple" size="1" name="organizer" data-code-group="EVENT_ORGANIZER" data-options='{"removeItemButton":true,"placeholder":true}'>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('EVENT_ORGANIZER', '')}"></th:block>
                       </select>
                     </div>
                     <div class="mb-3">
@@ -293,50 +287,25 @@
                         <label class="form-label" for="sponsors">Sponsors</label>
                         <button class="btn btn-link btn-sm pe-0" type="button">Add New</button>
                       </div>
-                      <select class="form-select js-choice" id="sponsors" multiple="multiple" size="1" name="sponsors" data-options='{"removeItemButton":true,"placeholder":true}'>
-                        <option value="">Select sponsors...</option>
-                        <option>Microsoft Corporation</option>
-                        <option>Technext Limited</option>
-                        <option>Hewlett-Packard</option>
+                      <select class="form-select js-choice" id="sponsors" multiple="multiple" size="1" name="sponsors" data-code-group="EVENT_SPONSOR" data-options='{"removeItemButton":true,"placeholder":true}'>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('EVENT_SPONSOR', '')}"></th:block>
                       </select>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="event-type">Event Type</label>
-                      <select class="form-select" id="event-type" name="event-type">
-                        <option>Select event type...</option>
-                        <option>Class, Training, or Workshop</option>
-                        <option>Concert or Performance</option>
-                        <option>Conference</option>
-                        <option>Convention</option>
-                        <option>Dinner or Gala</option>
-                        <option>Festival or Fair</option>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('COURSE_CATEGORY', '', 'event-type', null, null, 'event-type')}"></th:block>
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="event-topic">Event Topic</label>
-                      <select class="form-select" id="event-topic" name="even-topic">
-                        <option value="" selected="selected">Select a topic</option>
-                        <option>Auto, Boat &amp; Air</option>
-                        <option>Business &amp; Professional</option>
-                        <option>Charity &amp; Causes</option>
-                        <option>Community &amp; Culture</option>
-                        <option>Family &amp; Education</option>
-                        <option>Fashion &amp; Beauty</option>
-                        <option>Film, Media &amp; Entertainment</option>
-                        <option>Food &amp; Drink</option>
-                        <option>Government &amp; Politics</option>
-                      </select>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFilter('EVENT_TOPIC', '', 'event-topic', null, null, 'even-topic')}"></th:block>
                     </div>
                     <div class="mb-3">
                       <div class="d-flex justify-content-between align-items-center">
                         <label class="mb-0" for="event-tags">Tags</label>
                         <button class="btn btn-link btn-sm pe-0" type="button">Add New</button>
                       </div>
-                      <select class="form-select js-choice" id="event-tags" multiple="multiple" size="1" name="tags" data-options='{"removeItemButton":true,"placeholder":true}'>
-                        <option value="">Select tags...</option>
-                        <option>Concert</option>
-                        <option>New Year</option>
-                        <option>Party</option>
+                      <select class="form-select js-choice" id="event-tags" multiple="multiple" size="1" name="tags" data-code-group="EVENT_TAG" data-options='{"removeItemButton":true,"placeholder":true}'>
+                        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty('EVENT_TAG', '')}"></th:block>
                       </select>
                     </div>
                     <div class="border-bottom border-dashed my-3"></div>

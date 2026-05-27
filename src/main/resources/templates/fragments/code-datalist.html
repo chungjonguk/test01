@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+  <th:block th:fragment="countryList(datalistId)">
+    <datalist th:id="${datalistId}">
+      <option th:each="opt : ${codeOptions != null ? codeOptions.get('COUNTRY_LIST') : T(java.util.Collections).emptyList()}"
+              th:if="${opt.value != null and opt.value != ''}"
+              th:value="${opt.label}"></option>
+    </datalist>
+  </th:block>
+
+</body>
+</html>

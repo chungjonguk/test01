@@ -78,12 +78,7 @@
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="bootstrap-wizard-gender">Gender</label>
-                        <select class="form-select" name="gender" id="bootstrap-wizard-gender">
-                          <option value="">Select your gender ...</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Other">Other</option>
-                        </select>
+                        <th:block th:replace="~{fragments/wizard-form-selects :: gender('bootstrap-wizard-gender')}"></th:block>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="bootstrap-wizard-wizard-phone">Phone</label>
@@ -98,21 +93,7 @@
                             </select>
                           </div>
                           <div class="col-4">
-                            <select class="form-select" id="wizard-birth-month" name="birthMonth" aria-label="월">
-                              <option value="">월</option>
-                              <option value="01">1월</option>
-                              <option value="02">2월</option>
-                              <option value="03">3월</option>
-                              <option value="04">4월</option>
-                              <option value="05">5월</option>
-                              <option value="06">6월</option>
-                              <option value="07">7월</option>
-                              <option value="08">8월</option>
-                              <option value="09">9월</option>
-                              <option value="10">10월</option>
-                              <option value="11">11월</option>
-                              <option value="12">12월</option>
-                            </select>
+                            <th:block th:replace="~{fragments/wizard-form-selects :: birthMonth('wizard-birth-month', '')}"></th:block>
                           </div>
                           <div class="col-4">
                             <select class="form-select" id="wizard-birth-day" name="birthDay" aria-label="일">
