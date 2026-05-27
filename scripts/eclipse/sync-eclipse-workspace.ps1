@@ -39,8 +39,8 @@ Write-Host "[3/6] 워크스페이스 .metadata + spring-boot-app 등록..." -For
 Write-Host "[4/6] 워크스페이스·STS UTF-8 (한글 깨짐 방지)..." -ForegroundColor Green
 & (Join-Path $PSScriptRoot "apply-workspace-utf8.ps1") -ProjectRoot $ProjectRoot
 
-# 5) STS headless import (설치 시)
-Write-Host "[5/6] STS Maven import (headless, 있으면)..." -ForegroundColor Green
+# 5) Maven CLI 동기화 (m2e headless application 은 STS 미지원)
+Write-Host "[5/6] Maven 연동 (CLI compile, STS Update Project는 GUI에서)..." -ForegroundColor Green
 & (Join-Path $PSScriptRoot "import-maven-headless.ps1") -ProjectRoot $ProjectRoot -WorkspaceRoot $WorkspaceRoot
 
 # 6) 점검

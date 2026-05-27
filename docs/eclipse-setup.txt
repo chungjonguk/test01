@@ -26,6 +26,9 @@
     → JDK 17, Maven compile, .metadata 생성, spring-boot-app 등록,
       UTF-8·자동 빌드·새로고침 prefs
 
+  ※ org.eclipse.m2e.core.maven2ProjectJob 은 STS에 없음.
+    sync 스크립트는 mvn compile 로 대체하며, STS에서는 Alt+F5(Update Project)만 1회 확인.
+
   STS 설치 경로가 다른 PC 경로면:
     scripts/eclipse/sts-path.local.txt  — SpringToolsForEclipse.exe 경로
     scripts/eclipse/sts-workspace.local.txt  — D:\sts-workspace
