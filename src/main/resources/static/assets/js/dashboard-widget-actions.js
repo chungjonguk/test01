@@ -73,13 +73,48 @@
     }
   }
 
+  function bindQuickLinkNavigation() {
+    var host = document.getElementById('dashboard-widgets-host');
+    if (!host || host.getAttribute('data-quick-link-nav') === 'true') {
+      return;
+    }
+    host.setAttribute('data-quick-link-nav', 'true');
+    host.addEventListener('click', function (e) {
+      var link = e.target.closest('a.dashboard-quick-link[href^="/"], [data-dashboard-widget="admin-quick-links"] a[href^="/"], [data-dashboard-widget="ecm-quick-links"] a[href^="/"]');
+      if (!link || !host.contains(link)) {
+        return;
+      }
+      var href = link.getAttribute('href');
+      if (!href || href.indexOf('/e/') === 0) {
+        return;
+      }
+      var pathApi = window.PrintMallPath || window.PrintMallDoPath;
+      if (!pathApi || !pathApi.navigateLink) {
+        return;
+      }
+      e.preventDefault();
+      pathApi.navigateLink(link);
+    });
+  }
+
+  function afterRender() {
+    bindQuickLinkNavigation();
+    var pathApi = window.PrintMallPath || window.PrintMallDoPath;
+    var host = document.getElementById('dashboard-widgets-host');
+    if (pathApi && pathApi.rewriteLinksIn && host) {
+      pathApi.rewriteLinksIn(host);
+    }
+  }
+
   function init() {
     if (!document.getElementById('dashboard-widgets-host')) {
       return;
     }
     if (renderer) {
       renderer.apply();
+      afterRender();
     }
+    document.addEventListener('dashboard-widgets-rendered', afterRender);
     document.body.addEventListener('click', onDocumentClick, true);
   }
 

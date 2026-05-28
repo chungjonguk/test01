@@ -648,10 +648,7 @@
                 <div class="card h-100" data-dashboard-widget="admin-quick-links">
                     <div class="card-header py-2"><h6 class="mb-0">관리 바로가기</h6></div>
                     <div class="card-body fs--1">
-                        <a class="d-block mb-2" th:href="@{/admin/menus}">메뉴관리</a>
-                        <a class="d-block mb-2" th:href="@{/admin/nas}">NAS 설정</a>
-                        <a class="d-block mb-2" th:href="@{/admin/user-access-logs}">접속 로그</a>
-                        <a class="d-block" th:href="@{/users}">사용자 관리</a>
+                        <th:block th:replace="~{fragments/dashboard-quick-links :: adminLinks}"></th:block>
                     </div>
                 </div>
             </div>
@@ -659,10 +656,7 @@
                 <div class="card h-100" data-dashboard-widget="ecm-quick-links">
                     <div class="card-header py-2"><h6 class="mb-0">이커머스 바로가기</h6></div>
                     <div class="card-body fs--1">
-                        <a class="d-block mb-2" th:href="@{/app/e-commerce/product/product-manage}">상품 관리</a>
-                        <a class="d-block mb-2" th:href="@{/app/e-commerce/orders/order-list}">주문 목록</a>
-                        <a class="d-block mb-2" th:href="@{/app/e-commerce/customers}">고객 관리</a>
-                        <a class="d-block" th:href="@{/app/e-commerce/product/product-register}">상품 등록</a>
+                        <th:block th:replace="~{fragments/dashboard-quick-links :: ecmLinks}"></th:block>
                     </div>
                 </div>
             </div>
@@ -673,7 +667,7 @@
                         <div th:replace="~{fragments/widget-actions :: widgetMenu('dashboard-summary')}"></div>
                     </div>
                     <div class="card-body fs--1 text-600">
-                        <a th:href="@{/admin/dashboard-config}">대시보드 구성</a>에서 이 프로젝트에서 사용 가능한 위젯을 선택·정렬할 수 있습니다.
+                        <a class="dashboard-quick-link" th:href="@{/admin/dashboard-config}" data-menu-path="/admin/dashboard-config">대시보드 구성</a>에서 이 프로젝트에서 사용 가능한 위젯을 선택·정렬할 수 있습니다.
                         저장 후 이 페이지를 새로고침하면 반영됩니다.
                     </div>
                 </div>

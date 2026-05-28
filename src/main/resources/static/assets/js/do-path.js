@@ -181,15 +181,20 @@
     global.__PRINTMALL_FETCH_ENCRYPT_PATCHED__ = true;
   }
 
-  function rewritePageLinks() {
-    var links = document.querySelectorAll('a[href^="/"]');
+  function rewriteLinksIn(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var links = scope.querySelectorAll('a[href^="/"]');
     var tasks = [];
     links.forEach(function (link) {
       var href = link.getAttribute('href');
       if (!href || shouldSkip(href)) {
         return;
       }
-      ensureMenuPath(link, href);
+      var logical = link.getAttribute('data-menu-path') || href;
+      ensureMenuPath(link, logical);
+      if (isEncrypted(href)) {
+        return;
+      }
       tasks.push(
         toPublic(href).then(function (enc) {
           if (enc && enc !== href) {
@@ -201,12 +206,41 @@
     return Promise.all(tasks);
   }
 
+  function rewritePageLinks() {
+    return rewriteLinksIn(document);
+  }
+
+  function navigateLink(link) {
+    if (!link) {
+      return Promise.resolve();
+    }
+    var href = link.getAttribute('href');
+    var menuPath = link.getAttribute('data-menu-path');
+    var logical = menuPath && menuPath.indexOf('/e/') !== 0 ? menuPath : href;
+    if (!href || shouldSkip(href)) {
+      return Promise.resolve();
+    }
+    if (isEncrypted(href)) {
+      global.location.assign(href);
+      return Promise.resolve();
+    }
+    ensureMenuPath(link, logical || href);
+    return toPublic(logical || href).then(function (enc) {
+      if (enc) {
+        link.setAttribute('href', enc);
+        global.location.assign(enc);
+      }
+    });
+  }
+
   global.PrintMallPath = {
     shouldSkip: shouldSkip,
     isEncrypted: isEncrypted,
     toPublic: toPublic,
     normalizePath: normalizePath,
-    rewritePageLinks: rewritePageLinks
+    rewritePageLinks: rewritePageLinks,
+    rewriteLinksIn: rewriteLinksIn,
+    navigateLink: navigateLink
   };
   global.PrintMallDoPath = global.PrintMallPath;
 
@@ -216,6 +250,14 @@
     global.dispatchEvent(new Event('printmall-paths-ready'));
   }
 
+  function onDashboardWidgetsRendered(e) {
+    var host = (e && e.detail && e.detail.host) || document.getElementById('dashboard-widgets-host');
+    if (!host) {
+      return;
+    }
+    rewriteLinksIn(host);
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       rewritePageLinks().then(notifyPathsReady);
@@ -223,4 +265,6 @@
   } else {
     rewritePageLinks().then(notifyPathsReady);
   }
+
+  document.addEventListener('dashboard-widgets-rendered', onDashboardWidgetsRendered);
 })(typeof window !== 'undefined' ? window : globalThis);
