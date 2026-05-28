@@ -576,6 +576,23 @@ img.brand-logo-falcon {
 .dashboard-widgets-host > .dashboard-widget-band {
   margin-left: 0;
   margin-right: 0;
+  position: relative;
+}
+
+/* 아래 밴드(바로가기 등)가 위쪽 차트 캔버스에 클릭을 가리지 않도록 쌓기 순서 보장 */
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(1) { z-index: 1; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(2) { z-index: 2; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(3) { z-index: 3; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(4) { z-index: 4; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(5) { z-index: 5; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(6) { z-index: 6; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(7) { z-index: 7; }
+.dashboard-widgets-host > .dashboard-widget-band:nth-child(8) { z-index: 8; }
+
+.dashboard-widgets-host [data-echart-responsive="true"],
+.dashboard-widgets-host [class*="echart-"] {
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .dashboard-widgets-host > .dashboard-widget-band > .dashboard-widget-cell {

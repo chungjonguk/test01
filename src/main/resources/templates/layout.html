@@ -27,7 +27,7 @@
     <meta th:if="${screenId}" name="screen-id" th:content="${screenId}" />
     <script th:src="@{/assets/js/config.js}"></script>
     <script th:src="@{/assets/js/asset-path-fix.js(v=1)}"></script>
-    <script th:src="@{/assets/js/do-path.js(v=10)}"></script>
+    <script th:src="@{/assets/js/do-path.js(v=11)}"></script>
     <script th:src="@{/vendors/simplebar/simplebar.min.js}"></script>
 
 
@@ -41,7 +41,7 @@
     <link th:href="@{/assets/css/theme-rtl.min.css}" rel="stylesheet" id="style-rtl">
     <link th:href="@{/assets/css/theme.min.css}" rel="stylesheet" id="style-default">
     <link th:href="@{/assets/css/user-rtl.min.css}" rel="stylesheet" id="user-style-rtl" disabled="disabled" />
-    <link th:href="@{/assets/css/user.css(v=48)}" rel="stylesheet" id="user-style-default" />
+    <link th:href="@{/assets/css/user.css(v=49)}" rel="stylesheet" id="user-style-default" />
     <link th:href="@{/vendors/flatpickr/flatpickr.min.css}" rel="stylesheet" />
     <link th:href="@{/vendors/swiper/swiper-bundle.min.css}" rel="stylesheet" />
     <link th:href="@{/vendors/dropzone/dropzone.min.css}" rel="stylesheet" />
@@ -226,7 +226,7 @@
     <script th:src="@{/assets/js/theme.js(v=10)}"></script>
     <script th:if="${hideSidebar != true}" th:src="@{/assets/js/header-menu-search.js(v=3)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=6)}"></script>
-    <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=4)}"></script>
+    <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=9)}"></script>
     <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=9)}"></script>
     <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
     <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:inline="javascript">
@@ -265,7 +265,7 @@
     <script th:src="@{/assets/js/dashboard-config-store.js(v=3)}"></script>
     <script th:src="@{/assets/js/dashboard-layout-rules.js(v=2)}"></script>
     <script th:src="@{/assets/js/dashboard-widget-renderer.js(v=8)}"></script>
-    <script th:src="@{/assets/js/dashboard-widget-actions.js(v=8)}"></script>
+    <script th:src="@{/assets/js/dashboard-widget-actions.js(v=9)}"></script>
     <script th:src="@{/assets/js/dashboard-company-switcher.js(v=1)}"></script>
     <script th:if="${loadDashboardConfigActions}" th:src="@{/assets/js/dashboard-config-actions.js(v=5)}"></script>
     <script th:src="@{/assets/js/using-storage-widget.js(v=2)}"></script>

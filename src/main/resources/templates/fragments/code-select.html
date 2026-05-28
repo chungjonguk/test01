@@ -1,40 +1,114 @@
 <!-- codes: List<CodeOption> (직접 전달) -->
+
 <th:block th:fragment="options(codes, selected)">
+
     <option th:each="opt : ${codes}"
+
             th:value="${opt.value}"
+
             th:text="${opt.label}"
+
             th:selected="${selected != null and selected == opt.value}"></option>
+
 </th:block>
+
+
 
 <!-- codeOptions 맵에서 그룹 ID로 조회 (전역 @ModelAttribute codeOptions) -->
+
 <th:block th:fragment="optionsByGroup(groupId, selected)">
+
     <option th:each="opt : ${codeOptions != null ? codeOptions.get(groupId) : T(java.util.Collections).emptyList()}"
+
             th:value="${opt.value}"
+
             th:text="${opt.label}"
+
             th:selected="${selected != null and selected == opt.value}"></option>
+
 </th:block>
+
+
 
 <!-- 빈 value 허용(전체/placeholder) -->
+
 <th:block th:fragment="optionsByGroupAllowEmpty(groupId, selected)">
+
     <option th:each="opt : ${codeOptions != null ? codeOptions.get(groupId) : T(java.util.Collections).emptyList()}"
+
             th:value="${opt.value}"
+
             th:text="${opt.label}"
+
             th:selected="${(selected == null or selected == '') ? (opt.value == null or opt.value == '') : (selected == opt.value)}"></option>
+
 </th:block>
 
-<!-- 조회용 form-select (전체/placeholder 포함) -->
-<th:block th:fragment="formSelectFilter(groupId, selected, selectId, selectClass, ariaLabel, selectName)">
-    <select class="form-select" th:id="${selectId}" th:name="${selectName}" th:classappend="${selectClass}"
+
+
+<!-- 조회용 form-select (전체/placeholder 포함, name=id) -->
+
+<th:block th:fragment="formSelectFilter(groupId, selected, selectId, selectClass, ariaLabel)">
+
+    <select class="form-select" th:id="${selectId}" th:name="${selectId}" th:classappend="${selectClass}"
+
             th:attr="data-code-group=${groupId},aria-label=${ariaLabel}">
+
         <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty(${groupId}, ${selected})}"></th:block>
+
     </select>
+
 </th:block>
 
-<!-- 입력용 form-select (required=true 시 HTML required) -->
-<th:block th:fragment="formSelectField(groupId, selected, selectId, selectClass, ariaLabel, required, selectName)">
+
+
+<!-- 조회용 form-select — name 속성을 id와 다르게 쓸 때 -->
+
+<th:block th:fragment="formSelectFilterNamed(groupId, selected, selectId, selectClass, ariaLabel, selectName)">
+
     <select class="form-select" th:id="${selectId}" th:name="${selectName}" th:classappend="${selectClass}"
-            th:attr="data-code-group=${groupId},aria-label=${ariaLabel}"
-            th:required="${required}">
-        <th:block th:replace="~{fragments/code-select :: optionsByGroup(${groupId}, ${selected})}"></th:block>
+
+            th:attr="data-code-group=${groupId},aria-label=${ariaLabel}">
+
+        <th:block th:replace="~{fragments/code-select :: optionsByGroupAllowEmpty(${groupId}, ${selected})}"></th:block>
+
     </select>
+
 </th:block>
+
+
+
+<!-- 입력용 form-select (required=true 시 HTML required, name=id) -->
+
+<th:block th:fragment="formSelectField(groupId, selected, selectId, selectClass, ariaLabel, required)">
+
+    <select class="form-select" th:id="${selectId}" th:name="${selectId}" th:classappend="${selectClass}"
+
+            th:attr="data-code-group=${groupId},aria-label=${ariaLabel}"
+
+            th:required="${required}">
+
+        <th:block th:replace="~{fragments/code-select :: optionsByGroup(${groupId}, ${selected})}"></th:block>
+
+    </select>
+
+</th:block>
+
+
+
+<!-- 입력용 form-select — name 속성을 id와 다르게 쓸 때 -->
+
+<th:block th:fragment="formSelectFieldNamed(groupId, selected, selectId, selectClass, ariaLabel, required, selectName)">
+
+    <select class="form-select" th:id="${selectId}" th:name="${selectName}" th:classappend="${selectClass}"
+
+            th:attr="data-code-group=${groupId},aria-label=${ariaLabel}"
+
+            th:required="${required}">
+
+        <th:block th:replace="~{fragments/code-select :: optionsByGroup(${groupId}, ${selected})}"></th:block>
+
+    </select>
+
+</th:block>
+

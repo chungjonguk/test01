@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-sm-6 mb-3">
                       <label class="form-label" for="course-subcategory">Sub-category<span class="text-danger">*</span></label>
-                      <th:block th:replace="~{fragments/code-select :: formSelectField('COURSE_CATEGORY', '', 'course-subcategory', null, null, true, 'course-sub-category')}"></th:block>
+                      <th:block th:replace="~{fragments/code-select :: formSelectFieldNamed('COURSE_CATEGORY', '', 'course-subcategory', null, null, true, 'course-sub-category')}"></th:block>
                     </div>
                     <div class="col-12 mb-3">
                       <label class="form-label" for="course-tags">Tags<span class="text-danger">*</span></label>

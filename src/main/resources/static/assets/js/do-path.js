@@ -214,13 +214,16 @@
     if (!link) {
       return Promise.resolve();
     }
-    var href = link.getAttribute('href');
+    var href = link.getAttribute('href') || '';
     var menuPath = link.getAttribute('data-menu-path');
     var logical = menuPath && menuPath.indexOf('/e/') !== 0 ? menuPath : href;
-    if (!href || shouldSkip(href)) {
+    if (!logical && !href) {
       return Promise.resolve();
     }
-    if (isEncrypted(href)) {
+    if (href && shouldSkip(href) && (!logical || shouldSkip(logical))) {
+      return Promise.resolve();
+    }
+    if (href && isEncrypted(href)) {
       global.location.assign(href);
       return Promise.resolve();
     }
@@ -231,6 +234,37 @@
         global.location.assign(enc);
       }
     });
+  }
+
+  function isDashboardQuickLink(link) {
+    if (!link || link.tagName !== 'A') {
+      return false;
+    }
+    var host = document.getElementById('dashboard-widgets-host');
+    if (!host || !host.contains(link)) {
+      return false;
+    }
+    if (link.classList.contains('dashboard-quick-link')) {
+      return true;
+    }
+    return !!link.closest('[data-dashboard-widget="admin-quick-links"], [data-dashboard-widget="ecm-quick-links"]');
+  }
+
+  function onDashboardQuickLinkClick(e) {
+    var link = e.target.closest('a');
+    if (!isDashboardQuickLink(link)) {
+      return;
+    }
+    var href = link.getAttribute('href') || '';
+    var menuPath = link.getAttribute('data-menu-path') || '';
+    if ((!href || href === '#' || href.indexOf('#!') === 0) && !menuPath) {
+      return;
+    }
+    if (href && shouldSkip(href) && (!menuPath || shouldSkip(menuPath))) {
+      return;
+    }
+    e.preventDefault();
+    navigateLink(link);
   }
 
   global.PrintMallPath = {
@@ -267,4 +301,5 @@
   }
 
   document.addEventListener('dashboard-widgets-rendered', onDashboardWidgetsRendered);
+  document.addEventListener('click', onDashboardQuickLinkClick, true);
 })(typeof window !== 'undefined' ? window : globalThis);
