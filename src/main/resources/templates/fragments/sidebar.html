@@ -11,7 +11,7 @@
                 <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
             </button>
         </div>
-            <a class="navbar-brand" th:href="@{/}">
+            <a class="navbar-brand" th:href="@{${brandHomeUrl}}">
               <div class="d-flex align-items-center py-3"><span class="font-sans-serif" th:text="${appBrandName}">PrintMall</span>
               </div>
             </a>
@@ -200,6 +200,13 @@
                       </a>
                       <!-- more inner pages-->
                       <ul class="nav collapse" id="sidebar-orders">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-menu-path="/app/e-commerce/shopping-cart" data-cart-nav="sidebar" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">장바구니</span>
+                              <span class="badge rounded-pill badge-soft-warning ms-2 d-none" data-cart-badge aria-label="장바구니 수량"></span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-bs-toggle="" aria-expanded="false">
                             <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order list</span>
                             </div>
@@ -208,6 +215,12 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-details}" data-bs-toggle="" aria-expanded="false">
                             <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order details</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/checkout}" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">결제</span>
                             </div>
                           </a>
                           <!-- more inner pages-->
@@ -222,19 +235,6 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/customer-details}" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Customer details</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/shopping-cart}" data-menu-path="/app/e-commerce/shopping-cart" data-cart-nav="sidebar" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">장바구니</span>
-                          <span class="badge rounded-pill badge-soft-warning ms-2 d-none" data-cart-badge aria-label="장바구니 수량"></span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/checkout}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">결제</span>
                         </div>
                       </a>
                       <!-- more inner pages-->
@@ -501,30 +501,6 @@
                       <!-- more inner pages-->
                     </li>
                   </ul>
-                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-faq" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-faq">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-question-circle"></span></span><span class="nav-link-text ps-1">Faq</span>
-                    </div>
-                  </a>
-                  <ul class="nav collapse" id="sidebar-faq">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-basic}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq basic</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-alt}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq alt</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/faq/faq-accordion}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Faq accordion</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                  </ul>
                   <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-errors" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-errors">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-exclamation-triangle"></span></span><span class="nav-link-text ps-1">Errors</span>
                     </div>
@@ -543,30 +519,6 @@
                       <!-- more inner pages-->
                     </li>
                   </ul>
-                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-miscellaneous" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-miscellaneous">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-thumbtack"></span></span><span class="nav-link-text ps-1">기타</span>
-                    </div>
-                  </a>
-                  <ul class="nav collapse" id="sidebar-miscellaneous">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/associations}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Associations</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/invite-people}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Invite people</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/pages/miscellaneous/privacy-policy}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Privacy policy</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
-                  </ul>
                 </li>
                 <li class="nav-item" data-menu-zone="admin">
                   <!-- label-->
@@ -577,23 +529,23 @@
                       <hr class="mb-0 navbar-vertical-divider" />
                     </div>
                   </div>
-                  <!-- parent pages--><a class="nav-link" th:href="@{/users}" data-menu-path="/users" role="button" data-bs-toggle="" aria-expanded="false">
+                  <!-- parent pages--><a class="nav-link" th:if="${@menuAccess.allowed('/users')}" th:href="@{/users}" data-menu-path="/users" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-users-cog"></span></span><span class="nav-link-text ps-1">사용자 관리</span>
                     </div>
                   </a>
-                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/codes}" data-menu-path="/admin/codes" role="button" data-bs-toggle="" aria-expanded="false">
+                  <!-- parent pages--><a class="nav-link" th:if="${@menuAccess.allowed('/admin/codes')}" th:href="@{/admin/codes}" data-menu-path="/admin/codes" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code"></span></span><span class="nav-link-text ps-1">코드관리</span>
                     </div>
                   </a>
-                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/table-sequences}" data-menu-path="/admin/table-sequences" role="button" data-bs-toggle="" aria-expanded="false">
+                  <!-- parent pages--><a class="nav-link" th:if="${@menuAccess.allowed('/admin/table-sequences')}" th:href="@{/admin/table-sequences}" data-menu-path="/admin/table-sequences" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-sort-numeric-up"></span></span><span class="nav-link-text ps-1">테이블 시퀀스</span>
                     </div>
                   </a>
-                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/menus}" data-menu-path="/admin/menus" role="button" data-bs-toggle="" aria-expanded="false">
+                  <!-- parent pages--><a class="nav-link" th:if="${@menuAccess.allowed('/admin/menus')}" th:href="@{/admin/menus}" data-menu-path="/admin/menus" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-sitemap"></span></span><span class="nav-link-text ps-1">메뉴관리</span>
                     </div>
                   </a>
-                  <!-- parent pages--><a class="nav-link" th:href="@{/admin/user-access-logs}" data-menu-path="/admin/user-access-logs" role="button" data-bs-toggle="" aria-expanded="false">
+                  <!-- parent pages--><a class="nav-link" th:if="${@menuAccess.allowed('/admin/user-access-logs')}" th:href="@{/admin/user-access-logs}" data-menu-path="/admin/user-access-logs" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-history"></span></span><span class="nav-link-text ps-1">접속 로그</span>
                     </div>
                   </a>
@@ -627,24 +579,12 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="sidebar-admin-nas">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/nas}" data-menu-path="/admin/nas" data-bs-toggle="" aria-expanded="false">
+                    <li class="nav-item" th:if="${@menuAccess.allowed('/admin/nas')}"><a class="nav-link" th:href="@{/admin/nas}" data-menu-path="/admin/nas" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">설정·용량</span></div>
                       </a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/media-storage}" data-menu-path="/admin/media-storage" data-bs-toggle="" aria-expanded="false">
                         <div class="d-flex align-items-center"><span class="nav-link-text ps-1">파일 업로드</span></div>
                       </a></li>
-                  </ul>
-                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#sidebar-admin-orders" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebar-admin-orders">
-                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shopping-bag"></span></span><span class="nav-link-text ps-1">주문·판매</span>
-                    </div>
-                  </a>
-                  <ul class="nav collapse" id="sidebar-admin-orders">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/app/e-commerce/orders/order-list}" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">주문 목록</span>
-                        </div>
-                      </a>
-                      <!-- more inner pages-->
-                    </li>
                   </ul>
                   <!-- parent pages--><a class="nav-link" th:href="@{/app/e-commerce/customers}" role="button" data-bs-toggle="" aria-expanded="false">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-user-friends"></span></span><span class="nav-link-text ps-1">고객 관리</span>

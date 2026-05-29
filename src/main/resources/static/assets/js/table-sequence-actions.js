@@ -139,22 +139,31 @@
       tbody.innerHTML =
         '<tr><td colspan="9" class="text-center text-600 py-4">조회 중...</td></tr>';
     }
-    fetch('/api/admin/table-sequences?' + getSearchParams().toString(), {
-      headers: { Accept: 'application/json' }
-    })
-      .then(function (res) {
-        if (!res.ok) {
-          throw new Error('조회 실패');
+    var C = window.PrintMallCommon || {};
+    var fetchJson = C.fetchJson || function (url) {
+      return fetch(url, { headers: { Accept: 'application/json' }, credentials: 'same-origin' }).then(function (res) {
+        return (C.parseFetchResponse ? C.parseFetchResponse(res) : res.json()).then(function (data) {
+          return { ok: res.ok, status: res.status, data: data || {} };
+        });
+      });
+    };
+    fetchJson('/api/admin/table-sequences?' + getSearchParams().toString())
+      .then(function (r) {
+        if (!r.ok) {
+          if (C.handleQueryApiFailure && C.handleQueryApiFailure(r.status, r.data)) {
+            renderGrid([]);
+            return;
+          }
+          throw new Error(C.queryErrorMessage ? C.queryErrorMessage(r.status, r.data) : '조회 실패');
         }
-        return res.json();
+        renderGrid(r.data.sequences || []);
       })
-      .then(function (data) {
-        renderGrid(data.sequences || []);
-      })
-      .catch(function () {
+      .catch(function (err) {
         if (tbody) {
           tbody.innerHTML =
-            '<tr><td colspan="9" class="text-center text-danger py-4">조회 중 오류가 발생했습니다.</td></tr>';
+            '<tr><td colspan="9" class="text-center text-danger py-4">' +
+            (err && err.message ? err.message : '조회 중 오류가 발생했습니다.') +
+            '</td></tr>';
         }
       })
       .finally(function () {

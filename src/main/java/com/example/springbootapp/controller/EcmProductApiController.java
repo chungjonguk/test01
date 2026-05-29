@@ -76,6 +76,11 @@ public class EcmProductApiController {
 			return ResponseEntity.ok(body);
 		} catch (IllegalArgumentException | java.io.IOException ex) {
 			return badRequest(ex.getMessage());
+		} catch (Exception ex) {
+			Map<String, Object> body = new LinkedHashMap<>();
+			body.put("success", false);
+			body.put("message", ex.getMessage() != null ? ex.getMessage() : "업로드 중 오류가 발생했습니다.");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
 		}
 	}
 	/**

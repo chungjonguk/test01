@@ -55,8 +55,24 @@
       options.body ? { 'Content-Type': 'application/json' } : {},
       options.headers || {}
     );
+    options.credentials = options.credentials || 'same-origin';
     return fetch(url, options).then(function (res) {
-      return res.json().then(function (data) {
+      return res.text().then(function (text) {
+        var data = null;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch (e) {
+          data = null;
+        }
+        if (data === null) {
+          if (res.status === 401) {
+            data = { success: false, message: '로그인이 필요합니다. 다시 로그인해 주세요.' };
+          } else if (res.status === 403) {
+            data = { success: false, message: '접근 권한이 없습니다.' };
+          } else {
+            data = { success: false, message: '서버 응답을 처리할 수 없습니다.' };
+          }
+        }
         return { ok: res.ok, status: res.status, data: data };
       });
     });

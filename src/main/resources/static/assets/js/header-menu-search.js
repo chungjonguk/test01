@@ -189,17 +189,40 @@
     });
   }
 
+  function isAppLoggedIn() {
+    var main = global.document.querySelector('main.main[data-app-logged-in]');
+    if (!main) {
+      return true;
+    }
+    return main.getAttribute('data-app-logged-in') === 'true';
+  }
+
   function loadMenus() {
     var listEl = global.document.getElementById('header-menu-search-list');
     if (!listEl) return;
+    if (!isAppLoggedIn()) {
+      listEl.innerHTML =
+        '<div class="dropdown-item-text text-600 px-card py-2 fs--1">로그인 후 메뉴 검색을 사용할 수 있습니다.</div>';
+      return;
+    }
 
     global
       .fetch(API, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
       .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (res.status === 401 || res.status === 403) {
+          return { authError: true, status: res.status };
+        }
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
         return res.json();
       })
       .then(function (data) {
+        if (data && data.authError) {
+          listEl.innerHTML =
+            '<div class="dropdown-item-text text-danger px-card py-2 fs--1">세션이 만료되었습니다. 다시 로그인해 주세요.</div>';
+          return;
+        }
         var screens = (data && data.screens) || [];
         renderScreens(screens);
       })

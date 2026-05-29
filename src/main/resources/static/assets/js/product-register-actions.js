@@ -49,6 +49,8 @@
     console.log('[product-register]', eventName, data || {});
   }
 
+  var IMAGE_EXT_RE = /\.(jpe?g|png|gif|webp)$/i;
+
   function parseResponseSafely(res) {
     var contentType = (res.headers.get('content-type') || '').toLowerCase();
     if (contentType.indexOf('application/json') >= 0) {
@@ -57,8 +59,82 @@
       });
     }
     return res.text().then(function (text) {
-      return { message: text || '' };
+      return { message: text || '', success: false };
     });
+  }
+
+  function isAllowedImageFile(file) {
+    if (!file) {
+      return false;
+    }
+    var type = (file.type || '').toLowerCase();
+    if (type.indexOf('image/') === 0) {
+      return true;
+    }
+    return IMAGE_EXT_RE.test(file.name || '');
+  }
+
+  function extractUploadUrl(data) {
+    if (!data) {
+      return '';
+    }
+    if (data.url) {
+      return String(data.url).trim();
+    }
+    if (data.urlPath) {
+      return String(data.urlPath).trim();
+    }
+    return '';
+  }
+
+  function getSlotStoredUrl(slotEl) {
+    var input = slotEl.querySelector('.slot-url');
+    var v = input ? input.value.trim() : '';
+    if (v) {
+      return v;
+    }
+    return (slotEl.dataset.uploadedUrl || '').trim();
+  }
+
+  function setSlotImageUrl(slotEl, url) {
+    if (!url) {
+      return;
+    }
+    var urlInput = slotEl.querySelector('.slot-url');
+    if (urlInput) {
+      urlInput.value = url;
+      urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    slotEl.dataset.uploadedUrl = url;
+    var preview = slotEl.querySelector('.slot-preview');
+    if (preview) {
+      preview.src = resolveImgUrl(url);
+    }
+  }
+
+  function slotHasPendingImage(slotEl) {
+    var fileInput = slotEl.querySelector('.slot-file');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      return true;
+    }
+    var preview = slotEl.querySelector('.slot-preview');
+    if (preview && preview.src && preview.src.indexOf('blob:') === 0) {
+      return true;
+    }
+    return slotEl.dataset.uploading === 'true';
+  }
+
+  function uploadErrorMessage(status, data) {
+    if (status === 401 || status === 403) {
+      return '로그인 세션이 만료되었거나 이미지 업로드 권한이 없습니다. 새로고침 후 다시 시도해 주세요.';
+    }
+    if (data && data.message) {
+      return String(data.message);
+    }
+    if (status >= 500) {
+      return '서버 오류로 이미지를 저장하지 못했습니다.';
+    }
+    return '업로드 실패';
   }
 
   function createSlotHtml(index) {
@@ -83,7 +159,7 @@
       '<label class="form-label fs--1">이미지 URL</label>' +
       '<input type="text" class="form-control form-control-sm slot-url" placeholder="/assets/img/products/2.jpg" maxlength="500"/>' +
       '<label class="form-label fs--1 mt-2">파일 업로드</label>' +
-      '<input type="file" class="form-control form-control-sm slot-file" accept="image/jpeg,image/png,image/gif,image/webp"/>' +
+      '<input type="file" class="form-control form-control-sm slot-file" accept="image/*,.jpg,.jpeg,.png,.gif,.webp"/>' +
       '<div class="slot-upload-msg fs--2 text-600 mt-1"></div>' +
       '</div></div></div>'
     );
@@ -152,8 +228,7 @@
       }
       for (var i = 0; i < radios.length; i++) {
         var slot = radios[i].closest('.product-image-slot');
-        var urlInput = slot && slot.querySelector('.slot-url');
-        if (urlInput && urlInput.value.trim()) {
+        if (slot && getSlotStoredUrl(slot)) {
           radios[i].checked = true;
           refreshMainHighlight();
           return;
@@ -172,9 +247,8 @@
       var key = normalizeUrlKey(mainUrl);
       var matched = false;
       slotsRoot.querySelectorAll('.product-image-slot').forEach(function (slot) {
-        var urlInput = slot.querySelector('.slot-url');
         var radio = slot.querySelector('.slot-main-radio');
-        if (urlInput && radio && normalizeUrlKey(urlInput.value) === key) {
+        if (radio && normalizeUrlKey(getSlotStoredUrl(slot)) === key) {
           radio.checked = true;
           matched = true;
         }
@@ -202,7 +276,15 @@
       }
 
       if (urlInput) {
-        urlInput.addEventListener('input', refreshPreview);
+        urlInput.addEventListener('input', function () {
+          var v = urlInput.value.trim();
+          if (v) {
+            slotEl.dataset.uploadedUrl = v;
+          } else {
+            delete slotEl.dataset.uploadedUrl;
+          }
+          refreshPreview();
+        });
       }
 
       if (mainRadio) {
@@ -226,6 +308,7 @@
             if (urlInput) {
               urlInput.value = '';
             }
+            delete slotEl.dataset.uploadedUrl;
             refreshPreview();
             if (mainRadio) {
               mainRadio.checked = true;
@@ -245,7 +328,6 @@
     }
 
     function uploadSlotFile(slotEl) {
-      var urlInput = slotEl.querySelector('.slot-url');
       var fileInput = slotEl.querySelector('.slot-file');
       var preview = slotEl.querySelector('.slot-preview');
       var uploadMsg = slotEl.querySelector('.slot-upload-msg');
@@ -261,9 +343,9 @@
         size: file.size,
         type: file.type
       });
-      if (!/^image\//i.test(file.type || '')) {
+      if (!isAllowedImageFile(file)) {
         if (uploadMsg) {
-          uploadMsg.textContent = '이미지 파일만 업로드할 수 있습니다.';
+          uploadMsg.textContent = 'jpg, png, gif, webp 이미지 파일만 업로드할 수 있습니다.';
           uploadMsg.classList.remove('text-success');
           uploadMsg.classList.add('text-danger');
         }
@@ -293,19 +375,15 @@
           });
         })
         .then(function (r) {
-          if (!r.ok || !r.data || !r.data.success) {
-            if (r.status === 401 || r.status === 403) {
-              throw new Error('로그인 세션이 만료되었습니다. 새로고침 후 다시 시도해 주세요.');
-            }
-            throw new Error((r.data && r.data.message) || '업로드 실패');
+          var uploadedUrl = extractUploadUrl(r.data);
+          if (!r.ok || !r.data || !r.data.success || !uploadedUrl) {
+            throw new Error(uploadErrorMessage(r.status, r.data));
           }
           logDebug('upload.success', {
             slotIndex: slotEl.getAttribute('data-slot-index'),
-            url: r.data.url
+            url: uploadedUrl
           });
-          if (urlInput) {
-            urlInput.value = r.data.url;
-          }
+          setSlotImageUrl(slotEl, uploadedUrl);
           if (!slotsRoot.querySelector('.slot-main-radio:checked') && mainRadio) {
             mainRadio.checked = true;
             refreshMainHighlight();
@@ -344,10 +422,7 @@
       var slot = wrap.firstElementChild;
       slotsRoot.appendChild(slot);
       if (url) {
-        var urlInput = slot.querySelector('.slot-url');
-        if (urlInput) {
-          urlInput.value = url;
-        }
+        setSlotImageUrl(slot, url);
       }
       bindSlot(slot);
       updateUi();
@@ -387,8 +462,7 @@
     function collectImageUrls() {
       var urls = [];
       slotsRoot.querySelectorAll('.product-image-slot').forEach(function (slot) {
-        var input = slot.querySelector('.slot-url');
-        var v = input ? input.value.trim() : '';
+        var v = getSlotStoredUrl(slot);
         if (v) {
           urls.push(v);
         }
@@ -406,8 +480,7 @@
       var checked = slotsRoot.querySelector('.slot-main-radio:checked');
       if (checked) {
         var slot = checked.closest('.product-image-slot');
-        var input = slot && slot.querySelector('.slot-url');
-        var v = input ? input.value.trim() : '';
+        var v = slot ? getSlotStoredUrl(slot) : '';
         if (v) {
           return v;
         }
@@ -455,21 +528,27 @@
         btn.disabled = true;
       }
       var pendingUploads = [];
+      var hadPendingImage = false;
       slotsRoot.querySelectorAll('.product-image-slot').forEach(function (slot) {
-        var urlInput = slot.querySelector('.slot-url');
-        var fileInput = slot.querySelector('.slot-file');
-        var hasUrl = !!(urlInput && urlInput.value.trim());
-        var hasFile = !!(fileInput && fileInput.files && fileInput.files[0]);
-        if (!hasUrl && hasFile) {
+        var hasUrl = !!getSlotStoredUrl(slot);
+        var hasFile = !!(slot.querySelector('.slot-file') && slot.querySelector('.slot-file').files
+          && slot.querySelector('.slot-file').files[0]);
+        if (!hasUrl && (hasFile || slotHasPendingImage(slot))) {
+          hadPendingImage = true;
           pendingUploads.push(uploadSlotFile(slot));
         }
       });
       Promise.all(pendingUploads)
-        .then(function () {
+        .then(function (uploadResults) {
           var imageUrls = collectImageUrls();
           logDebug('submit.images.collected', { count: imageUrls.length, imageUrls: imageUrls });
           if (!imageUrls.length) {
-            throw new Error('상품 이미지를 1개 이상 등록해 주세요.');
+            if (hadPendingImage || (uploadResults && uploadResults.some(function (ok) { return ok === false; }))) {
+              throw new Error(
+                '이미지 업로드가 완료되지 않았습니다. 파일 선택 후 슬롯에 "업로드 완료"가 표시되는지 확인해 주세요.'
+              );
+            }
+            throw new Error('상품 이미지를 1개 이상 등록해 주세요. (URL 입력 또는 파일 업로드)');
           }
           if (imageUrls.length > MAX_IMAGES) {
             throw new Error('이미지는 최대 ' + MAX_IMAGES + '개까지 등록할 수 있습니다.');
@@ -483,6 +562,7 @@
           logDebug('submit.request', { method: method, url: url, payload: payload });
           return fetch(url, {
             method: method,
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify(payload)
           });

@@ -107,6 +107,12 @@ public class MenuAccessService {
 		if (isUserSelfServiceApi(path)) {
 			return true;
 		}
+		if (isScreensNavigationApi(path)) {
+			return true;
+		}
+		if (isSharedAppApi(path)) {
+			return true;
+		}
 		AppRole role = access.role();
 		if (role == AppRole.PLATFORM_ADMIN) {
 			return true;
@@ -158,8 +164,20 @@ public class MenuAccessService {
 		return false;
 	}
 
+	private static boolean isScreensNavigationApi(String path) {
+		if (path == null) {
+			return false;
+		}
+		String p = path.split("\\?")[0];
+		return "/api/screens".equals(p) || p.startsWith("/api/screens/");
+	}
+
 	private static boolean isKakaoLocalApi(String path) {
 		return path != null && path.startsWith("/api/kakao/local");
+	}
+
+	private static boolean isSharedAppApi(String path) {
+		return path != null && path.startsWith("/api/calendar/");
 	}
 
 	private static boolean isUserSelfServiceApi(String path) {

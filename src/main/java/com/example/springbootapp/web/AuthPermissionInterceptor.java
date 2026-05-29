@@ -49,34 +49,49 @@ public class AuthPermissionInterceptor implements HandlerInterceptor {
 				if (AuthRequiredPaths.isPublicApi(uri)) {
 					return true;
 				}
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인이 필요합니다.");
+				writeJsonError(response, HttpServletResponse.SC_UNAUTHORIZED, "로그인이 필요합니다. 다시 로그인해 주세요.");
 				return false;
 			}
 			return true;
 		}
 		if (uri.startsWith("/api/")) {
 			if (!menuAccessService.canAccessUri(login, uri)) {
-				response.sendError(HttpServletResponse.SC_FORBIDDEN, "접근 권한이 없습니다.");
+				writeJsonError(response, HttpServletResponse.SC_FORBIDDEN, "접근 권한이 없습니다.");
 				return false;
 			}
 			if (!isReadMethod(request.getMethod()) && !menuAccessService.canWriteApi(login, request.getMethod(), uri)) {
-				response.sendError(HttpServletResponse.SC_FORBIDDEN, "수정 권한이 없습니다.");
+				writeJsonError(response, HttpServletResponse.SC_FORBIDDEN, "수정 권한이 없습니다.");
 				return false;
 			}
 			return true;
 		}
 		if (!menuAccessService.canAccessUri(login, uri)) {
 			String ctx = request.getContextPath();
-			String errorPath = "/pages/errors/403";
+			String logicalUri = uri;
 			PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+			if (crypto != null && crypto.isEnabled()) {
+				logicalUri = crypto.resolveLogicalPath(request);
+			}
+			String errorPath = "/pages/errors/403";
 			if (crypto != null && crypto.isEnabled()) {
 				errorPath = crypto.toPublicPath(errorPath);
 			}
-			String msg = URLEncoder.encode("이 화면에 대한 접근 권한이 없습니다.", StandardCharsets.UTF_8);
+			String detail = "이 화면에 대한 접근 권한이 없습니다.";
+			if (logicalUri != null && logicalUri.startsWith("/admin/user-access-logs")) {
+				detail = "접속 로그는 플랫폼 관리자만 이용할 수 있습니다.";
+			}
+			String msg = URLEncoder.encode(detail, StandardCharsets.UTF_8);
 			response.sendRedirect(ctx + errorPath + "?msg=" + msg);
 			return false;
 		}
 		return true;
+	}
+
+	private static void writeJsonError(HttpServletResponse response, int status, String message) throws java.io.IOException {
+		response.setStatus(status);
+		response.setContentType("application/json;charset=UTF-8");
+		String safe = message == null ? "" : message.replace("\\", "\\\\").replace("\"", "\\\"");
+		response.getWriter().write("{\"success\":false,\"message\":\"" + safe + "\"}");
 	}
 
 	private boolean isReadMethod(String method) {

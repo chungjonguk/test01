@@ -645,7 +645,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-xxl-4">
-                <div class="card h-100" data-dashboard-widget="admin-quick-links">
+                <div class="card h-100" data-dashboard-widget="admin-quick-links" th:if="${platformAdmin}">
                     <div class="card-header py-2"><h6 class="mb-0">관리 바로가기</h6></div>
                     <div class="card-body fs--1">
                         <th:block th:replace="~{fragments/dashboard-quick-links :: adminLinks}"></th:block>

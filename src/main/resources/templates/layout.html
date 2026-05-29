@@ -120,7 +120,7 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
-    <main class="main" id="top">
+    <main class="main" id="top" th:attr="data-app-logged-in=${isLoggedIn}">
         <div class="container" data-layout="container">
             <script>
               var isFluid = JSON.parse(localStorage.getItem('isFluid') || 'false');
@@ -208,15 +208,15 @@
     <script th:if="${loadNotificationListActions}" th:src="@{/assets/js/notification-list-actions.js(v=3)}"></script>
     <script th:if="${loadNotificationActions}" th:src="@{/assets/js/notification-actions.js(v=2)}"></script>
     <script th:if="${loadProductGridActions}" th:src="@{/assets/js/product-grid-actions.js(v=1)}"></script>
-    <script th:if="${hideSidebar != true or storefrontMode}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=9)}"></script>
+    <script th:if="${hideSidebar != true or (storefrontMode != null and storefrontMode)}" th:src="@{/assets/js/product-cart-actions.js(v=2)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/page-menu.js(v=11)}"></script>
     <script th:if="${loadLottie}" src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/assets/js/currency-won.js(v=2)}"></script>
     <script th:if="${isLoggedIn}" th:inline="javascript">
       window.__USER_PROFILE_IMAGE_URL__ = /*[[${userProfileImageUrl}]]*/ '';
     </script>
     <script th:if="${isLoggedIn}" th:src="@{/assets/js/user-nav-avatar-sync.js(v=1)}"></script>
-    <script th:src="@{/assets/js/app-common.js(v=8)}"></script>
+    <script th:src="@{/assets/js/app-common.js(v=9)}"></script>
     <script th:src="@{/assets/js/code-select-loader.js(v=2)}"></script>
     <script th:inline="javascript">
       window.__PRINTMALL_GRID_PAGE_SIZE__ = /*[[${gridPageSize}]]*/ 30;
@@ -224,10 +224,10 @@
     <script th:src="@{/assets/js/grid-pager.js(v=2)}"></script>
     <script th:src="@{/assets/js/grid-excel-actions.js(v=4)}"></script>
     <script th:src="@{/assets/js/theme.js(v=10)}"></script>
-    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/header-menu-search.js(v=3)}"></script>
+    <script th:if="${hideSidebar != true}" th:src="@{/assets/js/header-menu-search.js(v=4)}"></script>
     <script th:if="${loadOrderListActions}" th:src="@{/assets/js/order-list-actions.js(v=6)}"></script>
-    <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=9)}"></script>
-    <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=9)}"></script>
+    <script th:if="${loadProductRegisterActions}" th:src="@{/assets/js/product-register-actions.js(v=10)}"></script>
+    <script th:if="${loadProductManageActions}" th:src="@{/assets/js/product-manage-actions.js(v=10)}"></script>
     <script th:if="${loadProductDetailsActions}" th:src="@{/assets/js/product-details-actions.js(v=2)}"></script>
     <script th:if="${kakaoMapAppKey != null and loadKakaoAddressForm != null and loadKakaoAddressForm}" th:inline="javascript">
       window.__KAKAO_MAP_APP_KEY__ = /*[[${kakaoMapAppKey}]]*/ '';
@@ -240,8 +240,8 @@
     <script th:if="${loadCustomersActions}" th:src="@{/assets/js/customers-actions.js(v=2)}"></script>
     <script th:if="${loadShoppingCartActions}" th:src="@{/assets/js/shopping-cart-actions.js(v=11)}"></script>
     <script th:if="${loadCodeManagementActions}" th:src="@{/assets/js/code-management-actions.js(v=28)}"></script>
-    <script th:if="${loadTableSequenceActions}" th:src="@{/assets/js/table-sequence-actions.js(v=1)}"></script>
-    <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=5)}"></script>
+    <script th:if="${loadTableSequenceActions}" th:src="@{/assets/js/table-sequence-actions.js(v=2)}"></script>
+    <script th:if="${loadMenuManagementActions}" th:src="@{/assets/js/menu-management-actions.js(v=6)}"></script>
     <script th:if="${loadUserAccessLogActions}" th:src="@{/assets/js/user-access-log-actions.js(v=7)}"></script>
     <script th:if="${loadNasAdminActions}" th:src="@{/assets/js/nas-settings-actions.js(v=1)}"></script>
     <script th:if="${loadMediaStorageActions}" th:src="@{/assets/js/media-storage-actions.js(v=5)}"></script>
@@ -252,7 +252,7 @@
     <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-dashboard-init.js(v=7)}"></script>
     <script th:if="${loadCrmDashboardInit == true}" th:src="@{/assets/js/crm-card-actions.js(v=1)}"></script>
     <script th:if="${loadCompanyManageActions}" th:src="@{/assets/js/company-manage-actions.js(v=12)}"></script>
-    <script th:if="${loadInventoryManageActions}" th:src="@{/assets/js/inventory-manage-actions.js(v=1)}"></script>
+    <script th:if="${loadInventoryManageActions}" th:src="@{/assets/js/inventory-manage-actions.js(v=2)}"></script>
     <script th:if="${loadShippingWaybillActions}" th:src="@{/assets/js/shipping-waybill-actions.js(v=1)}"></script>
     <script th:if="${loadCompanyPageImageActions}" th:src="@{/assets/js/company-page-image-actions.js(v=3)}"></script>
     <script th:if="${loadUserSettingsActions}" th:src="@{/assets/js/phone-format.js(v=1)}"></script>

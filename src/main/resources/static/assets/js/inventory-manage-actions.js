@@ -175,25 +175,39 @@
       tbody.innerHTML =
         '<tr><td colspan="9" class="text-center text-600 py-4">조회 중...</td></tr>';
     }
-    fetch(API_BASE + buildQuery(collectSearchParams()), { credentials: 'same-origin' })
-      .then(function (res) {
-        return res.json().then(function (data) {
-          return { ok: res.ok, data: data };
+    var C = window.PrintMallCommon || {};
+    var fetchJson = C.fetchJson || function (url, options) {
+      return fetch(url, options).then(function (res) {
+        return (C.parseFetchResponse ? C.parseFetchResponse(res) : res.json()).then(function (data) {
+          return { ok: res.ok, status: res.status, data: data || {} };
         });
-      })
+      });
+    };
+    fetchJson(API_BASE + buildQuery(collectSearchParams()))
       .then(function (result) {
         if (!result.ok) {
-          notify((result.data && result.data.message) || '조회에 실패했습니다.', 'error');
+          if (C.handleQueryApiFailure && C.handleQueryApiFailure(result.status, result.data)) {
+            renderGrid([]);
+            return;
+          }
+          notify(
+            C.queryErrorMessage
+              ? C.queryErrorMessage(result.status, result.data, '조회에 실패했습니다.')
+              : '조회에 실패했습니다.',
+            'error'
+          );
           renderGrid([]);
           return;
         }
         renderGrid((result.data && result.data.items) || []);
       })
-      .catch(function () {
-        notify('서버 연결에 실패했습니다.', 'error');
+      .catch(function (err) {
+        notify((err && err.message) || '서버 연결에 실패했습니다.', 'error');
         if (tbody) {
           tbody.innerHTML =
-            '<tr><td colspan="9" class="text-center text-danger py-4">조회 중 오류가 발생했습니다.</td></tr>';
+            '<tr><td colspan="9" class="text-center text-danger py-4">' +
+            ((err && err.message) || '조회 중 오류가 발생했습니다.') +
+            '</td></tr>';
         }
       });
   }

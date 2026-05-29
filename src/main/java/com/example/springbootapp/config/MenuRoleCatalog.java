@@ -59,7 +59,6 @@ public final class MenuRoleCatalog {
 
 	static {
 		CUSTOMER_MENU_CANDIDATES.addAll(DEFAULT_CUSTOMER_MENU_PATHS);
-		CUSTOMER_MENU_CANDIDATES.add("/pages/faq/faq-basic");
 		CUSTOMER_MENU_CANDIDATES.add("/pages/user/settings");
 	}
 

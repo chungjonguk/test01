@@ -619,7 +619,15 @@
 
         if (!r.ok) {
 
-          throw new Error('조회 실패');
+          if (C.handleQueryApiFailure && C.handleQueryApiFailure(r.status, r.data)) {
+
+            renderGrid([]);
+
+            return;
+
+          }
+
+          throw new Error(C.queryErrorMessage ? C.queryErrorMessage(r.status, r.data) : '조회 실패');
 
         }
 
@@ -627,13 +635,17 @@
 
       })
 
-      .catch(function () {
+      .catch(function (err) {
 
         if (grid) {
 
           grid.innerHTML =
 
-            '<div class="col-12 text-center text-danger py-5">조회 중 오류가 발생했습니다.</div>';
+            '<div class="col-12 text-center text-danger py-5">' +
+
+            escapeHtml((err && err.message) || '조회 중 오류가 발생했습니다.') +
+
+            '</div>';
 
         }
 

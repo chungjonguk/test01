@@ -39,7 +39,12 @@ public class EncryptedPathDecodeFilter extends OncePerRequestFilter {
 			String path = uri.startsWith(contextPath) ? uri.substring(contextPath.length()) : uri;
 			if (publicPathCryptoService.isPublicPath(path)) {
 				String logical = publicPathCryptoService.toLogicalPath(path);
-				request.setAttribute(ATTR_LOGICAL_PATH, logical);
+				if (publicPathCryptoService.isPublicPath(logical)) {
+					request.setAttribute(ATTR_LOGICAL_PATH, "/pages/errors/404.do");
+					request.setAttribute("printmall.encryptedPathInvalid", Boolean.TRUE);
+				} else {
+					request.setAttribute(ATTR_LOGICAL_PATH, logical);
+				}
 			}
 		}
 		filterChain.doFilter(request, response);

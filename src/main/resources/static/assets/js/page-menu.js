@@ -6,8 +6,8 @@
 
   var LG = 992;
 
-  /** 쇼핑몰 zone 필터와 무관하게 항상 표시 (관리·설정 메뉴) */
-  var ALWAYS_VISIBLE_ZONES = ['admin'];
+  /** zone(현재 화면) 필터와 무관하게 항상 표시 */
+  var ALWAYS_VISIBLE_ZONES = ['admin', 'shopping-mall', 'dashboard'];
 
   function ctx() {
     return global.__PAGE_MENU_CONTEXT__ || null;
@@ -104,23 +104,10 @@
       return true;
     }
     var key = linkKey(link);
-    if (!isRoleMenuAllowed(key)) {
+    if (!key) {
       return false;
     }
-    var zone = linkZone(link);
-    if (isPersistentZone(zone)) {
-      return true;
-    }
-    if (c.pathKey && pathKey(c.pathKey) === key) {
-      return !c.zone || !zone || zone === c.zone;
-    }
-    if (active[key]) {
-      return !c.zone || !zone || zone === c.zone;
-    }
-    if (c.zone && zone && zone === c.zone) {
-      return true;
-    }
-    return false;
+    return isRoleMenuAllowed(key);
   }
 
   function setLinkVisible(link, show) {

@@ -34,6 +34,55 @@
   }
 
   /**
+   * @param {Response} res in: fetch 응답
+   * @returns {Promise<object>} out: 파싱된 JSON 또는 { message }
+   */
+  function parseFetchResponse(res) {
+    var contentType = (res.headers.get('content-type') || '').toLowerCase();
+    if (contentType.indexOf('application/json') >= 0) {
+      return res.json().catch(function () {
+        return {};
+      });
+    }
+    return res.text().then(function (text) {
+      return { message: text || '' };
+    });
+  }
+
+  /**
+   * @param {number} status in: HTTP 상태
+   * @param {object} [data] in: 응답 본문
+   * @param {string} [fallback] in: 기본 메시지
+   * @returns {string} out: 사용자 표시용 메시지
+   */
+  function queryErrorMessage(status, data, fallback) {
+    if (status === 401) {
+      return '로그인이 필요합니다. 상단 메뉴에서 로그인해 주세요.';
+    }
+    if (status === 403) {
+      return '조회 권한이 없습니다.';
+    }
+    if (data && data.message) {
+      return String(data.message);
+    }
+    return fallback || '조회 중 오류가 발생했습니다.';
+  }
+
+  /**
+   * @param {number} status in: HTTP 상태
+   * @param {object} [data] in: 응답 본문
+   * @param {string} [fallback] in: 기본 메시지
+   * @returns {boolean} out: 로그인 안내 등으로 처리했으면 true
+   */
+  function handleQueryApiFailure(status, data, fallback) {
+    if (status === 401 && goLoginIfUnauthorized(status)) {
+      return true;
+    }
+    notify(queryErrorMessage(status, data, fallback), status === 403 ? 'warning' : 'error');
+    return true;
+  }
+
+  /**
    * @param {string} url in: 요청 URL
    * @param {RequestInit} [options] in: fetch 옵션 (body에 FormData 가능)
    * @returns {Promise<{ok: boolean, status: number, data: object}>} out: JSON 파싱 결과
@@ -45,9 +94,12 @@
       headers['Content-Type'] = headers['Content-Type'] || 'application/json';
     }
     options.headers = headers;
+    if (!options.credentials) {
+      options.credentials = 'same-origin';
+    }
     return fetch(url, options).then(function (res) {
-      return res.json().then(function (data) {
-        return { ok: res.ok, status: res.status, data: data };
+      return parseFetchResponse(res).then(function (data) {
+        return { ok: res.ok, status: res.status, data: data || {} };
       });
     });
   }
@@ -274,6 +326,9 @@
     escapeHtml: escapeHtml,
     escapeAttr: escapeAttr,
     fetchJson: fetchJson,
+    parseFetchResponse: parseFetchResponse,
+    queryErrorMessage: queryErrorMessage,
+    handleQueryApiFailure: handleQueryApiFailure,
     goLoginIfUnauthorized: goLoginIfUnauthorized,
     notify: notify,
     DATE_PATTERN: DATE_PATTERN,

@@ -247,7 +247,14 @@ import jakarta.servlet.http.HttpServletRequest;
 		}
 		LoginSession login = sessionAuthService.getLoginSession(session);
 		if (login != null && login.getMenuAccess() != null && !login.getMenuAccess().isWriteAll()) {
-			keys.retainAll(new LinkedHashSet<>(login.getMenuAccess().getAllowedMenuPaths()));
+			for (String allowed : login.getMenuAccess().getAllowedMenuPaths()) {
+				if (allowed == null || allowed.isBlank()) {
+					continue;
+				}
+				keys.add(allowed.trim());
+				keys.add(logicalPathKey(allowed));
+				keys.add(DoPathHelper.stripDoSuffix(allowed));
+			}
 			if (StringUtils.hasText(pathKey)) {
 				keys.add(pathKey.trim());
 			}
