@@ -153,15 +153,15 @@ public class TableRandomIdService {
 	private int registerAutoIncrementColumnsFromDatabase() {
 		List<AutoIncColumn> columns = jdbcTemplate.query(
 				"""
-						SELECT TABLE_NAME, COLUMN_NAME
-						FROM information_schema.COLUMNS
-						WHERE TABLE_SCHEMA = DATABASE()
-						  AND EXTRA LIKE '%auto_increment%'
-						ORDER BY TABLE_NAME
+						SELECT table_name, column_name
+						FROM information_schema.columns
+						WHERE table_schema = current_schema()
+						  AND (is_identity = 'YES' OR column_default LIKE 'nextval(%')
+						ORDER BY table_name
 						""",
 				(rs, rowNum) -> new AutoIncColumn(
-						rs.getString("TABLE_NAME").toLowerCase(),
-						rs.getString("COLUMN_NAME").toLowerCase()));
+						rs.getString("table_name").toLowerCase(),
+						rs.getString("column_name").toLowerCase()));
 		int inserted = 0;
 		for (AutoIncColumn col : columns) {
 			inserted += registerNumericIfAbsent(col.tableName(), col.columnName(), col.tableName() + " PK 난수");

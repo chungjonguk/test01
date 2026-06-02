@@ -19,7 +19,7 @@
         <result property="updateDt" column="update_dt"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="orderId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id">
         INSERT INTO ecm_order (
             order_no, customer_id, order_dt, ship_to, shipping_method,
             status_cd, amount, reg_id, update_id
@@ -79,10 +79,10 @@
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (
-                    o.order_no LIKE CONCAT('%', #{keyword}, '%')
-                    OR c.customer_nm LIKE CONCAT('%', #{keyword}, '%')
-                    OR c.email LIKE CONCAT('%', #{keyword}, '%')
-                    OR o.ship_to LIKE CONCAT('%', #{keyword}, '%')
+                    o.order_no ILIKE CONCAT('%', #{keyword}, '%')
+                    OR c.customer_nm ILIKE CONCAT('%', #{keyword}, '%')
+                    OR c.email ILIKE CONCAT('%', #{keyword}, '%')
+                    OR o.ship_to ILIKE CONCAT('%', #{keyword}, '%')
                 )
             </if>
         </where>

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 /**
- * 서버 기동 직후 MySQL 접속 가능 여부를 확인합니다. 실패 시 기동을 중단합니다.
+ * 서버 기동 직후 DB(PostgreSQL) 접속 가능 여부를 확인합니다. 실패 시 기동을 중단합니다.
  */
 @Profile("!test")
 @Component
@@ -33,7 +33,7 @@ public class DatabaseStartupValidator implements ApplicationRunner {
 			log.warn("DB 기동 검사 비활성화 (app.datasource.startup-check=false)");
 			return;
 		}
-		log.info("MySQL 접속 재확인 중... (최대 {}초, main 기동 시 ensure-mysql 이미 실행됨)", maxWaitSec);
+		log.info("PostgreSQL 접속 재확인 중... (최대 {}초)", maxWaitSec);
 		long deadline = System.currentTimeMillis() + maxWaitSec * 1000L;
 		Exception lastError = null;
 		while (System.currentTimeMillis() < deadline) {
@@ -42,7 +42,7 @@ public class DatabaseStartupValidator implements ApplicationRunner {
 					throw new IllegalStateException("Connection.isValid(5) == false");
 				}
 				var meta = connection.getMetaData();
-				log.info("MySQL 접속 OK — url={}, user={}, product={} {}",
+				log.info("DB 접속 OK — url={}, user={}, product={} {}",
 						meta.getURL(),
 						meta.getUserName(),
 						meta.getDatabaseProductName(),
@@ -54,21 +54,21 @@ public class DatabaseStartupValidator implements ApplicationRunner {
 				if (remaining <= 0) {
 					break;
 				}
-				log.warn("MySQL 접속 대기 중... ({}초 후 재시도) — {}",
+				log.warn("PostgreSQL 접속 대기 중... ({}초 후 재시도) — {}",
 						retrySec,
 						rootMessage(ex));
 				Thread.sleep(retrySec * 1000L);
 			}
 		}
 		String hint = """
-				MySQL 접속에 실패하여 서버를 시작할 수 없습니다.
-				  1) start-mysql.bat 또는 scripts\\ensure-mysql.bat 실행
-				  2) 127.0.0.1:3306 / DB spring_boot_app / 계정 application.properties 확인
-				  3) run-server.bat 사용 시 [2/4] DB 확인 단계 통과 여부 확인
+				PostgreSQL 접속에 실패하여 서버를 시작할 수 없습니다.
+				  1) PostgreSQL 서비스 기동 여부 확인 (호스트 또는 docker compose postgres)
+				  2) localhost:5432 / DB spring_boot_app / 계정 application.properties(또는 환경변수) 확인
+				  3) docker 실행 시 SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/... 확인
 				""";
 		log.error(hint);
 		IllegalStateException failure = new IllegalStateException(
-				"MySQL 접속 실패 (Connection refused 등). MySQL 기동 후 다시 실행하세요.",
+				"PostgreSQL 접속 실패 (Connection refused 등). PostgreSQL 기동 후 다시 실행하세요.",
 				lastError);
 		throw failure;
 	}

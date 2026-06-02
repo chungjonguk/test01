@@ -26,7 +26,7 @@
                 AND UPPER(code_id) LIKE CONCAT('%', UPPER(#{codeId}), '%')
             </if>
             <if test="codeNm != null and codeNm != ''">
-                AND code_nm LIKE CONCAT('%', #{codeNm}, '%')
+                AND code_nm ILIKE CONCAT('%', #{codeNm}, '%')
             </if>
             <if test="useYn != null and useYn != ''">
                 AND use_yn = #{useYn}

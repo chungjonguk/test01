@@ -42,7 +42,7 @@
                 AND d.company_id = #{companyId}
             </if>
             <if test="hostName != null and hostName != ''">
-                AND d.host_name LIKE CONCAT('%', #{hostName}, '%')
+                AND d.host_name ILIKE CONCAT('%', #{hostName}, '%')
             </if>
             <if test="useYn != null and useYn != ''">
                 AND d.use_yn = #{useYn}
@@ -77,7 +77,7 @@
         LIMIT 1
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="domainId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="domainId" keyColumn="domain_id">
         INSERT INTO biz_company_domain (
             company_id, host_name, primary_yn, ssl_yn,
             ssl_cert_not_before, ssl_cert_not_after, ssl_cert_subject, ssl_cert_issuer, ssl_cert_file_id,

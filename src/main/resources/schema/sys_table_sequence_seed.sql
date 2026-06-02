@@ -1,7 +1,7 @@
 -- sys_table_sequence 카탈로그 시드 (DDL은 sys_table_sequence.sql 선행)
-USE spring_boot_app;
+-- USE spring_boot_app;
 
-INSERT IGNORE INTO sys_table_sequence (seq_name, table_name, column_name, next_val, increment_by, min_val, description, use_yn, reg_id, update_id) VALUES
+INSERT INTO sys_table_sequence (seq_name, table_name, column_name, next_val, increment_by, min_val, description, use_yn, reg_id, update_id) VALUES
 ('user_access_log', 'user_access_log', 'access_id', 0, 1, 1, '접속 이력', 'Y', 'SYSTEM', 'SYSTEM'),
 ('biz_company', 'biz_company', 'company_id', 0, 1, 1, '업체', 'Y', 'SYSTEM', 'SYSTEM'),
 ('biz_company_page_image', 'biz_company_page_image', 'image_id', 0, 1, 1, '업체 페이지 이미지', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -31,11 +31,13 @@ INSERT IGNORE INTO sys_table_sequence (seq_name, table_name, column_name, next_v
 ('chat_room', 'chat_room', 'room_id', 0, 1, 1, '채팅방', 'Y', 'SYSTEM', 'SYSTEM'),
 ('chat_message', 'chat_message', 'message_id', 0, 1, 1, '채팅 메시지', 'Y', 'SYSTEM', 'SYSTEM'),
 ('pricing_plan', 'pricing_plan', 'plan_id', 0, 1, 1, '요금제', 'Y', 'SYSTEM', 'SYSTEM'),
-('faq_item', 'faq_item', 'faq_id', 0, 1, 1, 'FAQ', 'Y', 'SYSTEM', 'SYSTEM');
+('faq_item', 'faq_item', 'faq_id', 0, 1, 1, 'FAQ', 'Y', 'SYSTEM', 'SYSTEM')
+ON CONFLICT (seq_name) DO NOTHING;
 
-INSERT IGNORE INTO sys_table_sequence (seq_name, table_name, column_name, next_val, increment_by, min_val, description, use_yn, reg_id, update_id)
-SELECT LOWER(c.TABLE_NAME), LOWER(c.TABLE_NAME), LOWER(c.COLUMN_NAME), 0, 1, 1,
-       CONCAT(c.TABLE_NAME, ' PK'), 'Y', 'SYSTEM', 'SYSTEM'
-FROM information_schema.COLUMNS c
-WHERE c.TABLE_SCHEMA = DATABASE()
-  AND c.EXTRA LIKE '%auto_increment%';
+INSERT INTO sys_table_sequence (seq_name, table_name, column_name, next_val, increment_by, min_val, description, use_yn, reg_id, update_id)
+SELECT LOWER(c.table_name), LOWER(c.table_name), LOWER(c.column_name), 0, 1, 1,
+       c.table_name || ' PK', 'Y', 'SYSTEM', 'SYSTEM'
+FROM information_schema.columns c
+WHERE c.table_schema = current_schema()
+  AND c.is_identity = 'YES'
+ON CONFLICT (seq_name) DO NOTHING;

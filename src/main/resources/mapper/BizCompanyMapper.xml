@@ -31,10 +31,10 @@
         FROM biz_company
         <where>
             <if test="companyNm != null and companyNm != ''">
-                AND company_nm LIKE CONCAT('%', #{companyNm}, '%')
+                AND company_nm ILIKE CONCAT('%', #{companyNm}, '%')
             </if>
             <if test="bizNo != null and bizNo != ''">
-                AND biz_no LIKE CONCAT('%', #{bizNo}, '%')
+                AND biz_no ILIKE CONCAT('%', #{bizNo}, '%')
             </if>
             <if test="statusCd != null and statusCd != ''">
                 AND status_cd = #{statusCd}
@@ -53,7 +53,7 @@
         WHERE company_id = #{companyId}
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="companyId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="companyId" keyColumn="company_id">
         INSERT INTO biz_company (
             company_nm, biz_no, ceo_nm, tel, email, address,
             status_cd, use_yn, memo, reg_id, update_id

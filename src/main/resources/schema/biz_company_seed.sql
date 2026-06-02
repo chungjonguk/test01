@@ -1,3 +1,3 @@
 -- 업체 샘플 자동 등록 비활성화 (관리자 > 업체관리에서 수동 등록)
 -- 이전에 서버 기동 시 INSERT 되던 샘플은 제거되었습니다.
-USE spring_boot_app;
+-- USE spring_boot_app;

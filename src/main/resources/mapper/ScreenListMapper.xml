@@ -70,19 +70,19 @@
 
             <if test="screenId != null and screenId != ''">
 
-                AND screen_id LIKE CONCAT('%', #{screenId}, '%')
+                AND screen_id ILIKE CONCAT('%', #{screenId}, '%')
 
             </if>
 
             <if test="screenNm != null and screenNm != ''">
 
-                AND screen_nm LIKE CONCAT('%', #{screenNm}, '%')
+                AND screen_nm ILIKE CONCAT('%', #{screenNm}, '%')
 
             </if>
 
             <if test="uriPath != null and uriPath != ''">
 
-                AND uri_path LIKE CONCAT('%', #{uriPath}, '%')
+                AND uri_path ILIKE CONCAT('%', #{uriPath}, '%')
 
             </if>
 

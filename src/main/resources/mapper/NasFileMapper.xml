@@ -23,7 +23,7 @@
         <result property="regDt" column="reg_dt"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="fileId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="fileId" keyColumn="file_id">
         INSERT INTO nas_file (
             media_type_cd, stored_nm, original_nm, file_ext, file_size,
             file_path, url_path, content_type, reg_id

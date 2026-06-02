@@ -45,7 +45,7 @@
         LIMIT 1
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId" keyColumn="image_id">
         INSERT INTO biz_company_page_image (
             company_id, page_cd, nas_file_id, url_path, alt_text, use_yn, reg_id, update_id
         ) VALUES (

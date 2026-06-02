@@ -75,12 +75,11 @@ public class TableSequenceService {
 	@Transactional
 	public long nextValue(String seqName, String actorId) {
 		String name = normalizeSeqName(seqName);
-		int updated = tableSequenceMapper.allocateNext(name, actorId != null ? actorId : DEFAULT_ACTOR);
-		if (updated == 0) {
+		Long allocated = tableSequenceMapper.allocateNext(name, actorId != null ? actorId : DEFAULT_ACTOR);
+		if (allocated == null) {
 			throw new IllegalStateException("시퀀스를 사용할 수 없습니다: " + name);
 		}
-		Long allocated = tableSequenceMapper.selectLastInsertId();
-		if (allocated == null || allocated <= 0) {
+		if (allocated <= 0) {
 			throw new IllegalStateException("시퀀스 채번 실패: " + name);
 		}
 		return allocated;
@@ -157,15 +156,15 @@ public class TableSequenceService {
 	private int registerAutoIncrementColumnsFromDatabase() {
 		List<AutoIncColumn> columns = jdbcTemplate.query(
 				"""
-						SELECT TABLE_NAME, COLUMN_NAME
-						FROM information_schema.COLUMNS
-						WHERE TABLE_SCHEMA = DATABASE()
-						  AND EXTRA LIKE '%auto_increment%'
-						ORDER BY TABLE_NAME
+						SELECT table_name, column_name
+						FROM information_schema.columns
+						WHERE table_schema = current_schema()
+						  AND (is_identity = 'YES' OR column_default LIKE 'nextval(%')
+						ORDER BY table_name
 						""",
 				(rs, rowNum) -> new AutoIncColumn(
-						rs.getString("TABLE_NAME").toLowerCase(),
-						rs.getString("COLUMN_NAME").toLowerCase()));
+						rs.getString("table_name").toLowerCase(),
+						rs.getString("column_name").toLowerCase()));
 		int inserted = 0;
 		for (AutoIncColumn col : columns) {
 			inserted += registerIfAbsent(col.tableName(), col.columnName(), col.tableName() + " PK");

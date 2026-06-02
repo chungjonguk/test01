@@ -31,7 +31,7 @@
         <result property="regId" column="reg_id"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="accessId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="accessId" keyColumn="access_id">
         INSERT INTO user_access_log (
             user_id, user_nm, access_type_cd, login_type_cd, success_yn,
             request_uri, http_method, client_ip, device_type_cd, device_os, device_browser, device_model,
@@ -65,10 +65,10 @@
         FROM user_access_log
         <where>
             <if test="userId != null and userId != ''">
-                AND user_id LIKE CONCAT('%', #{userId}, '%')
+                AND user_id ILIKE CONCAT('%', #{userId}, '%')
             </if>
             <if test="clientIp != null and clientIp != ''">
-                AND client_ip LIKE CONCAT('%', #{clientIp}, '%')
+                AND client_ip ILIKE CONCAT('%', #{clientIp}, '%')
             </if>
             <if test="accessTypeCd != null and accessTypeCd != ''">
                 AND access_type_cd = #{accessTypeCd}

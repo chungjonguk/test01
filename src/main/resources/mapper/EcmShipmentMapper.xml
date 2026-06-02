@@ -26,7 +26,7 @@
         <result property="updateDt" column="update_dt"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="shipmentId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="shipmentId" keyColumn="shipment_id">
         INSERT INTO ecm_shipment (
             order_id, carrier_cd, invoice_no, status_cd,
             recipient_nm, recipient_phone, zipcode, address, address_detail,

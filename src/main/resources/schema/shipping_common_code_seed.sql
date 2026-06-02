@@ -1,10 +1,10 @@
 -- 택배사·배송상태 공통코드
-USE spring_boot_app;
+-- USE spring_boot_app;
 
 INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('CARRIER_CD', '택배사', 'Y', 'SYSTEM', 'SYSTEM'),
 ('SHIPMENT_STATUS', '배송상태', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE code_nm = VALUES(code_nm), use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET code_nm = EXCLUDED.code_nm, use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;
 
 INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VALUES
 ('CARRIER_CD', 'CJ|CJ대한통운', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -15,4 +15,4 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('SHIPMENT_STATUS', 'FAILED|실패', 'Y', 'SYSTEM', 'SYSTEM'),
 ('SHIPMENT_STATUS', 'CANCELLED|취소', 'Y', 'SYSTEM', 'SYSTEM'),
 ('ORDER_STATUS', 'SHIPPED|배송중', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;

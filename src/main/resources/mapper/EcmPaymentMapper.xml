@@ -30,7 +30,7 @@
         <result property="updateDt" column="update_dt"/>
     </resultMap>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="paymentId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="paymentId" keyColumn="payment_id">
         INSERT INTO ecm_payment (
             order_no, order_id, pg_cd, mid, amount, currency_cd,
             good_name, buyer_name, buyer_tel, buyer_email, status_cd, reg_id, update_id

@@ -14,7 +14,7 @@ INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('NOTIFICATION_READ_FILTER', '알림읽음-조회', 'Y', 'SYSTEM', 'SYSTEM'),
 ('NOTIFICATION_SECTION', '알림구분', 'Y', 'SYSTEM', 'SYSTEM'),
 ('NOTIFICATION_TIME_ICON', '알림아이콘', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE code_nm = VALUES(code_nm), use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET code_nm = EXCLUDED.code_nm, use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;
 
 INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VALUES
 ('COMPANY_STATUS_FILTER', '|전체', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -64,4 +64,4 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('NOTIFICATION_TIME_ICON', '📋️|📋️ 참여', 'Y', 'SYSTEM', 'SYSTEM'),
 ('NOTIFICATION_TIME_ICON', '📅️|📅️ 일정', 'Y', 'SYSTEM', 'SYSTEM'),
 ('NOTIFICATION_TIME_ICON', '📢|📢 공지', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;

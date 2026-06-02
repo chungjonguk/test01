@@ -19,6 +19,7 @@ public final class SchemaScriptCatalog {
 			"schema/screen_list_alter.sql",
 			"schema/screen_list_charset.sql",
 			// 업무·접속
+			"schema/user.sql",
 			"schema/user_access_log.sql",
 			"schema/user_access_log_alter.sql",
 			"schema/nas_file.sql",

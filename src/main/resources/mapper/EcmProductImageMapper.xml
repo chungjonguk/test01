@@ -24,7 +24,7 @@
         DELETE FROM ecm_product_image WHERE product_id = #{productId}
     </delete>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="imageId" keyColumn="image_id">
         INSERT INTO ecm_product_image (product_id, sort_ord, img_url, reg_id)
         VALUES (#{productId}, #{sortOrd}, #{imgUrl}, #{regId})
     </insert>

@@ -42,37 +42,37 @@
 
     <select id="findAll" resultMap="userResultMap">
         SELECT <include refid="userColumns"/>
-        FROM `user`
+        FROM "user"
         ORDER BY reg_dt DESC
     </select>
 
     <select id="findById" resultMap="userResultMap">
         SELECT <include refid="userColumns"/>
-        FROM `user`
+        FROM "user"
         WHERE id = #{id}
     </select>
 
     <select id="existsById" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM `user`
+        FROM "user"
         WHERE id = #{id}
     </select>
 
     <select id="existsByEmail" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM `user`
+        FROM "user"
         WHERE email = #{email}
     </select>
 
     <select id="existsByEmailForOtherUser" resultType="boolean">
         SELECT COUNT(1) > 0
-        FROM `user`
+        FROM "user"
         WHERE email = #{email}
           AND id != #{id}
     </select>
 
     <insert id="insert">
-        INSERT INTO `user` (
+        INSERT INTO "user" (
             id, pw, name, sex, rrno, email, zipcode, address, address_detail, update_id
         ) VALUES (
             #{id}, #{pw}, #{name}, #{sex}, #{rrno}, #{email}, #{zipcode}, #{address}, #{addressDetail}, #{updateId}
@@ -80,7 +80,7 @@
     </insert>
 
     <update id="update">
-        UPDATE `user`
+        UPDATE "user"
         SET pw = #{pw},
             name = #{name},
             sex = #{sex},
@@ -94,28 +94,28 @@
     </update>
 
     <update id="updatePassword">
-        UPDATE `user`
+        UPDATE "user"
         SET pw = #{pw},
             update_id = #{updateId}
         WHERE id = #{id}
     </update>
 
     <update id="updateProfileImageUrl">
-        UPDATE `user`
+        UPDATE "user"
         SET profile_image_url = #{profileImageUrl},
             update_id = #{updateId}
         WHERE id = #{id}
     </update>
 
     <update id="updateCoverImageUrl">
-        UPDATE `user`
+        UPDATE "user"
         SET cover_image_url = #{coverImageUrl},
             update_id = #{updateId}
         WHERE id = #{id}
     </update>
 
     <update id="updateProfileSettings">
-        UPDATE `user`
+        UPDATE "user"
         SET name = #{name},
             email = #{email},
             zipcode = #{zipcode},
@@ -136,7 +136,7 @@
     </update>
 
     <delete id="deleteById">
-        DELETE FROM `user`
+        DELETE FROM "user"
         WHERE id = #{id}
     </delete>
 

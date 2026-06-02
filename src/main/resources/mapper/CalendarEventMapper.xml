@@ -1,65 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.example.springbootapp.mapper.CalendarEventMapper">
-
-    <resultMap id="calendarEventResultMap" type="CalendarEvent">
-        <id property="eventId" column="event_id"/>
-        <result property="title" column="title"/>
-        <result property="categoryCd" column="category_cd"/>
-        <result property="labelCd" column="label_cd"/>
-        <result property="startDt" column="start_dt"/>
-        <result property="endDt" column="end_dt"/>
-        <result property="location" column="location"/>
-        <result property="description" column="description"/>
-        <result property="allDayYn" column="all_day_yn"/>
-        <result property="regId" column="reg_id"/>
-        <result property="regDt" column="reg_dt"/>
-        <result property="updateId" column="update_id"/>
-        <result property="updateDt" column="update_dt"/>
-    </resultMap>
-
-    <select id="findByRange" resultMap="calendarEventResultMap">
-        SELECT event_id, title, category_cd, label_cd, start_dt, end_dt, location, description,
-               all_day_yn, reg_id, reg_dt, update_id, update_dt
-        FROM calendar_event
-        WHERE start_dt &lt; #{rangeEnd}
-          AND COALESCE(end_dt, start_dt) &gt;= #{rangeStart}
-        ORDER BY start_dt
-    </select>
-
-    <select id="findById" resultMap="calendarEventResultMap">
-        SELECT event_id, title, category_cd, label_cd, start_dt, end_dt, location, description,
-               all_day_yn, reg_id, reg_dt, update_id, update_dt
-        FROM calendar_event
-        WHERE event_id = #{eventId}
-    </select>
-
-    <insert id="insert" useGeneratedKeys="true" keyProperty="eventId">
-        INSERT INTO calendar_event (
-            title, category_cd, label_cd, start_dt, end_dt, location, description, all_day_yn, reg_id, update_id
-        ) VALUES (
-            #{title}, #{categoryCd}, #{labelCd}, #{startDt}, #{endDt}, #{location}, #{description},
-            #{allDayYn}, #{regId}, #{updateId}
-        )
-    </insert>
-
-    <update id="update">
-        UPDATE calendar_event
-        SET title = #{title},
-            category_cd = #{categoryCd},
-            label_cd = #{labelCd},
-            start_dt = #{startDt},
-            end_dt = #{endDt},
-            location = #{location},
-            description = #{description},
-            all_day_yn = #{allDayYn},
-            update_id = #{updateId}
-        WHERE event_id = #{eventId}
-    </update>
-
-    <delete id="deleteById">
-        DELETE FROM calendar_event WHERE event_id = #{eventId}
-    </delete>
-</mapper>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springbootapp.mapper.CalendarEventMapper">
+
+    <resultMap id="calendarEventResultMap" type="CalendarEvent">
+        <id property="eventId" column="event_id"/>
+        <result property="title" column="title"/>
+        <result property="categoryCd" column="category_cd"/>
+        <result property="labelCd" column="label_cd"/>
+        <result property="startDt" column="start_dt"/>
+        <result property="endDt" column="end_dt"/>
+        <result property="location" column="location"/>
+        <result property="description" column="description"/>
+        <result property="allDayYn" column="all_day_yn"/>
+        <result property="regId" column="reg_id"/>
+        <result property="regDt" column="reg_dt"/>
+        <result property="updateId" column="update_id"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <select id="findByRange" resultMap="calendarEventResultMap">
+        SELECT event_id, title, category_cd, label_cd, start_dt, end_dt, location, description,
+               all_day_yn, reg_id, reg_dt, update_id, update_dt
+        FROM calendar_event
+        WHERE start_dt &lt; #{rangeEnd}
+          AND COALESCE(end_dt, start_dt) &gt;= #{rangeStart}
+        ORDER BY start_dt
+    </select>
+
+    <select id="findById" resultMap="calendarEventResultMap">
+        SELECT event_id, title, category_cd, label_cd, start_dt, end_dt, location, description,
+               all_day_yn, reg_id, reg_dt, update_id, update_dt
+        FROM calendar_event
+        WHERE event_id = #{eventId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="eventId" keyColumn="event_id">
+        INSERT INTO calendar_event (
+            title, category_cd, label_cd, start_dt, end_dt, location, description, all_day_yn, reg_id, update_id
+        ) VALUES (
+            #{title}, #{categoryCd}, #{labelCd}, #{startDt}, #{endDt}, #{location}, #{description},
+            #{allDayYn}, #{regId}, #{updateId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE calendar_event
+        SET title = #{title},
+            category_cd = #{categoryCd},
+            label_cd = #{labelCd},
+            start_dt = #{startDt},
+            end_dt = #{endDt},
+            location = #{location},
+            description = #{description},
+            all_day_yn = #{allDayYn},
+            update_id = #{updateId}
+        WHERE event_id = #{eventId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM calendar_event WHERE event_id = #{eventId}
+    </delete>
+</mapper>

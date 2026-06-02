@@ -22,16 +22,16 @@
     <sql id="searchWhere">
         <where>
             <if test="userNm != null and userNm != ''">
-                AND user_nm LIKE CONCAT('%', #{userNm}, '%')
+                AND user_nm ILIKE CONCAT('%', #{userNm}, '%')
             </if>
             <if test="senderNm != null and senderNm != ''">
-                AND sender_nm LIKE CONCAT('%', #{senderNm}, '%')
+                AND sender_nm ILIKE CONCAT('%', #{senderNm}, '%')
             </if>
             <if test="readYn != null and readYn != ''">
                 AND read_yn = #{readYn}
             </if>
             <if test="keyword != null and keyword != ''">
-                AND message LIKE CONCAT('%', #{keyword}, '%')
+                AND message ILIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
     </sql>
@@ -66,7 +66,7 @@
         WHERE notification_id = #{notificationId}
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="notificationId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="notificationId" keyColumn="notification_id">
         INSERT INTO social_notification (
             user_nm, sender_nm, message, section_cd, time_icon, read_yn, notified_dt
         ) VALUES (

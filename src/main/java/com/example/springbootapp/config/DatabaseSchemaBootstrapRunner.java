@@ -40,19 +40,22 @@ public class DatabaseSchemaBootstrapRunner implements ApplicationRunner {
 			log.info("DB 스키마 자동 적용 비활성(app.schema.auto-apply=false)");
 			return;
 		}
-		try {
-			var populator = new ResourceDatabasePopulator();
-			populator.setContinueOnError(true);
-			populator.setSqlScriptEncoding(StandardCharsets.UTF_8.name());
-			int scriptCount = 0;
-			for (String path : SchemaScriptCatalog.startupScripts()) {
+		int applied = 0;
+		int failed = 0;
+		// 스크립트를 개별로 실행해, 한 파일이 실패해도 나머지 스크립트 적용이 중단되지 않도록 한다.
+		for (String path : SchemaScriptCatalog.startupScripts()) {
+			try {
+				var populator = new ResourceDatabasePopulator();
+				populator.setContinueOnError(true);
+				populator.setSqlScriptEncoding(StandardCharsets.UTF_8.name());
 				populator.addScript(new ClassPathResource(path));
-				scriptCount++;
+				populator.execute(dataSource);
+				applied++;
+			} catch (Exception ex) {
+				failed++;
+				log.warn("스키마 스크립트 적용 실패(건너뜀): {} — {}", path, ex.getMessage());
 			}
-			populator.execute(dataSource);
-			log.info("DB 스키마·시드 SQL 적용 완료 — {}개 스크립트", scriptCount);
-		} catch (Exception ex) {
-			log.warn("DB 스키마·시드 SQL 적용 실패: {}", ex.getMessage());
 		}
+		log.info("DB 스키마·시드 SQL 적용 완료 — 성공 {}개 / 실패 {}개", applied, failed);
 	}
 }

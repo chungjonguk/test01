@@ -5,7 +5,7 @@ INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('EVENT_ORGANIZER', '이벤트-주최', 'Y', 'SYSTEM', 'SYSTEM'),
 ('EVENT_SPONSOR', '이벤트-후원', 'Y', 'SYSTEM', 'SYSTEM'),
 ('EVENT_TAG', '이벤트-태그', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE code_nm = VALUES(code_nm), use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET code_nm = EXCLUDED.code_nm, use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;
 
 INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VALUES
 ('EVENT_TOPIC', '|Select a topic', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -31,4 +31,4 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('EVENT_TAG', 'CONCERT|Concert', 'Y', 'SYSTEM', 'SYSTEM'),
 ('EVENT_TAG', 'NEWYEAR|New Year', 'Y', 'SYSTEM', 'SYSTEM'),
 ('EVENT_TAG', 'PARTY|Party', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;

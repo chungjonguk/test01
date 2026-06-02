@@ -23,7 +23,7 @@ INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('BILLING_CYCLE', '결제주기', 'Y', 'SYSTEM', 'SYSTEM'),
 ('FORM_FIELD_TYPE', '폼필드유형', 'Y', 'SYSTEM', 'SYSTEM'),
 ('FOLLOWER_GROUP', '팔로워그룹', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE code_nm = VALUES(code_nm), use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET code_nm = EXCLUDED.code_nm, use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;
 
 INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VALUES
 ('USE_YN_FILTER', '|전체', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -140,4 +140,4 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('DASHBOARD_BANDWIDTH_PERIOD', '|Last 6 Months', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_BANDWIDTH_PERIOD', '|Last Year', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_BANDWIDTH_PERIOD', '|Last 2 Year', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;

@@ -25,10 +25,8 @@ public interface TableSequenceMapper {
 			@Param("tableName") String tableName,
 			@Param("useYn") String useYn);
 
-	/** {@code LAST_INSERT_ID}로 다음 값 할당 (원자적 UPDATE) */
-	int allocateNext(@Param("seqName") String seqName, @Param("updateId") String updateId);
-
-	Long selectLastInsertId();
+	/** 다음 값을 원자적으로 할당하고 그 값을 반환 ({@code UPDATE ... RETURNING}) */
+	Long allocateNext(@Param("seqName") String seqName, @Param("updateId") String updateId);
 
 	int updateNextVal(
 			@Param("seqName") String seqName,

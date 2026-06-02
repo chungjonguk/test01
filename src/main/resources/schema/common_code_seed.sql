@@ -9,10 +9,10 @@ INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('DASHBOARD_MONTH', '대시보드-월', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_DATE_RANGE', '대시보드-기간', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_BANDWIDTH_PERIOD', '대시보드-대역폭기간', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE
-  code_nm = VALUES(code_nm),
-  use_yn = VALUES(use_yn),
-  update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET
+  code_nm = EXCLUDED.code_nm,
+  use_yn = EXCLUDED.use_yn,
+  update_id = EXCLUDED.update_id;
 
 -- 상세코드: code_val 형식 = "값|표시명" (| 없으면 값=표시명)
 -- PK (code_id, code_val) 필요 — common_code_value_pk_alter.sql 실행
@@ -41,6 +41,6 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('DASHBOARD_BANDWIDTH_PERIOD', '6months|Last 6 Months', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_BANDWIDTH_PERIOD', 'year|Last Year', 'Y', 'SYSTEM', 'SYSTEM'),
 ('DASHBOARD_BANDWIDTH_PERIOD', '2year|Last 2 Year', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE
-  use_yn = VALUES(use_yn),
-  update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET
+  use_yn = EXCLUDED.use_yn,
+  update_id = EXCLUDED.update_id;

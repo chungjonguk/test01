@@ -42,13 +42,13 @@
             #{uriPath}, #{screenId}, #{primaryTable}, #{relatedTables}, #{dataType}, #{tableDesc},
             #{regId}, #{regDt}, #{updateId}, #{updateDt}
         )
-        ON DUPLICATE KEY UPDATE
-            screen_id = VALUES(screen_id),
-            primary_table = VALUES(primary_table),
-            related_tables = VALUES(related_tables),
-            data_type = VALUES(data_type),
-            table_desc = VALUES(table_desc),
-            update_id = VALUES(update_id),
-            update_dt = VALUES(update_dt)
+        ON CONFLICT (uri_path) DO UPDATE SET
+            screen_id = EXCLUDED.screen_id,
+            primary_table = EXCLUDED.primary_table,
+            related_tables = EXCLUDED.related_tables,
+            data_type = EXCLUDED.data_type,
+            table_desc = EXCLUDED.table_desc,
+            update_id = EXCLUDED.update_id,
+            update_dt = EXCLUDED.update_dt
     </insert>
 </mapper>

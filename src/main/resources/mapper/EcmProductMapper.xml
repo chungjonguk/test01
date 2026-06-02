@@ -33,7 +33,7 @@
                 AND company_id = #{companyId}
             </if>
             <if test="productNm != null and productNm != ''">
-                AND product_nm LIKE CONCAT('%', #{productNm}, '%')
+                AND product_nm ILIKE CONCAT('%', #{productNm}, '%')
             </if>
             <if test="categoryCd != null and categoryCd != ''">
                 AND category_cd = #{categoryCd}
@@ -53,7 +53,7 @@
                 AND company_id = #{companyId}
             </if>
             <if test="productNm != null and productNm != ''">
-                AND product_nm LIKE CONCAT('%', #{productNm}, '%')
+                AND product_nm ILIKE CONCAT('%', #{productNm}, '%')
             </if>
             <if test="categoryCd != null and categoryCd != ''">
                 AND category_cd = #{categoryCd}
@@ -87,7 +87,7 @@
         WHERE product_id = #{productId}
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="productId">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
         INSERT INTO ecm_product (
             company_id, product_nm, category_cd, price, stock_qty, status_cd,
             img_url, description, reg_id, update_id

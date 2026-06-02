@@ -37,10 +37,10 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 AND (
-                    customer_nm LIKE CONCAT('%', #{keyword}, '%')
-                    OR email LIKE CONCAT('%', #{keyword}, '%')
-                    OR phone LIKE CONCAT('%', #{keyword}, '%')
-                    OR address LIKE CONCAT('%', #{keyword}, '%')
+                    customer_nm ILIKE CONCAT('%', #{keyword}, '%')
+                    OR email ILIKE CONCAT('%', #{keyword}, '%')
+                    OR phone ILIKE CONCAT('%', #{keyword}, '%')
+                    OR address ILIKE CONCAT('%', #{keyword}, '%')
                 )
             </if>
         </where>

@@ -22,13 +22,14 @@
     </resultMap>
 
     <insert id="insertIgnore">
-        INSERT IGNORE INTO sys_table_sequence (
+        INSERT INTO sys_table_sequence (
             seq_name, table_name, column_name, next_val, increment_by, min_val,
             description, use_yn, reg_id, update_id
         ) VALUES (
             #{seqName}, #{tableName}, #{columnName}, #{nextVal}, #{incrementBy}, #{minVal},
             #{description}, #{useYn}, #{regId}, #{updateId}
         )
+        ON CONFLICT (seq_name) DO NOTHING
     </insert>
 
     <select id="findBySeqName" resultMap="tableSequenceResultMap">
@@ -64,23 +65,18 @@
         ORDER BY table_name, column_name
     </select>
 
-    <update id="allocateNext">
+    <select id="allocateNext" resultType="long" flushCache="true">
         UPDATE sys_table_sequence
-        SET next_val = LAST_INSERT_ID(
-                CASE
+        SET next_val = CASE
                     WHEN next_val + increment_by &lt; min_val THEN min_val
                     ELSE next_val + increment_by
-                END
-            ),
+                END,
             update_id = #{updateId},
             update_dt = CURRENT_TIMESTAMP
         WHERE seq_name = #{seqName}
           AND use_yn = 'Y'
           AND (max_val IS NULL OR next_val + increment_by &lt;= max_val)
-    </update>
-
-    <select id="selectLastInsertId" resultType="long" flushCache="true">
-        SELECT LAST_INSERT_ID()
+        RETURNING next_val
     </select>
 
     <update id="updateNextVal">

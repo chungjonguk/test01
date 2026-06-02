@@ -1,5 +1,5 @@
 -- 문서(Documentation) 섹션 메뉴 제거 — 관리자·모듈에 남은 customization 링크는 유지
-USE spring_boot_app;
+-- USE spring_boot_app;
 
 DELETE FROM screen_list
 WHERE uri_path LIKE '/documentation/getting-started%'

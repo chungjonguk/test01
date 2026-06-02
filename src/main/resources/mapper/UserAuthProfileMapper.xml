@@ -23,9 +23,9 @@
     <insert id="upsert">
         INSERT INTO user_auth_profile (user_id, role_cd, use_yn, reg_id, update_id)
         VALUES (#{userId}, #{roleCd}, #{useYn}, #{regId}, #{updateId})
-        ON DUPLICATE KEY UPDATE
-            role_cd = VALUES(role_cd),
-            use_yn = VALUES(use_yn),
-            update_id = VALUES(update_id)
+        ON CONFLICT (user_id) DO UPDATE SET
+            role_cd = EXCLUDED.role_cd,
+            use_yn = EXCLUDED.use_yn,
+            update_id = EXCLUDED.update_id
     </insert>
 </mapper>

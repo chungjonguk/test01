@@ -1,5 +1,5 @@
 -- screen_list / screen_table_map URI를 *.do 형식으로 마이그레이션
-USE spring_boot_app;
+-- USE spring_boot_app;
 
 UPDATE screen_list
 SET uri_path = '/index.do'

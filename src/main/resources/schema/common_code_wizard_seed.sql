@@ -4,7 +4,7 @@ INSERT INTO common_code (code_id, code_nm, use_yn, reg_id, update_id) VALUES
 ('WIZARD_GENDER', 'Wizard-Gender', 'Y', 'SYSTEM', 'SYSTEM'),
 ('COUNTRY_LIST', 'Country-List', 'Y', 'SYSTEM', 'SYSTEM'),
 ('BIRTH_MONTH', 'Birth-Month', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE code_nm = VALUES(code_nm), use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id) DO UPDATE SET code_nm = EXCLUDED.code_nm, use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;
 
 INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VALUES
 ('WIZARD_GENDER', '|Select your gender ...', 'Y', 'SYSTEM', 'SYSTEM'),
@@ -264,4 +264,4 @@ INSERT INTO common_code_value (code_id, code_val, use_yn, reg_id, update_id) VAL
 ('COUNTRY_LIST', 'Yugoslavia|Yugoslavia', 'Y', 'SYSTEM', 'SYSTEM'),
 ('COUNTRY_LIST', 'Zambia|Zambia', 'Y', 'SYSTEM', 'SYSTEM'),
 ('COUNTRY_LIST', 'Zimbabwe|Zimbabwe', 'Y', 'SYSTEM', 'SYSTEM')
-ON DUPLICATE KEY UPDATE use_yn = VALUES(use_yn), update_id = VALUES(update_id);
+ON CONFLICT (code_id, code_val) DO UPDATE SET use_yn = EXCLUDED.use_yn, update_id = EXCLUDED.update_id;

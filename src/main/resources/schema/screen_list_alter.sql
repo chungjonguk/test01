@@ -1,16 +1,17 @@
-USE spring_boot_app;
+-- USE spring_boot_app;
 
 ALTER TABLE screen_list
-  MODIFY COLUMN screen_nm VARCHAR(200) NOT NULL;
+  ALTER COLUMN screen_nm TYPE VARCHAR(200);
+ALTER TABLE screen_list
+  ALTER COLUMN screen_nm SET NOT NULL;
 
 ALTER TABLE screen_list
-  ADD COLUMN uri_path VARCHAR(255) NULL AFTER screen_nm;
+  ADD COLUMN IF NOT EXISTS uri_path VARCHAR(255) NULL;
 
 ALTER TABLE screen_list
-  ADD COLUMN template_path VARCHAR(255) NULL AFTER uri_path;
+  ADD COLUMN IF NOT EXISTS template_path VARCHAR(255) NULL;
 
 ALTER TABLE screen_list
-  ADD COLUMN sort_ord INT NOT NULL DEFAULT 0 AFTER template_path;
+  ADD COLUMN IF NOT EXISTS sort_ord INTEGER NOT NULL DEFAULT 0;
 
-ALTER TABLE screen_list
-  ADD UNIQUE KEY uk_screen_list_uri (uri_path);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_screen_list_uri ON screen_list (uri_path);

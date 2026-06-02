@@ -1,8 +1,8 @@
 -- 메뉴(screen_list) URI 중복 정리: .do 미부착 행 제거, 동일 논리 경로 병합, SHOP_* 충돌
-USE spring_boot_app;
+-- USE spring_boot_app;
 
 -- 1) .do 형식이 있으면 동일 경로의 비-.do 행 삭제
-DELETE s FROM screen_list s
+DELETE FROM screen_list s
 WHERE s.uri_path NOT LIKE '%.do'
   AND s.uri_path NOT LIKE '/auth/%'
   AND s.uri_path NOT LIKE '/api/%'
@@ -33,7 +33,7 @@ WHERE screen_id IN (
                (uri_path LIKE '%.do') DESC,
                (screen_id NOT LIKE '%.DO') DESC,
                (screen_id NOT LIKE 'SHOP\_%') DESC,
-               (screen_id REGEXP '^(ADMIN_|APP_|ECM_|DASHBOARD_|HOME)') DESC,
+               (screen_id ~ '^(ADMIN_|APP_|ECM_|DASHBOARD_|HOME)') DESC,
                sort_ord ASC,
                screen_id ASC
            ) AS rn
@@ -43,7 +43,7 @@ WHERE screen_id IN (
 );
 
 -- 3) screen_table_map: .do 쌍이 있으면 비-.do 행 삭제
-DELETE m FROM screen_table_map m
+DELETE FROM screen_table_map m
 WHERE m.uri_path NOT LIKE '%.do'
   AND m.uri_path NOT LIKE '/auth/%'
   AND m.uri_path NOT LIKE '/api/%'
