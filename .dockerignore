@@ -1,0 +1,30 @@
+# 빌드 산출물 / 재생성 가능
+target/
+logs/
+backup/
+**/node_modules/
+
+# git / IDE
+.git/
+.gitignore
+.settings/
+.project
+.classpath
+.factorypath
+*.iml
+.idea/
+.vscode/
+
+# 로컬 전용 설정·시크릿 (이미지에 포함 금지)
+application-local.properties
+src/main/resources/application-local.properties
+
+# OS / 임시
+*.log
+*.tmp
+Thumbs.db
+.DS_Store
+
+# 문서/스크립트(컨테이너 빌드 불필요)
+scripts/*.bat
+scripts/*.ps1

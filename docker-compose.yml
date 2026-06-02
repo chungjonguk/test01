@@ -1,0 +1,53 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: printmall-mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: spring_boot_app
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME:-appuser}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-apppass}
+      TZ: Asia/Seoul
+    ports:
+      - "3307:3306"   # 호스트 3307 → 컨테이너 3306 (로컬 MySQL 3306과 충돌 방지)
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD:-rootpass}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: printmall-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/spring_boot_app?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false&nullCatalogMeansCurrent=true
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-appuser}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-apppass}
+      APP_STORAGE_NAS_BASE_PATH: /data/nas-storage/printmall
+      APP_PUBLIC_PATH_SECRET: ${APP_PUBLIC_PATH_SECRET:-PrintMall-PublicPath-ChangeInProduction}
+      RRNO_CRYPTO_SECRET_KEY: ${RRNO_CRYPTO_SECRET_KEY:-abcdefghijklmnopqrstuvwxyz123456}
+      TZ: Asia/Seoul
+    ports:
+      - "8081:8081"
+    volumes:
+      - nas-storage:/data/nas-storage/printmall
+      - app-logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+  nas-storage:
+  app-logs:
