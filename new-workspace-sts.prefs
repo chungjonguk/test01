@@ -2,9 +2,9 @@
 # 자동 적용: sync-eclipse-workspace.bat
 
 [경로]
-STS       = C:\Users\chung\.local\dev\sts-5.1.1\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe
-워크스페이스 = D:\sts-workspace  (scripts\eclipse\sts-workspace.local.txt)
-프로젝트   = D:\spirngboot_workspace\spirngboot_workspace\new-workspace\spring-boot-app-fixed
+STS       = C:\Users\chung\.local\dev\sts-5.0.1\sts-5.0.1.RELEASE\SpringToolsForEclipse.exe
+워크스페이스 = E:\sts-workspace  (scripts\eclipse\sts-workspace.local.txt)
+프로젝트   = E:\workspace
 Eclipse명  = spring-boot-app
 
 [한글 깨짐]
@@ -26,4 +26,4 @@ Eclipse명  = spring-boot-app
 [실행]
 - 메인: com.example.springbootapp.SpringBootAppApplication
 - 포트: 8081
-- MySQL: spring_boot_app @ localhost:3306
+- PostgreSQL: spring_boot_app @ localhost:5432 (user=postgres)

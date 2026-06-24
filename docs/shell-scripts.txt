@@ -1,0 +1,287 @@
+================================================================================
+  PrintMall Spring Boot — 쉘·배치 스크립트 정리
+  (프로젝트: spring-boot-app / 저장소: chungjonguk/test01)
+  작성 기준: 이 PC (E:\workspace) 로컬 개발 환경
+================================================================================
+
+※ 현재 DB는 PostgreSQL 16 (localhost:5432). MySQL 관련 .bat·.ps1 은 레거시입니다.
+※ PowerShell 스크립트는 대부분 -ExecutionPolicy Bypass 로 호출됩니다.
+※ 경로가 D:\ 로 하드코딩된 스크립트는 이 PC(D: 없음)에서 그대로 쓰지 마세요.
+
+
+--------------------------------------------------------------------------------
+1. 자주 쓰는 스크립트 (이 PC 기준)
+--------------------------------------------------------------------------------
+
+  [STS / Eclipse]
+  open-sts-workspace.bat
+    → STS 5.1.1 + 워크스페이스(E:\sts-workspace) 실행
+    → sts-path.local.txt, sts-workspace.local.txt 경로 우선
+
+  sync-eclipse-workspace.bat
+    → scripts\eclipse\sync-eclipse-workspace.ps1 호출
+    → Maven compile, .metadata, spring-boot-app 프로젝트 등록·junction 연동
+    → STS 최초 연동 또는 프로젝트 구조 변경 후 1회
+
+  fix-sts-before-run.bat
+    → STS 실행 전 준비: 8081·8082 포트 점유 프로세스 종료
+    → E:\nas-storage\printmall\uploads 하위 폴더 생성
+    → mvn clean compile
+    → STS에서 Maven Update Project(Alt+F5) 후 Run
+
+  fix-eclipse-utf8.bat
+    → 워크스페이스·프로젝트 UTF-8 prefs 적용 (한글 깨짐 방지)
+    → STS 완전 종료 후 재실행 필요
+
+  [DB 클라이언트]
+  open-dbeaver.bat
+    → DBeaver CE 실행
+    → 연결 정보: scripts\dbeaver-postgresql-connection.txt
+
+  [JAR 직접 실행]
+  run-jar.bat
+    → target\spring-boot-app-0.0.1-SNAPSHOT.jar 실행 (UTF-8)
+    → 사전 빌드: mvn clean package -DskipTests
+
+
+--------------------------------------------------------------------------------
+2. 프로젝트 루트 .bat (E:\workspace\)
+--------------------------------------------------------------------------------
+
+  파일                      | 용도                              | 현재 사용
+  --------------------------|-----------------------------------|----------
+  open-sts-workspace.bat    | STS 워크스페이스 열기             | ○ 권장
+  open-dbeaver.bat          | DBeaver 실행                      | ○ 권장
+  sync-eclipse-workspace.bat| Eclipse 연동 동기화               | ○ 필요 시
+  fix-sts-before-run.bat    | STS 실행 전 포트·NAS·Maven        | ○ 권장
+  fix-eclipse-utf8.bat      | UTF-8 설정 적용                   | ○ 필요 시
+  backup-and-eclipse.bat    | JDK17 + 백업 + 연동 점검 일괄     | △ (백업 경로 D:)
+  run-jar.bat               | 빌드된 JAR 실행                   | ○
+  run-server.bat            | Maven spring-boot:run (MySQL)     | ✕ 레거시
+  run-server-mobile.bat     | run-server.bat 별칭               | ✕ 레거시
+  run-react-dev.bat         | React(Vite) 개발 서버             | △ frontend 있을 때
+  start-mysql.bat           | MySQL 기동·접속 확인              | ✕ 레거시
+  setup-mysql-redcroxx.bat  | MySQL redcroxx 계정 생성          | ✕ 레거시
+  reset-mysql-root.bat      | MySQL root 비밀번호 초기화        | ✕ 레거시
+
+
+--------------------------------------------------------------------------------
+3. scripts\ — DB·NAS·기타
+--------------------------------------------------------------------------------
+
+  [PostgreSQL — 현재]
+  scripts\pg-host-start.ps1
+    → 비서비스 PostgreSQL을 포트 5433에 기동 (데이터: D:\pgdata-springboot)
+    → 이 PC는 PostgreSQL 16 서비스가 5432 사용 — 보통 불필요
+    → D: 없는 PC에서는 데이터 경로 수정 필요
+
+  scripts\pg-host-stop.ps1
+    → pg-host-start.ps1 로 띄운 클러스터 중지
+
+  [NAS 저장소]
+  scripts\setup-nas-storage.bat
+    → NAS 업로드 폴더 생성 (images, documents, videos, products)
+    → 기본 경로 D:\nas-storage\... (레거시) — 이 PC는 fix-sts-before-run.bat 사용
+
+  [MySQL — 레거시, 사용 금지]
+  scripts\ensure-mysql.bat          MySQL 기동·접속 확인 (3306, redcroxx)
+  scripts\create-all-tables.bat     schema/*.sql 전체 MySQL 적용
+  scripts\apply-screen-tables.bat   업무 테이블만 빠르게 적용
+  scripts\backup\apply-table-sequences.ps1  MySQL 시퀀스 테이블 DDL/시드
+
+  [GitHub]
+  scripts\github-make-private.bat
+    → gh CLI로 chungjonguk/test01 저장소 Private 전환
+
+  [카카오 API]
+  scripts\setup-kakao-rest-key.ps1
+    → 카카오 REST API 키를 application-local.properties 에 저장
+
+
+--------------------------------------------------------------------------------
+4. scripts\eclipse\ — STS/Eclipse 연동
+--------------------------------------------------------------------------------
+
+  [배치 래퍼]
+  scripts\eclipse\import-maven-project.bat
+    → STS Maven Import 안내 + sync 호출
+
+  [PowerShell]
+  sync-eclipse-workspace.ps1
+    → 워크스페이스 연동 핵심: compile, metadata, 프로젝트 등록
+    → 옵션: -SkipBackup
+
+  Resolve-EclipsePaths.ps1
+    → sts-path.local.txt, sts-workspace.local.txt 경로 해석
+
+  bootstrap-workspace-metadata.ps1
+    → STS 오픈 전 .metadata 생성 + 프로젝트 등록
+
+  apply-jdk17.ps1
+    → Eclipse .settings 에 JDK 17 경로 기록
+
+  apply-workspace-utf8.ps1
+    → 워크스페이스·프로젝트 UTF-8 prefs
+
+  patch-sts-utf8.ps1
+    → SpringToolsForEclipse.ini UTF-8 JVM 옵션
+
+  maven-update-for-eclipse.ps1
+    → Maven 의존성·컴파일 동기화 (STS Maven Update와 동일 기반)
+
+  import-maven-headless.ps1
+    → CLI 동기화만 (잘못된 m2e headless 미사용)
+
+  verify-eclipse-setup.ps1
+    → 연동 파일·경로 점검
+
+  [로컬 설정 파일]
+  scripts\eclipse\sts-path.local.txt       STS 실행 파일 경로
+  scripts\eclipse\sts-workspace.local.txt  워크스페이스 경로 (E:\sts-workspace)
+
+
+--------------------------------------------------------------------------------
+5. scripts\backup\ — 백업·설치파일
+--------------------------------------------------------------------------------
+
+  backup-project-quick.ps1
+    → 프로젝트 zip 백업 → D:\backup\projects (기본)
+    → backup-and-eclipse.bat [2/3] 에서 호출
+
+  create-backup.ps1
+    → 설치파일·프로젝트 분리 압축 (전체 백업)
+
+  BackupTextEncoding.ps1
+    → 백업 스크립트 공통 UTF-8 인코딩 헬퍼
+
+  download-dbeaver-installer.ps1
+    → DBeaver Community 설치파일 다운로드 → D:\backup\install
+
+  download-mysql-installer.ps1
+    → MySQL 8.4 zip 다운로드 (레거시)
+
+  mysql-setup\setup-mysql-redcroxx.bat   MySQL 계정 생성 (백업용 복사본)
+  mysql-setup\install-mysql-service.bat  MySQL Windows 서비스 등록 (관리자)
+
+
+--------------------------------------------------------------------------------
+6. scripts\react-dev\ — React 프론트엔드
+--------------------------------------------------------------------------------
+
+  setup-react-dev.bat
+    → Node.js 설치 + frontend npm install
+
+  install-node.ps1
+    → Node.js portable → C:\Users\chung\.local\dev\node-22
+
+  run-react-dev.bat (루트)
+    → Vite dev server http://localhost:5173
+    → API 프록시: Spring Boot http://localhost:8081 (포트 확인 필요)
+
+
+--------------------------------------------------------------------------------
+7. scripts\mobile-dev\ — 모바일·LAN 테스트
+--------------------------------------------------------------------------------
+
+  get-lan-ip.ps1
+    → PC LAN IP 출력 (휴대폰 브라우저 접속용)
+
+  open-mobile-preview.ps1
+    → Edge 모바일 에뮬레이션으로 로컬 앱 미리보기
+    → -Target: printmall | stock | printmall-analytics
+
+  setup-mobile-firewall.bat
+    → Windows 방화벽 TCP 8081 허용 (관리자 권한)
+    → 앱 포트가 8082이면 규칙 포트 수정 필요
+
+
+--------------------------------------------------------------------------------
+8. scripts\ — 개발·유지보수 (일회성 패치)
+--------------------------------------------------------------------------------
+
+  smoke-pages.ps1           주요 화면 HTTP 스모크 (기본 8081)
+  smoke-pages-auth.ps1      로그인 후 화면 스모크 (기본 8081)
+
+  fix-nested-main-auth-pages.ps1   인증 페이지 레이아웃 정리
+  fix-falcon-templates.ps1           Falcon 템플릿 footer fragment 패치
+  fix-theme-min-calendar-urls.ps1    theme.min.js URL 수정
+  patch-billing-datalist.ps1         billing.html 국가 datalist fragment화
+  patch-wizard-html.ps1              wizard.html select → 공통코드 fragment
+  gen-wizard-country-seed.ps1        wizard 국가 옵션 → SQL 시드 생성
+
+
+--------------------------------------------------------------------------------
+9. docs\ — 포트폴리오·문서 생성
+--------------------------------------------------------------------------------
+
+  capture-all-screenshots.ps1   Edge로 주요 화면 스크린샷 캡처
+  build-portfolio-word.ps1      portfolio Word(.docx) 생성 (MS Word 필요)
+  rebuild-portfolio.ps1         스크린샷 + Word + PDF 일괄 생성
+
+
+--------------------------------------------------------------------------------
+10. 권장 실행 순서 (STS 개발)
+--------------------------------------------------------------------------------
+
+  [최초 1회]
+  1. sync-eclipse-workspace.bat
+  2. open-sts-workspace.bat
+  3. STS: spring-boot-app → Maven → Update Project (Alt+F5)
+  4. Run Configuration: NAS 경로·포트(8082) 확인
+
+  [매일 개발]
+  1. PostgreSQL 서비스 실행 확인 (5432)
+  2. fix-sts-before-run.bat
+  3. open-sts-workspace.bat → STS에서 Run
+  4. DB 확인: open-dbeaver.bat
+
+  [터미널에서 직접 실행 시]
+  set JAVA_HOME=C:\Users\chung\.local\dev\jdk-17
+  set PATH=%JAVA_HOME%\bin;C:\Users\chung\.local\dev\apache-maven-3.9.15\bin;%PATH%
+  set APP_STORAGE_NAS_BASE_PATH=E:/nas-storage/printmall
+  mvn spring-boot:run
+  → STS와 동시 실행 금지 (포트 충돌)
+
+
+--------------------------------------------------------------------------------
+11. 환경 변수·포트 (스크립트와 연동)
+--------------------------------------------------------------------------------
+
+  APP_STORAGE_NAS_BASE_PATH   E:/nas-storage/printmall
+  JAVA_HOME                   C:\Users\chung\.local\dev\jdk-17
+  Maven                       C:\Users\chung\.local\dev\apache-maven-3.9.15\bin
+
+  Spring Boot 포트            8082 (application.properties)
+  PostgreSQL                  localhost:5432 / DB: spring_boot_app / postgres
+  React Vite                  5173
+
+  ※ run-server.bat, smoke-pages*.ps1, setup-mobile-firewall.bat 은 8081 기준 —
+     현재 앱 포트(8082)와 다를 수 있음. 실행 전 포트 확인.
+
+
+--------------------------------------------------------------------------------
+12. 주의사항
+--------------------------------------------------------------------------------
+
+  • run-server.bat, start-mysql.bat, create-all-tables.bat 등 MySQL 스크립트는
+    PostgreSQL 전환 이후 사용하지 마세요.
+
+  • setup-nas-storage.bat, backup-project-quick.ps1, pg-host-start.ps1 등
+    D:\ 경로가 있는 스크립트는 이 PC에서 경로 수정 없이 실행하면 실패합니다.
+
+  • fix-sts-before-run.bat 과 STS Run 을 동시에 여러 번 돌리면 포트 충돌이
+  • 반복될 수 있습니다. 한 곳(Cursor / STS / 터미널)에서만 서버를 띄우세요.
+
+  • application-local.properties 는 git 제외 — API 키는 setup-kakao-rest-key.ps1
+    또는 수동 편집으로 관리하세요.
+
+
+--------------------------------------------------------------------------------
+관련 문서
+--------------------------------------------------------------------------------
+
+  docs\environment-setup.txt              전체 환경·경로·DB·계정
+  scripts\dbeaver-postgresql-connection.txt   DBeaver PostgreSQL 연결
+  new-workspace-sts.prefs                 STS 연동 요약
+
+================================================================================

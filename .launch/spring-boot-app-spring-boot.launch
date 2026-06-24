@@ -10,7 +10,10 @@
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="spring-boot-app"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="true"/>
     <stringAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -Duser.language=ko -Duser.country=KR"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -Duser.language=ko -Duser.country=KR -Dapp.storage.nas.base-path=E:/nas-storage/printmall"/>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="APP_STORAGE_NAS_BASE_PATH" value="E:/nas-storage/printmall"/>
+    </mapAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:spring-boot-app}"/>
     <stringAttribute key="process_factory_id" value="org.springframework.ide.eclipse.boot.dash.DashLaunchProcessFactory"/>
 </launchConfiguration>

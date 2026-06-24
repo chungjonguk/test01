@@ -6,8 +6,11 @@
     <booleanAttribute key="M2_OFFLINE" value="false"/>
     <stringAttribute key="M2_PROFILES" value=""/>
     <listAttribute key="M2_PROPERTIES">
-        <listEntry value="spring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR"/>
+        <listEntry value="spring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR -Dapp.storage.nas.base-path=E:/nas-storage/printmall"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="APP_STORAGE_NAS_BASE_PATH" value="E:/nas-storage/printmall"/>
+    </mapAttribute>
     <booleanAttribute key="M2_SKIP_TESTS" value="true"/>
     <intAttribute key="M2_THREADS" value="1"/>
     <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>

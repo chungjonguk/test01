@@ -65,5 +65,5 @@ Write-Host "연동 완료" -ForegroundColor Green
 Write-Host "  STS 열기  : open-sts-workspace.bat" -ForegroundColor Gray
 Write-Host "  Import    : scripts\eclipse\import-maven-project.bat 안내" -ForegroundColor Gray
 Write-Host "  실행      : .launch\spring-boot-app-java.launch" -ForegroundColor Gray
-Write-Host "  Cursor    : 같은 폴더 spring-boot-app-fixed 열기" -ForegroundColor Gray
+Write-Host "  Cursor    : 같은 폴더 E:\workspace 열기" -ForegroundColor Gray
 Write-Host ""

@@ -1,0 +1,38 @@
+{
+  "folders": {},
+  "connections": {
+    "spring_boot_app-postgres": {
+      "provider": "postgresql",
+      "driver": "postgres-jdbc",
+      "name": "spring_boot_app (PrintMall PostgreSQL)",
+      "save-password": true,
+      "configuration": {
+        "host": "localhost",
+        "port": "5432",
+        "database": "spring_boot_app",
+        "url": "jdbc:postgresql://localhost:5432/spring_boot_app",
+        "configurationType": "MANUAL",
+        "type": "dev",
+        "properties": {
+          "connectTimeout": "20"
+        }
+      }
+    }
+  },
+  "connection-types": {
+    "dev": {
+      "name": "Development",
+      "color": "rgb(115,178,62)",
+      "description": "Local PostgreSQL dev database",
+      "auto-commit": true,
+      "confirm-execute": false,
+      "confirm-data-change": false,
+      "smart-commit": false,
+      "smart-commit-recover": false,
+      "auto-close-transactions": true,
+      "close-transactions-period": 1800,
+      "auto-close-connections": true,
+      "close-connections-period": 14400
+    }
+  }
+}

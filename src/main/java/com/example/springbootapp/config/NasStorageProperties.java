@@ -10,7 +10,7 @@ import com.example.springbootapp.storage.NasMediaType;
 @ConfigurationProperties(prefix = "app.storage.nas")
 public class NasStorageProperties {
 	private boolean enabled = true;
-	private String basePath = "D:/nas-storage/printmall";
+	private String basePath = "E:/nas-storage/printmall";
 	private String uploadSubdir = "uploads";
 	private String urlPrefix = "/uploads";
 	/** Using Storage 위젯 표시용 할당 용량(GB) */

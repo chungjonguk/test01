@@ -1,0 +1,42 @@
+=== DBeaver — spring_boot_app (PostgreSQL) 연결 ===
+
+[사전] PostgreSQL 16 실행 중이어야 합니다.
+  확인: pg_isready -h localhost -p 5432
+
+--- 방법 A: 새 연결 (권장) ---
+1. DBeaver → 데이터베이스 → 새 데이터베이스 연결 → PostgreSQL
+2. Main 탭:
+   Host     : localhost  (또는 127.0.0.1)
+   Port     : 5432
+   Database : spring_boot_app
+   사용자명 : postgres
+   비밀번호 : postgres
+3. "Test Connection" → PostgreSQL 드라이버 다운로드 안내 시 Download
+4. 성공 후 Finish
+
+--- 방법 B: URL 탭 ---
+jdbc:postgresql://localhost:5432/spring_boot_app
+
+--- Docker로 DB를 쓸 때 ---
+  Host : localhost
+  Port : 5433
+  User : appuser
+  Pass : apppass
+  URL  : jdbc:postgresql://localhost:5433/spring_boot_app
+
+--- 앱(application.properties)과 동일 ---
+  spring.datasource.url=jdbc:postgresql://localhost:5432/spring_boot_app
+  spring.datasource.username=postgres
+  spring.datasource.password=postgres
+
+--- 유용한 SQL ---
+  -- public 스키마 테이블 목록
+  SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY 1;
+
+  -- 테이블 수 (정상 기동 시 약 42개)
+  SELECT count(*) FROM information_schema.tables
+   WHERE table_schema = 'public' AND table_type = 'BASE TABLE';
+
+--- DDL/시드 수동 실행 시 ---
+  src/main/resources/schema/*.sql
+  또는 schema/00_create_all_tables.sql, schema/01_seed_all.sql
