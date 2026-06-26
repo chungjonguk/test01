@@ -11,6 +11,9 @@
     var emailMessageEl = document.getElementById('emailCheckMessage');
     var flashEl = document.getElementById('flashMessages');
     var pwInput = document.getElementById('pw');
+    var rrnoInput = document.getElementById('rrno');
+
+    validation.attachRrnInput(rrnoInput);
 
     function setRegistrationEnabled(enabled) {
         if (registrationFields) {
@@ -64,6 +67,10 @@
             return;
         }
         if (!validation.validatePasswordField(pwInput)) {
+            e.preventDefault();
+            return;
+        }
+        if (!validation.validateRrnField(rrnoInput)) {
             e.preventDefault();
             return;
         }

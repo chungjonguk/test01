@@ -52,6 +52,15 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findLoginIdByNameAndEmail" resultType="string">
+        SELECT id
+        FROM "user"
+        WHERE name = #{name}
+          AND email = #{email}
+        ORDER BY reg_dt
+        LIMIT 1
+    </select>
+
     <select id="existsById" resultType="boolean">
         SELECT COUNT(1) > 0
         FROM "user"

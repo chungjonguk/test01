@@ -9,6 +9,7 @@
     var HAS_DIGIT = /\d/;
     var HAS_SPECIAL = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/;
     var EMAIL_PATTERN = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    var RRN_PATTERN = /^\d{6}-\d{7}$/;
 
     var swalDefaults = {
         confirmButtonText: '확인',
@@ -233,12 +234,63 @@
         return true;
     }
 
+    function formatRrn(value) {
+        var digits = String(value || '').replace(/\D/g, '').slice(0, 13);
+        if (digits.length <= 6) {
+            return digits;
+        }
+        return digits.slice(0, 6) + '-' + digits.slice(6);
+    }
+
+    function isValidRrn(value) {
+        if (!RRN_PATTERN.test(value)) {
+            return false;
+        }
+        var month = Number(value.slice(2, 4));
+        var day = Number(value.slice(4, 6));
+        return month >= 1 && month <= 12 && day >= 1 && day <= 31;
+    }
+
+    function attachRrnInput(input) {
+        if (!input) {
+            return;
+        }
+        input.addEventListener('input', function () {
+            var start = input.selectionStart;
+            var beforeLen = input.value.length;
+            input.value = formatRrn(input.value);
+            input.classList.remove('is-invalid');
+            var afterLen = input.value.length;
+            if (typeof start === 'number') {
+                input.setSelectionRange(start + (afterLen - beforeLen), start + (afterLen - beforeLen));
+            }
+        });
+    }
+
+    function validateRrnField(input) {
+        if (!input) {
+            return true;
+        }
+        if (!isValidRrn(input.value.trim())) {
+            input.classList.add('is-invalid');
+            input.focus();
+            showAlert('warning', '주민등록번호 형식', '주민등록번호를 형식에 맞게 입력해 주세요. (예: 900101-1234567)');
+            return false;
+        }
+        input.classList.remove('is-invalid');
+        return true;
+    }
+
     global.UserFormValidation = {
         isValidPassword: isValidPassword,
         passwordRequirementMessage: passwordRequirementMessage,
         showAlert: showAlert,
         bindEmailDuplicateCheck: bindEmailDuplicateCheck,
         bindDuplicateCheck: bindDuplicateCheck,
-        validatePasswordField: validatePasswordField
+        validatePasswordField: validatePasswordField,
+        formatRrn: formatRrn,
+        isValidRrn: isValidRrn,
+        attachRrnInput: attachRrnInput,
+        validateRrnField: validateRrnField
     };
 })(window);

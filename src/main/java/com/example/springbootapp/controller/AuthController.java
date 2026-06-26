@@ -98,6 +98,68 @@ public class AuthController {
         return "redirect:/dashboard";
     }
     /**
+     * 이름과 이메일로 로그인 아이디를 찾습니다. (아이디 찾기)
+     *
+     * @param name               in: 사용자 이름
+     * @param email              in: 이메일
+     * @param redirectAttributes in: 리다이렉트 시 플래시 메시지 전달용
+     * @return out: {@code redirect:/pages/authentication/simple/find-id}
+     */
+    @PostMapping("/find-id")
+    public String findId(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "email", required = false) String email,
+            RedirectAttributes redirectAttributes
+    ) {
+        String trimmedName = name != null ? name.trim() : "";
+        String trimmedEmail = email != null ? email.trim() : "";
+        if (trimmedName.isEmpty() || trimmedEmail.isEmpty()) {
+            redirectAttributes.addFlashAttribute("findIdError", "이름과 이메일을 모두 입력하세요.");
+            return findIdRedirect();
+        }
+        Optional<String> loginId = userMapper.findLoginIdByNameAndEmail(trimmedName, trimmedEmail);
+        if (loginId.isEmpty()) {
+            redirectAttributes.addFlashAttribute("findIdError", "일치하는 회원 정보가 없습니다. 이름과 이메일을 확인하세요.");
+            return findIdRedirect();
+        }
+        redirectAttributes.addFlashAttribute("findIdResult", maskLoginId(loginId.get()));
+        return findIdRedirect();
+    }
+
+    /**
+     * 아이디 찾기 페이지로 리다이렉트할 대상 경로를 반환합니다.
+     * <p>경로 암호화가 켜져 있으면 공개(암호화) URL로 직접 리다이렉트하여
+     * 평문→암호화 2단계 리다이렉트로 인해 플래시 메시지(결과·오류)가 사라지는 것을 막습니다.</p>
+     */
+    private String findIdRedirect() {
+        String path = "/pages/authentication/simple/find-id";
+        PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();
+        if (crypto != null && crypto.isEnabled()) {
+            return "redirect:" + crypto.toPublicPath(path);
+        }
+        return "redirect:" + path;
+    }
+
+    /**
+     * 로그인 아이디의 뒷부분을 가려서 반환합니다. (예: {@code abcd12} → {@code abc***})
+     */
+    private String maskLoginId(String loginId) {
+        if (loginId == null || loginId.isBlank()) {
+            return "";
+        }
+        String id = loginId.trim();
+        if (id.length() <= 3) {
+            return id.charAt(0) + "**";
+        }
+        int visible = id.length() <= 5 ? 2 : 3;
+        StringBuilder masked = new StringBuilder(id.substring(0, visible));
+        for (int i = visible; i < id.length(); i++) {
+            masked.append('*');
+        }
+        return masked.toString();
+    }
+
+    /**
      * GET 방식으로 로그아웃을 처리합니다.
      *
      * @param request            in: HTTP 요청 (세션 무효화용)

@@ -28,9 +28,13 @@
                 <form th:action="@{/auth/login}" method="post" data-loading-modal>
                   <input type="hidden" name="returnUrl" th:if="${param.returnUrl != null}" th:value="${param.returnUrl[0]}" />
                   <div class="mb-3">
-                    <input class="form-control" type="text" name="id" placeholder="아이디" required="required" autocomplete="username" />
+                    <div class="input-group">
+                      <input class="form-control" type="text" name="id" placeholder="아이디" required="required" autocomplete="username" />
+                      <a class="btn btn-outline-secondary text-nowrap" th:href="@{/pages/authentication/simple/find-id}">아이디 찾기</a>
+                    </div>
                   </div>
                   <div class="mb-3">
+                    
                     <input class="form-control" type="password" name="pw" placeholder="비밀번호" required="required" autocomplete="current-password" />
                   </div>
                   <div class="row flex-between-center">

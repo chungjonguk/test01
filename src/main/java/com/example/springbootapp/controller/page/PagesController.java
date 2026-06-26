@@ -65,6 +65,14 @@ public class PagesController {
 		return "pages/authentication/simple/register";
 	}
 	/**
+	 * @return out: Thymeleaf view path {@code pages/authentication/simple/find-id}
+	 */
+	@GetMapping("/pages/authentication/simple/find-id")
+	public String pagesAuthSimpleFindId(Model model) {
+		model.addAttribute("title", "아이디 찾기");
+		return "pages/authentication/simple/find-id";
+	}
+	/**
 	 * @return out: Thymeleaf view path {@code pages/authentication/simple/forgot-password}
 	 */
 	@GetMapping("/pages/authentication/simple/forgot-password")

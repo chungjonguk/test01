@@ -128,7 +128,8 @@
 
                                 <input class="form-control" id="rrno" type="text" th:field="*{rrno}"
 
-                                       placeholder="예: 900101-1234567" autocomplete="off" required />
+                                       placeholder="예: 900101-1234567" autocomplete="off" required
+                                       inputmode="numeric" maxlength="14" pattern="\d{6}-\d{7}" />
 
                                 <div class="form-text text-muted">저장 시 AES 암호화되며, 목록 조회 시 복호화하여 표시합니다.</div>
 
@@ -263,8 +264,8 @@
 
 
 
-        <script th:src="@{/assets/js/user-form-validation.js(v=1)}"></script>
-        <script th:src="@{/assets/js/users-register.js(v=5)}"></script>
+        <script th:src="@{/assets/js/user-form-validation.js(v=2)}"></script>
+        <script th:src="@{/assets/js/users-register.js(v=6)}"></script>
         <script th:src="@{/assets/js/users-manage.js(v=1)}"></script>
 
     </div>

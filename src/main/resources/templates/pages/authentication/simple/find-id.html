@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/auth-simple :: head}"></head>
+<body class="auth-simple-page">
+    <th:block th:replace="~{fragments/app-loading :: bar}"></th:block>
+
+    <main class="main" id="top">
+        <div class="container" data-layout="container">
+            <div class="row flex-center min-vh-100 py-6 text-center">
+                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <a class="d-flex flex-center mb-4" th:href="@{${brandHomeUrl}}">
+                        <span class="font-sans-serif fw-bolder fs-5 d-inline-block" th:text="${appBrandName}">PrintMall</span>
+                    </a>
+                    <div class="card">
+                        <div class="card-body p-4 p-sm-5">
+                            <h5 class="mb-0">아이디 찾기</h5>
+                            <small>가입 시 등록한 이름과 이메일을 입력하세요.</small>
+
+                            <div th:if="${findIdResult}" class="alert alert-success mt-4 mb-0" role="alert">
+                                회원님의 아이디는 <strong th:text="${findIdResult}">abc***</strong> 입니다.
+                                <div class="mt-3">
+                                    <a class="btn btn-primary btn-sm" th:href="@{/pages/authentication/simple/login}">로그인하기</a>
+                                </div>
+                            </div>
+
+                            <th:block th:unless="${findIdResult}">
+                                <div th:if="${findIdError}" class="alert alert-danger mt-4 mb-0" role="alert" th:text="${findIdError}"></div>
+                                <form class="mt-4 text-start" th:action="@{/auth/find-id}" method="post" data-loading-modal>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="find-id-name">이름</label>
+                                        <input class="form-control" id="find-id-name" type="text" name="name" placeholder="이름" required="required" th:value="${param.name}" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="find-id-email">이메일</label>
+                                        <input class="form-control" id="find-id-email" type="email" name="email" placeholder="이메일" required="required" th:value="${param.email}" />
+                                    </div>
+                                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">아이디 찾기</button>
+                                </form>
+                            </th:block>
+
+                            <div class="mt-3">
+                                <a class="fs--1 text-600" th:href="@{/pages/authentication/simple/forgot-password}">비밀번호 찾기</a>
+                                <span class="text-300 mx-1">|</span>
+                                <a class="fs--1 text-600" th:href="@{/pages/authentication/simple/login}">로그인으로<span class="d-inline-block ms-1">&rarr;</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/settings :: settings}"></th:block>
+    <th:block th:replace="~{fragments/auth-simple :: scripts}"></th:block>
+</body>
+</html>

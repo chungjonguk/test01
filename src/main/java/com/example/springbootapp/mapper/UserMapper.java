@@ -23,6 +23,14 @@ public interface UserMapper {
 	 */
 	Optional<User> findById(@Param("id") String id);
 	/**
+	 * 이름과 이메일이 모두 일치하는 사용자의 로그인 ID를 조회합니다. (아이디 찾기)
+	 *
+	 * @param name  사용자 이름
+	 * @param email 이메일
+	 * @return 로그인 ID Optional
+	 */
+	Optional<String> findLoginIdByNameAndEmail(@Param("name") String name, @Param("email") String email);
+	/**
 	 * 로그인 ID 존재 여부를 확인합니다.
 	 *
 	 * @param id 로그인 ID
