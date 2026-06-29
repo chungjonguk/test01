@@ -15,18 +15,28 @@
         var emailMessageEl = form.querySelector('[data-auth-email-message]');
         var pwInput = form.querySelector('[data-auth-password]');
         var confirmInput = form.querySelector('[data-auth-confirm-password]');
+        var lockFields = form.querySelector('[data-auth-register-fields]');
         var redirectUrl = form.getAttribute('data-redirect-url') || '/users';
 
         if (!emailInput || !emailCheckBtn || !emailMessageEl || !pwInput) {
             return;
         }
 
+        function setFieldsEnabled(enabled) {
+            if (lockFields) {
+                lockFields.disabled = !enabled;
+            }
+        }
+
+        setFieldsEnabled(false);
+
         var emailCheck = validation.bindEmailDuplicateCheck({
             emailInput: emailInput,
             emailCheckBtn: emailCheckBtn,
             emailMessageEl: emailMessageEl,
             checkEmailUrl: form.getAttribute('data-check-email-url') || '/users/check-email',
-            successSuffix: ' 상세 정보 입력 화면으로 이동합니다.'
+            successSuffix: ' 나머지 항목을 입력해 주세요.',
+            onAvailabilityChange: setFieldsEnabled
         });
 
         pwInput.addEventListener('input', function () {
