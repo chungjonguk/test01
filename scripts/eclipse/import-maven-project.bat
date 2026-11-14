@@ -6,12 +6,12 @@ cd /d "%~dp0..\.."
 echo.
 echo === Eclipse / STS — Maven 프로젝트 Import (1회) ===
 echo.
-echo  [워크스페이스]  E:\sts-workspace  (sts-workspace.local.txt)
+echo  [워크스페이스]  sts-workspace.local.txt (기본 C:\workplace\sts-workspace)
 echo  [프로젝트 루트]  %CD%
 echo  [Eclipse 이름]   spring-boot-app  (폴더: workspace 루트)
 echo.
 echo  [자동] sync-eclipse-workspace.bat — Maven compile + .metadata + 프로젝트 등록
-echo  1) open-sts-workspace.bat — STS가 E:\sts-workspace 로 열립니다.
+echo  1) open-sts-workspace.bat — STS가 C:\util\sts-5.1.1.RELEASE 로 워크스페이스를 엽니다.
 echo  2) Package Explorer에 spring-boot-app 이 보이면 Import 생략
 echo     없으면: File ^> Import ^> Maven ^> Existing Maven Projects
 echo     Root Directory = [프로젝트 루트], spring-boot-app 체크 ^> Finish

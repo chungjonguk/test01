@@ -30,6 +30,7 @@ if (-not $TryWorkbenchImport) {
 
 $candidates = @(
     $resolved.StsExe,
+    "C:\util\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe",
     "C:\Users\chung\.local\dev\sts-5.1.1\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe",
     "C:\Program Files\Spring Tool Suite 4\SpringToolSuite4.exe",
     "C:\sts-4\SpringToolSuite4.exe"

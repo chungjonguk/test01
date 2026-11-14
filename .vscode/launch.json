@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot: PrintMall",
+      "request": "launch",
+      "mainClass": "com.example.springbootapp.SpringBootAppApplication",
+      "projectName": "spring-boot-app",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "shortenCommandLine": "argfile",
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -Duser.language=ko -Duser.country=KR",
+      "env": {
+        "APP_STORAGE_NAS_BASE_PATH": "E:/nas-storage/printmall"
+      }
+    }
+  ]
+}

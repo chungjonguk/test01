@@ -2,6 +2,28 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Spring Boot: mvn spring-boot:run",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "spring-boot:run",
+        "-DskipTests",
+        "-Dspring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "JAVA_HOME": "C:\\Users\\chung\\.local\\dev\\jdk-17",
+          "APP_STORAGE_NAS_BASE_PATH": "E:/nas-storage/printmall"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
       "label": "PrintMall 서버 (PC+모바일)",
       "type": "shell",
       "command": "${workspaceFolder}/run-server-mobile.bat",

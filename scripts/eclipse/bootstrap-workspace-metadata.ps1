@@ -28,7 +28,10 @@ function Write-JavaDataOutputUtf([string]$Text, [string]$OutFile) {
     $fs = [System.IO.File]::Create($OutFile)
     try {
         $bw = New-Object System.IO.BinaryWriter($fs)
-        $bw.Write([uint16]$bytes.Length)
+        # Java DataOutputStream.writeUTF 는 길이를 big-endian 으로 기록한다.
+        $len = [uint16]$bytes.Length
+        $bw.Write([byte](($len -shr 8) -band 0xFF))
+        $bw.Write([byte]($len -band 0xFF))
         $bw.Write($bytes)
         $bw.Flush()
     } finally {
@@ -44,8 +47,8 @@ if (-not (Test-Path $versionIni)) {
     $stamp = (Get-Date).ToString("ddd MMM dd HH:mm:ss K yyyy")
     @(
         "#$stamp",
-        "org.eclipse.core.runtime=1",
-        "org.eclipse.platform=4.31.0"
+        "org.eclipse.core.runtime=2",
+        "org.eclipse.platform=4.39.0.v20260226-0420"
     ) | Set-Content -Path $versionIni -Encoding ASCII
 }
 
@@ -53,7 +56,7 @@ foreach ($file in Get-ChildItem $templateDir -Filter "*.prefs") {
     Copy-Item $file.FullName (Join-Path $settingsDest $file.Name) -Force
 }
 
-$projectUri = "file:///" + ($ProjectRoot -replace '\\', '/')
+$projectUri = "URI//file:/" + ($ProjectRoot -replace '\\', '/')
 Write-JavaDataOutputUtf $projectUri (Join-Path $projectMeta ".location")
 
 # 빈 마커 — Eclipse가 인덱스를 첫 기동 시 보완

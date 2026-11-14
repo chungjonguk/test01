@@ -5,7 +5,7 @@ cd /d "%~dp0"
 
 set "JAVA_HOME=C:\Users\chung\.local\dev\jdk-17"
 set "PATH=%JAVA_HOME%\bin;C:\Users\chung\.local\dev\apache-maven-3.9.15\bin;%PATH%"
-set "APP_STORAGE_NAS_BASE_PATH=E:/nas-storage/printmall"
+set "APP_STORAGE_NAS_BASE_PATH=C:/Users/chung/.local/dev/nas-storage/printmall"
 
 echo.
 echo === STS 실행 전 준비 (Maven compile + 8081 포트) ===
@@ -21,10 +21,10 @@ for %%P in (8081 8082) do (
 timeout /t 2 /nobreak >nul
 
 echo [2/3] NAS 폴더 확인...
-if not exist "E:\nas-storage\printmall\uploads\images" mkdir "E:\nas-storage\printmall\uploads\images"
-if not exist "E:\nas-storage\printmall\uploads\documents" mkdir "E:\nas-storage\printmall\uploads\documents"
-if not exist "E:\nas-storage\printmall\uploads\videos" mkdir "E:\nas-storage\printmall\uploads\videos"
-if not exist "E:\nas-storage\printmall\uploads\products" mkdir "E:\nas-storage\printmall\uploads\products"
+if not exist "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\images" mkdir "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\images"
+if not exist "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\documents" mkdir "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\documents"
+if not exist "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\videos" mkdir "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\videos"
+if not exist "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\products" mkdir "C:\Users\chung\.local\dev\nas-storage\printmall\uploads\products"
 
 echo [3/3] Maven clean compile...
 call mvn -q clean compile -DskipTests

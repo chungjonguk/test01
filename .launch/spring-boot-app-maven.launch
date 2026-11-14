@@ -6,10 +6,10 @@
     <booleanAttribute key="M2_OFFLINE" value="false"/>
     <stringAttribute key="M2_PROFILES" value=""/>
     <listAttribute key="M2_PROPERTIES">
-        <listEntry value="spring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR -Dapp.storage.nas.base-path=E:/nas-storage/printmall"/>
+        <listEntry value="spring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.language=ko -Duser.country=KR -Dapp.storage.nas.base-path=C:/Users/chung/.local/dev/nas-storage/printmall"/>
     </listAttribute>
     <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-        <mapEntry key="APP_STORAGE_NAS_BASE_PATH" value="E:/nas-storage/printmall"/>
+        <mapEntry key="APP_STORAGE_NAS_BASE_PATH" value="C:/Users/chung/.local/dev/nas-storage/printmall"/>
     </mapAttribute>
     <booleanAttribute key="M2_SKIP_TESTS" value="true"/>
     <intAttribute key="M2_THREADS" value="1"/>
@@ -19,5 +19,7 @@
     <stringAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_STACK" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="jdk-17"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_TYPE_ID" value="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:spring-boot-app}"/>
 </launchConfiguration>

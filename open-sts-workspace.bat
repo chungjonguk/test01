@@ -4,7 +4,7 @@ setlocal EnableExtensions
 
 set "PROJECT=%~dp0"
 set "STS_EXE="
-set "WORKSPACE=E:\sts-workspace"
+set "WORKSPACE=C:\workplace\sts-workspace"
 
 if exist "%PROJECT%scripts\eclipse\sts-path.local.txt" (
   set /p STS_EXE=<"%PROJECT%scripts\eclipse\sts-path.local.txt"
@@ -13,7 +13,7 @@ if exist "%PROJECT%scripts\eclipse\sts-workspace.local.txt" (
   set /p WORKSPACE=<"%PROJECT%scripts\eclipse\sts-workspace.local.txt"
 )
 
-if "%STS_EXE%"=="" set "STS_EXE=C:\Users\chung\.local\dev\sts-5.1.1\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe"
+if "%STS_EXE%"=="" set "STS_EXE=C:\util\sts-5.1.1.RELEASE\SpringToolsForEclipse.exe"
 
 if not exist "%STS_EXE%" (
   echo STS 실행 파일을 찾지 못했습니다.

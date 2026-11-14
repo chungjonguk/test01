@@ -34,6 +34,7 @@ Write-Host "[2/6] Maven compile (Update Project 기반)..." -ForegroundColor Gre
 # 3) 워크스페이스 .metadata + 프로젝트 등록
 Write-Host "[3/6] 워크스페이스 .metadata + spring-boot-app 등록..." -ForegroundColor Green
 & (Join-Path $PSScriptRoot "bootstrap-workspace-metadata.ps1") -WorkspaceRoot $WorkspaceRoot -ProjectRoot $ProjectRoot
+& (Join-Path $PSScriptRoot "apply-jdk17.ps1") -ProjectRoot $ProjectRoot
 
 # 4) 워크스페이스 prefs + STS ini UTF-8
 Write-Host "[4/6] 워크스페이스·STS UTF-8 (한글 깨짐 방지)..." -ForegroundColor Green

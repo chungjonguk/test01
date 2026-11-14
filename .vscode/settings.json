@@ -8,5 +8,25 @@
   },
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.import.maven.enabled": true,
-  "spring-boot.ls.java.home": "C:\\Users\\chung\\.local\\dev\\jdk-17"
+  "java.jdt.ls.java.home": "C:\\Users\\chung\\.local\\dev\\jdk-17",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "C:\\Users\\chung\\.local\\dev\\jdk-17",
+      "default": true
+    }
+  ],
+  "maven.executable.path": "C:\\Users\\chung\\.local\\dev\\apache-maven-3.9.15\\bin\\mvn.cmd",
+  "maven.terminal.customEnv": [
+    {
+      "environmentVariable": "JAVA_HOME",
+      "value": "C:\\Users\\chung\\.local\\dev\\jdk-17"
+    }
+  ],
+  "spring-boot.ls.java.home": "C:\\Users\\chung\\.local\\dev\\jdk-17",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "terminal.integrated.env.windows": {
+    "JAVA_HOME": "C:\\Users\\chung\\.local\\dev\\jdk-17",
+    "PATH": "C:\\Users\\chung\\.local\\dev\\jdk-17\\bin;C:\\Users\\chung\\.local\\dev\\apache-maven-3.9.15\\bin;${env:PATH}"
+  }
 }

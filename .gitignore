@@ -4,8 +4,7 @@
 
 /.idea/
 
-# .vscode/settings.json 은 Cursor·팀 공용 (target 등은 extensions가 무시)
-.vscode/launch.json
+# .vscode/settings.json, launch.json, extensions.json 은 실행 구성으로 공유
 .vscode/*.code-workspace
 
 # STS workspace metadata (워크스페이스 루트: new-workspace)
