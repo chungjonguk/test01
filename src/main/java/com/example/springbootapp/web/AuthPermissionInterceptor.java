@@ -42,13 +42,13 @@ public class AuthPermissionInterceptor implements HandlerInterceptor {
 		if (shouldSkip(uri)) {
 			return true;
 		}
+		if (uri.startsWith("/api/") && AuthRequiredPaths.isPublicApi(uri)) {
+			return true;
+		}
 		HttpSession session = request.getSession(false);
 		LoginSession login = sessionAuthService.getLoginSession(session);
 		if (login == null) {
 			if (uri.startsWith("/api/")) {
-				if (AuthRequiredPaths.isPublicApi(uri)) {
-					return true;
-				}
 				writeJsonError(response, HttpServletResponse.SC_UNAUTHORIZED, "로그인이 필요합니다. 다시 로그인해 주세요.");
 				return false;
 			}

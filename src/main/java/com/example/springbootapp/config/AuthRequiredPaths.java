@@ -38,6 +38,9 @@ public final class AuthRequiredPaths {
 			return false;
 		}
 		String path = uri.split("\\?")[0];
+		if (path.startsWith("/api/auth/")) {
+			return true;
+		}
 		if (path.startsWith("/api/url/")) {
 			return true;
 		}
