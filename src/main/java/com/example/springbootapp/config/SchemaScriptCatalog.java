@@ -57,6 +57,8 @@ public final class SchemaScriptCatalog {
 			"schema/screen_list_admin_company_domains.sql",
 			"schema/screen_list_admin_company_customer_menus.sql",
 			"schema/auth_user_role_seed.sql",
+			"schema/user_demo_seed.sql",
+			"schema/screen_list_ko_labels.sql",
 			"schema/screen_list_admin_table_sequences.sql",
 			"schema/screen_list_social_notification_list.sql",
 			"schema/screen_list_react_screens.sql",

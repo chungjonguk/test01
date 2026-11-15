@@ -1,0 +1,27 @@
+-- screen_list 영문 화면명을 한국어로 정리
+UPDATE screen_list SET screen_nm = '상품 목록', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_PRODUCT_PRODUCT_LIST.DO' OR screen_nm IN ('상품 list', 'Product list');
+UPDATE screen_list SET screen_nm = '상품 그리드', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_PRODUCT_PRODUCT_GRID.DO' OR screen_nm IN ('상품 grid', 'Product grid');
+UPDATE screen_list SET screen_nm = '상품 상세', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_PRODUCT_PRODUCT_DETAILS.DO' OR screen_nm IN ('상품 details', 'Product details');
+UPDATE screen_list SET screen_nm = '주문 목록', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_ORDERS_ORDER_LIST.DO' OR screen_nm = 'Order list';
+UPDATE screen_list SET screen_nm = '주문 상세', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_ORDERS_ORDER_DETAILS.DO' OR screen_nm = 'Order details';
+UPDATE screen_list SET screen_nm = '고객 상세', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'APP_E_COMMERCE_CUSTOMER_DETAILS.DO' OR screen_nm = 'Customer details';
+UPDATE screen_list SET screen_nm = '학생 개요', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Student overview';
+UPDATE screen_list SET screen_nm = '강사 프로필', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Trainer profile';
+UPDATE screen_list SET screen_nm = '활동 로그', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Activity log';
+UPDATE screen_list SET screen_nm = '소셜', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Social';
+UPDATE screen_list SET screen_nm = '이러닝', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'E learning';
+UPDATE screen_list SET screen_nm = '강좌 목록', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Course list';
+UPDATE screen_list SET screen_nm = '강좌 그리드', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Course grid';
+UPDATE screen_list SET screen_nm = '강좌 상세', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Course details';
+UPDATE screen_list SET screen_nm = '강좌 만들기', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Create a course';
+UPDATE screen_list SET screen_nm = '비밀번호 찾기', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Forgot password';
+UPDATE screen_list SET screen_nm = '메일 확인', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Confirm mail';
+UPDATE screen_list SET screen_nm = '비밀번호 재설정', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Reset password';
+UPDATE screen_list SET screen_nm = '잠금 화면', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Lock screen';
+UPDATE screen_list SET screen_nm = '모달 인증', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_id = 'PAGES_AUTHENTICATION_MODAL' OR screen_nm = 'Modal';
+UPDATE screen_list SET screen_nm = '인증', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Authentication';
+UPDATE screen_list SET screen_nm = '사용자', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'User' AND uri_path LIKE '/pages/user%';
+UPDATE screen_list SET screen_nm = '오류', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Errors';
+UPDATE screen_list SET screen_nm = '카드형', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Card' AND uri_path LIKE '/pages/authentication/card%';
+UPDATE screen_list SET screen_nm = '분할형', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Split' AND uri_path LIKE '/pages/authentication/split%';
+UPDATE screen_list SET screen_nm = '심플', update_id = 'SYSTEM', update_dt = CURRENT_TIMESTAMP WHERE screen_nm = 'Simple' AND uri_path LIKE '/pages/authentication/simple%';
