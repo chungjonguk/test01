@@ -14,13 +14,18 @@ public final class SchemaScriptCatalog {
 			"schema/sys_table_random_id.sql",
 			// 공통·화면 메타
 			"schema/common_code.sql",
+			"schema/common_code_value_pk_alter.sql",
 			"schema/screen_table_map.sql",
 			"schema/screen_list.sql",
 			"schema/screen_list_alter.sql",
 			"schema/screen_list_menu_meta_alter.sql",
 			"schema/screen_list_charset.sql",
+			"schema/screen_list_uri_do_suffix.sql",
 			// 업무·접속
 			"schema/user.sql",
+			"schema/user_alter.sql",
+			"schema/user_address_alter.sql",
+			"schema/user_rrno_alter.sql",
 			"schema/user_access_log.sql",
 			"schema/user_access_log_alter.sql",
 			"schema/nas_file.sql",
@@ -66,6 +71,7 @@ public final class SchemaScriptCatalog {
 			"schema/screen_list_remove_documentation_menu.sql",
 			"schema/screen_list_remove_modules_menu.sql",
 			"schema/screen_list_remove_admin_settings_menu.sql",
+			"schema/screen_list_menu_dedup.sql",
 			"schema/sys_table_sequence_seed.sql");
 
 	private SchemaScriptCatalog() {

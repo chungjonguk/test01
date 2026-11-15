@@ -5,8 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 /**
- * Spring Boot 기동 전( main ) Windows에서 MySQL 기동·접속 확인 스크립트 실행.
+ * @deprecated PostgreSQL 전환 후 {@link PostgresBootstrap} 을 사용합니다. 호출처 없음.
  */
+@Deprecated
 public final class MysqlBootstrap {
 	private static final String PROP_AUTO_BOOTSTRAP = "app.datasource.auto-bootstrap-mysql";
 	private MysqlBootstrap() {

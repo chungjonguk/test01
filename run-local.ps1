@@ -25,9 +25,18 @@ if ($LASTEXITCODE -ne 0) {
     if ($LASTEXITCODE -ne 0) { throw "PostgreSQL 기동 실패. 로그: $pgdata\server.log" }
 }
 
+$ensurePg = Join-Path $root "scripts\ensure-postgres.ps1"
+if (Test-Path $ensurePg) {
+    Write-Host "PostgreSQL DB 확인 (spring_boot_app)..."
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $ensurePg
+    if ($LASTEXITCODE -ne 0) { throw "PostgreSQL DB 준비 실패" }
+}
+
 Set-Location $root
 Write-Host ""
 Write-Host "Spring Boot 시작: http://localhost:8082/"
+Write-Host "  - DB: jdbc:postgresql://localhost:5432/spring_boot_app"
+Write-Host "  - 스키마: SchemaScriptCatalog + DatabaseSchemaBootstrapRunner"
 Write-Host ""
 & mvn spring-boot:run -DskipTests "-Dspring-boot.run.jvmArguments=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
