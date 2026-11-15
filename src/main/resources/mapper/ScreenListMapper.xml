@@ -24,6 +24,12 @@
 
         <result property="useYn" column="use_yn"/>
 
+        <result property="menuGroup" column="menu_group"/>
+
+        <result property="iconClass" column="icon_class"/>
+
+        <result property="parentScreenId" column="parent_screen_id"/>
+
         <result property="regId" column="reg_id"/>
 
         <result property="regDt" column="reg_dt"/>
@@ -39,6 +45,8 @@
     <sql id="screenListColumns">
 
         screen_id, screen_nm, uri_path, template_path, sort_ord, use_yn,
+
+        menu_group, icon_class, parent_screen_id,
 
         reg_id, reg_dt, update_id, update_dt
 
@@ -138,11 +146,15 @@
 
             screen_id, screen_nm, uri_path, template_path, sort_ord, use_yn,
 
+            menu_group, icon_class, parent_screen_id,
+
             reg_id, reg_dt, update_id, update_dt
 
         ) VALUES (
 
             #{screenId}, #{screenNm}, #{uriPath}, #{templatePath}, #{sortOrd}, #{useYn},
+
+            #{menuGroup}, #{iconClass}, #{parentScreenId},
 
             #{regId}, #{regDt}, #{updateId}, #{updateDt}
 
@@ -165,6 +177,12 @@
             sort_ord = #{sortOrd},
 
             use_yn = #{useYn},
+
+            menu_group = #{menuGroup},
+
+            icon_class = #{iconClass},
+
+            parent_screen_id = #{parentScreenId},
 
             update_id = #{updateId},
 

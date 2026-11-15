@@ -76,6 +76,16 @@ public class AdminMenuApiController {
 		row.put("templatePath", screen.getTemplatePath());
 		row.put("sortOrd", screen.getSortOrd());
 		row.put("useYn", screen.getUseYn());
+		row.put("menuGroup", screen.getMenuGroup());
+		row.put("iconClass", screen.getIconClass());
+		row.put("parentScreenId", screen.getParentScreenId());
+		String linkPath = screen.getUriPath() != null
+				? com.example.springbootapp.config.web.DoPathHelper.stripDoSuffix(screen.getUriPath())
+				: "";
+		if (linkPath.isEmpty() || "/index".equals(linkPath)) {
+			linkPath = "/";
+		}
+		row.put("linkPath", linkPath);
 		row.put("primaryTable", mapped != null ? mapped.getPrimaryTable() : fallback.primaryTable());
 		row.put("relatedTables", mapped != null ? mapped.getRelatedTables() : fallback.relatedTables());
 		row.put("dataType", mapped != null ? mapped.getDataType() : String.valueOf(fallback.dataType()));

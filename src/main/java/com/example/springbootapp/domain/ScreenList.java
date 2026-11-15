@@ -7,6 +7,12 @@ public class ScreenList {
 	private String templatePath;
 	private int sortOrd;
 	private String useYn;
+	/** 메뉴 섹션 그룹 (대시보드/쇼핑몰/앱/페이지/관리자 등) */
+	private String menuGroup;
+	/** Font Awesome 등 아이콘 클래스 */
+	private String iconClass;
+	/** 상위 화면 ID (선택) */
+	private String parentScreenId;
 	private String regId;
 	private LocalDateTime regDt;
 	private String updateId;
@@ -46,6 +52,24 @@ public class ScreenList {
 	}
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
+	}
+	public String getMenuGroup() {
+		return menuGroup;
+	}
+	public void setMenuGroup(String menuGroup) {
+		this.menuGroup = menuGroup;
+	}
+	public String getIconClass() {
+		return iconClass;
+	}
+	public void setIconClass(String iconClass) {
+		this.iconClass = iconClass;
+	}
+	public String getParentScreenId() {
+		return parentScreenId;
+	}
+	public void setParentScreenId(String parentScreenId) {
+		this.parentScreenId = parentScreenId;
 	}
 	public String getRegId() {
 		return regId;

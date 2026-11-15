@@ -204,6 +204,15 @@ public class ScreenListService {
 			screen.setScreenId(existing.getScreenId());
 			screen.setRegId(existing.getRegId());
 			screen.setRegDt(existing.getRegDt());
+			if (screen.getMenuGroup() == null || screen.getMenuGroup().isBlank()) {
+				screen.setMenuGroup(existing.getMenuGroup());
+			}
+			if (screen.getIconClass() == null || screen.getIconClass().isBlank()) {
+				screen.setIconClass(existing.getIconClass());
+			}
+			if (screen.getParentScreenId() == null || screen.getParentScreenId().isBlank()) {
+				screen.setParentScreenId(existing.getParentScreenId());
+			}
 			screen.setUpdateId(actor);
 			screen.setUpdateDt(now);
 			screenListMapper.update(screen);

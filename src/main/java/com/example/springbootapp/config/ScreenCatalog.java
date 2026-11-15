@@ -49,8 +49,32 @@ public final class ScreenCatalog {
 		put(byUri, "ADMIN_SHIPPING", "운송장발급", "/admin/shipping", "admin/shipping", 34);
 		put(byUri, "SHOP_HOME", "쇼핑몰 홈", "/shop-home", "app/e-commerce/product/product-grid", 15);
 		put(byUri, "SHOP_DASHBOARD", "쇼핑몰 통계", "/shop-dashboard", "dashboard/e-commerce", 26);
+		// React PrintMall 관리·보조 화면
+		put(byUri, "ADMIN_SCREEN_LOCALES", "화면별 언어", "/admin/screen-locales", "admin/screen-locales", 735, "관리자", "fas fa-language");
+		put(byUri, "ADMIN_LAYOUT", "레이아웃 구조", "/admin/layout", "admin/layout", 736, "관리자", "fas fa-border-all");
+		put(byUri, "ADMIN_WIDGETS", "위젯 등록", "/admin/widgets", "admin/widgets", 737, "관리자", "fas fa-puzzle-piece");
+		put(byUri, "ADMIN_WIDGET_LAYOUTS", "위젯 레이아웃", "/admin/widget-layouts", "admin/widget-layouts", 738, "관리자", "fas fa-th-large");
+		put(byUri, "ADMIN_PERMISSIONS", "화면 권한", "/admin/permissions", "admin/permissions", 739, "관리자", "fas fa-user-shield");
+		put(byUri, "PAGES_WIDGET_BOARD", "위젯 보드", "/pages/widget-board", "pages/widget-board", 371, "페이지", "fas fa-th");
+		put(byUri, "PAGES_ERRORS_403", "403", "/pages/errors/403", "pages/errors/403", 615, "페이지", "fas fa-ban");
+		put(byUri, "PAGES_AUTHENTICATION_MODAL", "Modal", "/pages/authentication/modal", "pages/authentication/modal", 605, "페이지", "fas fa-window-maximize");
+		put(byUri, "PAGES_USER_PROFILE", "프로필", "/pages/user/profile", "pages/user/profile", 612, "마이페이지", "fas fa-user");
+		put(byUri, "AUTH_LOGIN_SHORT", "로그인(단축)", "/login", "pages/authentication/simple/login", 385, "페이지", "fas fa-sign-in-alt");
+		put(byUri, "AUTH_REGISTER_SHORT", "회원가입(단축)", "/register", "pages/authentication/simple/register", 386, "페이지", "fas fa-user-plus");
+		put(byUri, "AUTH_FORGOT_SHORT", "비밀번호 찾기(단축)", "/forgot-password", "pages/authentication/simple/forgot-password", 387, "페이지", "fas fa-key");
 	}
 	private static void put(Map<String, ScreenList> byUri, String id, String nm, String uri, String template, int sort) {
+		put(byUri, id, nm, uri, template, sort, null, null);
+	}
+	private static void put(
+			Map<String, ScreenList> byUri,
+			String id,
+			String nm,
+			String uri,
+			String template,
+			int sort,
+			String menuGroup,
+			String iconClass) {
 		String normalized = DoPathHelper.normalizeForScreenLookup(uri);
 		if (byUri.containsKey(normalized)) {
 			ScreenList existing = byUri.get(normalized);
@@ -59,6 +83,12 @@ public final class ScreenCatalog {
 			}
 			existing.setScreenNm(nm);
 			existing.setScreenId(id);
+			if (menuGroup != null) {
+				existing.setMenuGroup(menuGroup);
+			}
+			if (iconClass != null) {
+				existing.setIconClass(iconClass);
+			}
 			return;
 		}
 		ScreenList s = new ScreenList();
@@ -68,6 +98,8 @@ public final class ScreenCatalog {
 		s.setTemplatePath(template);
 		s.setSortOrd(sort);
 		s.setUseYn("Y");
+		s.setMenuGroup(menuGroup);
+		s.setIconClass(iconClass);
 		byUri.put(normalized, s);
 	}
 

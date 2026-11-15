@@ -17,6 +17,7 @@ public final class SchemaScriptCatalog {
 			"schema/screen_table_map.sql",
 			"schema/screen_list.sql",
 			"schema/screen_list_alter.sql",
+			"schema/screen_list_menu_meta_alter.sql",
 			"schema/screen_list_charset.sql",
 			// 업무·접속
 			"schema/user.sql",
@@ -58,6 +59,7 @@ public final class SchemaScriptCatalog {
 			"schema/auth_user_role_seed.sql",
 			"schema/screen_list_admin_table_sequences.sql",
 			"schema/screen_list_social_notification_list.sql",
+			"schema/screen_list_react_screens.sql",
 			"schema/screen_list_remove_pricing_menu.sql",
 			"schema/screen_list_remove_documentation_menu.sql",
 			"schema/screen_list_remove_modules_menu.sql",

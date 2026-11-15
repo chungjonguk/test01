@@ -91,6 +91,9 @@ public class ScreenListApiController {
 		row.put("templatePath", screen.getTemplatePath());
 		row.put("sortOrd", screen.getSortOrd());
 		row.put("useYn", screen.getUseYn());
+		row.put("menuGroup", screen.getMenuGroup());
+		row.put("iconClass", screen.getIconClass());
+		row.put("parentScreenId", screen.getParentScreenId());
 		String linkPath = toLinkPath(screen.getUriPath());
 		row.put("linkPath", linkPath);
 		PublicPathCryptoService crypto = publicPathCrypto.getIfAvailable();

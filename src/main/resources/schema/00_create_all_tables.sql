@@ -150,16 +150,19 @@ CREATE TABLE IF NOT EXISTS common_code_value (
 -- USE spring_boot_app;
 
 CREATE TABLE IF NOT EXISTS screen_list (
-  screen_id      VARCHAR(100)  NOT NULL,
-  screen_nm      VARCHAR(200)  NOT NULL,
-  uri_path       VARCHAR(255)  NOT NULL,
-  template_path  VARCHAR(255)  NULL,
-  sort_ord       INT           NOT NULL DEFAULT 0,
-  use_yn         CHAR(1)       NOT NULL DEFAULT 'Y',
-  reg_id         VARCHAR(100)  NOT NULL,
-  reg_dt         TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  update_id      VARCHAR(100)  NOT NULL,
-  update_dt      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  screen_id         VARCHAR(100)  NOT NULL,
+  screen_nm         VARCHAR(200)  NOT NULL,
+  uri_path          VARCHAR(255)  NOT NULL,
+  template_path     VARCHAR(255)  NULL,
+  sort_ord          INT           NOT NULL DEFAULT 0,
+  use_yn            CHAR(1)       NOT NULL DEFAULT 'Y',
+  menu_group        VARCHAR(100)  NULL,
+  icon_class        VARCHAR(100)  NULL,
+  parent_screen_id  VARCHAR(100)  NULL,
+  reg_id            VARCHAR(100)  NOT NULL,
+  reg_dt            TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_id         VARCHAR(100)  NOT NULL,
+  update_dt         TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (screen_id),
   CONSTRAINT uk_screen_list_uri UNIQUE (uri_path)
 );
